@@ -62,6 +62,7 @@
 #include <string.h>
 
 #include <amxc/amxc_string.h>
+#include <amxc/amxc_string_join.h>
 #include <amxc_variant_priv.h>
 
 static int variant_list_init(amxc_var_t * const var) {
@@ -105,62 +106,28 @@ static int variant_list_copy(amxc_var_t * const dest,
     return variant_list_copy_list(dest, list);
 }
 
-static int variant_list_to_value_sep_string(amxc_var_t * const dest,
-                                            const amxc_var_t * const src,
-                                            const char *value_sep) {
-    int retval = -1;
-    const amxc_llist_t *list = &src->data.vl;
-    amxc_string_t string;
-    amxc_var_t intermediate;
-    const char *sep = "";
-
-    amxc_var_init(&intermediate);
-    when_failed(amxc_string_init(&string, 100), exit);
-
-    amxc_llist_for_each(it, list) {
-        amxc_var_t *item = amxc_var_from_llist_it(it);
-        size_t length = 0;
-        if(amxc_var_convert(&intermediate, item, AMXC_VAR_ID_CSTRING) != 0) {
-            amxc_string_clean(&string);
-            goto exit;
-        }
-        if(*sep != 0) {
-            if(amxc_string_append(&string, sep, strlen(sep)) != 0) {
-                amxc_string_clean(&string);
-                goto exit;
-            }
-        }
-        if(intermediate.data.s == NULL) {
-            continue;
-        }
-        length = strlen(intermediate.data.s);
-        if(length == 0) {
-            continue;
-        }
-        if(amxc_string_append(&string, intermediate.data.s, length) != 0) {
-            amxc_string_clean(&string);
-            goto exit;
-        }
-        sep = value_sep;
-    }
-
-    string.buffer[string.last_used] = 0;
-    dest->data.s = string.buffer;
-    retval = 0;
-
-exit:
-    amxc_var_clean(&intermediate);
-    return retval;
-}
-
 static int variant_list_to_csv_string(amxc_var_t * const dest,
                                       const amxc_var_t * const src) {
-    return variant_list_to_value_sep_string(dest, src, ",");
+    int retval = -1;
+    amxc_string_t string;
+    amxc_string_init(&string, 0);
+    retval = amxc_string_csv_join_var(&string, src);
+    free(dest->data.s);
+    dest->data.s = amxc_string_take_buffer(&string);
+    amxc_string_clean(&string);
+    return retval;
 }
 
 static int variant_list_to_ssv_string(amxc_var_t * const dest,
                                       const amxc_var_t * const src) {
-    return variant_list_to_value_sep_string(dest, src, " ");
+    int retval = -1;
+    amxc_string_t string;
+    amxc_string_init(&string, 0);
+    retval = amxc_string_ssv_join_var(&string, src);
+    free(dest->data.s);
+    dest->data.s = amxc_string_take_buffer(&string);
+    amxc_string_clean(&string);
+    return retval;
 }
 
 static int variant_list_to_number(amxc_var_t * const dest,
@@ -340,49 +307,27 @@ exit:
 static amxc_var_t *variant_list_get_key(const amxc_var_t * const src,
                                         const char * const key,
                                         int flags) {
-    amxc_var_t *retval = NULL;
-    amxc_var_t key_val;
-    amxc_var_t index_val;
-    amxc_var_init(&key_val);
-    amxc_var_init(&index_val);
-
-    when_failed(amxc_var_set(cstring_t, &key_val, key), exit);
-    when_failed(amxc_var_convert(&index_val, &key_val, AMXC_VAR_ID_INT64), exit);
-
-    retval = variant_list_get_index(src,
-                                    amxc_var_constcast(int64_t, &index_val),
-                                    flags);
-
-    amxc_var_clean(&index_val);
-    amxc_var_clean(&key_val);
-
-exit:
-    return retval;
+    char *endptr = NULL;
+    int64_t index = strtoll(key, &endptr, 0);
+    if(*endptr != 0) {
+        return NULL;
+    } else {
+        return variant_list_get_index(src, index, flags);
+    }
 }
 
 static int variant_list_set_key(amxc_var_t * const dest,
                                 amxc_var_t * const src,
                                 const char * const key,
                                 int flags) {
-    int retval = -1;
-    amxc_var_t key_val;
-    amxc_var_t index_val;
-    amxc_var_init(&key_val);
-    amxc_var_init(&index_val);
+    char *endptr = NULL;
+    int64_t index = strtoll(key, &endptr, 0);
 
-    when_failed(amxc_var_set(cstring_t, &key_val, key), exit);
-    when_failed(amxc_var_convert(&index_val, &key_val, AMXC_VAR_ID_INT64), exit);
-
-    retval = variant_list_set_index(dest,
-                                    src,
-                                    amxc_var_constcast(int64_t, &index_val),
-                                    flags);
-
-    amxc_var_clean(&index_val);
-    amxc_var_clean(&key_val);
-
-exit:
-    return retval;
+    if(*endptr != 0) {
+        return -1;
+    } else {
+        return variant_list_set_index(dest, src, index, flags);
+    }
 }
 
 static amxc_var_type_t amxc_variant_list = {

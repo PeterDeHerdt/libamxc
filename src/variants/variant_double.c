@@ -271,9 +271,9 @@ static int variant_double_compare(const amxc_var_t * const lval,
     if(lval->data.d == rval->data.d) {
         *result = 0;
     } else if(lval->data.d > rval->data.d) {
-        *result = -1;
-    } else {
         *result = 1;
+    } else {
+        *result = -1;
     }
     return 0;
 }

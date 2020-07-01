@@ -8,6 +8,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 0.6.1 - 2020-07-15(13:45:56 +0000)
+
+### New
+
+- Adds amxc_string_copy function
+
+## Release 0.6.0 - 2020-07-13(05:09:15 +0000)
+
+### Changes
+
+- String split and string join API's refactored and improved
+- Update makefiles for SAH legacy build systems
+
+## Release 0.5.5 - 2020-07-05(14:39:37 +0000)
+
+### Fixes
+
+- Memory leak in variant llist implementation and adds test
+
+### Changes
+
+- USes std=c11 instead of std=c18 for older compilers/toolchains
+
+## Release 0.5.4 - 2020-07-01(20:04:43 +0000)
+
+### Fixes
+
+- `amxc_var_compare` results are wrong for some types
+
+## Release 0.5.3 - 2020-06-30(07:45:20 +0000)
+
+### Changes
+
+- Scrubs Component.* files
+
 ## Release 0.5.2 - 2020-06-29(16:22:07 +0000)
 
 ### New 

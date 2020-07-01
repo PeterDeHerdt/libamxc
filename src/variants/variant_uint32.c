@@ -273,9 +273,9 @@ static int variant_uint32_compare(const amxc_var_t * const lval,
     if(lval->data.ui32 == rval->data.ui32) {
         *result = 0;
     } else if(lval->data.ui32 > rval->data.ui32) {
-        *result = -1;
-    } else {
         *result = 1;
+    } else {
+        *result = -1;
     }
     return 0;
 }

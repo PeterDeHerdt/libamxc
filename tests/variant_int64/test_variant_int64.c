@@ -251,14 +251,14 @@ void test_variant_int64_compare(UNUSED void **state) {
     var2.data.i64 = -4026531839;
 
     assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
-    assert_int_equal(result, -1);
+    assert_true(result > 0);
 
     assert_int_equal(amxc_var_compare(&var2, &var1, &result), 0);
-    assert_int_equal(result, 1);
+    assert_true(result < 0);
 
     var2.data.i64 = 4026531840;
     assert_int_equal(amxc_var_compare(&var2, &var1, &result), 0);
-    assert_int_equal(result, 0);
+    assert_true(result == 0);
 
 }
 

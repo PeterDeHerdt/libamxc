@@ -73,50 +73,82 @@
    Ambiorix string API implementation
  */
 
-
-int amxc_string_join_variant_until(amxc_string_t **string,
-                                   amxc_var_t *var,
-                                   amxc_string_is_char_fn_t fn,
-                                   int8_t *delimiter) {
+static int amxc_string_join_var_impl(amxc_string_t *string,
+                                     const amxc_var_t * const var,
+                                     const char *separator) {
     int retval = -1;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-
-    when_null(var, exit);
+    const amxc_llist_t *list = NULL;
+    const char *sep = "";
     when_null(string, exit);
+    when_null(var, exit);
     when_true(amxc_var_type_of(var) != AMXC_VAR_ID_LIST, exit);
 
-    if(fn == NULL) {
-        fn = isspace;
-    }
+    list = amxc_var_constcast(amxc_llist_t, var);
 
-    if(delimiter != NULL) {
-        *delimiter = 0;
-    }
+    amxc_llist_for_each(it, list) {
+        amxc_var_t *part = amxc_var_from_llist_it(it);
 
-    when_failed(amxc_string_new(string, 0), exit);
+        amxc_string_appendf(string, "%s", sep);
 
-    string_list = amxc_var_constcast(amxc_llist_t, var);
-    it = amxc_llist_get_first(string_list);
-    while(it) {
-        amxc_var_t *var_part = amxc_var_from_llist_it(it);
-        const char *part = amxc_var_constcast(cstring_t, var_part);
-        int length = 1;
-        length = strlen(part);
-        if((length == 1) && (fn(part[0]) != 0)) {
-            if(delimiter != NULL) {
-                *delimiter = part[0];
-            }
-            amxc_var_delete(&var_part);
-            break;
+        if(amxc_var_type_of(part) == AMXC_VAR_ID_LIST) {
+            amxc_string_append(string, "[", 1);
+            amxc_string_csv_join_var(string, part);
+            amxc_string_append(string, "]", 1);
+        } else if((amxc_var_type_of(part) == AMXC_VAR_ID_CSTRING) ||
+                  ( amxc_var_type_of(part) == AMXC_VAR_ID_CSV_STRING) ||
+                  ( amxc_var_type_of(part) == AMXC_VAR_ID_SSV_STRING)) {
+            const char *txt = amxc_var_constcast(cstring_t, part);
+            amxc_string_appendf(string, "%s", txt);
+        } else {
+            char *txt = amxc_var_dyncast(cstring_t, part);
+            amxc_string_appendf(string, "%s", txt);
+            free(txt);
         }
-        amxc_string_append(*string, part, length);
-        amxc_var_delete(&var_part);
-        it = amxc_llist_get_first(string_list);
+        sep = separator;
     }
 
     retval = 0;
 
 exit:
     return retval;
+}
+
+int amxc_string_join_llist(amxc_string_t *string,
+                           amxc_llist_t *list,
+                           char separator) {
+    int retval = -1;
+
+    when_null(string, exit);
+    when_null(list, exit);
+    when_true(isalnum(separator) != 0, exit);
+    when_true(separator == '[' || separator == ']', exit);
+
+    if(isspace(separator) != 0) {
+        separator = ' ';
+    }
+
+    amxc_llist_for_each(it, list) {
+        amxc_string_t *part = amxc_string_from_llist_it(it);
+        if(!amxc_string_is_empty(string)) {
+            amxc_string_appendf(string, "%c", separator);
+        }
+        amxc_string_append(string,
+                           amxc_string_get(part, 0),
+                           amxc_string_text_length(part));
+    }
+
+    retval = 0;
+
+exit:
+    return retval;
+}
+
+int amxc_string_csv_join_var(amxc_string_t *string,
+                             const amxc_var_t * const var) {
+    return amxc_string_join_var_impl(string, var, ",");
+}
+
+int amxc_string_ssv_join_var(amxc_string_t *string,
+                             const amxc_var_t * const var) {
+    return amxc_string_join_var_impl(string, var, " ");
 }

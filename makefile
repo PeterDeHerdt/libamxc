@@ -15,7 +15,8 @@ TARGET_A = $(OBJDIR)/$(TARGET)-$(VERSION).a
 SRCDIR = ./src
 INCDIR_PUB = ./include
 INCDIR_PRIV = ./include_priv
-INCDIRS = $(INCDIR_PUB) $(INCDIR_PRIV)
+INCDIRS = $(INCDIR_PUB) $(INCDIR_PRIV) $(if $(STAGINGDIR), $(STAGINGDIR)/include)
+LIBDIR = $(if $(STAGINGDIR), -L$(STAGINGDIR)/lib)
 
 # files
 HEADERS = $(wildcard $(INCDIR_PUB)/$(TARGET_NAME)/*.h)
@@ -29,9 +30,9 @@ CFLAGS += -Werror -Wall -Wextra \
           -Wformat=2 -Wshadow \
           -Wwrite-strings -Wstrict-prototypes -Wold-style-definition \
           -Wredundant-decls -Wnested-externs -Wmissing-include-dirs \
-		  -Wpedantic -Wmissing-declarations -Wno-implicit-fallthrough \
-          -fPIC --std=c18 -g3 $(addprefix -I ,$(INCDIRS))
-LDFLAGS += -shared -fPIC
+		  -Wpedantic -Wmissing-declarations \
+          -fPIC --std=c11 -g3 $(addprefix -I ,$(INCDIRS))
+LDFLAGS += $(LIBDIR) -shared -fPIC
 
 # helper functions - used in multiple targets
 define install_to

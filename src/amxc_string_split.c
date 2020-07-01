@@ -64,9 +64,11 @@
 #include <string.h>
 #include <ctype.h>
 
+#include <amxc/amxc_common.h>
 #include <amxc/amxc_variant.h>
 #include <amxc/amxc_string_split.h>
-#include <amxc_assert.h>
+
+#include "amxc_assert.h"
 
 /**
    @file
@@ -92,6 +94,40 @@ typedef int (*amxc_string_create_part_t) (const amxc_string_t * const string,
 typedef bool (*amxc_string_check_delimiter_t) (amxc_llist_t *list,
                                                const char delimiter);
 
+static void amxc_trim_llist(amxc_llist_t * const list) {
+    amxc_llist_for_each_reverse(it, list) {
+        amxc_string_t *part = amxc_string_from_llist_it(it);
+        if(amxc_string_text_length(part) != 1) {
+            break;
+        }
+        if(isspace(part->buffer[0]) == 0) {
+            break;
+        }
+        amxc_string_delete(&part);
+    }
+
+    while(true) {
+        amxc_llist_it_t *first = amxc_llist_get_first(list);
+        amxc_llist_it_t *last = amxc_llist_get_last(list);
+
+        if((first != NULL) && (last != NULL)) {
+            amxc_string_t *fpart = amxc_string_from_llist_it(first);
+            amxc_string_t *lpart = amxc_string_from_llist_it(last);
+
+            if((amxc_string_text_length(fpart) == 1) &&
+               ( amxc_string_text_length(lpart) == 1)) {
+                if((fpart->buffer[0] == '[') &&
+                   ( lpart->buffer[0] == ']')) {
+                    amxc_string_delete(&fpart);
+                    amxc_string_delete(&lpart);
+                    continue;
+                }
+            }
+        }
+        break;
+    }
+}
+
 static int amxc_string_create_part(const amxc_string_t * const string,
                                    amxc_llist_t * const list,
                                    const size_t start_pos,
@@ -100,15 +136,15 @@ static int amxc_string_create_part(const amxc_string_t * const string,
     amxc_string_t *part = NULL;
     char *buffer = NULL;
 
-    if(length == 0) {
-        buffer = strdup("");
-    } else {
-        buffer = amxc_string_dup(string, start_pos, length);
-    }
-
+    buffer = amxc_string_dup(string, start_pos, length);
+    when_null(buffer, exit);
     when_failed(amxc_string_new(&part, 0), exit);
-    when_failed(amxc_string_push_buffer(part, buffer, length == 0 ? 1 : length + 1),
-                exit);
+    if((length == 1) && isspace(buffer[0])) {
+        amxc_string_set_at(part, 0, " ", 1, 0);
+        free(buffer);
+    } else {
+        when_failed(amxc_string_push_buffer(part, buffer, length + 1), exit);
+    }
     amxc_llist_append(list, &part->it);
 
     retval = 0;
@@ -118,84 +154,6 @@ exit:
         free(buffer);
         amxc_string_delete(&part);
     }
-    return retval;
-}
-
-static int amxc_string_create_var_trim_part(const amxc_string_t * const string,
-                                            amxc_llist_t * const list,
-                                            const size_t start_pos,
-                                            const size_t length) {
-    int retval = -1;
-    amxc_string_t str_part;
-    amxc_var_t *part = NULL;
-    char *buffer = NULL;
-
-    if(length == 0) {
-        buffer = strdup("");
-    } else {
-        buffer = amxc_string_dup(string, start_pos, length);
-    }
-
-    amxc_string_init(&str_part, 0);
-    amxc_string_push_buffer(&str_part, buffer, length == 0 ? 1 : length + 1);
-    amxc_string_trim(&str_part, NULL);
-    buffer = amxc_string_take_buffer(&str_part);
-    amxc_string_clean(&str_part);
-
-    when_failed(amxc_var_new(&part), exit);
-    when_failed(amxc_var_push(cstring_t, part, buffer), exit);
-    amxc_llist_append(list, &part->lit);
-
-    retval = 0;
-
-exit:
-    return retval;
-}
-
-static int amxc_string_create_var_part(const amxc_string_t * const string,
-                                       amxc_llist_t * const list,
-                                       const size_t start_pos,
-                                       const size_t length) {
-    int retval = -1;
-    amxc_var_t *part = NULL;
-    char *buffer = amxc_string_dup(string, start_pos, length);
-
-    when_failed(amxc_var_new(&part), exit);
-    when_failed(amxc_var_push(cstring_t, part, buffer), exit);
-    amxc_llist_append(list, &part->lit);
-
-    retval = 0;
-
-exit:
-    return retval;
-}
-
-static int amxc_string_split_internal(const amxc_string_t * const string,
-                                      amxc_llist_t *list,
-                                      const char *separator,
-                                      amxc_string_create_part_t fn) {
-    size_t sep_length = 0;
-    size_t start_pos = 0;
-    size_t i = 0;
-    int retval = -1;
-
-    sep_length = strlen(separator);
-
-    for(i = 0; i + sep_length <= string->last_used; i++) {
-        if(memcmp(string->buffer + i, separator, sep_length) == 0) {
-            when_failed(fn(string, list, start_pos, i - start_pos), exit);
-            start_pos = i + sep_length;
-            i += sep_length - 1;
-        }
-    }
-
-    i = string->last_used;
-
-    when_failed(fn(string, list, start_pos, i - start_pos), exit);
-
-    retval = 0;
-
-exit:
     return retval;
 }
 
@@ -242,9 +200,10 @@ static bool amxc_string_split_update_status(const amxc_string_t * const string,
     return skip;
 }
 
-static int amxc_string_split_word_is_valid(amxc_string_word_flags_t *flags,
-                                           const char **reason) {
-    int retval = 0;
+static amxc_string_split_status_t
+amxc_string_split_word_is_valid(amxc_string_word_flags_t *flags,
+                                const char **reason) {
+    amxc_string_split_status_t retval = AMXC_STRING_SPLIT_OK;
     const char *msg = "";
 
     if(flags->between_double_quotes) {
@@ -295,36 +254,41 @@ exit:
     return retval;
 }
 
-static bool amxc_need_to_add_delimiter_variant(amxc_llist_t *list,
-                                               const char delimiter) {
+static bool amxc_need_to_add_delimiter(amxc_llist_t *list,
+                                       const char delimiter) {
     bool retval = false;
     amxc_llist_it_t *it = amxc_llist_get_last(list);
-    amxc_var_t *var_part = amxc_var_from_llist_it(it);
-    const char *part = amxc_var_constcast(cstring_t, var_part);
+    amxc_string_t *str_part = NULL;
+    const char *part = NULL;
 
     if(it == NULL) {
-        if(!isspace(delimiter)) {
-            retval = true;
-        }
+        retval = (isspace(delimiter) == 0);
         goto exit;
     }
 
-    if(isspace(part[0])) {
-        when_true(isspace(delimiter), exit);
-    }
+    str_part = amxc_string_from_llist_it(it);
+    part = amxc_string_get(str_part, 0);
 
     retval = true;
+
+    if(amxc_string_text_length(str_part) == 1) {
+        if(isspace(part[0]) != 0) {
+            if(isspace(delimiter) != 0) {
+                retval = false;
+            }
+        }
+    }
 
 exit:
     return retval;
 }
 
-// TODO: refactor function too long
-static int amxc_string_split_words_internal(const amxc_string_t * const string,
-                                            amxc_llist_t *list,
-                                            amxc_string_create_part_t create,
-                                            amxc_string_check_delimiter_t check,
-                                            const char **reason) {
+static amxc_string_split_status_t
+amxc_string_split_words_internal(const amxc_string_t * const string,
+                                 amxc_llist_t *list,
+                                 amxc_string_create_part_t create,
+                                 amxc_string_check_delimiter_t check,
+                                 const char **reason) {
     amxc_string_word_flags_t flags = {
         .start_quote = false,
         .between_double_quotes = false,
@@ -336,7 +300,7 @@ static int amxc_string_split_words_internal(const amxc_string_t * const string,
     };
     size_t start_pos = 0;
     size_t i = 0;
-    int retval = -1;
+    amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
 
     for(i = 0; i < string->last_used; i++) {
         if(flags.escape == false) {
@@ -383,98 +347,268 @@ exit:
     return retval;
 }
 
+static amxc_string_split_status_t
+amxc_build_csv_var_list(amxc_llist_t *all, amxc_var_t *csv_list) {
+    int retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
+    bool quotes = false;
+    bool sqbrackets = false;
+    bool add_empty = true;
+    bool last_is_comma = false;
+    amxc_string_t csv_part;
+
+    amxc_var_set_type(csv_list, AMXC_VAR_ID_LIST);
+
+    amxc_string_init(&csv_part, 0);
+    amxc_llist_for_each(it, all) {
+        amxc_string_t *part = amxc_string_from_llist_it(it);
+        const char *txt_part = amxc_string_get(part, 0);
+        last_is_comma = false;
+        if(amxc_string_text_length(part) == 1) {
+            switch(txt_part[0]) {
+            case '"':
+            case '\'':
+                amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+                quotes = !quotes;
+                break;
+            case '[':
+                csv_list = amxc_var_add(amxc_llist_t, csv_list, NULL);
+                sqbrackets = !sqbrackets;
+                break;
+            case ']':
+                if(amxc_string_text_length(&csv_part) > 0) {
+                    amxc_string_trim(&csv_part, NULL);
+                    amxc_var_add(cstring_t, csv_list, amxc_string_get(&csv_part, 0));
+                    amxc_string_reset(&csv_part);
+                }
+                csv_list = amxc_container_of(csv_list->lit.llist, amxc_var_t, data);
+                sqbrackets = !sqbrackets;
+                add_empty = false;
+                break;
+            case ',':
+                if(quotes) {
+                    amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+                } else {
+                    if(amxc_string_text_length(&csv_part) > 0) {
+                        amxc_string_trim(&csv_part, NULL);
+                        amxc_var_add(cstring_t, csv_list, amxc_string_get(&csv_part, 0));
+                    } else if(add_empty) {
+                        amxc_var_add(cstring_t, csv_list, "");
+                    }
+                    amxc_string_reset(&csv_part);
+                    add_empty = true;
+                }
+                last_is_comma = true;
+                break;
+            case ' ':
+                amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+                break;
+            default:
+                amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+                break;
+            }
+        } else {
+            amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+        }
+    }
+    if(amxc_string_text_length(&csv_part) > 0) {
+        amxc_string_trim(&csv_part, NULL);
+        amxc_var_add(cstring_t, csv_list, amxc_string_get(&csv_part, 0));
+    } else if(last_is_comma && add_empty) {
+        amxc_var_add(cstring_t, csv_list, "");
+    }
+    amxc_string_clean(&csv_part);
+
+    retval = AMXC_STRING_SPLIT_OK;
+
+    return retval;
+}
+
+static amxc_string_split_status_t
+amxc_build_ssv_var_list(amxc_llist_t *all, amxc_var_t *ssv_list) {
+    int retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
+    bool quotes = false;
+    bool sqbrackets = false;
+    amxc_string_t csv_part;
+
+    amxc_var_set_type(ssv_list, AMXC_VAR_ID_LIST);
+
+    amxc_string_init(&csv_part, 0);
+    amxc_llist_for_each(it, all) {
+        amxc_string_t *part = amxc_string_from_llist_it(it);
+        const char *txt_part = amxc_string_get(part, 0);
+        if(amxc_string_text_length(part) == 1) {
+            switch(txt_part[0]) {
+            case '"':
+            case '\'':
+                amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+                quotes = !quotes;
+                break;
+            case '[':
+                ssv_list = amxc_var_add(amxc_llist_t, ssv_list, NULL);
+                sqbrackets = !sqbrackets;
+                break;
+            case ']':
+                if(amxc_string_text_length(&csv_part) > 0) {
+                    amxc_var_add(cstring_t, ssv_list, amxc_string_get(&csv_part, 0));
+                    amxc_string_reset(&csv_part);
+                }
+                ssv_list = amxc_container_of(ssv_list->lit.llist, amxc_var_t, data);
+                sqbrackets = !sqbrackets;
+                break;
+            case ' ':
+                if(quotes) {
+                    amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+                } else {
+                    if(amxc_string_text_length(&csv_part) > 0) {
+                        amxc_var_add(cstring_t, ssv_list, amxc_string_get(&csv_part, 0));
+                    }
+                    amxc_string_reset(&csv_part);
+                }
+                break;
+            default:
+                amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+                break;
+            }
+        } else {
+            amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+        }
+    }
+    if(amxc_string_text_length(&csv_part) > 0) {
+        amxc_var_add(cstring_t, ssv_list, amxc_string_get(&csv_part, 0));
+    }
+    amxc_string_clean(&csv_part);
+
+    retval = AMXC_STRING_SPLIT_OK;
+
+    return retval;
+}
+
 void amxc_string_list_it_free(amxc_llist_it_t *it) {
     amxc_string_t *part = amxc_string_from_llist_it(it);
     amxc_string_delete(&part);
 }
 
-amxc_llist_t *amxc_string_split_llist(const amxc_string_t * const string,
-                                      const char *separator) {
-    amxc_llist_t *string_list = NULL;
+amxc_string_split_status_t
+amxc_string_split_word(const amxc_string_t * const string,
+                       amxc_llist_t *list,
+                       const char **reason) {
+    amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
 
+    when_null(list, exit);
     when_null(string, exit);
-    when_null(separator, exit);
-    when_true(separator[0] == 0x00, exit);
 
-    when_failed(amxc_llist_new(&string_list), exit);
-
-    if(amxc_string_split_internal(string,
-                                  string_list,
-                                  separator,
-                                  amxc_string_create_part) != 0) {
-        amxc_llist_delete(&string_list, amxc_string_list_it_free);
+    retval = amxc_string_split_words_internal(string,
+                                              list,
+                                              amxc_string_create_part,
+                                              amxc_need_to_add_delimiter,
+                                              reason);
+    if(retval != 0) {
+        amxc_llist_clean(list, amxc_string_list_it_free);
     }
-
-exit:
-    return string_list;
-}
-
-int amxc_string_split_into_variant(const amxc_string_t * const string,
-                                   amxc_var_t *var,
-                                   const char *separator) {
-    int retval = -1;
-    amxc_llist_t *string_list = NULL;
-
-    when_null(string, exit);
-    when_null(var, exit);
-    when_null(separator, exit);
-    when_true(separator[0] == 0x00, exit);
-
-    amxc_var_set_type(var, AMXC_VAR_ID_LIST);
-
-    string_list = &var->data.vl;
-
-    if(amxc_string_split_internal(string,
-                                  string_list,
-                                  separator,
-                                  amxc_string_create_var_trim_part) != 0) {
-        amxc_var_clean(var);
-        goto exit;
-    }
-
-    retval = 0;
 
 exit:
     return retval;
 }
 
-amxc_var_t *amxc_string_split_variant(const amxc_string_t * const string,
-                                      const char *separator) {
-    amxc_var_t *var = NULL;
+amxc_string_split_status_t
+amxc_string_split(const amxc_string_t * const string,
+                  amxc_var_t *var,
+                  amxc_string_split_builder_t fn,
+                  const char **reason) {
+    int retval = -1;
+    amxc_llist_t all_parts;
 
-    when_failed(amxc_var_new(&var), exit);
-    if(amxc_string_split_into_variant(string, var, separator) != 0) {
-        amxc_var_delete(&var);
-    }
+    amxc_llist_init(&all_parts);
+    when_null(string, exit);
+    when_null(var, exit);
+
+    retval = amxc_string_split_word(string, &all_parts, reason);
+    when_failed(retval, exit);
+
+    fn(&all_parts, var);
 
 exit:
-    return var;
+    amxc_llist_clean(&all_parts, amxc_string_list_it_free);
+    return retval;
 }
 
-int amxc_string_split_word_variant(const amxc_string_t * const string,
-                                   amxc_var_t **var,
-                                   const char **reason) {
-    int retval = -1;
-    amxc_llist_t *string_list = NULL;
+amxc_string_split_status_t
+amxc_string_csv_to_var(const amxc_string_t * const string,
+                       amxc_var_t *var,
+                       const char **reason) {
+    return amxc_string_split(string, var, amxc_build_csv_var_list, reason);
+}
 
-    when_null(var, exit);
+amxc_string_split_status_t
+amxc_string_ssv_to_var(const amxc_string_t * const string,
+                       amxc_var_t *var,
+                       const char **reason) {
+    return amxc_string_split(string, var, amxc_build_ssv_var_list, reason);
+}
+
+amxc_string_split_status_t
+amxc_string_split_to_llist(const amxc_string_t * const string,
+                           amxc_llist_t *list,
+                           const char separator) {
+    amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
+    amxc_string_t *current = NULL;
+    bool in_sbrackets = false;
+
     when_null(string, exit);
-    if(*var != NULL) {
-        amxc_var_clean(*var);
-    } else {
-        when_failed(amxc_var_new(var), exit);
-    }
-    amxc_var_set_type(*var, AMXC_VAR_ID_LIST);
+    when_null(list, exit);
+    when_true(isalnum(separator) != 0, exit);
+    when_true(separator == '[' || separator == ']', exit);
 
-    string_list = &(*var)->data.vl;
+    retval = amxc_string_split_word(string, list, NULL);
+    when_failed(retval, exit);
+    amxc_trim_llist(list);
 
-    retval = amxc_string_split_words_internal(string,
-                                              string_list,
-                                              amxc_string_create_var_part,
-                                              amxc_need_to_add_delimiter_variant,
-                                              reason);
-    if(retval != 0) {
-        amxc_var_delete(var);
+    amxc_llist_for_each(it, list) {
+        amxc_string_t *part = amxc_string_from_llist_it(it);
+        const char *txt_part = amxc_string_get(part, 0);
+        if(amxc_string_text_length(part) == 1) {
+            bool isspace_matches = (isspace(separator) != 0 &&
+                                    isspace(txt_part[0]) != 0);
+            if((isspace_matches ||
+                (separator == txt_part[0])) &&
+               !in_sbrackets) {
+                amxc_string_reset(part);
+                if(amxc_llist_it_get_previous(it) != NULL) {
+                    current = part;
+                }
+                continue;
+            }
+            if(txt_part[0] == '[') {
+                if(amxc_string_text_length(current) > 0) {
+                    current = part;
+                } else {
+                    amxc_string_append(current, txt_part, amxc_string_text_length(part));
+                    amxc_string_delete(&part);
+                }
+                in_sbrackets = !in_sbrackets;
+                continue;
+            }
+            if(txt_part[0] == ']') {
+                amxc_string_append(current, txt_part, amxc_string_text_length(part));
+                amxc_string_delete(&part);
+                in_sbrackets = !in_sbrackets;
+                current = NULL;
+                continue;
+            }
+            if(isspace(txt_part[0]) && !in_sbrackets) {
+                if(!amxc_string_is_empty(current)) {
+                    amxc_string_append(current, txt_part, amxc_string_text_length(part));
+                }
+                amxc_string_delete(&part);
+                continue;
+            }
+        }
+        if(current == NULL) {
+            current = part;
+        } else {
+            amxc_string_append(current, txt_part, amxc_string_text_length(part));
+            amxc_string_delete(&part);
+        }
     }
 
 exit:
@@ -500,8 +634,6 @@ const char *amxc_string_get_text_from_llist(const amxc_llist_t * const llist,
                                             const unsigned int index) {
     const char *retval = NULL;
     amxc_string_t *var_str = NULL;
-
-    when_null(llist, exit);
 
     var_str = amxc_string_get_from_llist(llist, index);
     when_null(var_str, exit);

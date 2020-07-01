@@ -206,17 +206,17 @@ void test_amxc_string_append(UNUSED void **state) {
     assert_string_equal(string.buffer, "abcde");
 
     assert_int_equal(amxc_string_append(&string, "12345", 5), 0);
-    assert_int_equal(string.length, 10);
+    assert_int_equal(string.length, 11);
     assert_int_equal(string.last_used, 10);
     assert_string_equal(string.buffer, "abcde12345");
 
     assert_int_equal(amxc_string_append(&string, "abcde", 5), 0);
-    assert_int_equal(string.length, 15);
+    assert_int_equal(string.length, 16);
     assert_int_equal(string.last_used, 15);
     assert_string_equal(string.buffer, "abcde12345abcde");
 
     assert_int_equal(amxc_string_shrink(&string, 5), 0);
-    assert_int_equal(string.length, 10);
+    assert_int_equal(string.length, 11);
     assert_int_equal(string.last_used, 10);
 
     amxc_string_clean(&string);
@@ -237,17 +237,17 @@ void test_amxc_string_prepend(UNUSED void **state) {
     assert_string_equal(string.buffer, "abcde");
 
     assert_int_equal(amxc_string_prepend(&string, "12345", 5), 0);
-    assert_int_equal(string.length, 10);
+    assert_int_equal(string.length, 11);
     assert_int_equal(string.last_used, 10);
     assert_string_equal(string.buffer, "12345abcde");
 
     assert_int_equal(amxc_string_prepend(&string, "abcde", 5), 0);
-    assert_int_equal(string.length, 15);
+    assert_int_equal(string.length, 16);
     assert_int_equal(string.last_used, 15);
     assert_string_equal(string.buffer, "abcde12345abcde");
 
     assert_int_equal(amxc_string_shrink(&string, 5), 0);
-    assert_int_equal(string.length, 10);
+    assert_int_equal(string.length, 11);
     assert_int_equal(string.last_used, 10);
 
     amxc_string_clean(&string);
@@ -313,7 +313,7 @@ void test_amxc_string_set_at(UNUSED void **state) {
                                         "hello world",
                                         11,
                                         amxc_string_no_flags), 0);
-    assert_int_equal(string.length, 11);
+    assert_int_equal(string.length, 12);
     assert_int_equal(string.last_used, 11);
     assert_int_equal(amxc_string_set_at(&string,
                                         6,
@@ -358,12 +358,12 @@ void test_amxc_string_remove_at(UNUSED void **state) {
     assert_int_equal(amxc_string_remove_at(&string,
                                            5,
                                            AMXC_STRING_MAX), 0);
-    assert_int_equal(string.length, 11);
+    assert_int_equal(string.length, 12);
     assert_int_equal(string.last_used, 5);
     assert_string_equal(string.buffer, "hello");
 
     assert_int_equal(amxc_string_remove_at(&string, 2, 2), 0);
-    assert_int_equal(string.length, 11);
+    assert_int_equal(string.length, 12);
     assert_int_equal(string.last_used, 3);
     assert_string_equal(string.buffer, "heo");
 
@@ -375,7 +375,7 @@ void test_amxc_string_remove_at(UNUSED void **state) {
                                         amxc_string_no_flags), 0);
 
     assert_int_equal(amxc_string_remove_at(&string, 5, 35), 0);
-    assert_int_equal(string.length, 11);
+    assert_int_equal(string.length, 12);
     assert_int_equal(string.last_used, 5);
     assert_string_equal(string.buffer, "hello");
 

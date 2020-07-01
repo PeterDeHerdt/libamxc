@@ -67,14 +67,37 @@
 
 int main(void) {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_amxc_string_split_llist),
-        cmocka_unit_test(test_amxc_string_split_variant),
-        cmocka_unit_test(test_amxc_string_split_word_quotes),
-        cmocka_unit_test(test_amxc_string_split_word_square_brackets),
-        cmocka_unit_test(test_amxc_string_split_word_round_brackets),
-        cmocka_unit_test(test_amxc_string_split_word_curly_brackets),
-        cmocka_unit_test(test_amxc_string_split_word_variant),
+        cmocka_unit_test(test_can_split_string_using_separator),
+        cmocka_unit_test(test_can_split_string_using_space_separators),
+        cmocka_unit_test(test_check_parts_are_correct),
+
+        cmocka_unit_test(test_can_split_csv_string_to_variant),
+        cmocka_unit_test(test_split_csv_handles_sequence_of_commas_as_multiple_items),
+        cmocka_unit_test(test_split_csv_string_handles_comma_in_quotes_correctly),
+        cmocka_unit_test(test_split_csv_string_handles_empty_string_correctly),
+        cmocka_unit_test(test_can_split_csv_string_with_multi_array_to_variant),
+        cmocka_unit_test(test_can_split_csv_string_can_start_with_array_to_variant),
+        cmocka_unit_test(test_can_split_csv_string_supports_multi_level_array_to_variant),
+        cmocka_unit_test(test_can_split_csv_string_with_single_quotes_to_variant),
+        cmocka_unit_test(test_can_split_csv_string_with_double_quotes_to_variant),
+        cmocka_unit_test(test_split_csv_can_handle_empty_sublist),
+
+        cmocka_unit_test(test_can_split_ssv_string_to_variant),
+        cmocka_unit_test(test_split_ssv_handles_sequence_of_spaces_as_one_separator),
+        cmocka_unit_test(test_split_ssv_string_handles_spaces_in_quotes_correctly),
+        cmocka_unit_test(test_can_split_ssv_string_with_single_quotes_to_variant),
+        cmocka_unit_test(test_split_ssv_string_handles_empty_string_correctly),
+        cmocka_unit_test(test_can_split_ssv_string_with_multi_array_to_variant),
+
+        cmocka_unit_test(test_split_word_checks_quotes),
+        cmocka_unit_test(test_split_word_checks_curly_brackets),
+        cmocka_unit_test(test_split_word_checks_square_brackets),
+        cmocka_unit_test(test_split_word_checks_round_brackets),
+        cmocka_unit_test(test_amxc_string_split_word),
         cmocka_unit_test(test_amxc_string_split_word_quotes2),
+        cmocka_unit_test(test_amxc_string_split_word_can_start_with_punctuation),
+
+        cmocka_unit_test(test_functions_validates_input_arguments),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

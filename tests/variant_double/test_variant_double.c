@@ -232,9 +232,9 @@ void test_variant_double_compare(UNUSED void **state) {
     assert_int_equal(amxc_var_type_of(&var2), AMXC_VAR_ID_DOUBLE);
 
     assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
-    assert_true(result > 0);
-    assert_int_equal(amxc_var_compare(&var2, &var1, &result), 0);
     assert_true(result < 0);
+    assert_int_equal(amxc_var_compare(&var2, &var1, &result), 0);
+    assert_true(result > 0);
 
     assert_int_equal(amxc_var_copy(&var1, &var2), 0);
     assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);

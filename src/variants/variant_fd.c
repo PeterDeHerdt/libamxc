@@ -134,13 +134,9 @@ static int variant_fd_to_int64(amxc_var_t * const dest,
                                const amxc_var_t * const src) {
     int retval = -1;
 
-    /* verify overflow or underflow */
-    when_true(src->data.fd > INT64_MAX || src->data.fd < INT64_MIN, exit);
-
     dest->data.i64 = (int64_t) src->data.fd;
     retval = 0;
 
-exit:
     return retval;
 }
 
@@ -149,7 +145,7 @@ static int variant_fd_to_uint8(amxc_var_t * const dest,
     int retval = -1;
 
     /* verify overflow or underflow */
-    when_true(src->data.fd == INT64_MIN || llabs(src->data.fd) > UINT8_MAX, exit);
+    when_true(src->data.fd == INT32_MIN || llabs(src->data.fd) > UINT8_MAX, exit);
 
     dest->data.i8 = (uint8_t) llabs(src->data.fd);
     retval = 0;
@@ -163,7 +159,7 @@ static int variant_fd_to_uint16(amxc_var_t * const dest,
     int retval = -1;
 
     /* verify overflow or underflow */
-    when_true(src->data.fd == INT64_MIN || llabs(src->data.fd) > UINT16_MAX, exit);
+    when_true(src->data.fd == INT32_MIN || llabs(src->data.fd) > UINT16_MAX, exit);
 
     dest->data.i16 = (uint16_t) llabs(src->data.fd);
     retval = 0;
@@ -177,7 +173,7 @@ static int variant_fd_to_uint32(amxc_var_t * const dest,
     int retval = -1;
 
     /* verify overflow or underflow */
-    when_true(src->data.fd == INT64_MIN || llabs(src->data.fd) > UINT32_MAX, exit);
+    when_true(src->data.fd == INT32_MIN || llabs(src->data.fd) > UINT32_MAX, exit);
 
     dest->data.i32 = (uint32_t) llabs(src->data.fd);
     retval = 0;
@@ -260,9 +256,9 @@ static int variant_fd_compare(const amxc_var_t * const lval,
     if(lval->data.fd == rval->data.fd) {
         *result = 0;
     } else if(lval->data.fd > rval->data.fd) {
-        *result = -1;
-    } else {
         *result = 1;
+    } else {
+        *result = -1;
     }
     return 0;
 }

@@ -78,6 +78,7 @@ int main(void) {
         cmocka_unit_test(test_variant_llist_set_key),
         cmocka_unit_test(test_variant_llist_add_new),
         cmocka_unit_test(test_variant_llist_add_new_key),
+        cmocka_unit_test(test_variant_llist_get_path),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

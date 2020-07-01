@@ -90,7 +90,7 @@ static int amxc_string_realloc(amxc_string_t *string, const size_t length) {
     if(new_buffer != NULL) {
         string->buffer = new_buffer;
         string->length = length;
-        string->last_used = string->last_used >= length ? length : string->last_used;
+        string->last_used = string->last_used >= length ? length - 1 : string->last_used;
         string->buffer[string->last_used] = 0;
         retval = 0;
     }
@@ -196,6 +196,23 @@ exit:
     return;
 }
 
+int amxc_string_copy(amxc_string_t * const dest,
+                     const amxc_string_t * const src) {
+    int retval = -1;
+    when_null(dest, exit);
+    when_null(src, exit);
+
+    amxc_string_reset(dest);
+    amxc_string_realloc(dest, src->length);
+    when_null(dest->buffer, exit);
+    memcpy(dest->buffer, src->buffer, src->length);
+
+    retval = 0;
+
+exit:
+    return retval;
+}
+
 int amxc_string_grow(amxc_string_t * const string, const size_t length) {
     int retval = -1;
     size_t old_length = 0;
@@ -251,9 +268,9 @@ int amxc_string_set_at(amxc_string_t * const string,
         }
         string->last_used = pos + length > string->last_used ? pos + length : string->last_used;
     } else {
-        if(length + string->last_used > string->length) {
+        if(length + string->last_used >= string->length) {
             when_failed(amxc_string_realloc(string,
-                                            length + string->last_used), exit);
+                                            length + string->last_used + 1), exit);
             when_null(string->buffer, exit);
         }
         memmove(string->buffer + pos + length,

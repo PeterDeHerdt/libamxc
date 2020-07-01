@@ -209,7 +209,7 @@ void test_variant_ts_compare(UNUSED void **state) {
     assert_int_equal(amxc_var_convert(&var3, &var1, AMXC_VAR_ID_TIMESTAMP), 0);
 
     assert_int_equal(amxc_var_compare(&var1, &var3, &result), 0);
-    assert_int_equal(result, 0);
+    assert_true(result == 0);
     assert_int_equal(amxc_var_compare(&var2, &var3, &result), 0);
     assert_true(result > 0);
     assert_int_equal(amxc_var_compare(&var3, &var2, &result), 0);

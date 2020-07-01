@@ -61,13 +61,36 @@
 #ifndef __TEST_AMXC_STRING_SPLIT_H__
 #define __TEST_AMXC_STRING_SPLIT_H__
 
-void test_amxc_string_split_llist(void **state);
-void test_amxc_string_split_variant(void **state);
-void test_amxc_string_split_word_quotes(void **state);
-void test_amxc_string_split_word_square_brackets(void **state);
-void test_amxc_string_split_word_round_brackets(void **state);
-void test_amxc_string_split_word_curly_brackets(void **state);
-void test_amxc_string_split_word_variant(void **state);
+void test_can_split_string_using_separator(void **state);
+void test_can_split_string_using_space_separators(void **state);
+void test_check_parts_are_correct(void **state);
+
+void test_can_split_csv_string_to_variant(void **state);
+void test_split_csv_handles_sequence_of_commas_as_multiple_items(void **state);
+void test_split_csv_string_handles_comma_in_quotes_correctly(void **state);
+void test_split_csv_string_handles_empty_string_correctly(void **state);
+void test_can_split_csv_string_with_multi_array_to_variant(void **state);
+void test_can_split_csv_string_can_start_with_array_to_variant(void **state);
+void test_can_split_csv_string_supports_multi_level_array_to_variant(void **state);
+void test_can_split_csv_string_with_single_quotes_to_variant(void **state);
+void test_can_split_csv_string_with_double_quotes_to_variant(void **state);
+void test_split_csv_can_handle_empty_sublist(void **state);
+
+void test_can_split_ssv_string_to_variant(void **state);
+void test_split_ssv_handles_sequence_of_spaces_as_one_separator(void **state);
+void test_split_ssv_string_handles_spaces_in_quotes_correctly(void **state);
+void test_can_split_ssv_string_with_single_quotes_to_variant(void **state);
+void test_split_ssv_string_handles_empty_string_correctly(void **state);
+void test_can_split_ssv_string_with_multi_array_to_variant(void **state);
+
+void test_split_word_checks_quotes(void **state);
+void test_split_word_checks_curly_brackets(void **state);
+void test_split_word_checks_square_brackets(void **state);
+void test_split_word_checks_round_brackets(void **state);
+void test_amxc_string_split_word(void **state);
 void test_amxc_string_split_word_quotes2(void **state);
+void test_amxc_string_split_word_can_start_with_punctuation(void **state);
+
+void test_functions_validates_input_arguments(void **state);
 
 #endif // __TEST_AMXC_STRING_H__

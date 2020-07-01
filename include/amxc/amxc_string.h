@@ -217,6 +217,21 @@ void amxc_string_reset(amxc_string_t * const string);
 /**
    @ingroup amxc_string
    @brief
+   Copies the content
+
+   @param dest a pointer to the destination string structure
+   @param src a pointer to the source string structure
+
+   @return
+   0 on success.
+   -1 if a NULL pointer is given.
+ */
+int amxc_string_copy(amxc_string_t * const dest,
+                     const amxc_string_t * const src);
+
+/**
+   @ingroup amxc_string
+   @brief
    Grows the string buffer.
 
    Grows the string buffer by the given number of bytes.

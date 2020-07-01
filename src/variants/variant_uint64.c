@@ -281,9 +281,9 @@ static int variant_uint64_compare(const amxc_var_t * const lval,
     if(lval->data.ui64 == rval->data.ui64) {
         *result = 0;
     } else if(lval->data.ui64 > rval->data.ui64) {
-        *result = -1;
-    } else {
         *result = 1;
+    } else {
+        *result = -1;
     }
     return 0;
 }

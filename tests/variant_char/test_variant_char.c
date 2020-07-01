@@ -401,14 +401,10 @@ void test_variant_ssv_char_convert_to_list(UNUSED void **state) {
 
     var.data.s = "a  b  c  d  e";
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
-    assert_int_equal(amxc_llist_size(&copy_var.data.vl), 9);
+    assert_int_equal(amxc_llist_size(&copy_var.data.vl), 5);
     it = amxc_llist_get_first(&copy_var.data.vl);
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "a");
-
-    it = amxc_llist_it_get_next(it);
-    assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
-    assert_string_equal(amxc_var_from_llist_it(it)->data.s, "");
 
     it = amxc_llist_it_get_next(it);
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
@@ -416,23 +412,11 @@ void test_variant_ssv_char_convert_to_list(UNUSED void **state) {
 
     it = amxc_llist_it_get_next(it);
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
-    assert_string_equal(amxc_var_from_llist_it(it)->data.s, "");
-
-    it = amxc_llist_it_get_next(it);
-    assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "c");
 
     it = amxc_llist_it_get_next(it);
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
-    assert_string_equal(amxc_var_from_llist_it(it)->data.s, "");
-
-    it = amxc_llist_it_get_next(it);
-    assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "d");
-
-    it = amxc_llist_it_get_next(it);
-    assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
-    assert_string_equal(amxc_var_from_llist_it(it)->data.s, "");
 
     it = amxc_llist_it_get_next(it);
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);

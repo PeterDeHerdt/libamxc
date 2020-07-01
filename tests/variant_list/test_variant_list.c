@@ -219,8 +219,7 @@ void test_variant_list_convert_to_string(UNUSED void **state) {
 
     assert_true(amxc_llist_is_empty(&copy_var.data.vl));
     assert_int_equal(amxc_var_convert(&var, &copy_var, AMXC_VAR_ID_CSTRING), 0);
-    assert_ptr_not_equal(var.data.s, NULL);
-    assert_int_equal(strlen(var.data.s), 0);
+    assert_ptr_equal(var.data.s, NULL);
 
     assert_int_equal(amxc_var_set_type(&string, AMXC_VAR_ID_CSTRING), 0);
     assert_int_equal(string.type_id, AMXC_VAR_ID_CSTRING);
@@ -324,27 +323,48 @@ void test_variant_llist_add_new_key(UNUSED void **state) {
     assert_int_equal(amxc_llist_init(&alist), 0);
 
     assert_int_equal(amxc_var_init(&var), 0);
-    assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_LIST), 0);
 
-    item = amxc_var_add_key(amxc_llist_t, &var, "key1", NULL);
+    item = amxc_var_add_key(amxc_htable_t, &var, "1", NULL);
+    assert_ptr_not_equal(item, NULL);
+    assert_int_equal(amxc_var_type_of(item), AMXC_VAR_ID_HTABLE);
+    consttable = amxc_var_constcast(amxc_htable_t, item);
+    assert_int_equal(amxc_htable_size(consttable), 0);
+
+    item = amxc_var_add_key(amxc_llist_t, &var, "2", &alist);
     assert_ptr_not_equal(item, NULL);
     assert_int_equal(amxc_var_type_of(item), AMXC_VAR_ID_LIST);
     constlist = amxc_var_constcast(amxc_llist_t, item);
     assert_int_equal(amxc_llist_size(constlist), 0);
 
-    item = amxc_var_add_key(amxc_llist_t, &var, "key2", &alist);
-    assert_ptr_not_equal(item, NULL);
-    assert_int_equal(amxc_var_type_of(item), AMXC_VAR_ID_LIST);
-    constlist = amxc_var_constcast(amxc_llist_t, item);
-    assert_int_equal(amxc_llist_size(constlist), 0);
-
-    item = amxc_var_add_key(amxc_llist_t, NULL, "Key3", NULL);
+    item = amxc_var_add_key(cstring_t, NULL, "3", NULL);
     assert_ptr_equal(item, NULL);
 
-    consttable = amxc_var_constcast(amxc_htable_t, &var);
-    assert_ptr_not_equal(consttable, NULL);
-    assert_int_equal(amxc_htable_size(consttable), 2);
+    constlist = amxc_var_constcast(amxc_llist_t, &var);
+    assert_ptr_not_equal(constlist, NULL);
+    assert_int_equal(amxc_llist_size(constlist), 2);
 
     amxc_llist_clean(&alist, NULL);
+    amxc_var_clean(&var);
+}
+
+void test_variant_llist_get_path(UNUSED void **state) {
+    amxc_var_t var;
+    amxc_var_t *item = NULL;
+
+    assert_int_equal(amxc_var_init(&var), 0);
+    assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_LIST), 0);
+
+    assert_ptr_not_equal(amxc_var_add(uint32_t, &var, 123), NULL);
+    assert_ptr_not_equal(amxc_var_add(cstring_t, &var, "acracadabra"), NULL);
+    assert_ptr_not_equal(amxc_var_add(bool, &var, "true"), NULL);
+
+    item = amxc_var_get_path(&var, "0", AMXC_VAR_FLAG_DEFAULT);
+    assert_ptr_not_equal(item, NULL);
+    assert_int_equal(amxc_var_type_of(item), AMXC_VAR_ID_UINT32);
+
+    item = amxc_var_get_path(&var, "Test", AMXC_VAR_FLAG_DEFAULT);
+    assert_true(amxc_var_is_null(item));
+
     amxc_var_clean(&var);
 }

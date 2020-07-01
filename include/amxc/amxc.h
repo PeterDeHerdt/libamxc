@@ -66,6 +66,7 @@ extern "C"
 {
 #endif
 
+#include <amxc/amxc_common.h>
 #include <amxc/amxc_aqueue.h>
 #include <amxc/amxc_array.h>
 #include <amxc/amxc_astack.h>

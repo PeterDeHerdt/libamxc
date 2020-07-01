@@ -74,4 +74,6 @@ void test_variant_llist_set_key(void **state);
 void test_variant_llist_add_new(void **state);
 void test_variant_llist_add_new_key(void **state);
 
+void test_variant_llist_get_path(void **state);
+
 #endif // __TEST_VARIANT_LIST_H__

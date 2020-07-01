@@ -267,9 +267,9 @@ static int variant_int32_compare(const amxc_var_t * const lval,
     if(lval->data.i32 == rval->data.i32) {
         *result = 0;
     } else if(lval->data.i32 > rval->data.i32) {
-        *result = -1;
-    } else {
         *result = 1;
+    } else {
+        *result = -1;
     }
     return 0;
 }

@@ -434,8 +434,8 @@ int amxc_var_convert(amxc_var_t * const dest,
 
    The comparison result is put in result:
    - when 0: var1 == var2
-   - when < 0: var1 > var2
-   - when > 0: var1 < var2
+   - when > 0: var1 > var2
+   - when < 0: var1 < var2
 
    @param var1 pointer to variant structure, the left value
    @param var2 pointer to variant structure, the right value

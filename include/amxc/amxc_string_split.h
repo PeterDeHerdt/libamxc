@@ -68,11 +68,18 @@ extern "C"
 
 #include <amxc/amxc_variant.h>
 
-#define AMXC_ERROR_STRING_MISSING_DQUOTE            -10
-#define AMXC_ERROR_STRING_MISSING_SQUOTE            -11
-#define AMXC_ERROR_STRING_MISSING_RBRACKET          -12
-#define AMXC_ERROR_STRING_MISSING_SBRACKET          -13
-#define AMXC_ERROR_STRING_MISSING_CBRACKET          -14
+typedef enum _amxc_string_split_status {
+    AMXC_STRING_SPLIT_OK,
+    AMXC_ERROR_STRING_SPLIT_INVALID_INPUT,
+    AMXC_ERROR_STRING_MISSING_DQUOTE,
+    AMXC_ERROR_STRING_MISSING_SQUOTE,
+    AMXC_ERROR_STRING_MISSING_RBRACKET,
+    AMXC_ERROR_STRING_MISSING_SBRACKET,
+    AMXC_ERROR_STRING_MISSING_CBRACKET,
+} amxc_string_split_status_t;
+
+typedef amxc_string_split_status_t (*amxc_string_split_builder_t) (amxc_llist_t *all,
+                                                                   amxc_var_t *csv_list);
 
 /**
    @ingroup amxc_string
@@ -92,36 +99,6 @@ extern "C"
    @param it a pointer to a linked list iterator
  */
 void amxc_string_list_it_free(amxc_llist_it_t *it);
-
-/**
-   @ingroup amxc_string
-   @brief
-   Splits a string into string parts using a separator.
-
-   Splits a string in parts, put each part in a linked list.
-   The returned linked list will contain amxc_string_t items, each of these
-   items is a part of the original string.
-
-   Empty items (items between 2 seprators) are added to the list.
-   If the string ends with a separator, an extra empty item is added to the list.
-
-   Iterating or accessing items can be done using the linked list functions.
-   A linked list iterator can be converted back to a amxc_string_t pointer using
-   amxc_string_from_llist_it macro.
-
-   @note
-   The returned pointer must be freed using @ref amxc_llist_delete.
-   Provide the function @ref amxc_string_list_it_free as delete function
-
-   @param string a pointer to the string structure
-   @param separator the separator string
-
-   @return
-   A pointer to a linked list (amxc_llist_t), when successful.
-   NULL when failed to split the string
- */
-amxc_llist_t *amxc_string_split_llist(const amxc_string_t * const string,
-                                      const char *separator);
 
 /**
    @ingroup amxc_string
@@ -167,94 +144,32 @@ amxc_string_t *amxc_string_get_from_llist(const amxc_llist_t * const llist,
 const char *amxc_string_get_text_from_llist(const amxc_llist_t * const llist,
                                             const unsigned int index);
 
-/**
-   @ingroup amxc_string
-   @brief
-   Splits a string into string parts using a separator.
+amxc_string_split_status_t
+amxc_string_split_word(const amxc_string_t * const string,
+                       amxc_llist_t *list,
+                       const char **reason);
 
-   Splits a string in parts, put each part in a variant. The variant is added
-   to a linked list, which is contained in another variant.
+amxc_string_split_status_t
+amxc_string_split(const amxc_string_t * const string,
+                  amxc_var_t *var,
+                  amxc_string_split_builder_t fn,
+                  const char **reason);
 
-   Empty items (items between 2 seprators) are added to the list.
-   If the string ends with a separator, an extra empty item is added to the list.
+amxc_string_split_status_t
+amxc_string_csv_to_var(const amxc_string_t * const string,
+                       amxc_var_t *var,
+                       const char **reason);
 
-   The linked list can be retrieved using the @ref amxc_var_constcast.
+amxc_string_split_status_t
+amxc_string_ssv_to_var(const amxc_string_t * const string,
+                       amxc_var_t *var,
+                       const char **reason);
 
-   @param string a pointer to the string structure
-   @param var a variant pointer in which the list is created
-   @param separator the separator string
+amxc_string_split_status_t
+amxc_string_split_to_llist(const amxc_string_t * const string,
+                           amxc_llist_t *list,
+                           const char separator);
 
-   @return
-   0 when success
- */
-int amxc_string_split_into_variant(const amxc_string_t * const string,
-                                   amxc_var_t *var,
-                                   const char *separator);
-
-/**
-   @ingroup amxc_string
-   @brief
-   Splits a string into string parts using a separator.
-
-   Does exactly the same as @ref amxc_string_split_into_var, but allocates
-   a new amxc_var_t structure.
-
-   @note
-   The returned pointer must be freed using @ref amxc_var_delete.
-
-   @param string a pointer to the string structure
-   @param separator the separator string
-
-   @return
-   A pointer to a variant (amxc_var_t), when successful. The variant will be
-   of the AMXC_VAR_ID_LIST type.
-   NULL when failed to split the string.
- */
-amxc_var_t *amxc_string_split_variant(const amxc_string_t * const string,
-                                      const char *separator);
-
-/**
-   @ingroup amxc_string
-   @brief
-   Splits a string into words.
-
-   Splits a string in words and creates a linked list of variants,
-   All variants contained in the list contain a string
-   (Type AMXC_VAR_)ID_CSTRING).
-
-   The linked list itself is contained in a variant (Type AMXC_VAR_ID_LIST)
-
-   The linked list can be retrieved using the @ref amxc_var_constcast.
-
-   A word is all text between spaces or punctuation characters or text between
-   quotes (single and doube).
-
-   Punctuations and spaces are added to the list as well.
-   Subsequent spaces are trimmed to one single space character (isspace).
-
-   For each open quote (single or double) a closing quote must be available.
-
-   The characters [,(,{ must have theire counterparts },),]
-
-   @note
-   A pre initialized variant can be passed or a pointer to a pointer containing
-   a NULL pointer. In the last case memory will be allocated to store the variant,
-   and there for needs to be freed using @ref amxc_var_delete when not needed
-   anymore.
-
-   @note
-   The reason pointer should not be freed,
-
-   @param string a pointer to the string structure, containing the string that will be splitted
-   @param var the resulting variant, allocates one if needed
-   @param reason can be NULL, if provided the reason string of the error is stored in this char
-
-   @return
-   returns 0 when splitting is ok, or an error code.(TODO define error codes)
- */
-int amxc_string_split_word_variant(const amxc_string_t * const string,
-                                   amxc_var_t **var,
-                                   const char **reason);
 
 #ifdef __cplusplus
 }

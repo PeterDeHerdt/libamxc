@@ -74,149 +74,141 @@
 
 #define UNUSED __attribute__((unused))
 
-static int iscomma(int c) {
-    return c == ',' ? 1 : 0;
-}
-
-static int is_space_or_comma(int c) {
-    if(isspace(c)) {
-        return 1;
-    }
-
-    return c == ',' ? 1 : 0;
-}
-
-void test_amxc_string_join(UNUSED void **state) {
+void test_can_join_variant_list_to_string(UNUSED void **state) {
+    amxc_var_t var;
     amxc_string_t string;
-    amxc_var_t *variant = NULL;
-    const amxc_llist_t *string_list = NULL;
-    amxc_string_t *joined_string = NULL;
+    amxc_var_t *sub_var = NULL;
 
-    const char *text = "'part with spaces' /usr/bin/test,/usr/lib/test";
+    amxc_var_init(&var);
+    amxc_string_init(&string, 0);
 
-    assert_int_equal(amxc_string_init(&string, 0), 0);
-    assert_int_equal(amxc_string_append(&string, text, strlen(text)), 0);
+    amxc_var_set_type(&var, AMXC_VAR_ID_LIST);
+    amxc_var_add(cstring_t, &var, "text1");
+    amxc_var_add(uint32_t, &var, 123);
+    sub_var = amxc_var_add(amxc_llist_t, &var, NULL);
+    amxc_var_add(csv_string_t, sub_var, "a,b");
+    amxc_var_add(ssv_string_t, sub_var, "a b");
 
-    assert_int_equal(amxc_string_split_word_variant(&string, &variant, NULL), 0);
-    string_list = amxc_var_constcast(amxc_llist_t, variant);
-    amxc_llist_for_each(it, string_list) {
-        amxc_var_t *v = amxc_var_from_llist_it(it);
-        const char *p = NULL;
-        assert_int_equal(amxc_var_type_of(v), AMXC_VAR_ID_CSTRING);
-        p = amxc_var_constcast(cstring_t, v);
-        assert_ptr_not_equal(p, NULL);
+    assert_int_equal(amxc_string_csv_join_var(&string, &var), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "text1,123,[a,b,a b]");
+    amxc_string_reset(&string);
 
-        printf("[%s]\n", p);
-    }
-    assert_int_equal(amxc_llist_size(string_list), 17);
+    assert_int_equal(amxc_string_ssv_join_var(&string, &var), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "text1 123 [a,b,a b]");
 
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, variant, isspace, NULL), 0);
-    text = amxc_string_get(joined_string, 0);
-    assert_int_equal(amxc_llist_size(string_list), 13);
-    assert_string_equal(text, "'part with spaces'");
-    amxc_string_delete(&joined_string);
-
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, variant, iscomma, NULL), 0);
-    text = amxc_string_get(joined_string, 0);
-    assert_int_equal(amxc_llist_size(string_list), 6);
-    assert_string_equal(text, "/usr/bin/test");
-    amxc_string_delete(&joined_string);
-
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, variant, iscomma, NULL), 0);
-    text = amxc_string_get(joined_string, 0);
-    assert_int_equal(amxc_llist_size(string_list), 0);
-    assert_string_equal(text, "/usr/lib/test");
-    amxc_string_delete(&joined_string);
-
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, variant, iscomma, NULL), 0);
-    text = amxc_string_get(joined_string, 0);
-    assert_ptr_equal(text, NULL);
-    amxc_string_delete(&joined_string);
-
-    amxc_var_delete(&variant);
+    amxc_var_clean(&var);
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_join_invalid_args(UNUSED void **state) {
-    amxc_string_t *joined_string = NULL;
-    amxc_var_t variant;
+void test_join_fails_on_wrong_variant_type(UNUSED void **state) {
+    amxc_var_t var;
+    amxc_string_t string;
 
-    amxc_var_init(&variant);
-    amxc_var_set_type(&variant, AMXC_VAR_ID_BOOL);
+    amxc_var_init(&var);
+    amxc_string_init(&string, 0);
 
-    assert_int_not_equal(amxc_string_join_variant_until(NULL, &variant, NULL, NULL), 0);
+    amxc_var_set(cstring_t, &var, "text1");
+    assert_int_not_equal(amxc_string_csv_join_var(&string, &var), 0);
+    assert_true(amxc_string_is_empty(&string));
 
-    assert_int_not_equal(amxc_string_join_variant_until(&joined_string, NULL, NULL, NULL), 0);
-    assert_ptr_equal(joined_string, NULL);
+    amxc_var_set(bool, &var, true);
+    assert_int_not_equal(amxc_string_csv_join_var(&string, &var), 0);
+    assert_true(amxc_string_is_empty(&string));
 
-    assert_int_not_equal(amxc_string_join_variant_until(&joined_string, NULL, NULL, NULL), 0);
-    assert_ptr_equal(joined_string, NULL);
-
-    assert_int_not_equal(amxc_string_join_variant_until(&joined_string, &variant, NULL, NULL), 0);
-    assert_ptr_equal(joined_string, NULL);
-
-    amxc_var_set_type(&variant, AMXC_VAR_ID_LIST);
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, &variant, NULL, NULL), 0);
-    assert_ptr_not_equal(joined_string, NULL);
-
-    amxc_var_clean(&variant);
-    amxc_string_delete(&joined_string);
+    amxc_var_clean(&var);
+    amxc_string_clean(&string);
 }
 
-void test_amxc_string_join_fetch_delimiter(UNUSED void **state) {
+void test_join_adds_to_string(UNUSED void **state) {
+    amxc_var_t var;
     amxc_string_t string;
-    amxc_var_t *variant = NULL;
-    amxc_string_t *joined_string = NULL;
-    int8_t delimiter = 0;
-    const amxc_llist_t *string_list = NULL;
 
-    const char *text = "acra.2,cadabra.3: sim/aaa,sala:123,bim";
+    amxc_var_init(&var);
+    amxc_string_init(&string, 0);
+    amxc_string_appendf(&string, "The list is added after this: ");
 
-    assert_int_equal(amxc_string_init(&string, 0), 0);
-    assert_int_equal(amxc_string_append(&string, text, strlen(text)), 0);
+    amxc_var_set_type(&var, AMXC_VAR_ID_LIST);
+    amxc_var_add(cstring_t, &var, "text1");
+    amxc_var_add(uint32_t, &var, 123);
+    amxc_var_add(amxc_llist_t, &var, NULL);
 
-    assert_int_equal(amxc_string_split_word_variant(&string, &variant, NULL), 0);
-    string_list = amxc_var_constcast(amxc_llist_t, variant);
-    amxc_llist_for_each(it, string_list) {
-        amxc_var_t *v = amxc_var_from_llist_it(it);
-        const char *p = NULL;
-        assert_int_equal(amxc_var_type_of(v), AMXC_VAR_ID_CSTRING);
-        p = amxc_var_constcast(cstring_t, v);
-        assert_ptr_not_equal(p, NULL);
+    assert_int_equal(amxc_string_csv_join_var(&string, &var), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "The list is added after this: text1,123,[]");
+    amxc_string_reset(&string);
 
-        printf("[%s]\n", p);
-    }
+    amxc_string_appendf(&string, "The list is added after this: ");
+    assert_int_equal(amxc_string_ssv_join_var(&string, &var), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "The list is added after this: text1 123 []");
 
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, variant, is_space_or_comma, &delimiter), 0);
-    text = amxc_string_get(joined_string, 0);
-    assert_string_equal(text, "acra.2");
-    assert_int_equal(delimiter, ',');
-    amxc_string_delete(&joined_string);
+    amxc_var_clean(&var);
+    amxc_string_clean(&string);
+}
 
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, variant, is_space_or_comma, &delimiter), 0);
-    text = amxc_string_get(joined_string, 0);
-    assert_string_equal(text, "cadabra.3:");
-    assert_int_equal(delimiter, ' ');
-    amxc_string_delete(&joined_string);
+void test_split_and_join_to_list_provides_similar_string(UNUSED void **state) {
+    amxc_llist_t list;
+    amxc_string_t string;
 
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, variant, is_space_or_comma, &delimiter), 0);
-    text = amxc_string_get(joined_string, 0);
-    assert_string_equal(text, "sim/aaa");
-    assert_int_equal(delimiter, ',');
-    amxc_string_delete(&joined_string);
+    amxc_llist_init(&list);
+    amxc_string_init(&string, 0);
+    amxc_string_appendf(&string, "text1,text2,text3,[text4,text5],text6");
 
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, variant, is_space_or_comma, &delimiter), 0);
-    text = amxc_string_get(joined_string, 0);
-    assert_string_equal(text, "sala:123");
-    assert_int_equal(delimiter, ',');
-    amxc_string_delete(&joined_string);
-
-    assert_int_equal(amxc_string_join_variant_until(&joined_string, variant, is_space_or_comma, &delimiter), 0);
-    text = amxc_string_get(joined_string, 0);
-    assert_string_equal(text, "bim");
-    assert_int_equal(delimiter, 0);
-    amxc_string_delete(&joined_string);
+    assert_int_equal(amxc_string_split_to_llist(&string, &list, ','), 0);
+    amxc_string_clean(&string);
+    assert_int_equal(amxc_string_join_llist(&string, &list, ','), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "text1,text2,text3,[text4,text5],text6");
 
     amxc_string_clean(&string);
-    amxc_var_delete(&variant);
+    assert_int_equal(amxc_string_join_llist(&string, &list, ' '), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "text1 text2 text3 [text4,text5] text6");
+
+    amxc_llist_clean(&list, amxc_string_list_it_free);
+    amxc_string_clean(&string);
+}
+
+void test_join_fails_with_invalid_separators(UNUSED void **state) {
+    amxc_llist_t list;
+    amxc_string_t string;
+
+    amxc_llist_init(&list);
+    amxc_string_init(&string, 0);
+    amxc_string_appendf(&string, "text1,text2,text3,[text4,text5],text6");
+
+    assert_int_equal(amxc_string_split_to_llist(&string, &list, ','), 0);
+    amxc_string_clean(&string);
+    assert_int_not_equal(amxc_string_join_llist(&string, &list, '['), 0);
+    assert_true(amxc_string_is_empty(&string));
+    assert_int_not_equal(amxc_string_join_llist(&string, &list, ']'), 0);
+    assert_true(amxc_string_is_empty(&string));
+    assert_int_not_equal(amxc_string_join_llist(&string, &list, 'a'), 0);
+    assert_true(amxc_string_is_empty(&string));
+    assert_int_not_equal(amxc_string_join_llist(&string, &list, '9'), 0);
+    assert_true(amxc_string_is_empty(&string));
+
+    assert_int_equal(amxc_string_join_llist(&string, &list, ':'), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "text1:text2:text3:[text4,text5]:text6");
+
+    amxc_llist_clean(&list, amxc_string_list_it_free);
+    amxc_string_clean(&string);
+}
+
+void test_join_does_input_argument_validation(UNUSED void **state) {
+    amxc_llist_t list;
+    amxc_var_t var;
+    amxc_string_t string;
+
+    amxc_llist_init(&list);
+    amxc_var_init(&var);
+    amxc_string_init(&string, 0);
+
+    assert_int_not_equal(amxc_string_csv_join_var(NULL, &var), 0);
+    assert_int_not_equal(amxc_string_csv_join_var(&string, NULL), 0);
+    assert_int_not_equal(amxc_string_ssv_join_var(NULL, &var), 0);
+    assert_int_not_equal(amxc_string_ssv_join_var(&string, NULL), 0);
+
+    assert_int_not_equal(amxc_string_join_llist(NULL, &list, '/'), 0);
+    assert_int_not_equal(amxc_string_join_llist(&string, NULL, '/'), 0);
+
+    amxc_llist_clean(&list, amxc_string_list_it_free);
+    amxc_string_clean(&string);
+    amxc_var_clean(&var);
 }

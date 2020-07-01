@@ -239,18 +239,17 @@ static int variant_char_to_list(amxc_var_t * const dest,
                                 const amxc_var_t * const src) {
     amxc_string_t str;
     int retval = -1;
-    const char *sep = ",";
 
     amxc_string_init(&str, 0);
     when_null(src->data.s, exit);
 
-    if(src->type_id == AMXC_VAR_ID_SSV_STRING) {
-        sep = " ";
-    }
-
     if(*(src->data.s) != 0) {
         amxc_string_push_buffer(&str, src->data.s, strlen(src->data.s) + 1);
-        retval = amxc_string_split_into_variant(&str, dest, sep);
+        if(src->type_id == AMXC_VAR_ID_SSV_STRING) {
+            retval = amxc_string_ssv_to_var(&str, dest, NULL);
+        } else {
+            retval = amxc_string_csv_to_var(&str, dest, NULL);
+        }
         amxc_string_take_buffer(&str);
     } else {
         retval = 0;

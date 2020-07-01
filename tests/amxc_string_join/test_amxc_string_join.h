@@ -61,8 +61,11 @@
 #ifndef __TEST_AMXC_STRING_JOIN_H__
 #define __TEST_AMXC_STRING_JOIN_H__
 
-void test_amxc_string_join(void **state);
-void test_amxc_string_join_invalid_args(void **state);
-void test_amxc_string_join_fetch_delimiter(void **state);
+void test_can_join_variant_list_to_string(void **state);
+void test_join_fails_on_wrong_variant_type(void **state);
+void test_join_adds_to_string(void **state);
+void test_split_and_join_to_list_provides_similar_string(void **state);
+void test_join_fails_with_invalid_separators(void **state);
+void test_join_does_input_argument_validation(void **state);
 
 #endif // __TEST_AMXC_STRING_JOIN_H__

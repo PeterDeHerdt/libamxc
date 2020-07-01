@@ -1,3 +1,0 @@
-config SAH_LIB_AMXC
-    bool "Build libamxc"
-    default y

@@ -76,6 +76,9 @@ extern "C"
 #define AMXC_INLINE
 #endif
 
+#define amxc_container_of(addr, type, member) \
+    ((type *) (((char *) addr) - offsetof(type, member)))
+
 #ifdef __cplusplus
 }
 #endif

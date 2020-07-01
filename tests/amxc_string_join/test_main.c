@@ -67,9 +67,12 @@
 
 int main(void) {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_amxc_string_join),
-        cmocka_unit_test(test_amxc_string_join_invalid_args),
-        cmocka_unit_test(test_amxc_string_join_fetch_delimiter),
+        cmocka_unit_test(test_can_join_variant_list_to_string),
+        cmocka_unit_test(test_join_fails_on_wrong_variant_type),
+        cmocka_unit_test(test_join_adds_to_string),
+        cmocka_unit_test(test_split_and_join_to_list_provides_similar_string),
+        cmocka_unit_test(test_join_fails_with_invalid_separators),
+        cmocka_unit_test(test_join_does_input_argument_validation),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

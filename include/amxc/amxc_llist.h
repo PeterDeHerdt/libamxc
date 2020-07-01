@@ -128,7 +128,7 @@ typedef struct _amxc_llist {
    It is allowed to delete or remove the current iterator from the list.
  */
 #define amxc_llist_for_each(it, list) \
-    for(amxc_llist_it_t *it = list ? list->head : NULL, \
+    for(amxc_llist_it_t *it = amxc_llist_get_first(list), \
         *_next = amxc_llist_it_get_next(it); \
         it; \
         it = _next, \
@@ -146,7 +146,7 @@ typedef struct _amxc_llist {
    It is allowed to delete or remove the current iterator from the list.
  */
 #define amxc_llist_for_each_reverse(it, list) \
-    for(amxc_llist_it_t *it = list ? list->tail : NULL, \
+    for(amxc_llist_it_t *it = amxc_llist_get_last(list), \
         *_prev = amxc_llist_it_get_previous(it); \
         it; \
         it = _prev, \

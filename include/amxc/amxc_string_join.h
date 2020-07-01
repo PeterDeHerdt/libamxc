@@ -68,43 +68,15 @@ extern "C"
 
 #include <amxc/amxc_variant.h>
 
-/**
-   @ingroup amxc_string
-   @brief
-   Joins a list of words into a string.
+int amxc_string_join_llist(amxc_string_t *string,
+                           amxc_llist_t *list,
+                           char separator);
 
-   Joins a list of words into a string until a matching character is found
-   or end of list is encountered, whatever comes first.
+int amxc_string_csv_join_var(amxc_string_t *string,
+                             const amxc_var_t * const var);
 
-   Only delimiter parts are verified using the provided function. When the
-   function returns nonzero, the joining of parts is stopped.
-
-   The function can be NULL, when so, `isspace` is used as delimiter checking function.
-
-   A new @ref amxc_string_t structure is allocated.
-
-   The variant passed must be of type AMXC_VAR_ID_LIST and must contain a list
-   of variants all of them containing a string.
-
-   All items used from the list are removed from the list, including the
-   delimiter when encountered.
-
-   @note
-   The allocated string must be freed using @ref amxc_string_delete.
-
-   @param string a pointer to a pointer to the string structure,
-   @param var contains the list of strings
-   @param fn a function pointer to check delimiter, when returning nonzero, joining parts stops
-   @param delimiter when a delimiter is encountered, joining is stopped
-
-   @return
-   returns 0 when successfull (TODO, document error cases)
- */
-int amxc_string_join_variant_until(amxc_string_t **string,
-                                   amxc_var_t *var,
-                                   amxc_string_is_char_fn_t fn,
-                                   int8_t *delimiter);
-
+int amxc_string_ssv_join_var(amxc_string_t *string,
+                             const amxc_var_t * const var);
 #ifdef __cplusplus
 }
 #endif

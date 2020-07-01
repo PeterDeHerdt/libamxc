@@ -150,9 +150,9 @@ static int variant_bool_compare(const amxc_var_t * const lval,
     if(lval->data.b == rval->data.b) {
         *result = 0;
     } else if(lval->data.b) {
-        *result = -1;
-    } else {
         *result = 1;
+    } else {
+        *result = -1;
     }
     return 0;
 }

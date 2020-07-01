@@ -216,16 +216,11 @@ static size_t timestamp_format_internal(char *dst,
 
     if(precision) {
         v = tsp->nsec / Pow10[9 - precision];
-        switch(precision) {
-        case 9: p[9] = '0' + (v % 10); v /= 10;
-        case 8: p[8] = '0' + (v % 10); v /= 10;
-        case 7: p[7] = '0' + (v % 10); v /= 10;
-        case 6: p[6] = '0' + (v % 10); v /= 10;
-        case 5: p[5] = '0' + (v % 10); v /= 10;
-        case 4: p[4] = '0' + (v % 10); v /= 10;
-        case 3: p[3] = '0' + (v % 10); v /= 10;
-        case 2: p[2] = '0' + (v % 10); v /= 10;
-        case 1: p[1] = '0' + (v % 10);
+        for(int i = precision; i > 0; i--) {
+            p[i] = '0' + (v % 10);
+            if(i > 1) {
+                v /= 10;
+            }
         }
         p[0] = '.';
         p += 1 + precision;

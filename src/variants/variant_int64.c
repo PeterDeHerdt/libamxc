@@ -274,9 +274,9 @@ static int variant_int64_compare(const amxc_var_t * const lval,
     if(lval->data.i64 == rval->data.i64) {
         *result = 0;
     } else if(lval->data.i64 > rval->data.i64) {
-        *result = -1;
-    } else {
         *result = 1;
+    } else {
+        *result = -1;
     }
     return 0;
 }
