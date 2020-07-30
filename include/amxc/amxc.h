@@ -81,6 +81,7 @@ extern "C"
 #include <amxc/amxc_string_split.h>
 #include <amxc/amxc_string_join.h>
 #include <amxc/amxc_variant_type.h>
+#include <amxc/amxc_utils.h>
 
 #ifdef __cplusplus
 }

@@ -84,25 +84,6 @@ typedef amxc_string_split_status_t (*amxc_string_split_builder_t) (amxc_llist_t 
 /**
    @ingroup amxc_string
    @brief
-   Helper function to delete an item in a linked list.
-
-   This function can be passed to @ref amxc_llist_delete or amxc_llist_clean:
-   --> amxc_llist_delete(ptr_to_llist_ptr, amxc_string_list_it_free);
-
-   Typically a linked list containing amxc_string_t structures is created using
-   @ref amxc_string_split_llist
-
-   @note
-   Only use this function when clean up a linked list containing only
-   amxc_string_t structures.
-
-   @param it a pointer to a linked list iterator
- */
-void amxc_string_list_it_free(amxc_llist_it_t *it);
-
-/**
-   @ingroup amxc_string
-   @brief
    Helper function to be used with amxc_string_split_llist.
 
    It gets the reference to amxc_string_t object from

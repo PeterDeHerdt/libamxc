@@ -88,6 +88,12 @@ int main(void) {
         cmocka_unit_test(test_amxc_string_setf),
         cmocka_unit_test(test_amxc_string_appendf),
         cmocka_unit_test(test_amxc_string_prependf),
+        cmocka_unit_test(test_amxc_string_resolve_env),
+        cmocka_unit_test(test_amxc_string_resolve_var),
+        cmocka_unit_test(test_amxc_string_resolve),
+        cmocka_unit_test(test_amxc_string_set_resolved),
+        cmocka_unit_test(test_amxc_string_new_resolved),
+        cmocka_unit_test(test_amxc_llist_add_string),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

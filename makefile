@@ -31,6 +31,7 @@ CFLAGS += -Werror -Wall -Wextra \
           -Wwrite-strings -Wstrict-prototypes -Wold-style-definition \
           -Wredundant-decls -Wnested-externs -Wmissing-include-dirs \
 		  -Wpedantic -Wmissing-declarations \
+		  -Wno-format-nonliteral \
           -fPIC --std=c11 -g3 $(addprefix -I ,$(INCDIRS))
 LDFLAGS += $(LIBDIR) -shared -fPIC
 

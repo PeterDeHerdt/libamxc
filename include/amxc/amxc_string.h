@@ -625,6 +625,14 @@ bool amxc_string_is_empty(const amxc_string_t * const string) {
     return string != NULL ? (string->last_used == 0) : true;
 }
 
+AMXC_INLINE
+int amxc_string_insert_at(amxc_string_t * const string,
+                          const size_t pos,
+                          char *text,
+                          size_t length) {
+    return amxc_string_set_at(string, pos, text, length, amxc_string_insert);
+}
+
 #ifdef __cplusplus
 }
 #endif

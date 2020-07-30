@@ -8,6 +8,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 0.6.4 - 2020-07-24(10:58:59 +0000)
+
+### Fixes
+
+- Correctly add parts to linked list in string split functionality
+- Make it possible to dump csv and ssv strings.
+- Fixes taking amxc_string_t from variant
+
+## Release 0.6.3 - 2020-07-22(18:05:43 +0000)
+
+### Changes
+
+- Adds RAW_VERSION to makefile.inc, VERSION must be X.Y.Z or X.Y.Z-HASH
+
+## Release 0.6.2 - 2020-07-21(13:08:53 +0000)
+
+### New
+
+- String utility functions - resolve env variables and more
+
+### Fixes
+
+- Compilation issue with frotified musl
+
 ## Release 0.6.1 - 2020-07-15(13:45:56 +0000)
 
 ### New

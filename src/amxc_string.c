@@ -64,6 +64,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include <amxc/amxc_variant.h>
 #include <amxc/amxc_string.h>
 #include <amxc_assert.h>
 

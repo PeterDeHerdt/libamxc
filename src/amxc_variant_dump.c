@@ -240,6 +240,8 @@ static int amxc_var_dump_internal(const amxc_var_t * const var,
         variant_dump_htable,
         variant_dump_fd,
         variant_dump_ts,
+        variant_dump_char,
+        variant_dump_char,
         NULL,
     };
 

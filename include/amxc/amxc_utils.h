@@ -58,104 +58,51 @@
 **
 ****************************************************************************/
 
-#include <stdlib.h>
-#include <string.h>
+#if !defined(__AMXC_UTILS_H__)
+#define __AMXC_UTILS_H__
 
-#include <amxc/amxc_hash.h>
-#include <amxc/amxc_htable.h>
-#include <amxc_assert.h>
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
+// string utilities
+int amxc_string_resolve_env(amxc_string_t * const string);
+int amxc_string_resolve_var(amxc_string_t * const string,
+                            const amxc_var_t * const data);
+int amxc_string_resolve(amxc_string_t * const string,
+                        const amxc_var_t * const data);
+int amxc_string_set_resolved(amxc_string_t *string,
+                             const char *text,
+                             const amxc_var_t * const data);
+int amxc_string_new_resolved(amxc_string_t **string,
+                             const char *text,
+                             const amxc_var_t * const data);
+
+// llist/string utilities
+amxc_llist_it_t *amxc_llist_add_string(amxc_llist_t * const llist,
+                                       const char *text);
 /**
-   @file
+   @ingroup amxc_string
    @brief
-   Ambiorix hash table iterator API implementation
+   Helper function to delete an item in a linked list.
+
+   This function can be passed to @ref amxc_llist_delete or amxc_llist_clean:
+   --> amxc_llist_delete(ptr_to_llist_ptr, amxc_string_list_it_free);
+
+   Typically a linked list containing amxc_string_t structures is created using
+   @ref amxc_string_split_llist
+
+   @note
+   Only use this function when clean up a linked list containing only
+   amxc_string_t structures.
+
+   @param it a pointer to a linked list iterator
  */
+void amxc_string_list_it_free(amxc_llist_it_t *it);
 
-int amxc_htable_it_init(amxc_htable_it_t * const it) {
-    int retval = -1;
-    when_null(it, exit);
-
-    it->ait = NULL;
-    it->key = NULL;
-    it->next = NULL;
-
-    retval = 0;
-
-exit:
-    return retval;
+#ifdef __cplusplus
 }
+#endif
 
-void amxc_htable_it_clean(amxc_htable_it_t * const it, amxc_htable_it_delete_t func) {
-    when_null(it, exit);
-
-    // remove from htable if it is in one
-    amxc_htable_it_take(it);
-    char *key = it->key;
-    it->key = NULL;
-    if(func != NULL) {
-        func(key, it);
-    }
-
-    free(key);
-
-exit:
-    return;
-}
-
-amxc_htable_it_t *amxc_htable_it_get_next(const amxc_htable_it_t * const reference) {
-    amxc_htable_it_t *it = NULL;
-    when_null(reference, exit);
-    when_null(reference->ait, exit);
-
-    if(reference->next != NULL) {
-        it = reference->next;
-    } else {
-        amxc_array_it_t *ait = amxc_array_it_get_next(reference->ait);
-        when_null(ait, exit);
-        it = ait->data;
-    }
-
-exit:
-    return it;
-}
-
-amxc_htable_it_t *amxc_htable_it_get_next_key(const amxc_htable_it_t * const reference) {
-    amxc_htable_it_t *it = NULL;
-    when_null(reference, exit);
-    when_null(reference->ait, exit);
-
-    it = reference->next;
-    while(it != NULL && strcmp(it->key, reference->key) != 0) {
-        it = it->next;
-    }
-
-exit:
-    return it;
-}
-
-void amxc_htable_it_take(amxc_htable_it_t * const it) {
-    when_null(it, exit);
-    when_null(it->ait, exit);
-
-    amxc_htable_t *htable = (amxc_htable_t *) it->ait->array;
-    if(it->ait->data != it) {
-        amxc_htable_it_t *prev = it->ait->data;
-        while(prev->next != it) {
-            prev = prev->next;
-        }
-        prev->next = it->next;
-    } else {
-        if(it->next != NULL) {
-            amxc_array_it_set_data(it->ait, it->next);
-            it->next = NULL;
-        } else {
-            amxc_array_it_take_data(it->ait);
-        }
-    }
-    it->ait = NULL;
-    it->next = NULL;
-    htable->items--;
-
-exit:
-    return;
-}
+#endif // __AMXC_UTILS_H__

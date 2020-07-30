@@ -69,6 +69,7 @@
 
 #include <amxc/amxc_string_split.h>
 #include <amxc/amxc_string_join.h>
+#include <amxc/amxc_utils.h>
 
 #include "test_amxc_string_join.h"
 

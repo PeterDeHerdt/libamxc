@@ -59,7 +59,6 @@
 ****************************************************************************/
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #include <amxc_variant_priv.h>
 

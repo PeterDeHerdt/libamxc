@@ -533,7 +533,9 @@ amxc_string_t *amxc_var_take_amxc_string_t(amxc_var_t * const var) {
     amxc_string_t *retval = NULL;
 
     when_null(var, exit);
-    when_true(amxc_var_type_of(var) != AMXC_VAR_ID_CSTRING, exit);
+    when_true(amxc_var_type_of(var) != AMXC_VAR_ID_CSTRING &&
+              amxc_var_type_of(var) != AMXC_VAR_ID_SSV_STRING &&
+              amxc_var_type_of(var) != AMXC_VAR_ID_CSV_STRING, exit);
     when_null(var->data.s, exit);
 
     when_failed(amxc_string_new(&retval, 0), exit);

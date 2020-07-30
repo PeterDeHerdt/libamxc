@@ -59,7 +59,6 @@
 ****************************************************************************/
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <amxc/amxc_hash.h>

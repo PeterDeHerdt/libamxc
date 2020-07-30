@@ -67,7 +67,9 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
+#include <amxc/amxc_variant.h>
 #include <amxc/amxc_string.h>
+#include <amxc/amxc_utils.h>
 
 #include "test_amxc_string.h"
 
@@ -602,4 +604,206 @@ void test_amxc_string_prependf(UNUSED void **state) {
     assert_int_equal(amxc_string_prependf(&string, "%d", 1), 0);
 
     amxc_string_clean(&string);
+}
+
+void test_amxc_string_resolve_env(UNUSED void **state) {
+    amxc_string_t string;
+    setenv("TestEnvVar", "MyValue", 1);
+    setenv("RefVar", "$(TestEnvVar)", 1);
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+
+    assert_int_equal(amxc_string_appendf(&string, "Resolves Env Var $(TestEnvVar)"), 0);
+    assert_int_equal(amxc_string_resolve_env(&string), 1);
+    assert_string_equal(string.buffer, "Resolves Env Var MyValue");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "$(TestEnvVar) $(TestEnvVar) $TestEnvVar TestEnvVar"), 0);
+    assert_int_equal(amxc_string_resolve_env(&string), 2);
+    assert_string_equal(string.buffer, "MyValue MyValue $TestEnvVar TestEnvVar");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "$(TestEnvVar) $(RefVar)"), 0);
+    assert_int_equal(amxc_string_resolve_env(&string), 3);
+    assert_string_equal(string.buffer, "MyValue MyValue");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "$(Dummy) $(RefVar)"), 0);
+    assert_int_equal(amxc_string_resolve_env(&string), 3);
+    assert_string_equal(string.buffer, " MyValue");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "$(Dummy) $(RefVar"), 0);
+    assert_int_equal(amxc_string_resolve_env(&string), 1);
+    assert_string_equal(string.buffer, " $(RefVar");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "$(Dummy - $(RefVar"), 0);
+    assert_int_equal(amxc_string_resolve_env(&string), 0);
+    assert_string_equal(string.buffer, "$(Dummy - $(RefVar");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_resolve_env(&string), 0);
+    assert_int_equal(amxc_string_resolve_env(NULL), 0);
+
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_resolve_var(UNUSED void **state) {
+    amxc_string_t string;
+    amxc_var_t data;
+
+    amxc_var_init(&data);
+    amxc_var_set_type(&data, AMXC_VAR_ID_HTABLE);
+    amxc_var_add_key(cstring_t, &data, "rw_data_path", "/tmp/");
+    amxc_var_add_key(cstring_t, &data, "name", "a_name");
+    amxc_var_add_key(cstring_t, &data, "ref", "${name}");
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+
+    assert_int_equal(amxc_string_appendf(&string, "Resolves Var ${rw_data_path}"), 0);
+    assert_int_equal(amxc_string_resolve_var(&string, &data), 1);
+    assert_string_equal(string.buffer, "Resolves Var /tmp/");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "${name} ${rw_data_path} $rw_data_path rw_data_path"), 0);
+    assert_int_equal(amxc_string_resolve_var(&string, &data), 2);
+    assert_string_equal(string.buffer, "a_name /tmp/ $rw_data_path rw_data_path");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "${name} ${ref}"), 0);
+    assert_int_equal(amxc_string_resolve_var(&string, &data), 3);
+    assert_string_equal(string.buffer, "a_name a_name");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "${Dummy} ${ref}"), 0);
+    assert_int_equal(amxc_string_resolve_var(&string, &data), 3);
+    assert_string_equal(string.buffer, " a_name");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_resolve_var(&string, &data), 0);
+    assert_int_equal(amxc_string_appendf(&string, "${Dummy} ${ref}"), 0);
+    assert_int_equal(amxc_string_resolve_var(&string, NULL), 0);
+    assert_int_equal(amxc_string_resolve_var(NULL, &data), 0);
+    amxc_var_clean(&data);
+    assert_int_equal(amxc_string_resolve_var(&string, &data), 0);
+
+    amxc_var_clean(&data);
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_resolve(UNUSED void **state) {
+    amxc_string_t string;
+    amxc_var_t data;
+
+    setenv("TESTENV", "MyValue", 1);
+    setenv("DATAREF", "${name}", 1);
+
+    amxc_var_init(&data);
+    amxc_var_set_type(&data, AMXC_VAR_ID_HTABLE);
+    amxc_var_add_key(cstring_t, &data, "rw_data_path", "/tmp/");
+    amxc_var_add_key(cstring_t, &data, "name", "a_name");
+    amxc_var_add_key(cstring_t, &data, "ref", "$(TESTENV)");
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+
+    assert_int_equal(amxc_string_appendf(&string, "TESTENV = $(TESTENV) & name = ${name}"), 0);
+    assert_int_equal(amxc_string_resolve(&string, &data), 2);
+    assert_string_equal(string.buffer, "TESTENV = MyValue & name = a_name");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "name = $(DATAREF) & TESTENV = ${ref}"), 0);
+    assert_int_equal(amxc_string_resolve(&string, &data), 4);
+    assert_string_equal(string.buffer, "name = a_name & TESTENV = MyValue");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "${ref} ${rw_data_path} $(TESTENV) ${name}"), 0);
+    assert_int_equal(amxc_string_resolve(&string, &data), 5);
+    assert_string_equal(string.buffer, "MyValue /tmp/ MyValue a_name");
+    amxc_string_reset(&string);
+
+    amxc_var_clean(&data);
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_set_resolved(UNUSED void **state) {
+    amxc_string_t string;
+    amxc_var_t data;
+
+    setenv("TESTENV", "MyValue", 1);
+    setenv("DATAREF", "${name}", 1);
+
+    amxc_var_init(&data);
+    amxc_var_set_type(&data, AMXC_VAR_ID_HTABLE);
+    amxc_var_add_key(cstring_t, &data, "rw_data_path", "/tmp/");
+    amxc_var_add_key(cstring_t, &data, "name", "a_name");
+    amxc_var_add_key(cstring_t, &data, "ref", "$(TESTENV)");
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+
+    assert_int_equal(amxc_string_set_resolved(&string, "TESTENV = $(TESTENV) & name = ${name}", &data), 2);
+    assert_string_equal(string.buffer, "TESTENV = MyValue & name = a_name");
+
+    assert_int_equal(amxc_string_set_resolved(&string, "This is text without variables", &data), 0);
+    assert_true(amxc_string_is_empty(&string));
+
+    assert_int_equal(amxc_string_set_resolved(&string, "This is text without $variables", &data), 0);
+    assert_true(amxc_string_is_empty(&string));
+
+    assert_int_equal(amxc_string_set_resolved(&string, NULL, &data), 0);
+    assert_int_equal(amxc_string_set_resolved(&string, "", &data), 0);
+    assert_int_equal(amxc_string_set_resolved(NULL, "TESTENV = $(TESTENV) & name = ${name}", &data), 0);
+
+    amxc_var_clean(&data);
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_new_resolved(UNUSED void **state) {
+    amxc_string_t *string = NULL;
+    amxc_var_t data;
+
+    setenv("TESTENV", "MyValue", 1);
+    setenv("DATAREF", "${name}", 1);
+
+    amxc_var_init(&data);
+    amxc_var_set_type(&data, AMXC_VAR_ID_HTABLE);
+    amxc_var_add_key(cstring_t, &data, "rw_data_path", "/tmp/");
+    amxc_var_add_key(cstring_t, &data, "name", "a_name");
+    amxc_var_add_key(cstring_t, &data, "ref", "$(TESTENV)");
+
+    assert_int_equal(amxc_string_new_resolved(&string, "TESTENV = $(TESTENV) & name = ${name}", &data), 2);
+    assert_ptr_not_equal(string, NULL);
+    assert_string_equal(string->buffer, "TESTENV = MyValue & name = a_name");
+    amxc_string_delete(&string);
+
+    assert_int_equal(amxc_string_new_resolved(&string, "This is text without variables", &data), 0);
+    assert_ptr_equal(string, NULL);
+
+    assert_int_equal(amxc_string_new_resolved(&string, "This is text without $variables", &data), 0);
+    assert_ptr_equal(string, NULL);
+
+    assert_int_equal(amxc_string_new_resolved(&string, NULL, &data), 0);
+    assert_ptr_equal(string, NULL);
+    assert_int_equal(amxc_string_new_resolved(&string, "", &data), 0);
+    assert_ptr_equal(string, NULL);
+    assert_int_equal(amxc_string_new_resolved(NULL, "TESTENV = $(TESTENV) & name = ${name}", &data), -1);
+    assert_ptr_equal(string, NULL);
+
+    amxc_var_clean(&data);
+}
+
+void test_amxc_llist_add_string(UNUSED void **state) {
+    amxc_llist_t list;
+    amxc_llist_init(&list);
+
+    assert_ptr_not_equal(amxc_llist_add_string(&list, "text1"), NULL);
+    assert_ptr_not_equal(amxc_llist_add_string(&list, "text2"), NULL);
+    assert_ptr_not_equal(amxc_llist_add_string(&list, "text3"), NULL);
+    assert_ptr_equal(amxc_llist_add_string(&list, NULL), NULL);
+    assert_ptr_equal(amxc_llist_add_string(&list, ""), NULL);
+    assert_int_equal(amxc_llist_size(&list), 3);
+
+    assert_ptr_equal(amxc_llist_add_string(NULL, "text4"), NULL);
+
+    amxc_llist_clean(&list, amxc_string_list_it_free);
 }

@@ -59,7 +59,6 @@
 ****************************************************************************/
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #include <amxc/amxc_llist.h>
 #include <amxc_assert.h>

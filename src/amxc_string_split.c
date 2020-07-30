@@ -60,13 +60,13 @@
 
 #define _GNU_SOURCE
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
 #include <amxc/amxc_common.h>
 #include <amxc/amxc_variant.h>
 #include <amxc/amxc_string_split.h>
+#include <amxc/amxc_utils.h>
 
 #include "amxc_assert.h"
 
@@ -483,11 +483,6 @@ amxc_build_ssv_var_list(amxc_llist_t *all, amxc_var_t *ssv_list) {
     return retval;
 }
 
-void amxc_string_list_it_free(amxc_llist_it_t *it) {
-    amxc_string_t *part = amxc_string_from_llist_it(it);
-    amxc_string_delete(&part);
-}
-
 amxc_string_split_status_t
 amxc_string_split_word(const amxc_string_t * const string,
                        amxc_llist_t *list,
@@ -552,20 +547,23 @@ amxc_string_split_to_llist(const amxc_string_t * const string,
                            const char separator) {
     amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
     amxc_string_t *current = NULL;
+    amxc_llist_t parts_list;
     bool in_sbrackets = false;
 
+    amxc_llist_init(&parts_list);
     when_null(string, exit);
     when_null(list, exit);
     when_true(isalnum(separator) != 0, exit);
     when_true(separator == '[' || separator == ']', exit);
 
-    retval = amxc_string_split_word(string, list, NULL);
+    retval = amxc_string_split_word(string, &parts_list, NULL);
     when_failed(retval, exit);
-    amxc_trim_llist(list);
+    amxc_trim_llist(&parts_list);
 
-    amxc_llist_for_each(it, list) {
+    amxc_llist_for_each(it, (&parts_list)) {
         amxc_string_t *part = amxc_string_from_llist_it(it);
         const char *txt_part = amxc_string_get(part, 0);
+        amxc_llist_append(list, &part->it);
         if(amxc_string_text_length(part) == 1) {
             bool isspace_matches = (isspace(separator) != 0 &&
                                     isspace(txt_part[0]) != 0);
@@ -612,6 +610,7 @@ amxc_string_split_to_llist(const amxc_string_t * const string,
     }
 
 exit:
+    amxc_llist_clean(&parts_list, amxc_string_list_it_free);
     return retval;
 }
 
