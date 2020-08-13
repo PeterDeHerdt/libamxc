@@ -94,7 +94,7 @@ typedef amxc_string_split_status_t (*amxc_string_split_builder_t) (amxc_llist_t 
    Taking a copy is the programmer's responsibility!
 
    @param llist a pointer to the linked list structure
-   @param index the position where the item must be inserted
+   @param index the position in the list
 
    @return
    A pointer to the string (amxc_string_t) at the index of the llist, when successful.
@@ -116,7 +116,7 @@ amxc_string_t *amxc_string_get_from_llist(const amxc_llist_t * const llist,
    Taking a copy is the programmer's responsibility!
 
    @param llist a pointer to the linked list structure
-   @param index the position where the item must be inserted
+   @param index the position in the list
 
    @return
    Pointer to the string buffer at the index of the llist, when successful.
