@@ -520,7 +520,16 @@ amxc_string_split(const amxc_string_t * const string,
     retval = amxc_string_split_word(string, &all_parts, reason);
     when_failed(retval, exit);
 
-    fn(&all_parts, var);
+    if(fn != NULL) {
+        fn(&all_parts, var);
+    } else {
+        amxc_var_set_type(var, AMXC_VAR_ID_LIST);
+        amxc_llist_for_each(it, (&all_parts)) {
+            amxc_string_t *part = amxc_string_from_llist_it(it);
+            amxc_var_add(cstring_t, var, amxc_string_get(part, 0));
+            amxc_string_delete(&part);
+        }
+    }
 
 exit:
     amxc_llist_clean(&all_parts, amxc_string_list_it_free);

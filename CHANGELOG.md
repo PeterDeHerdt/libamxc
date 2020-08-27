@@ -8,6 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 0.6.8 - 2020-08-20(12:29:59 +0000)
+
+### New
+
+- Added amxc_string_is_numeric.
+
+## Release 0.6.7 - 2020-08-14(21:31:27 +0000)
+
+### Changes
+
+- Improves hash table iterator `amxc_htable_for_each`, current iterator can be be (re)moved
+
+## Release 0.6.6 - 2020-08-13(09:44:25 +0000)
+
+### New 
+
+-  variant list iterator macro
+-  generic variant list join function
+
 ## Release 0.6.5 - 2020-08-04(04:55:03 +0000)
 
 ### Fixes

@@ -586,3 +586,22 @@ int amxc_string_prependf(amxc_string_t * const string, const char *fmt, ...) {
 exit:
     return retval;
 }
+
+bool amxc_string_is_numeric(const amxc_string_t * const string) {
+    bool retval = false;
+    char *data = NULL;
+
+    when_true(amxc_string_is_empty(string), exit);
+
+    data = string->buffer;
+    while((*data) != '\0') {
+        if(isdigit(*data) == 0) {
+            goto exit;
+        }
+        data++;
+    }
+
+    retval = true;
+exit:
+    return retval;
+}

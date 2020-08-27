@@ -1,0 +1,350 @@
+libamxc (0.6.8) unstable; urgency=medium
+
+  * Added amxc_string_is_numeric.
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 20 Aug 2020 12:30:04 +0000
+
+libamxc (0.6.7) unstable; urgency=medium
+
+  * Improves hash table iterator `amxc_htable_for_each`, current iterator can be be (re)moved
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Fri, 14 Aug 2020 21:31:34 +0000
+
+libamxc (0.6.6) unstable; urgency=medium
+
+  *  variant list iterator macro
+  *  generic variant list join function
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 13 Aug 2020 09:44:30 +0000
+
+libamxc (0.6.5) unstable; urgency=medium
+
+  * Correct documentation tags
+  * Update contributing guide
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Tue, 04 Aug 2020 04:55:09 +0000
+
+libamxc (0.6.4) unstable; urgency=medium
+
+  * Correctly add parts to linked list in string split functionality
+  * Make it possible to dump csv and ssv strings.
+  * Fixes taking amxc_string_t from variant
+
+ -- sah4009 <peter.deherdt@softathome.com>  Fri, 24 Jul 2020 10:59:05 +0000
+
+libamxc (0.6.3) unstable; urgency=medium
+
+  * Adds RAW_VERSION to makefile.inc, VERSION must be X.Y.Z or X.Y.Z-HASH
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Wed, 22 Jul 2020 18:05:54 +0000
+
+libamxc (0.6.2) unstable; urgency=medium
+
+  * String utility functions - resolve env variables and more
+  * Compilation issue with frotified musl
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Tue, 21 Jul 2020 13:08:58 +0000
+
+libamxc (0.6.1) unstable; urgency=medium
+
+  * Adds amxc_string_copy function
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Wed, 15 Jul 2020 13:46:01 +0000
+
+libamxc (0.6.0) unstable; urgency=medium
+
+  * String split and string join API's refactored and improved
+  * Update makefiles for SAH legacy build systems
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Mon, 13 Jul 2020 05:09:21 +0000
+
+libamxc (0.5.5) unstable; urgency=medium
+
+  * Memory leak in variant llist implementation and adds test
+  * USes std=c11 instead of std=c18 for older compilers/toolchains
+
+ -- sah4009 <peter.deherdt@softathome.com>  Sun, 05 Jul 2020 14:39:42 +0000
+
+libamxc (0.5.4) unstable; urgency=medium
+
+  * Fixes amxc_var_compare results are wrong for some types
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Wed, 01 Jul 2020 20:04:53 +0000
+
+libamxc (0.5.3) unstable; urgency=medium
+
+  * Scrubs Component.* files
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Tue, 30 Jun 2020 07:46:58 +0000
+
+libamxc (0.5.2) unstable; urgency=medium
+
+  * Support for legacy SAH build system
+  * Fixes compilation error with yocto & musl
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Mon, 29 Jun 2020 16:26:33 +0000
+
+libamxc (0.5.1) unstable; urgency=medium
+
+  * Fixes so name
+  * Fixes install target
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Fri, 26 Jun 2020 16:18:53 +0000
+
+libamxc (0.5.0) unstable; urgency=medium
+
+- Variant type `csv_string` and `ssv_string`
+- Copybara file
+- Builds targets into specific output directory
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Fri, 26 Jun 2020 15:52:29 +0000
+
+libamxc (0.4.0) unstable; urgency=medium
+
+  * Timestamp data container
+  * Timestamp variant and conversions
+  * Comma separate values string, splitting trims blanks from the individual parts
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Fri, 19 Jun 2020 10:53:09 +0000
+
+libamxc (0.3.2) unstable; urgency=medium
+
+  * amxc_variant_get_pathf same as amxc_var_get_path but supports printf formatting for building path
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Mon, 15 Jun 2020 11:02:32 +0000
+
+libamxc (0.3.1) unstable; urgency=medium
+
+  * Issue #10 : comparing two empty string variants causes segmentation fault
+  * Adds tests to reproduce issue #10
+  * update license to BSD+patent
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Mon, 15 Jun 2020 07:48:10 +0000
+
+libamxc (0.3.0) unstable; urgency=medium
+
+  * Make it possible to delete current iterator from linked list while iterating over it using for_each macros (issue #9)
+  * Stops testing when test fails, preserve error code
+  * Collects unit test results
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Wed, 03 Jun 2020 11:11:24 +0000
+
+libamxc (0.2.13) unstable; urgency=medium
+
+  * Correct some typos in the documentation
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 28 May 2020 06:36:33 +0000
+
+libamxc (0.2.12) unstable; urgency=medium
+
+  * Returns empty string when string variant contains NULL string
+  * Crash when copying variant string containing NULL string
+  * Corrects documentation
+  * Fixes memory leak in test
+  * Fixes typo in documentation
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Tue, 28 Apr 2020 08:35:02 +0000
+
+libamxc (0.2.11) unstable; urgency=medium
+
+  * Fixes amxc_string_prependf
+  * Fixes amxc_string_appendf - out of boundary bug
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Fri, 03 Apr 2020 16:26:22 +0000
+
+libamxc (0.2.10) unstable; urgency=medium
+
+  * Fixes splitting string ending on separator string
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Wed, 01 Apr 2020 17:52:12 +0000
+
+libamxc (0.2.9) unstable; urgency=medium
+
+  * API documentation - added documentation and fixes typos
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Tue, 31 Mar 2020 08:22:14 +0000
+
+libamxc (0.2.8) unstable; urgency=medium
+
+  * Make var arg of function 'amxc_var_get_path' const
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Wed, 25 Mar 2020 11:37:41 +0000
+
+libamxc (0.2.7) unstable; urgency=medium
+
+  * Fixes memory leak when adding duplicate keys to htable variant
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Wed, 11 Mar 2020 06:27:17 +0000
+
+libamxc (0.2.6) unstable; urgency=medium
+
+  * variant types uint32_t and int32_t
+  * tests for new variant types
+  * Adds 'amxc_string_prependf' and 'amxc_string_vprependf' functions
+  * Documentations generation configuration (doxygen)
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Tue, 10 Mar 2020 09:00:56 +0000
+
+libamxc (0.2.5) unstable; urgency=medium
+
+  * Sortable linked list
+  * Linked list swap function
+  * amxc_string_vsetf, supports va_args
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Fri, 06 Mar 2020 16:23:25 +0000
+
+libamxc (0.2.4) unstable; urgency=medium
+
+  * CI/CD - Support ELK reporting
+  * CI/CD - Documentation generation
+  * CI/CD - Push HTML scan build and coverage reports to HTTP server
+  * DOC - doxygen documentation generation
+  * Feature - Sortable array
+  * API - new function `amxc_array_it_swap`
+  * API - new function `amxc_array_sort`
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Sun, 01 Mar 2020 15:14:39 +0000
+
+libamxc (0.2.3) unstable; urgency=medium
+
+  * Fixes issues found in analyses
+  * Update .gitlab-ci.yml
+  * Corrects -Wl,-soname in linking, no version in soname
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Sat, 22 Feb 2020 21:40:24 +0000
+
+libamxc (0.2.2) unstable; urgency=medium
+
+  * Fix crash in amxc_var_take_amxc_string_t when variant contains NULL pointer
+  * Fix crash in amxc_string_delete
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Wed, 19 Feb 2020 12:59:27 +0000
+
+libamxc (0.2.1) unstable; urgency=medium
+
+  * Linked lists and htable can be added to composite variant
+  * Corrects documentation of function amxc_string_split_word_variant
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Tue, 18 Feb 2020 10:30:55 +0000
+
+libamxc (0.2.0) unstable; urgency=medium
+
+  * adds 'amxc_string_setf' - resets amxc string and uses printf format to set the content
+  * adds 'amxc_string_appendf' - adds a string to an existing one using printf format
+  * adds 'amxc_string_join_variant_until' - joins parts into a string until a delimter is matched
+  * adds 'amxc_string_get_from_llist' - gets a string part (amxc_string_t) from a linked list
+  * adds 'amxc_string_get_text_from_llist' - gets a string part (const char *) from a linked list
+  * adds macro 'amxc_var_push' - resolves in amxc_var_push_<TYPE> functions
+  * adds 'amxc_var_take_amxc_string_t' - takes a amxc_string_t from variant (must be AMXC_VAR_ID_CSTRING)
+  * adds 'amxc_var_push_cstring_t' - pushes a 'char *' into a variant
+  * adds 'amxc_var_push_amxc_string_t' - pushes a 'amxc_string_t *' into a variant
+  * renames function 'amxc_string_set_buffer' to 'amxc_string_push_buffer' (API consistency)
+  * do not strip binaries when installing (debugging feature)
+  * splitting a string in words keeps quotes in resulting list.
+  * amxc_string_new return value - int8_t -> int
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Fri, 07 Feb 2020 20:54:57 +0000
+
+libamxc (0.1.4) unstable; urgency=medium
+
+  * Adds amxc_string_join_variant_until function
+  * Gitlab CI/CD .gitlab-ci.yml change container image for building and testing
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Wed, 05 Feb 2020 09:46:48 +0000
+
+libamxc (0.1.3) unstable; urgency=medium
+
+  * amxc_string_split functions
+  * split string using separator into linked list of string or linked list of variants
+  * split string into `words` into linked list of variants
+  * amxc_var_dump function
+  * wrapper functions to make it easier to add primitives into composite variant
+  * string take_buffer and set_buffer functions
+  * variant_htable and variant_list memory leaks, adds extra tests
+  * Adds set_buffer and take_buffer functions
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Mon, 03 Feb 2020 06:54:40 +0000
+
+libamxc (0.1.2) unstable; urgency=medium
+
+  * Fixes variant type llist set index implementation
+  * Fixes gcc9.2 warning/error on strncpy 
+  * Fixes makefiles to accomodate archlinux pkgbuild
+  * Improves and fixes set index implementation
+  * Adds variant type file descriptor
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Tue, 21 Jan 2020 07:55:58 +0000
+
+libamxc (0.1.1) unstable; urgency=medium
+
+  * Adds trim functions and tests (issue 15)
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Wed, 15 Jan 2020 13:32:49 +0000
+
+libamxc (0.1.0) unstable; urgency=medium
+
+  * Added missing documentation (issue 17)
+  * Added missing tests (issue 18)
+  * Removed debug prints
+  * Fixed compilation errors (gcc 9.2.0)
+  * Removes common documents
+  * Updates links to common documents
+  * Added fd variant implementation (issue 20)
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Thu, 09 Jan 2020 08:43:40 +0000
+
+libamxc (0.0.9) unstable; urgency=medium
+
+  * Fixes 13-assert-macros-assumes-exit-label-exists
+  * Fixes all assert macros, label is passed as argument
+  * Fixes typos in comment and change code layout
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Sat, 23 Nov 2019 12:29:10 +0000
+
+libamxc (0.0.8) unstable; urgency=medium
+
+  * Add AMXC_VAR_FLAG_UPDATE for amxc_var_set_index and amxc_var_set_key functions
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Sat, 16 Nov 2019 15:24:27 +0000
+
+libamxc (0.0.7) unstable; urgency=medium
+
+  * ANY type for conversion functions
+  * amxc_var_get_path function - fetch from composed variant using dotted path
+  * api changes - all getters (path,index,key) uses flag for copy or copyless
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Thu, 14 Nov 2019 13:20:54 +0000
+
+libamxc (0.0.6) unstable; urgency=medium
+
+  * double variant type
+  * Composed variants can be accessed by key or index using setters and getter functions
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Sun, 10 Nov 2019 19:57:58 +0000
+
+libamxc (0.0.5) unstable; urgency=medium
+
+  * Create symbolic link in debian package
+ 
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Fri, 25 Oct 2019 16:55:23 +0000
+
+libamxc (0.0.4) unstable; urgency=medium
+
+  * Fix debian package make file and package version
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Tue, 22 Oct 2019 15:39:42 +0000
+
+libamxc (0.0.2) unstable; urgency=medium
+
+  * [PACKAGING] Automatically create tar.gz package and debian package, with auto-generated change log
+  * Update README.md
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Mon, 21 Oct 2019 21:33:32 +0000
+
+libamxc (0.0.1) unstable; urgency=medium
+
+  * Generic data containers 
+  * Generic data wrapper (variant)
+
+ -- DE HERDT peter <peter.deherdt@softathome.com>  Sat, 19 Oct 2019 16:29:17 +0100
+ 

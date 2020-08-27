@@ -72,6 +72,10 @@ int amxc_string_join_llist(amxc_string_t *string,
                            amxc_llist_t *list,
                            char separator);
 
+int amxc_string_join_var(amxc_string_t *string,
+                         const amxc_var_t * const var,
+                         const char *sep);
+
 int amxc_string_csv_join_var(amxc_string_t *string,
                              const amxc_var_t * const var);
 

@@ -82,6 +82,7 @@ void test_amxc_string_take_push_buffer(void **state);
 void test_amxc_string_setf(void **state);
 void test_amxc_string_appendf(void **state);
 void test_amxc_string_prependf(void **state);
+void test_amxc_string_is_numeric(void **state);
 void test_amxc_string_resolve_env(void **state);
 void test_amxc_string_resolve_var(void **state);
 void test_amxc_string_resolve(void **state);

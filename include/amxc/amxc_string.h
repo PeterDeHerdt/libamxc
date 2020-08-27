@@ -503,6 +503,8 @@ int amxc_string_vprependf(amxc_string_t * const string,
 int amxc_string_prependf(amxc_string_t * const string, const char *fmt, ...) \
     __attribute__ ((format(printf, 2, 3)));
 
+bool amxc_string_is_numeric(const amxc_string_t * const string);
+
 /**
    @ingroup amxc_string
    @brief

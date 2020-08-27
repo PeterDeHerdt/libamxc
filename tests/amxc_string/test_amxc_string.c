@@ -606,6 +606,77 @@ void test_amxc_string_prependf(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
+void test_amxc_string_is_numeric(UNUSED void **state) {
+    amxc_string_t string;
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+    assert_false(amxc_string_is_numeric(&string));
+    amxc_string_clean(&string);
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+    assert_int_equal(amxc_string_set_at(&string,
+                                        0,
+                                        "hello world",
+                                        11,
+                                        amxc_string_no_flags), 0);
+    assert_false(amxc_string_is_numeric(&string));
+    amxc_string_clean(&string);
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+    assert_int_equal(amxc_string_set_at(&string,
+                                        0,
+                                        "42world",
+                                        7,
+                                        amxc_string_no_flags), 0);
+    assert_false(amxc_string_is_numeric(&string));
+    amxc_string_clean(&string);
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+    assert_int_equal(amxc_string_set_at(&string,
+                                        0,
+                                        "world42",
+                                        7,
+                                        amxc_string_no_flags), 0);
+    assert_false(amxc_string_is_numeric(&string));
+    amxc_string_clean(&string);
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+    assert_int_equal(amxc_string_set_at(&string,
+                                        0,
+                                        "42 world",
+                                        8,
+                                        amxc_string_no_flags), 0);
+    assert_false(amxc_string_is_numeric(&string));
+    amxc_string_clean(&string);
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+    assert_int_equal(amxc_string_set_at(&string,
+                                        0,
+                                        "42",
+                                        2,
+                                        amxc_string_no_flags), 0);
+    assert_true(amxc_string_is_numeric(&string));
+    amxc_string_clean(&string);
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+    assert_int_equal(amxc_string_set_at(&string,
+                                        0,
+                                        "00",
+                                        2,
+                                        amxc_string_no_flags), 0);
+    assert_true(amxc_string_is_numeric(&string));
+    amxc_string_clean(&string);
+
+    assert_int_equal(amxc_string_init(&string, 0), 0);
+    assert_int_equal(amxc_string_set_at(&string,
+                                        0,
+                                        "2",
+                                        1,
+                                        amxc_string_no_flags), 0);
+    assert_true(amxc_string_is_numeric(&string));
+    amxc_string_clean(&string);
+}
+
 void test_amxc_string_resolve_env(UNUSED void **state) {
     amxc_string_t string;
     setenv("TestEnvVar", "MyValue", 1);

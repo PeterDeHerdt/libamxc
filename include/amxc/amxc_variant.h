@@ -261,6 +261,14 @@ extern "C"
 #define amxc_var_from_llist_it(ll_it) \
     ((amxc_var_t *) (((char *) ll_it) - offsetof(amxc_var_t, lit)))
 
+#define amxc_var_for_each(var, var_list) \
+    for(amxc_var_t *var = amxc_var_from_llist_it(amxc_llist_get_first(&var_list->data.vl)), \
+        *_next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)); \
+        var; \
+        var = _next, \
+        _next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)))
+
+
 typedef struct _amxc_var {
     amxc_llist_it_t lit;        /**< Linked list iterator, can be used to store the variant in a linked list */
     amxc_htable_it_t hit;       /**< Hash table iterator, can be used to store the variant in a hash table */

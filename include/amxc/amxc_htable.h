@@ -89,19 +89,23 @@ extern "C"
     ((type *) (((char *) it) - offsetof(type, member)))
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_htable
    @brief
-   Loops over the list
+   Loops over items in the hash table
 
-   Iterates over the list and updates the iterator each time.
+   Iterates over the hash table and updates the iterator each time.
 
    @warning
-   Do not modify the list itself while using this macro.
+   Do not modify the hash table itself while using this macro.
+   It is allowed to delete or remove the current iterator from the hash table.
  */
 #define amxc_htable_for_each(it, htable) \
-    for(amxc_htable_it_t *it = amxc_htable_get_first(htable); \
+    for(amxc_htable_it_t *it = amxc_htable_get_first(htable), \
+        *_next = amxc_htable_it_get_next(it); \
         it; \
-        it = amxc_htable_it_get_next(it))
+        it = _next, \
+        _next = amxc_htable_it_get_next(it))
+
 
 /**
    @ingroup amxc_htable

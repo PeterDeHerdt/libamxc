@@ -1,0 +1,10 @@
+variables:
+  UTEST_TEST_DIR: tests
+  UTEST_TEST_CMD: "make run"
+  UTEST_TEST_COV_CMD: "make coverage"
+  BUILD_TARGET: libamxc
+
+include:
+  # include default templates (needed by the default pipelines)
+  - remote: 'https://gitlab.com/soft.at.home/ci/gitlab-ci/raw/master/ambiorix-default-pipeline.yml'
+

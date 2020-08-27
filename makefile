@@ -30,8 +30,8 @@ CFLAGS += -Werror -Wall -Wextra \
           -Wformat=2 -Wshadow \
           -Wwrite-strings -Wstrict-prototypes -Wold-style-definition \
           -Wredundant-decls -Wnested-externs -Wmissing-include-dirs \
-		  -Wpedantic -Wmissing-declarations \
-		  -Wno-format-nonliteral \
+          -Wpedantic -Wmissing-declarations \
+          -Wno-format-nonliteral \
           -fPIC --std=c11 -g3 $(addprefix -I ,$(INCDIRS))
 LDFLAGS += $(LIBDIR) -shared -fPIC
 
@@ -109,3 +109,4 @@ clean:
 
 
 .PHONY: clean test doc package changelog
+
