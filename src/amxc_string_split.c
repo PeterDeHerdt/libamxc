@@ -58,7 +58,10 @@
 **
 ****************************************************************************/
 
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -140,7 +143,7 @@ static int amxc_string_create_part(const amxc_string_t * const string,
     when_null(buffer, exit);
     when_failed(amxc_string_new(&part, 0), exit);
     if((length == 1) && isspace(buffer[0])) {
-        amxc_string_set_at(part, 0, " ", 1, 0);
+        amxc_string_set_at(part, 0, " ", 1, amxc_string_no_flags);
         free(buffer);
     } else {
         when_failed(amxc_string_push_buffer(part, buffer, length + 1), exit);
@@ -289,18 +292,18 @@ amxc_string_split_words_internal(const amxc_string_t * const string,
                                  amxc_string_create_part_t create,
                                  amxc_string_check_delimiter_t check,
                                  const char **reason) {
-    amxc_string_word_flags_t flags = {
-        .start_quote = false,
-        .between_double_quotes = false,
-        .between_single_quotes = false,
-        .escape = false,
-        .round_brackets = 0,
-        .curly_brackets = 0,
-        .square_brackets = 0,
-    };
+    amxc_string_word_flags_t flags;
     size_t start_pos = 0;
     size_t i = 0;
     amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
+
+    flags.start_quote = false;
+    flags.between_double_quotes = false;
+    flags.between_single_quotes = false;
+    flags.escape = false;
+    flags.round_brackets = 0;
+    flags.curly_brackets = 0;
+    flags.square_brackets = 0;
 
     for(i = 0; i < string->last_used; i++) {
         if(flags.escape == false) {
@@ -349,7 +352,7 @@ exit:
 
 static amxc_string_split_status_t
 amxc_build_csv_var_list(amxc_llist_t *all, amxc_var_t *csv_list) {
-    int retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
+    amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
     bool quotes = false;
     bool sqbrackets = false;
     bool add_empty = true;
@@ -425,7 +428,7 @@ amxc_build_csv_var_list(amxc_llist_t *all, amxc_var_t *csv_list) {
 
 static amxc_string_split_status_t
 amxc_build_ssv_var_list(amxc_llist_t *all, amxc_var_t *ssv_list) {
-    int retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
+    amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
     bool quotes = false;
     bool sqbrackets = false;
     amxc_string_t csv_part;
@@ -510,7 +513,7 @@ amxc_string_split(const amxc_string_t * const string,
                   amxc_var_t *var,
                   amxc_string_split_builder_t fn,
                   const char **reason) {
-    int retval = -1;
+    amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
     amxc_llist_t all_parts;
 
     amxc_llist_init(&all_parts);

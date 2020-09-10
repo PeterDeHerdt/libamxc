@@ -152,6 +152,12 @@ extern "C"
 #define AMXC_VAR_FLAG_COPY      0x01             /**< Copy the variant & variant data */
 #define AMXC_VAR_FLAG_UPDATE    0x02             /**< Update if already exists */
 
+#define GET_ARG(a, n) amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT)
+#define GET_BOOL(a, n) amxc_var_constcast(bool, GET_ARG(a, n))
+#define GET_CHAR(a, n) amxc_var_constcast(cstring_t, GET_ARG(a, n))
+#define GET_UINT32(a, n) amxc_var_constcast(uint32_t, GET_ARG(a, n))
+#define GET_INT32(a, n) amxc_var_constcast(int32_t, GET_ARG(a, n))
+
 /**
    @brief
    Convenience macro
@@ -607,8 +613,7 @@ amxc_var_t *amxc_var_add_new(amxc_var_t * const var);
    @param var pointer to a variant struct, the variant type should be a composite type
    @param path path to a variant in the composite variant structure, a path is
                a sequence of indexes and/or keys seperated by a '.'
-   @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY,
-                AMXC_VAR_FLAG_UPDATE
+   @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY
 
    @return
    Pointer to the variant at the given path or NULL if the path does not exist.

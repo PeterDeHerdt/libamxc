@@ -205,7 +205,7 @@ static int variant_char_to_bool(amxc_var_t * const dest,
     when_true((src->data.s == NULL) || (*(src->data.s) == 0), exit);
 
     src_len = strlen(src->data.s) + 1;
-    lower_src = calloc(1, src_len);
+    lower_src = (char *) calloc(1, src_len);
     when_null(lower_src, exit);
 
     for(int i = 0; i < src_len; i++) {
@@ -269,7 +269,7 @@ static int variant_char_to_htable(amxc_var_t * const dest,
     when_true((src->data.s == NULL) || (*(src->data.s) == 0), exit);
 
     length = strlen(src->data.s) + 1;
-    temp = calloc(1, length);
+    temp = (char *) calloc(1, length);
     when_null(temp, exit);
     memcpy(temp, src->data.s, length);
 
@@ -293,7 +293,7 @@ static int variant_char_to_htable(amxc_var_t * const dest,
         key = element;
         if(data != NULL) {
             length = strlen(data) + 1;
-            var->data.s = calloc(1, length);
+            var->data.s = (char *) calloc(1, length);
             if(var->data.s == NULL) {
                 amxc_var_delete(&var);
                 amxc_htable_clean(&dest->data.vm, variant_htable_it_free);
@@ -324,7 +324,7 @@ static int variant_char_copy(amxc_var_t * const dest,
     int retval = -1;
     if(src->data.s != NULL) {
         int length = strlen(src->data.s) + 1;
-        dest->data.s = calloc(1, length);
+        dest->data.s = (char *) calloc(1, length);
         when_null(dest->data.s, exit);
         memcpy(dest->data.s, src->data.s, length);
     }
@@ -396,6 +396,12 @@ static amxc_var_type_t amxc_variant_char = {
     .convert_from = NULL,
     .convert_to = variant_char_convert_to,
     .compare = variant_char_compare,
+    .get_key = NULL,
+    .set_key = NULL,
+    .get_index = NULL,
+    .set_index = NULL,
+    .type_id = 0,
+    .hit = { .ait = NULL, .key = NULL, .next = NULL },
     .name = AMXC_VAR_NAME_CSTRING
 };
 
@@ -406,6 +412,12 @@ static amxc_var_type_t amxc_variant_csv_char = {
     .convert_from = NULL,
     .convert_to = variant_char_convert_to,
     .compare = variant_char_compare,
+    .get_key = NULL,
+    .set_key = NULL,
+    .get_index = NULL,
+    .set_index = NULL,
+    .type_id = 0,
+    .hit = { .ait = NULL, .key = NULL, .next = NULL },
     .name = AMXC_VAR_NAME_CSV_STRING
 };
 
@@ -416,6 +428,12 @@ static amxc_var_type_t amxc_variant_ssv_char = {
     .convert_from = NULL,
     .convert_to = variant_char_convert_to,
     .compare = variant_char_compare,
+    .get_key = NULL,
+    .set_key = NULL,
+    .get_index = NULL,
+    .set_index = NULL,
+    .type_id = 0,
+    .hit = { .ait = NULL, .key = NULL, .next = NULL },
     .name = AMXC_VAR_NAME_SSV_STRING
 };
 
@@ -436,7 +454,7 @@ static int amxc_var_set_data(amxc_var_t * const var, const char * const val) {
     int length = 0;
 
     length = strlen(val) + 1;
-    var->data.s = calloc(1, length);
+    var->data.s = (char *) calloc(1, length);
     when_null(var->data.s, exit);
     memcpy(var->data.s, val, length);
     retval = 0;

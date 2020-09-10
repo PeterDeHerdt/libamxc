@@ -196,7 +196,7 @@ amxc_var_type_t *amxc_var_get_type(uint32_t type_id) {
     amxc_array_it_t *ait = amxc_array_get_at(&amxc_array_types, type_id);
     when_null(ait, exit);
 
-    type = ait->data;
+    type = (amxc_var_type_t *) ait->data;
 
 exit:
     return type;
@@ -230,7 +230,7 @@ const char *amxc_var_get_type_name_from_id(const uint32_t type_id) {
     when_null(ait, exit);
     when_null(ait->data, exit);
 
-    type = ait->data;
+    type = (amxc_var_type_t *) ait->data;
     name = type->name;
 
 exit:

@@ -73,7 +73,7 @@ int amxc_llist_new(amxc_llist_t **llist) {
     int retval = -1;
     when_null(llist, exit);
 
-    *llist = calloc(1, sizeof(amxc_llist_t));
+    *llist = (amxc_llist_t *) calloc(1, sizeof(amxc_llist_t));
     if((*llist) != NULL) {
         retval = 0;
     }

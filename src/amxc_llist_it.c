@@ -187,12 +187,13 @@ exit:
 
 unsigned int amxc_llist_it_index_of(const amxc_llist_it_t * const it) {
     size_t index = 0;
+    const amxc_llist_it_t *pos = NULL;
     if((it == NULL) || (it->llist == NULL)) {
         index = AMXC_LLIST_RANGE;
         goto exit;
     }
 
-    const amxc_llist_it_t *pos = it;
+    pos = it;
     while(pos->prev) {
         index++;
         pos = pos->prev;

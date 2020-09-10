@@ -28,11 +28,17 @@ OBJECTS += $(addprefix $(OBJDIR)/,$(notdir $(VARIANTS:.c=.o)))
 # compilation and linking flags
 CFLAGS += -Werror -Wall -Wextra \
           -Wformat=2 -Wshadow \
-          -Wwrite-strings -Wstrict-prototypes -Wold-style-definition \
-          -Wredundant-decls -Wnested-externs -Wmissing-include-dirs \
+          -Wwrite-strings -Wredundant-decls -Wmissing-include-dirs \
           -Wpedantic -Wmissing-declarations \
           -Wno-format-nonliteral \
-          -fPIC --std=c11 -g3 $(addprefix -I ,$(INCDIRS))
+          -fPIC -g3 $(addprefix -I ,$(INCDIRS))
+
+ifeq ($(CC_NAME),g++)
+    CFLAGS += -std=c++2a
+else
+	CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=c11
+endif
+
 LDFLAGS += $(LIBDIR) -shared -fPIC
 
 # helper functions - used in multiple targets
@@ -101,6 +107,7 @@ test:
 	make -C tests coverage
 
 doc: libamxc.doxy
+	mkdir -p ./output/doc
 	VERSION=$(VERSION) doxygen $<
 
 clean:

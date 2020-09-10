@@ -71,10 +71,12 @@
 
 amxc_array_it_t *amxc_array_it_get_next(const amxc_array_it_t * const reference) {
     amxc_array_it_t *it = NULL;
+    amxc_array_t *array = NULL;
+    size_t pos = 0;
     when_null(reference, exit);
 
-    amxc_array_t *array = reference->array;
-    size_t pos = (reference - array->buffer);
+    array = reference->array;
+    pos = (reference - array->buffer);
     pos++;
     while(pos < array->items && !array->buffer[pos].data) {
         pos++;
@@ -90,10 +92,12 @@ exit:
 
 amxc_array_it_t *amxc_array_it_get_next_free(const amxc_array_it_t * const reference) {
     amxc_array_it_t *it = NULL;
+    amxc_array_t *array = NULL;
+    size_t pos = 0;
     when_null(reference, exit);
 
-    amxc_array_t *array = reference->array;
-    size_t pos = (reference - array->buffer);
+    array = reference->array;
+    pos = (reference - array->buffer);
     pos++;
     while(pos < array->items && array->buffer[pos].data != NULL) {
         pos++;
@@ -109,10 +113,12 @@ exit:
 
 amxc_array_it_t *amxc_array_it_get_previous(const amxc_array_it_t * const reference) {
     amxc_array_it_t *it = NULL;
+    amxc_array_t *array = NULL;
+    size_t pos = 0;
     when_null(reference, exit);
 
-    amxc_array_t *array = reference->array;
-    size_t pos = (reference - array->buffer);
+    array = reference->array;
+    pos = (reference - array->buffer);
     while(pos > 0 && !array->buffer[pos - 1].data) {
         pos--;
     }
@@ -127,10 +133,12 @@ exit:
 
 amxc_array_it_t *amxc_array_it_get_previous_free(const amxc_array_it_t * const reference) {
     amxc_array_it_t *it = NULL;
+    amxc_array_t *array = NULL;
+    size_t pos = 0;
     when_null(reference, exit);
 
-    amxc_array_t *array = reference->array;
-    size_t pos = (reference - array->buffer);
+    array = reference->array;
+    pos = (reference - array->buffer);
     while(pos > 0 && array->buffer[pos - 1].data != NULL) {
         pos--;
     }

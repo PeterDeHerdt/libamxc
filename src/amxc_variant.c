@@ -123,7 +123,7 @@ int amxc_var_new(amxc_var_t **var) {
     int retval = -1;
     when_null(var, exit);
 
-    *var = calloc(1, sizeof(amxc_var_t));
+    *var = (amxc_var_t *) calloc(1, sizeof(amxc_var_t));
     when_null(*var, exit);
 
     retval = amxc_var_init(*var);
@@ -458,7 +458,7 @@ amxc_var_t *amxc_var_get_path(const amxc_var_t * const var,
 
     retval = var;
     length = strlen(path);
-    dup_path = calloc(1, length + 1);
+    dup_path = (char *) calloc(1, length + 1);
     memcpy(dup_path, path, length);
     token = strtok(dup_path, ".");
 

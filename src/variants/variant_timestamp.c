@@ -70,7 +70,7 @@ static int variant_ts_init(amxc_var_t * const var) {
 static int variant_ts_to_string(amxc_var_t * const dest,
                                 const amxc_var_t * const src) {
     int retval = -1;
-    dest->data.s = calloc(40, sizeof(char));
+    dest->data.s = (char *) calloc(40, sizeof(char));
 
     when_null(dest->data.s, exit);
 
@@ -150,6 +150,12 @@ static amxc_var_type_t amxc_variant_ts = {
     .convert_from = NULL,
     .convert_to = variant_ts_convert_to,
     .compare = variant_ts_compare,
+    .get_key = NULL,
+    .set_key = NULL,
+    .get_index = NULL,
+    .set_index = NULL,
+    .type_id = 0,
+    .hit = { .ait = NULL, .key = NULL, .next = NULL },
     .name = AMXC_VAR_NAME_TIMESTAMP
 };
 
@@ -185,7 +191,7 @@ amxc_ts_t *amxc_var_get_amxc_ts_t(const amxc_var_t *var) {
     amxc_var_t variant;
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_TIMESTAMP), exit);
-    ts = calloc(1, sizeof(amxc_ts_t));
+    ts = (amxc_ts_t *) calloc(1, sizeof(amxc_ts_t));
     when_null(ts, exit);
 
     ts->sec = variant.data.ts.sec;

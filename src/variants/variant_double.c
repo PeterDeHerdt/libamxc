@@ -72,7 +72,7 @@ static int variant_double_to_string(amxc_var_t * const dest,
     int retval = -1;
     int check = 0;
     int size_needed = snprintf(NULL, 0, "%f", src->data.d);
-    dest->data.s = calloc(size_needed + 1, sizeof(char));
+    dest->data.s = (char *) calloc(size_needed + 1, sizeof(char));
 
     when_null(dest->data.s, exit);
 
@@ -285,6 +285,12 @@ static amxc_var_type_t amxc_variant_double = {
     .convert_from = NULL,
     .convert_to = variant_double_convert_to,
     .compare = variant_double_compare,
+    .get_key = NULL,
+    .set_key = NULL,
+    .get_index = NULL,
+    .set_index = NULL,
+    .type_id = 0,
+    .hit = { .ait = NULL, .key = NULL, .next = NULL },
     .name = AMXC_VAR_NAME_DOUBLE
 };
 

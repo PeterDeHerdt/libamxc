@@ -528,9 +528,10 @@ exit:
 
 bool amxc_ts_is_valid(const amxc_ts_t *tsp) {
     bool retval = false;
+    int64_t sec = 0;
     when_null(tsp, exit);
 
-    const int64_t sec = tsp->sec + tsp->offset * 60;
+    sec = tsp->sec + tsp->offset * 60;
     if((sec < MIN_SEC) || (sec > MAX_SEC) ||
        ( tsp->nsec < 0) || ( tsp->nsec > 999999999) ||
        ( tsp->offset < -1439) || ( tsp->offset > 1439)) {

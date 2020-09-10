@@ -86,11 +86,12 @@ exit:
 }
 
 void amxc_htable_it_clean(amxc_htable_it_t * const it, amxc_htable_it_delete_t func) {
+    char *key = NULL;
     when_null(it, exit);
 
     // remove from htable if it is in one
     amxc_htable_it_take(it);
-    char *key = it->key;
+    key = it->key;
     it->key = NULL;
     if(func != NULL) {
         func(key, it);
@@ -112,7 +113,7 @@ amxc_htable_it_t *amxc_htable_it_get_next(const amxc_htable_it_t * const referen
     } else {
         amxc_array_it_t *ait = amxc_array_it_get_next(reference->ait);
         when_null(ait, exit);
-        it = ait->data;
+        it = (amxc_htable_it_t *) ait->data;
     }
 
 exit:
@@ -134,12 +135,13 @@ exit:
 }
 
 void amxc_htable_it_take(amxc_htable_it_t * const it) {
+    amxc_htable_t *htable = NULL;
     when_null(it, exit);
     when_null(it->ait, exit);
 
-    amxc_htable_t *htable = (amxc_htable_t *) it->ait->array;
+    htable = (amxc_htable_t *) it->ait->array;
     if(it->ait->data != it) {
-        amxc_htable_it_t *prev = it->ait->data;
+        amxc_htable_it_t *prev = (amxc_htable_it_t *) it->ait->data;
         while(prev->next != it) {
             prev = prev->next;
         }

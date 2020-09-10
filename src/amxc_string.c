@@ -84,9 +84,9 @@ static int amxc_string_realloc(amxc_string_t *string, const size_t length) {
         string->length = 0;
         retval = 0;
     } else if(string->buffer != NULL) {
-        new_buffer = realloc(string->buffer, sizeof(char) * length + 1);
+        new_buffer = (char *) realloc(string->buffer, sizeof(char) * length + 1);
     } else {
-        new_buffer = calloc(length + 1, sizeof(char));
+        new_buffer = (char *) calloc(length + 1, sizeof(char));
     }
     if(new_buffer != NULL) {
         string->buffer = new_buffer;
@@ -105,7 +105,7 @@ int amxc_string_new(amxc_string_t **string, const size_t length) {
     when_null(string, exit);
 
     /* allocate the array structure */
-    *string = calloc(1, sizeof(amxc_string_t));
+    *string = (amxc_string_t *) calloc(1, sizeof(amxc_string_t));
     when_null(*string, exit);
 
     /* set the number of items in the array */
@@ -292,6 +292,7 @@ int amxc_string_remove_at(amxc_string_t * const string,
                           const size_t pos,
                           size_t length) {
     int retval = -1;
+    size_t bytes_to_move = 0;
     when_null(string, exit);
     when_true(length == 0, exit);
     when_true(pos > string->last_used, exit);
@@ -301,7 +302,7 @@ int amxc_string_remove_at(amxc_string_t * const string,
         length = string->last_used - pos;
     }
 
-    size_t bytes_to_move = string->last_used - (pos + length);
+    bytes_to_move = string->last_used - (pos + length);
     memmove(string->buffer + pos, string->buffer + pos + length, bytes_to_move);
     string->last_used -= length;
     string->buffer[string->last_used] = 0;
@@ -385,7 +386,7 @@ char *amxc_string_dup(const amxc_string_t * const string,
         length = string->last_used - start;
     }
 
-    text = calloc(length + 1, sizeof(char));
+    text = (char *) calloc(length + 1, sizeof(char));
     memcpy(text, string->buffer + start, length);
     text[length] = 0;
 

@@ -325,6 +325,10 @@ static amxc_var_type_t amxc_variant_htable = {
     .compare = NULL,
     .get_key = variant_htable_get_key,
     .set_key = variant_htable_set_key,
+    .get_index = NULL,
+    .set_index = NULL,
+    .type_id = 0,
+    .hit = { .ait = NULL, .key = NULL, .next = NULL },
     .name = AMXC_VAR_NAME_HTABLE
 };
 

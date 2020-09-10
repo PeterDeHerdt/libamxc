@@ -61,11 +61,18 @@
 #include <amxc_variant_priv.h>
 
 static amxc_var_type_t amxc_variant_null = {
+    .init = NULL,
+    .del = NULL,
     .copy = amxc_var_default_copy,
     .convert_from = NULL,
     .convert_to = NULL,
     .compare = NULL,
-    .del = NULL,
+    .get_key = NULL,
+    .set_key = NULL,
+    .get_index = NULL,
+    .set_index = NULL,
+    .type_id = 0,
+    .hit = { .ait = NULL, .key = NULL, .next = NULL },
     .name = AMXC_VAR_NAME_NULL
 };
 

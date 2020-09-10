@@ -8,6 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 0.6.11 - 2020-09-03(05:13:31 +0000)
+
+### Fixes
+
+- Fixes g++ compilation warnings and errors
+
+### Changes
+
+- Add version prefix to support legacy build system
+
+## Release 0.6.10 - 2020-09-01(19:34:50 +0000)
+
+### Changes
+
+- Add support for legacy tagging system with branch names in the tags
+- Removes documentation generation jobs from the specific pipeline, they are now part of the default pipeline
+
+## Release 0.6.9 - 2020-08-27(09:36:23 +0000)
+
+### Changes
+
+- Moves common re-usable macros to libamxc
+
 ## Release 0.6.8 - 2020-08-20(12:29:59 +0000)
 
 ### New

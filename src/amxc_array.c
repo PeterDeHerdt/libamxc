@@ -106,9 +106,9 @@ static int amxc_array_realloc(amxc_array_t *array, const size_t items) {
     amxc_array_it_t *buffer = NULL;
 
     if(array->buffer != NULL) {
-        buffer = realloc(array->buffer, sizeof(amxc_array_it_t) * items);
+        buffer = (amxc_array_it_t *) realloc(array->buffer, sizeof(amxc_array_it_t) * items);
     } else {
-        buffer = calloc(items, sizeof(amxc_array_it_t));
+        buffer = (amxc_array_it_t *) calloc(items, sizeof(amxc_array_it_t));
     }
     if(buffer != NULL) {
         array->buffer = buffer;
@@ -187,7 +187,7 @@ int8_t amxc_array_new(amxc_array_t **array, const size_t items) {
     when_null(array, exit);
 
     /* allocate the array structure */
-    *array = calloc(1, sizeof(amxc_array_t));
+    *array = (amxc_array_t *) calloc(1, sizeof(amxc_array_t));
     when_null(*array, exit);
 
     /* set the number of items in the array */
@@ -284,6 +284,7 @@ exit:
 
 int amxc_array_grow(amxc_array_t * const array, const size_t items) {
     int retval = -1;
+    size_t old_items = 0;
     when_null(array, exit);
 
     if(items == 0) {
@@ -291,7 +292,7 @@ int amxc_array_grow(amxc_array_t * const array, const size_t items) {
         goto exit;
     }
 
-    size_t old_items = array->items;
+    old_items = array->items;
     retval = amxc_array_realloc(array, array->items + items);
     amxc_array_initialize_items(array, old_items);
 
@@ -328,6 +329,9 @@ int amxc_array_shift_right(amxc_array_t * const array,
                            const size_t items,
                            amxc_array_it_delete_t func) {
     int retval = -1;
+    amxc_array_it_t *src = NULL;
+    amxc_array_it_t *dst = NULL;
+    size_t len = 0;
     when_null(array, exit);
     when_true(items > array->items, exit);
 
@@ -344,9 +348,9 @@ int amxc_array_shift_right(amxc_array_t * const array,
         goto exit;
     }
 
-    amxc_array_it_t *src = array->buffer;
-    amxc_array_it_t *dst = &array->buffer[items];
-    size_t len = (array->items - items) * sizeof(amxc_array_it_t);
+    src = array->buffer;
+    dst = &array->buffer[items];
+    len = (array->items - items) * sizeof(amxc_array_it_t);
 
     memmove(dst, src, len);
     amxc_array_clean_items(array, 0, items, func);
@@ -363,6 +367,9 @@ int amxc_array_shift_left(amxc_array_t * const array,
                           const size_t items,
                           amxc_array_it_delete_t func) {
     int retval = -1;
+    amxc_array_it_t *src = NULL;
+    amxc_array_it_t *dst = NULL;
+    size_t len = 0;
     when_null(array, exit);
     when_true(items > array->items, exit);
 
@@ -379,9 +386,9 @@ int amxc_array_shift_left(amxc_array_t * const array,
         goto exit;
     }
 
-    amxc_array_it_t *src = &array->buffer[items];
-    amxc_array_it_t *dst = array->buffer;
-    size_t len = (array->items - items) * sizeof(amxc_array_it_t);
+    src = &array->buffer[items];
+    dst = array->buffer;
+    len = (array->items - items) * sizeof(amxc_array_it_t);
 
     memmove(dst, src, len);
     amxc_array_clean_items(array, array->items - items, items, func);
@@ -426,10 +433,10 @@ exit:
 
 amxc_array_it_t *amxc_array_append_data(amxc_array_t * const array, void *data) {
     amxc_array_it_t *it = NULL;
+    size_t index = 0;
     when_null(array, exit);
     when_null(data, exit);
 
-    size_t index = 0;
     if(!amxc_array_is_empty(array)) {
         index = array->last_used + 1;
     }
@@ -446,12 +453,13 @@ exit:
 
 amxc_array_it_t *amxc_array_prepend_data(amxc_array_t * const array, void *data) {
     amxc_array_it_t *it = NULL;
+    size_t index = 0;
+    bool grow = false;
     when_null(array, exit);
     when_null(data, exit);
 
-    size_t index = 0;
-    bool grow = ((!amxc_array_is_empty(array) && array->first_used == 0) ||
-                 (array->buffer == NULL));
+    grow = ((!amxc_array_is_empty(array) && array->first_used == 0) ||
+            (array->buffer == NULL));
 
     if(grow) {
         when_failed(amxc_array_grow(array, AMXC_ARRAY_AUTO_GROW_ITEMS), exit);
@@ -525,9 +533,9 @@ exit:
 
 amxc_array_it_t *amxc_array_get_first_free(const amxc_array_t * const array) {
     amxc_array_it_t *it = NULL;
+    size_t index = 0;
     when_null(array, exit);
 
-    size_t index = 0;
     while(index < array->items && array->buffer[index].data != NULL) {
         index++;
     }
@@ -554,9 +562,10 @@ exit:
 
 amxc_array_it_t *amxc_array_get_last_free(const amxc_array_t * const array) {
     amxc_array_it_t *it = NULL;
+    size_t index = 0;
     when_null(array, exit);
 
-    size_t index = array->items;
+    index = array->items;
     while(index > 0 && array->buffer[index - 1].data != NULL) {
         index--;
     }

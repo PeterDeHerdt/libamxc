@@ -74,15 +74,16 @@
 static int amxc_htable_grow(amxc_htable_t * const htable) {
     int retval = -1;
     size_t capacity = htable->items;
-
+    amxc_array_it_t *it = NULL;
     amxc_array_t temp;
+
     retval = amxc_array_init(&temp, capacity);
     when_failed(retval, exit);
 
     // move the items to the temp array and reset the table
-    amxc_array_it_t *it = amxc_array_get_first(&htable->table);
+    it = amxc_array_get_first(&htable->table);
     while(it != NULL) {
-        amxc_htable_it_t *hit = amxc_array_it_take_data(it);
+        amxc_htable_it_t *hit = (amxc_htable_it_t *) amxc_array_it_take_data(it);
         hit->ait = NULL;
         amxc_array_append_data(&temp, hit);
         while(hit->next != NULL) {
@@ -103,7 +104,7 @@ static int amxc_htable_grow(amxc_htable_t * const htable) {
     // add the items back to the htable
     it = amxc_array_get_first(&temp);
     while(it != NULL) {
-        amxc_htable_it_t *hit = amxc_array_it_take_data(it);
+        amxc_htable_it_t *hit = (amxc_htable_it_t *) amxc_array_it_take_data(it);
         amxc_htable_insert(htable, hit->key, hit);
         it = amxc_array_get_first(&temp);
     }
@@ -117,7 +118,7 @@ exit:
 
 static void amxc_htable_it_delete_func(amxc_array_it_t * const it) {
     amxc_htable_t *htable = (amxc_htable_t *) it->array;
-    amxc_htable_it_t *current = it->data;
+    amxc_htable_it_t *current = (amxc_htable_it_t *) it->data;
 
     while(current != NULL) {
         amxc_htable_it_t *next = current->next;
@@ -136,7 +137,7 @@ int amxc_htable_new(amxc_htable_t **htable, const size_t reserve) {
     int retval = -1;
     when_null(htable, exit);
 
-    *htable = calloc(1, sizeof(amxc_htable_t));
+    *htable = (amxc_htable_t *) calloc(1, sizeof(amxc_htable_t));
     when_null(*htable, exit);
 
     retval = amxc_htable_init(*htable, reserve);
@@ -218,6 +219,8 @@ int amxc_htable_insert(amxc_htable_t * const htable,
                        const char * const key,
                        amxc_htable_it_t * const it) {
     int retval = -1;
+    unsigned int index = 0;
+    amxc_array_it_t *ait = NULL;
     when_null(htable, exit);
     when_null(key, exit);
     when_true(*key == 0, exit);
@@ -241,16 +244,16 @@ int amxc_htable_insert(amxc_htable_t * const htable,
     // update htable iterator
     if(it->key == NULL) {
         size_t length = strlen(key);
-        it->key = calloc(length + 1, sizeof(char));
+        it->key = (char *) calloc(length + 1, sizeof(char));
         when_null(it->key, exit);
         memcpy(it->key, key, length);
     }
 
-    unsigned int index = amxc_htable_key2index(htable, key);
-    amxc_array_it_t *ait = amxc_array_get_at(&htable->table, index);
+    index = amxc_htable_key2index(htable, key);
+    ait = amxc_array_get_at(&htable->table, index);
     // insert item
     if(ait->data != NULL) {
-        it->next = ait->data;
+        it->next = (amxc_htable_it_t *) ait->data;
     }
     amxc_array_it_set_data(ait, it);
     it->ait = ait;
@@ -265,18 +268,21 @@ exit:
 amxc_htable_it_t *amxc_htable_get(const amxc_htable_t * const htable,
                                   const char * const key) {
     amxc_htable_it_t *it = NULL;
+    unsigned int index = 0;
+    amxc_array_it_t *ait = NULL;
+
     when_null(htable, exit);
     when_null(key, exit);
     when_true(*key == 0, exit);
 
     when_true(htable->table.items == 0, exit);
 
-    unsigned int index = amxc_htable_key2index(htable, key);
+    index = amxc_htable_key2index(htable, key);
     // the index is always in array bounderies.
     // the following line is always returning a valid array iterator pointer
-    amxc_array_it_t *ait = amxc_array_get_at(&htable->table, index);
+    ait = amxc_array_get_at(&htable->table, index);
 
-    it = ait->data;
+    it = (amxc_htable_it_t *) ait->data;
     while(it != NULL && strcmp(key, it->key) != 0) {
         it = it->next;
     }
@@ -296,11 +302,12 @@ amxc_htable_it_t *amxc_htable_take(amxc_htable_t * const htable,
 
 amxc_htable_it_t *amxc_htable_get_first(const amxc_htable_t * const htable) {
     amxc_htable_it_t *it = NULL;
+    amxc_array_it_t *ait = NULL;
     when_null(htable, exit);
 
-    amxc_array_it_t *ait = amxc_array_get_first(&htable->table);
+    ait = amxc_array_get_first(&htable->table);
     when_null(ait, exit);
-    it = ait->data;
+    it = (amxc_htable_it_t *) ait->data;
 
 exit:
     return it;

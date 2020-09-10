@@ -1,3 +1,23 @@
+libamxc (0.6.11) unstable; urgency=medium
+
+  * Fixes g++ compilation warnings and errors
+  * Add version prefix to support legacy build system
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Thu, 03 Sep 2020 05:13:35 +0000
+
+libamxc (0.6.10) unstable; urgency=medium
+
+  * Add support for legacy tagging system with branch names in the tags
+  * Removes documentation generation jobs from the specific pipeline, they are now part of the default pipeline
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Tue, 01 Sep 2020 19:35:07 +0000
+
+libamxc (0.6.9) unstable; urgency=medium
+
+  * Moves common re-usable macros to libamxc
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 27 Aug 2020 09:36:29 +0000
+
 libamxc (0.6.8) unstable; urgency=medium
 
   * Added amxc_string_is_numeric.

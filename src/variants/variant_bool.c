@@ -67,7 +67,7 @@ static int variant_bool_to_string(amxc_var_t * const dest,
                                   const amxc_var_t * const src) {
     int retval = -1;
     int check = 0;
-    dest->data.s = calloc(6, sizeof(char));
+    dest->data.s = (char *) calloc(6, sizeof(char));
 
     when_null(dest->data.s, exit);
 
@@ -164,6 +164,12 @@ static amxc_var_type_t amxc_variant_bool = {
     .convert_from = NULL,
     .convert_to = variant_bool_convert_to,
     .compare = variant_bool_compare,
+    .get_key = NULL,
+    .set_key = NULL,
+    .get_index = NULL,
+    .set_index = NULL,
+    .type_id = 0,
+    .hit = { .ait = NULL, .key = NULL, .next = NULL },
     .name = AMXC_VAR_NAME_BOOL
 };
 

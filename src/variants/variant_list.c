@@ -341,6 +341,8 @@ static amxc_var_type_t amxc_variant_list = {
     .set_key = variant_list_set_key,
     .get_index = variant_list_get_index,
     .set_index = variant_list_set_index,
+    .type_id = 0,
+    .hit = { .ait = NULL, .key = NULL, .next = NULL },
     .name = AMXC_VAR_NAME_LIST
 };
 

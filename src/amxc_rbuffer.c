@@ -68,9 +68,9 @@
 static char *amxc_rbuffer_alloc(amxc_rbuffer_t * const rb, const size_t size) {
     char *buffer = NULL;
     if(rb->buffer_start == NULL) {
-        buffer = calloc(1, size);
+        buffer = (char *) calloc(1, size);
     } else {
-        buffer = realloc(rb->buffer_start, size);
+        buffer = (char *) realloc(rb->buffer_start, size);
     }
 
     return buffer;
@@ -86,7 +86,7 @@ int amxc_rbuffer_new(amxc_rbuffer_t **rb, const size_t size) {
     int retval = -1;
     when_null(rb, exit);
 
-    *rb = calloc(1, sizeof(amxc_rbuffer_t));
+    *rb = (amxc_rbuffer_t *) calloc(1, sizeof(amxc_rbuffer_t));
     when_null(*rb, exit);
 
     retval = amxc_rbuffer_init(*rb, size);
@@ -152,13 +152,18 @@ exit:
 
 int amxc_rbuffer_grow(amxc_rbuffer_t * const rb, const size_t size) {
     int retval = -1;
+    size_t read_pos = 0;
+    size_t write_pos = 0;
+    size_t new_size = 0;
+    char *new_buffer = NULL;
+
     when_null(rb, exit);
 
-    size_t read_pos = rb->read_pos - rb->buffer_start;
-    size_t write_pos = rb->write_pos - rb->buffer_start;
+    read_pos = rb->read_pos - rb->buffer_start;
+    write_pos = rb->write_pos - rb->buffer_start;
 
-    size_t new_size = (rb->buffer_end - rb->buffer_start) + size;
-    char *new_buffer = amxc_rbuffer_alloc(rb, new_size);
+    new_size = (rb->buffer_end - rb->buffer_start) + size;
+    new_buffer = amxc_rbuffer_alloc(rb, new_size);
     if(!new_buffer) {
         goto exit;
     }
@@ -190,9 +195,14 @@ exit:
 // TODO: this function needs refactorying/splitting up - too long
 int amxc_rbuffer_shrink(amxc_rbuffer_t * const rb, const size_t size) {
     int retval = -1;
+    size_t buffer_size = 0;
+    size_t new_size = 0;
+    size_t read_pos = 0;
+    size_t write_pos = 0;
+    char *new_buffer = NULL;
     when_null(rb, exit);
 
-    size_t buffer_size = rb->buffer_end - rb->buffer_start;
+    buffer_size = rb->buffer_end - rb->buffer_start;
     when_true(size > buffer_size, exit);
 
     if(size == buffer_size) {
@@ -201,7 +211,7 @@ int amxc_rbuffer_shrink(amxc_rbuffer_t * const rb, const size_t size) {
         goto exit;
     }
 
-    size_t new_size = (rb->buffer_end - rb->buffer_start) - size;
+    new_size = (rb->buffer_end - rb->buffer_start) - size;
     if(rb->read_pos > rb->write_pos) {
         size_t bytes = rb->read_pos - rb->buffer_start;
         size_t move = (size > bytes) ? bytes : size;
@@ -227,10 +237,10 @@ int amxc_rbuffer_shrink(amxc_rbuffer_t * const rb, const size_t size) {
         }
     }
 
-    size_t read_pos = rb->read_pos - rb->buffer_start;
-    size_t write_pos = rb->write_pos - rb->buffer_start;
+    read_pos = rb->read_pos - rb->buffer_start;
+    write_pos = rb->write_pos - rb->buffer_start;
 
-    char *new_buffer = realloc(rb->buffer_start, new_size);
+    new_buffer = (char *) realloc(rb->buffer_start, new_size);
 
     rb->buffer_start = new_buffer;
     rb->buffer_end = rb->buffer_start + new_size;
@@ -288,10 +298,11 @@ ssize_t amxc_rbuffer_write(amxc_rbuffer_t * const rb,
                            const char * const buf,
                            const size_t count) {
     ssize_t retval = -1;
+    size_t free_space = 0;
     when_null(rb, exit);
 
     // check space, grow if needed
-    size_t free_space = (rb->buffer_end - rb->buffer_start) - amxc_rbuffer_size(rb);
+    free_space = (rb->buffer_end - rb->buffer_start) - amxc_rbuffer_size(rb);
     if(free_space < count) {
         when_failed(amxc_rbuffer_grow(rb, count * 2), exit);
     }
