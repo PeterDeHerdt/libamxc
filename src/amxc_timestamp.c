@@ -84,6 +84,12 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************/
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
+#include <unistd.h>
+#include <sys/time.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -301,21 +307,20 @@ exit:
 
 int amxc_ts_now(amxc_ts_t *tsp) {
     int retval = -1;
-    time_t now = time(NULL);
+    struct timespec ts = {0, 0};
 
     when_null(tsp, exit);
+    retval = clock_gettime(CLOCK_REALTIME, &ts);
+    tsp->sec = ts.tv_sec;
+    tsp->nsec = ts.tv_nsec;
 
-    if(now == -1) {
+    if(retval != 0) {
         tsp->sec = MIN_SEC;
-    } else {
-        tsp->sec = now;
     }
     tsp->offset = 0;
-    tsp->nsec = 0;
 
-    retval = 0;
 exit:
-    return retval;
+    return retval ? -1 : 0;
 }
 
 static int amxc_ts_parse_date(const unsigned char *cur,

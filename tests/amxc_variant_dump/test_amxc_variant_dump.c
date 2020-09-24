@@ -67,6 +67,7 @@
 #include <unistd.h>
 #include <setjmp.h>
 #include <cmocka.h>
+#include <syslog.h>
 
 #include <amxc/amxc_variant_type.h>
 
@@ -114,4 +115,38 @@ void test_amxc_variant_dump(UNUSED void **state) {
     amxc_var_unregister_type(&my_dummy_type);
 
     amxc_var_clean(&myvar);
+}
+
+void test_amxc_variant_log(UNUSED void **state) {
+    amxc_var_t myvar;
+    amxc_var_t *subvar = NULL;
+
+    openlog("test", LOG_PID | LOG_CONS, LOG_DAEMON);
+
+    amxc_var_register_type(&my_dummy_type);
+    int dummy_type_id = amxc_var_get_type_id_from_name(my_dummy_type.name);
+
+    amxc_var_init(&myvar);
+    amxc_var_set_type(&myvar, AMXC_VAR_ID_HTABLE);
+
+    subvar = amxc_var_add_new_key(&myvar, "KEY1");
+    amxc_var_set_type(subvar, AMXC_VAR_ID_LIST);
+    amxc_var_add_new(subvar);
+    amxc_var_add_new(subvar);
+    subvar = amxc_var_add_new_key(&myvar, "KEY2");
+    amxc_var_set_type(subvar, AMXC_VAR_ID_HTABLE);
+    amxc_var_add_new_key(subvar, "Foo");
+    amxc_var_add_new_key(subvar, "Bar");
+    subvar = amxc_var_add_key(cstring_t, &myvar, "KEY3", "Hello world");
+    subvar = amxc_var_add_key(uint64_t, &myvar, "KEY4", 666);
+    subvar = amxc_var_add_key(fd_t, &myvar, "KEY5", STDOUT_FILENO);
+    subvar = amxc_var_add_new_key(&myvar, "KEY6");
+    amxc_var_set_type(subvar, dummy_type_id);
+
+    amxc_var_log(&myvar);
+
+    amxc_var_unregister_type(&my_dummy_type);
+
+    amxc_var_clean(&myvar);
+    closelog();
 }

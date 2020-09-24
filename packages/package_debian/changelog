@@ -1,3 +1,11 @@
+libamxc (0.6.12) unstable; urgency=medium
+
+  * Make timestamps more accurate  fill in the nanosecond field
+  * Documentation - clarify examples in "Setting Composite Values"
+  * Make it possible to dump the content of a variant to the syslog
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 17 Sep 2020 12:57:53 +0000
+
 libamxc (0.6.11) unstable; urgency=medium
 
   * Fixes g++ compilation warnings and errors

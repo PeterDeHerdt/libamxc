@@ -62,5 +62,6 @@
 #define __TEST_AMXC_VARIANT_DUMP_H__
 
 void test_amxc_variant_dump(void **state);
+void test_amxc_variant_log(void **state);
 
 #endif // __TEST_AMXC_VARIANT_DUMP_H__

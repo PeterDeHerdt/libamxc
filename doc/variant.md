@@ -12,7 +12,7 @@
   2.4. [Checking the Type](#checking-the-type)<br>
   2.5. [Setting Values](#setting-Values)<br>
   2.5.1. [Setting Primitive Values](#setting-primitive-values)<br>
-  2.5.2. [Setting el.bus Values](#setting-composite-values)<br>
+  2.5.2. [Setting Composite Values](#setting-composite-values)<br>
   2.6. [Getting Values](#getting-values)<br>
   2.6.1. [Getting Primitive Values](#getting-primitive-values)<br>
   2.6.2. [Getting composite Values](#getting-composite-values)<br>
@@ -222,8 +222,8 @@ amxc_var_t my_var;
 
 amxc_var_init(&my_var);
 amxc_var_set_type(&my_var, AMXC_VAR_ID_HTABLE);
-amxc_var_add(cstring_t, &my_var, "key1", "Hello");
-amxc_var_add(cstring_t, &my_var, "key2", "World");
+amxc_var_add_key(cstring_t, &my_var, "key1", "Hello");
+amxc_var_add_key(cstring_t, &my_var, "key2", "World");
 ```
 
 It is possible to create a variant containing a linked list of variants, where each variant in the linked list is a variant containing key-value pairs.
@@ -256,6 +256,21 @@ void add_user(amxc_llist_t *users, uint32_t user_id, const char *name, uint32_t 
 }
 ```
 
+Other functions can then call this one to add an instance, example:
+
+```C
+amxc_llist_t *my_worker_function(void) {
+    amxc_llist_t *my_users = NULL;
+    amxc_llist_new(&my_users);
+
+    add_user(my_users, 1, "John Doe", 0x755);
+    add_user(my_users, 2, "Jane Doe", 0x644);
+    add_user(my_users, 3, "Super", 0x777);
+
+    return my_users;
+}
+```
+
 The same can be achieved with variants, but now you do not need to define a `fixed` structure, all you need is a variant that is initialized as a `list` type.
 
 The function could look like (without error checking):
@@ -263,11 +278,28 @@ The function could look like (without error checking):
 ```C
 void add_user(amxc_var_t *users, uint32_t user_id, const char *name, uint32_t access_rights) {
     amxc_var_t *user = amxc_var_add(amxc_htable_t, users, NULL);
-    amxc_var_add(uint32_t, user, "user_id", user_id);
-    amxc_var_add(cstring_t, user, "name", name);
-    amxc_var_add(uint32_t, user, "access_rights", access_rights);
+    amxc_var_add_key(uint32_t, user, "user_id", user_id);
+    amxc_var_add_key(cstring_t, user, "name", name);
+    amxc_var_add_key(uint32_t, user, "access_rights", access_rights);
 }
 ```
+
+Others can then use this function to fill the variant list
+
+```C
+amxc_var_t *my_worker_function(void) {
+    amxc_var_t *my_users = NULL;
+    amxc_var_new(&my_users);
+    amxc_var_set_type(my_users, AMXC_VAR_ID_LIST);
+
+    add_user(my_users, 1, "John Doe", 0x755);
+    add_user(my_users, 2, "Jane Doe", 0x644);
+    add_user(my_users, 3, "Super", 0x777);
+
+    return my_users;
+}
+```
+
 
 The first line in this function adds an empty key-value pair variant to the `users` variant which should be intialized to a `list` type.
 

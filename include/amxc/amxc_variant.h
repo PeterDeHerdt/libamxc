@@ -693,6 +693,7 @@ bool amxc_var_is_null(const amxc_var_t * const var) {
 void variant_list_it_free(amxc_llist_it_t *it);
 void variant_htable_it_free(const char *key, amxc_htable_it_t *it);
 int amxc_var_dump(const amxc_var_t * const var, int fd);
+int amxc_var_log(const amxc_var_t * const var);
 
 /*
    Set of wrapper functions to easier access variants

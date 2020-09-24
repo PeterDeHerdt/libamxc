@@ -62,33 +62,58 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <syslog.h>
 
 #include <amxc/amxc_string.h>
 #include <amxc/amxc_variant_type.h>
+#include <amxc/amxc_rbuffer.h>
 #include <amxc_variant_priv.h>
 #include <amxc_assert.h>
 
-typedef int (*amxc_var_dump_fn_t) (const amxc_var_t * const var, int indent, int fd);
+typedef struct _amxc_log_var {
+    int fd;
+    amxc_string_t message;
+} amxc_log_var_t;
+
+typedef int (*amxc_var_dump_fn_t) (const amxc_var_t * const var,
+                                   int indent,
+                                   amxc_log_var_t *log);
+
+static int amxc_var_write(amxc_log_var_t *log,
+                          const char *line,
+                          size_t length) {
+    int retval = 0;
+    if(log->fd != -1) {
+        retval = write(log->fd, line, length);
+    } else {
+        retval = amxc_string_append(&log->message, line, length);
+    }
+    return retval;
+}
 
 static int amxc_var_dump_internal(const amxc_var_t * const var,
                                   int indent,
-                                  int fd);
+                                  amxc_log_var_t *log);
 
-static void write_indentation(int indent, int fd) {
-    for(int i = 0; i < indent; i++) {
-        when_true(write(fd, " ", 1) == -1, exit);
+static void write_indentation(int indent, amxc_log_var_t *log) {
+    if(log->fd != -1) {
+        for(int i = 0; i < indent; i++) {
+            when_true(amxc_var_write(log, " ", 1) == -1, exit);
+        }
     }
 
 exit:
     return;
 }
 
-static int variant_dump_type(const amxc_var_t * const var, int indent, int fd) {
+static int variant_dump_type(const amxc_var_t * const var,
+                             int indent,
+                             amxc_log_var_t *log) {
     amxc_string_t txt;
     char addr[64] = "";
     const char *type_name = amxc_var_type_name_of(var);
 
-    write_indentation(indent, fd);
+    write_indentation(indent, log);
     amxc_string_init(&txt, 64);
     amxc_string_append(&txt, "<", 1);
     amxc_string_append(&txt, type_name, strlen(type_name));
@@ -97,7 +122,9 @@ static int variant_dump_type(const amxc_var_t * const var, int indent, int fd) {
         snprintf(addr, 63, "%p:", var->data.data);
         amxc_string_append(&txt, addr, strlen(addr));
     }
-    when_true(write(fd, amxc_string_get(&txt, 0), amxc_string_text_length(&txt)) == -1,
+    when_true(amxc_var_write(log,
+                             amxc_string_get(&txt, 0),
+                             amxc_string_text_length(&txt)) == -1,
               exit);
 
 exit:
@@ -106,38 +133,43 @@ exit:
 }
 
 static int variant_dump_null(AMXC_UNUSED const amxc_var_t * const var,
-                             int indent, int fd) {
-    write_indentation(indent, fd);
-    when_true(write(fd, "<NULL>", 6) == -1, exit);
+                             int indent,
+                             amxc_log_var_t *log) {
+    write_indentation(indent, log);
+    when_true(amxc_var_write(log, "<NULL>", 6) == -1, exit);
 
 exit:
     return 0;
 }
 
-static int variant_dump_char(const amxc_var_t * const var, int indent, int fd) {
+static int variant_dump_char(const amxc_var_t * const var,
+                             int indent,
+                             amxc_log_var_t *log) {
     const char *txt = amxc_var_constcast(cstring_t, var);
-    write_indentation(indent, fd);
-    when_true(write(fd, "\"", 1) == -1, exit);
+    write_indentation(indent, log);
+    when_true(amxc_var_write(log, "\"", 1) == -1, exit);
     if(txt != NULL) {
-        when_true(write(fd, txt, strlen(txt)) == -1, exit);
+        when_true(amxc_var_write(log, txt, strlen(txt)) == -1, exit);
     }
-    when_true(write(fd, "\"", 1) == -1, exit);
+    when_true(amxc_var_write(log, "\"", 1) == -1, exit);
 
 exit:
     return 0;
 }
 
-static int variant_dump_default(const amxc_var_t * const var, int indent, int fd) {
+static int variant_dump_default(const amxc_var_t * const var,
+                                int indent,
+                                amxc_log_var_t *log) {
     int retval = -1;
     char *text = amxc_var_dyncast(cstring_t, var);
 
-    write_indentation(indent, fd);
+    write_indentation(indent, log);
 
     if(text != NULL) {
-        when_true(write(fd, text, strlen(text)) == -1, exit);
+        when_true(amxc_var_write(log, text, strlen(text)) == -1, exit);
         retval = 0;
     } else {
-        retval = variant_dump_type(var, indent, fd);
+        retval = variant_dump_type(var, indent, log);
     }
 
 exit:
@@ -147,25 +179,25 @@ exit:
 
 static int variant_dump_list(const amxc_var_t * const var,
                              int indent,
-                             int fd) {
+                             amxc_log_var_t *log) {
 
     const amxc_llist_t *list = amxc_var_constcast(amxc_llist_t, var);
 
-    when_true(write(fd, "[\n", 2) == -1, exit);
+    when_true(amxc_var_write(log, "[\n", 2) == -1, exit);
     indent += 4;
     amxc_llist_for_each(it, list) {
         amxc_var_t *lvar = amxc_var_from_llist_it(it);
-        write_indentation(indent, fd);
-        amxc_var_dump_internal(lvar, indent, fd);
+        write_indentation(indent, log);
+        amxc_var_dump_internal(lvar, indent, log);
         if(amxc_llist_it_get_next(it) != NULL) {
-            when_true(write(fd, ",\n", 2) == -1, exit);
+            when_true(amxc_var_write(log, ",\n", 2) == -1, exit);
         } else {
-            when_true(write(fd, "\n", 1) == -1, exit);
+            when_true(amxc_var_write(log, "\n", 1) == -1, exit);
         }
     }
     indent -= 4;
-    write_indentation(indent, fd);
-    when_true(write(fd, "]", 1) == -1, exit);
+    write_indentation(indent, log);
+    when_true(amxc_var_write(log, "]", 1) == -1, exit);
 
 exit:
     return 0;
@@ -173,32 +205,32 @@ exit:
 
 static int variant_dump_htable(const amxc_var_t * const var,
                                int indent,
-                               int fd) {
+                               amxc_log_var_t *log) {
     const amxc_htable_t *list = amxc_var_constcast(amxc_htable_t, var);
 
-    when_true(write(fd, "{\n", 2) == -1, exit);
+    when_true(amxc_var_write(log, "{\n", 2) == -1, exit);
     indent += 4;
     amxc_htable_for_each(it, list) {
         amxc_var_t *hvar = amxc_var_from_htable_it(it);
         const char *key = amxc_htable_it_get_key(it);
-        write_indentation(indent, fd);
-        when_true(write(fd, key, strlen(key)) == -1, exit);
-        when_true(write(fd, " = ", 3) == -1, exit);
+        write_indentation(indent, log);
+        when_true(amxc_var_write(log, key, strlen(key)) == -1, exit);
+        when_true(amxc_var_write(log, " = ", 3) == -1, exit);
         if((amxc_var_type_of(hvar) == AMXC_VAR_ID_HTABLE) ||
            ( amxc_var_type_of(hvar) == AMXC_VAR_ID_LIST)) {
-            amxc_var_dump_internal(hvar, indent, fd);
+            amxc_var_dump_internal(hvar, indent, log);
         } else {
-            amxc_var_dump_internal(hvar, 0, fd);
+            amxc_var_dump_internal(hvar, 0, log);
         }
         if(amxc_htable_it_get_next(it) != NULL) {
-            when_true(write(fd, ",\n", 2) == -1, exit);
+            when_true(amxc_var_write(log, ",\n", 2) == -1, exit);
         } else {
-            when_true(write(fd, "\n", 1) == -1, exit);
+            when_true(amxc_var_write(log, "\n", 1) == -1, exit);
         }
     }
     indent -= 4;
-    write_indentation(indent, fd);
-    when_true(write(fd, "}", 1) == -1, exit);
+    write_indentation(indent, log);
+    when_true(amxc_var_write(log, "}", 1) == -1, exit);
 
 exit:
     return 0;
@@ -206,21 +238,21 @@ exit:
 
 static int variant_dump_fd(const amxc_var_t * const var,
                            int indent,
-                           int fd) {
-    variant_dump_type(var, indent, fd);
-    return variant_dump_default(var, indent, fd);
+                           amxc_log_var_t *log) {
+    variant_dump_type(var, indent, log);
+    return variant_dump_default(var, indent, log);
 }
 
 static int variant_dump_ts(const amxc_var_t * const var,
                            int indent,
-                           int fd) {
-    variant_dump_type(var, indent, fd);
-    return variant_dump_default(var, indent, fd);
+                           amxc_log_var_t *log) {
+    variant_dump_type(var, indent, log);
+    return variant_dump_default(var, indent, log);
 }
 
 static int amxc_var_dump_internal(const amxc_var_t * const var,
                                   int indent,
-                                  int fd) {
+                                  amxc_log_var_t *log) {
     int retval = -1;
     amxc_var_dump_fn_t dumpfn[AMXC_VAR_ID_CUSTOM_BASE] = {
         variant_dump_null,
@@ -246,21 +278,40 @@ static int amxc_var_dump_internal(const amxc_var_t * const var,
     };
 
     if(var->type_id >= AMXC_VAR_ID_CUSTOM_BASE) {
-        retval = variant_dump_default(var, indent, fd);
+        retval = variant_dump_default(var, indent, log);
     } else {
         if(dumpfn[var->type_id] != NULL) {
-            retval = dumpfn[var->type_id](var, indent, fd);
+            retval = dumpfn[var->type_id](var, indent, log);
         }
     }
 
     return retval;
 }
 
-int amxc_var_dump(const amxc_var_t * const var,
-                  int fd) {
-    int retval = amxc_var_dump_internal(var, 0, fd);
-    when_true(write(fd, "\n", 1) == -1, exit);
+int amxc_var_dump(const amxc_var_t * const var, int fd) {
+    amxc_log_var_t log;
+    log.fd = fd;
+    amxc_string_init(&log.message, 0);
+    int retval = amxc_var_dump_internal(var, 0, &log);
+    when_true(amxc_var_write(&log, "\n", 1) == -1, exit);
 
 exit:
+    amxc_string_clean(&log.message);
+    return retval;
+}
+
+int amxc_var_log(const amxc_var_t * const var) {
+    amxc_log_var_t log;
+    log.fd = -1;
+    amxc_string_init(&log.message, 1024);
+    int retval = amxc_var_dump_internal(var, 0, &log);
+    when_true(amxc_var_write(&log, "\n", 1) == -1, exit);
+
+    syslog(LOG_DAEMON | LOG_DEBUG,
+           "%s",
+           amxc_string_get(&log.message, 0));
+
+exit:
+    amxc_string_clean(&log.message);
     return retval;
 }

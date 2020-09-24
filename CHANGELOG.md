@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 0.6.12 - 2020-09-17(12:57:45 +0000)
+
+### Changes
+
+- Make timestamps more accurate  fill in the nanosecond field
+- Documentation - clarify examples in "Setting Composite Values"
+
+### New
+
+- Make it possible to dump the content of a variant to the syslog
+
 ## Release 0.6.11 - 2020-09-03(05:13:31 +0000)
 
 ### Fixes

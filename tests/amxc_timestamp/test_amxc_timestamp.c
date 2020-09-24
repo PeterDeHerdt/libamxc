@@ -58,6 +58,7 @@
 **
 ****************************************************************************/
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -72,11 +73,23 @@
 #define UNUSED __attribute__((unused))
 
 void test_amxc_ts_now(UNUSED void **state) {
-    amxc_ts_t ts;
+    amxc_ts_t ts1, ts2;
 
-    assert_int_equal(amxc_ts_now(&ts), 0);
-    assert_int_not_equal(ts.sec, 0);
+    assert_int_equal(amxc_ts_now(&ts1), 0);
+    assert_int_not_equal(ts1.sec, 0);
     assert_int_not_equal(amxc_ts_now(NULL), 0);
+
+    struct timespec waittime = {0, 300 * 1000 * 1000L};
+    while(nanosleep(&waittime, NULL) != 0) {
+    }
+    assert_int_equal(amxc_ts_now(&ts2), 0);
+    assert_true(amxc_ts_compare(&ts2, &ts1) > 0);
+
+    // The POSIX standard guarantees that at least 300 000 000 nanoseconds
+    // have passed between the calls, so the diff should exceed that
+    int64_t diff_us = ts2.nsec - ts1.nsec;
+    int64_t diff = (ts2.sec - ts1.sec) * 1000 * 1000 * 1000L + diff_us;
+    assert_true(diff > 300 * 1000 * 1000L);
 }
 
 void test_amxc_ts_parse_valid(UNUSED void **state) {
