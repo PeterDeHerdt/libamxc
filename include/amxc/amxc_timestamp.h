@@ -101,24 +101,24 @@ typedef struct _timestamp {
     int16_t offset; /* Offset from UTC in minutes [-1439, 1439] */
 } amxc_ts_t;
 
-int amxc_ts_now(amxc_ts_t *tsp);
+int amxc_ts_now(amxc_ts_t* tsp);
 
-int amxc_ts_parse(amxc_ts_t *tsp, const char *str, size_t len);
+int amxc_ts_parse(amxc_ts_t* tsp, const char* str, size_t len);
 
-size_t amxc_ts_format(const amxc_ts_t *tsp, char *dst, size_t len);
+size_t amxc_ts_format(const amxc_ts_t* tsp, char* dst, size_t len);
 
-size_t amxc_ts_format_precision(const amxc_ts_t *tsp,
-                                char *dst,
+size_t amxc_ts_format_precision(const amxc_ts_t* tsp,
+                                char* dst,
                                 size_t len,
                                 int precision);
 
-int amxc_ts_compare(const amxc_ts_t *tsp1, const amxc_ts_t *tsp2);
+int amxc_ts_compare(const amxc_ts_t* tsp1, const amxc_ts_t* tsp2);
 
-bool amxc_ts_is_valid(const amxc_ts_t *tsp);
+bool amxc_ts_is_valid(const amxc_ts_t* tsp);
 
-int amxc_ts_to_tm_utc(const amxc_ts_t *tsp, struct tm *tmp);
+int amxc_ts_to_tm_utc(const amxc_ts_t* tsp, struct tm* tmp);
 
-int amxc_ts_to_tm_local(const amxc_ts_t *tsp, struct tm *tmp);
+int amxc_ts_to_tm_local(const amxc_ts_t* tsp, struct tm* tmp);
 
 #ifdef __cplusplus
 }

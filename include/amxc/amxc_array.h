@@ -108,7 +108,7 @@ typedef struct _amxc_array {
     size_t items;                   /**< Number of items in the array */
     size_t first_used;              /**< First used index */
     size_t last_used;               /**< Highest used index */
-    struct _amxc_array_it *buffer;  /**< The array buffer */
+    struct _amxc_array_it* buffer;  /**< The array buffer */
 } amxc_array_t;
 
 /**
@@ -117,8 +117,8 @@ typedef struct _amxc_array {
    The array iterator structure.
  */
 typedef struct _amxc_array_it {
-    amxc_array_t *array;            /**< Pointer to the array */
-    void *data;                     /**< Pointer to the data */
+    amxc_array_t* array;            /**< Pointer to the array */
+    void* data;                     /**< Pointer to the data */
 } amxc_array_it_t;
 
 /**
@@ -136,10 +136,10 @@ typedef struct _amxc_array_it {
    then first iterating over the array freeing up and then call one of the
    previously mentioned functions.
  */
-typedef void (*amxc_array_it_delete_t) (amxc_array_it_t *it);
+typedef void (* amxc_array_it_delete_t) (amxc_array_it_t* it);
 
-typedef int (*amxc_array_it_cmp_t) (amxc_array_it_t *it1,
-                                    amxc_array_it_t *it2);
+typedef int (* amxc_array_it_cmp_t) (amxc_array_it_t* it1,
+                                     amxc_array_it_t* it2);
 
 /**
    @ingroup amxc_array
@@ -167,7 +167,7 @@ typedef int (*amxc_array_it_cmp_t) (amxc_array_it_t *it1,
    @return
    -1 if an error occured. 0 on success
  */
-int8_t amxc_array_new(amxc_array_t **array, const size_t items);
+int8_t amxc_array_new(amxc_array_t** array, const size_t items);
 
 /**
    @ingroup amxc_array
@@ -188,7 +188,7 @@ int8_t amxc_array_new(amxc_array_t **array, const size_t items);
    @param func a pointer to a function that is called to free each item in the
                array
  */
-void amxc_array_delete(amxc_array_t **array, const amxc_array_it_delete_t func);
+void amxc_array_delete(amxc_array_t** array, const amxc_array_it_delete_t func);
 
 /**
    @ingroup amxc_array
@@ -216,7 +216,7 @@ void amxc_array_delete(amxc_array_t **array, const amxc_array_it_delete_t func);
    0 on success.
    -1 if a NULL pointer is given.
  */
-int amxc_array_init(amxc_array_t * const array, const size_t items);
+int amxc_array_init(amxc_array_t* const array, const size_t items);
 
 /**
    @ingroup amxc_array
@@ -231,7 +231,7 @@ int amxc_array_init(amxc_array_t * const array, const size_t items);
    @param func a pointer to a function that is called to free each used item in
                the array
  */
-void amxc_array_clean(amxc_array_t * const array, amxc_array_it_delete_t func);
+void amxc_array_clean(amxc_array_t* const array, amxc_array_it_delete_t func);
 
 /**
    @ingroup amxc_array
@@ -249,7 +249,7 @@ void amxc_array_clean(amxc_array_t * const array, amxc_array_it_delete_t func);
    0 on success.
    -1 if an error has occured.
  */
-int amxc_array_grow(amxc_array_t * const array, const size_t items);
+int amxc_array_grow(amxc_array_t* const array, const size_t items);
 
 /**
    @ingroup amxc_array
@@ -268,7 +268,7 @@ int amxc_array_grow(amxc_array_t * const array, const size_t items);
    0 on success.
    -1 if an error has occured
  */
-int amxc_array_shrink(amxc_array_t * const array,
+int amxc_array_shrink(amxc_array_t* const array,
                       const size_t items,
                       amxc_array_it_delete_t func);
 
@@ -296,7 +296,7 @@ int amxc_array_shrink(amxc_array_t * const array,
    0 on success.
    -1 if an error has occured
  */
-int amxc_array_shift_right(amxc_array_t * const array,
+int amxc_array_shift_right(amxc_array_t* const array,
                            const size_t items,
                            amxc_array_it_delete_t func);
 
@@ -324,7 +324,7 @@ int amxc_array_shift_right(amxc_array_t * const array,
    0 on success.
    -1 if an error has occured
  */
-int amxc_array_shift_left(amxc_array_t * const array,
+int amxc_array_shift_left(amxc_array_t* const array,
                           const size_t items,
                           amxc_array_it_delete_t func);
 
@@ -341,7 +341,7 @@ int amxc_array_shift_left(amxc_array_t * const array,
    returns true when the array contains no items that are used,
    false when there is at least one item used in the array.
  */
-bool amxc_array_is_empty(const amxc_array_t * const array);
+bool amxc_array_is_empty(const amxc_array_t* const array);
 
 /**
    @ingroup amxc_array
@@ -362,7 +362,7 @@ bool amxc_array_is_empty(const amxc_array_t * const array);
    @return
    returns the number of used items in the array
  */
-size_t amxc_array_size(const amxc_array_t * const array);
+size_t amxc_array_size(const amxc_array_t* const array);
 
 /**
    @ingroup amxc_array
@@ -383,7 +383,7 @@ size_t amxc_array_size(const amxc_array_t * const array);
    returns the array iterator where the data is added,
    or NULL when adding the item fails.
  */
-amxc_array_it_t *amxc_array_append_data(amxc_array_t * const array, void *data);
+amxc_array_it_t* amxc_array_append_data(amxc_array_t* const array, void* data);
 
 /**
    @ingroup amxc_array
@@ -404,7 +404,7 @@ amxc_array_it_t *amxc_array_append_data(amxc_array_t * const array, void *data);
    returns the array iterator where the data is added,
    or NULL when adding the item fails.
  */
-amxc_array_it_t *amxc_array_prepend_data(amxc_array_t * const array, void *data);
+amxc_array_it_t* amxc_array_prepend_data(amxc_array_t* const array, void* data);
 
 /**
    @ingroup amxc_array
@@ -418,7 +418,7 @@ amxc_array_it_t *amxc_array_prepend_data(amxc_array_t * const array, void *data)
    returns the array iterator for the given index
    or NULL if the index is out of boundery.
  */
-amxc_array_it_t *amxc_array_get_at(const amxc_array_t * const array,
+amxc_array_it_t* amxc_array_get_at(const amxc_array_t* const array,
                                    const unsigned int index);
 
 /**
@@ -439,9 +439,9 @@ amxc_array_it_t *amxc_array_get_at(const amxc_array_t * const array,
    returns the array iterator for the given index
    or NULL if the index is out of boundery.
  */
-amxc_array_it_t *amxc_array_set_data_at(amxc_array_t * const array,
+amxc_array_it_t* amxc_array_set_data_at(amxc_array_t* const array,
                                         const unsigned int index,
-                                        void *data);
+                                        void* data);
 
 /**
    @ingroup amxc_array
@@ -454,7 +454,7 @@ amxc_array_it_t *amxc_array_set_data_at(amxc_array_t * const array,
    returns the array iterator for the first used item in the array
    or NULL if there is no used item in the array.
  */
-amxc_array_it_t *amxc_array_get_first(const amxc_array_t * const array);
+amxc_array_it_t* amxc_array_get_first(const amxc_array_t* const array);
 
 /**
    @ingroup amxc_array
@@ -467,7 +467,7 @@ amxc_array_it_t *amxc_array_get_first(const amxc_array_t * const array);
    returns the array iterator for the first free item in the array
    or NULL if there is no free item in the array.
  */
-amxc_array_it_t *amxc_array_get_first_free(const amxc_array_t * const array);
+amxc_array_it_t* amxc_array_get_first_free(const amxc_array_t* const array);
 
 /**
    @ingroup amxc_array
@@ -480,7 +480,7 @@ amxc_array_it_t *amxc_array_get_first_free(const amxc_array_t * const array);
    returns the array iterator for the last used item in the array
    or NULL if there is no used item in the array.
  */
-amxc_array_it_t *amxc_array_get_last(const amxc_array_t * const array);
+amxc_array_it_t* amxc_array_get_last(const amxc_array_t* const array);
 
 /**
    @ingroup amxc_array
@@ -493,7 +493,7 @@ amxc_array_it_t *amxc_array_get_last(const amxc_array_t * const array);
    returns the array iterator for the last free item in the array
    or NULL if there is no free item in the array.
  */
-amxc_array_it_t *amxc_array_get_last_free(const amxc_array_t * const array);
+amxc_array_it_t* amxc_array_get_last_free(const amxc_array_t* const array);
 
 /**
    @ingroup amxc_array
@@ -506,7 +506,7 @@ amxc_array_it_t *amxc_array_get_last_free(const amxc_array_t * const array);
    returns the data pointer of the first used item in the array
    or NULL if there is no used item in the array.
  */
-void *amxc_array_take_first_data(amxc_array_t * const array);
+void* amxc_array_take_first_data(amxc_array_t* const array);
 
 /**
    @ingroup amxc_array
@@ -519,7 +519,7 @@ void *amxc_array_take_first_data(amxc_array_t * const array);
    returns the data pointer of the last used item in the array
    or NULL if there is no used item in the array.
  */
-void *amxc_array_take_last_data(amxc_array_t * const array);
+void* amxc_array_take_last_data(amxc_array_t* const array);
 
 /**
    @ingroup amxc_array
@@ -537,7 +537,7 @@ void *amxc_array_take_last_data(amxc_array_t * const array);
    reference iterator, or NULL if there are no more used items (End of array
    reached).
  */
-amxc_array_it_t *amxc_array_it_get_next(const amxc_array_it_t * const reference);
+amxc_array_it_t* amxc_array_it_get_next(const amxc_array_it_t* const reference);
 
 /**
    @ingroup amxc_array
@@ -555,7 +555,7 @@ amxc_array_it_t *amxc_array_it_get_next(const amxc_array_it_t * const reference)
    reference iterator, or NULL if there are no more free items (End of array
    reached).
  */
-amxc_array_it_t *amxc_array_it_get_next_free(const amxc_array_it_t * const reference);
+amxc_array_it_t* amxc_array_it_get_next_free(const amxc_array_it_t* const reference);
 
 /**
    @ingroup amxc_array
@@ -573,7 +573,7 @@ amxc_array_it_t *amxc_array_it_get_next_free(const amxc_array_it_t * const refer
    reference iterator, or NULL if there are no more used items (Start of array
    reached).
  */
-amxc_array_it_t *amxc_array_it_get_previous(const amxc_array_it_t * const reference);
+amxc_array_it_t* amxc_array_it_get_previous(const amxc_array_it_t* const reference);
 
 /**
    @ingroup amxc_array
@@ -591,7 +591,7 @@ amxc_array_it_t *amxc_array_it_get_previous(const amxc_array_it_t * const refere
    reference iterator, or NULL if there are no more free items (Start of array
    reached).
  */
-amxc_array_it_t *amxc_array_it_get_previous_free(const amxc_array_it_t * const reference);
+amxc_array_it_t* amxc_array_it_get_previous_free(const amxc_array_it_t* const reference);
 
 /**
    @ingroup amxc_array
@@ -603,7 +603,7 @@ amxc_array_it_t *amxc_array_it_get_previous_free(const amxc_array_it_t * const r
    @return
    returns the index of the iterator.
  */
-unsigned int amxc_array_it_index(const amxc_array_it_t * const it);
+unsigned int amxc_array_it_index(const amxc_array_it_t* const it);
 
 /**
    @ingroup amxc_array
@@ -619,7 +619,7 @@ unsigned int amxc_array_it_index(const amxc_array_it_t * const it);
    returns the capacity of the array, expressed in number of items.
  */
 AMXC_INLINE
-size_t amxc_array_capacity(const amxc_array_t * const array) {
+size_t amxc_array_capacity(const amxc_array_t* const array) {
     return (array != NULL) ? array->items : 0;
 }
 
@@ -636,9 +636,9 @@ size_t amxc_array_capacity(const amxc_array_t * const array) {
    pointer was stored in that item or when the index is out of boundery.
  */
 AMXC_INLINE
-void *amxc_array_get_data_at(const amxc_array_t * const array,
+void* amxc_array_get_data_at(const amxc_array_t* const array,
                              const unsigned int index) {
-    amxc_array_it_t *it = amxc_array_get_at(array, index);
+    amxc_array_it_t* it = amxc_array_get_at(array, index);
     return (it != NULL) ? it->data : NULL;
 }
 
@@ -654,7 +654,7 @@ void *amxc_array_get_data_at(const amxc_array_t * const array,
    or NULL if no data pointer was stored in that iterator.
  */
 AMXC_INLINE
-void *amxc_array_it_get_data(const amxc_array_it_t * const it) {
+void* amxc_array_it_get_data(const amxc_array_it_t* const it) {
     return (it != NULL) ? it->data : NULL;
 }
 
@@ -674,7 +674,7 @@ void *amxc_array_it_get_data(const amxc_array_it_t * const it) {
    @return
    0 when the data is set, -1 otherwise.
  */
-int amxc_array_it_set_data(amxc_array_it_t * const it, void *data);
+int amxc_array_it_set_data(amxc_array_it_t* const it, void* data);
 
 /**
    @ingroup amxc_array
@@ -688,7 +688,7 @@ int amxc_array_it_set_data(amxc_array_it_t * const it, void *data);
    @return
    The data pointer of the iterator.
  */
-void *amxc_array_it_take_data(amxc_array_it_t * const it);
+void* amxc_array_it_take_data(amxc_array_it_t* const it);
 
 /**
    @ingroup amxc_array
@@ -703,7 +703,7 @@ void *amxc_array_it_take_data(amxc_array_it_t * const it);
    @return
    0 when the iterators are swapped. TODO -1 if swapping fails.
  */
-int amxc_array_it_swap(amxc_array_it_t * const it1, amxc_array_it_t * const it2);
+int amxc_array_it_swap(amxc_array_it_t* const it1, amxc_array_it_t* const it2);
 
 /**
    @ingroup amxc_array
@@ -719,7 +719,7 @@ int amxc_array_it_swap(amxc_array_it_t * const it1, amxc_array_it_t * const it2)
    @return
    0 when the array is sorted. TODO -1 if sorting fails?
  */
-int amxc_array_sort(amxc_array_t * const array, amxc_array_it_cmp_t cmp);
+int amxc_array_sort(amxc_array_t* const array, amxc_array_it_cmp_t cmp);
 
 #ifdef __cplusplus
 }

@@ -124,7 +124,7 @@ static unsigned char month_days(uint16_t y, uint16_t m) {
     return days[m == 2 && leap_year(y)][m];
 }
 
-static int parse_2d(const unsigned char * const p, size_t i, uint16_t *vp) {
+static int parse_2d(const unsigned char* const p, size_t i, uint16_t* vp) {
     unsigned char d0, d1;
     if(((d0 = p[i + 0] - '0') > 9) ||
        ((d1 = p[i + 1] - '0') > 9)) {
@@ -134,7 +134,7 @@ static int parse_2d(const unsigned char * const p, size_t i, uint16_t *vp) {
     return 0;
 }
 
-static int parse_4d(const unsigned char * const p, size_t i, uint16_t *vp) {
+static int parse_4d(const unsigned char* const p, size_t i, uint16_t* vp) {
     unsigned char d0, d1, d2, d3;
     if(((d0 = p[i + 0] - '0') > 9) ||
        ((d1 = p[i + 1] - '0') > 9) ||
@@ -147,7 +147,7 @@ static int parse_4d(const unsigned char * const p, size_t i, uint16_t *vp) {
 }
 
 /* Rata Die algorithm by Peter Baum */
-static void rdn_to_ymd(uint32_t rdn, uint16_t *yp, uint16_t *mp, uint16_t *dp) {
+static void rdn_to_ymd(uint32_t rdn, uint16_t* yp, uint16_t* mp, uint16_t* dp) {
     uint32_t Z, H, A, B;
     uint16_t y, m, d;
 
@@ -167,11 +167,11 @@ static void rdn_to_ymd(uint32_t rdn, uint16_t *yp, uint16_t *mp, uint16_t *dp) {
     *dp = d - DayOffset[m];
 }
 
-static size_t timestamp_format_internal(char *dst,
+static size_t timestamp_format_internal(char* dst,
                                         size_t len,
-                                        const amxc_ts_t *tsp,
+                                        const amxc_ts_t* tsp,
                                         const int precision) {
-    unsigned char *p;
+    unsigned char* p;
     uint64_t sec;
     uint32_t rdn, v;
     uint16_t y, m, d;
@@ -197,7 +197,7 @@ static size_t timestamp_format_internal(char *dst,
      * 0123456789012345678
      * YYYY-MM-DDThh:mm:ss
      */
-    p = (unsigned char *) dst;
+    p = (unsigned char*) dst;
     v = sec % 86400;
     p[18] = '0' + (v % 10); v /= 10;
     p[17] = '0' + (v % 6); v /= 6;
@@ -252,7 +252,7 @@ static size_t timestamp_format_internal(char *dst,
 }
 
 /* Rata Die algorithm by Peter Baum */
-static void rdn_to_struct_tm(uint32_t rdn, struct tm *tmp) {
+static void rdn_to_struct_tm(uint32_t rdn, struct tm* tmp) {
     uint32_t Z, H, A, B;
     uint16_t C, y, m, d;
 
@@ -276,8 +276,8 @@ static void rdn_to_struct_tm(uint32_t rdn, struct tm *tmp) {
     tmp->tm_yday = d - 1;               /* Day of year [0,365]           */
 }
 
-static int timestamp_to_tm(const amxc_ts_t *tsp,
-                           struct tm *tmp,
+static int timestamp_to_tm(const amxc_ts_t* tsp,
+                           struct tm* tmp,
                            const bool local) {
     uint64_t sec;
     uint32_t rdn, sod;
@@ -305,7 +305,7 @@ exit:
     return retval;
 }
 
-int amxc_ts_now(amxc_ts_t *tsp) {
+int amxc_ts_now(amxc_ts_t* tsp) {
     int retval = -1;
     struct timespec ts = {0, 0};
 
@@ -323,10 +323,10 @@ exit:
     return retval ? -1 : 0;
 }
 
-static int amxc_ts_parse_date(const unsigned char *cur,
-                              uint16_t *year,
-                              uint16_t *month,
-                              uint16_t *day) {
+static int amxc_ts_parse_date(const unsigned char* cur,
+                              uint16_t* year,
+                              uint16_t* month,
+                              uint16_t* day) {
     int retval = 1;
     when_true(parse_4d(cur, 0, year) || *year < 1, exit);
     when_true(parse_2d(cur, 5, month) || *month < 1 || *month > 12, exit);
@@ -337,10 +337,10 @@ exit:
     return retval;
 }
 
-static int amxc_ts_parse_time(const unsigned char *cur,
-                              uint16_t *hour,
-                              uint16_t *min,
-                              uint16_t *sec) {
+static int amxc_ts_parse_time(const unsigned char* cur,
+                              uint16_t* hour,
+                              uint16_t* min,
+                              uint16_t* sec) {
     int retval = 1;
     when_true(parse_2d(cur, 11, hour) || *hour > 23, exit);
     when_true(parse_2d(cur, 14, min) || *min > 59, exit);
@@ -351,9 +351,9 @@ exit:
     return retval;
 }
 
-static int amxc_ts_parse_offset(const unsigned char *cur,
-                                const unsigned char *end,
-                                int16_t *offset) {
+static int amxc_ts_parse_offset(const unsigned char* cur,
+                                const unsigned char* end,
+                                int16_t* offset) {
     int retval = -1;
     uint16_t hour;
     uint16_t min;
@@ -373,11 +373,11 @@ exit:
     return retval;
 }
 
-int amxc_ts_parse(amxc_ts_t *tsp,
-                  const char *str,
+int amxc_ts_parse(amxc_ts_t* tsp,
+                  const char* str,
                   size_t len) {
     int retval = -1;
-    const unsigned char *cur, *end;
+    const unsigned char* cur, * end;
     unsigned char ch;
     uint16_t year, month, day, hour, min, sec;
     uint32_t rdn, sod, nsec;
@@ -391,7 +391,7 @@ int amxc_ts_parse(amxc_ts_t *tsp,
      * 01234567890123456789
      * 2013-12-31T23:59:59Z
      */
-    cur = (const unsigned char *) str;
+    cur = (const unsigned char*) str;
     when_true(cur[4] != '-' || cur[7] != '-' ||
               cur[13] != ':' || cur[16] != ':', exit);
 
@@ -413,7 +413,7 @@ int amxc_ts_parse(amxc_ts_t *tsp,
 
     ch = *cur++;
     if(ch == '.') {
-        const unsigned char *start;
+        const unsigned char* start;
         size_t ndigits;
 
         start = cur;
@@ -465,8 +465,8 @@ exit:
  * YYYY-MM-DDThh:mm:ss.123456789±hh:mm
  */
 
-size_t amxc_ts_format(const amxc_ts_t *tsp,
-                      char *dst,
+size_t amxc_ts_format(const amxc_ts_t* tsp,
+                      char* dst,
                       size_t len) {
     size_t retval = 0;
     uint32_t f;
@@ -494,8 +494,8 @@ exit:
     return retval;
 }
 
-size_t amxc_ts_format_precision(const amxc_ts_t *tsp,
-                                char *dst,
+size_t amxc_ts_format_precision(const amxc_ts_t* tsp,
+                                char* dst,
                                 size_t len,
                                 int precision) {
     int retval = 0;
@@ -510,7 +510,7 @@ exit:
     return retval;
 }
 
-int amxc_ts_compare(const amxc_ts_t *tsp1, const amxc_ts_t *tsp2) {
+int amxc_ts_compare(const amxc_ts_t* tsp1, const amxc_ts_t* tsp2) {
     when_null(tsp1, exit);
     when_null(tsp2, exit);
 
@@ -531,7 +531,7 @@ exit:
     return 0;
 }
 
-bool amxc_ts_is_valid(const amxc_ts_t *tsp) {
+bool amxc_ts_is_valid(const amxc_ts_t* tsp) {
     bool retval = false;
     int64_t sec = 0;
     when_null(tsp, exit);
@@ -549,11 +549,11 @@ exit:
     return retval;
 }
 
-int amxc_ts_to_tm_utc(const amxc_ts_t *tsp, struct tm *tmp) {
+int amxc_ts_to_tm_utc(const amxc_ts_t* tsp, struct tm* tmp) {
     return timestamp_to_tm(tsp, tmp, true);
 }
 
-int amxc_ts_to_tm_local(const amxc_ts_t *tsp, struct tm *tmp) {
+int amxc_ts_to_tm_local(const amxc_ts_t* tsp, struct tm* tmp) {
     return timestamp_to_tm(tsp, tmp, false);
 }
 

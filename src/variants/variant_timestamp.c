@@ -62,15 +62,15 @@
 
 #include <amxc_variant_priv.h>
 
-static int variant_ts_init(amxc_var_t * const var) {
+static int variant_ts_init(amxc_var_t* const var) {
     return amxc_ts_parse(&var->data.ts, "0001-01-01T00:00:00Z", 20);
 }
 
 
-static int variant_ts_to_string(amxc_var_t * const dest,
-                                const amxc_var_t * const src) {
+static int variant_ts_to_string(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
     int retval = -1;
-    dest->data.s = (char *) calloc(40, sizeof(char));
+    dest->data.s = (char*) calloc(40, sizeof(char));
 
     when_null(dest->data.s, exit);
 
@@ -81,20 +81,20 @@ exit:
     return retval;
 }
 
-static int variant_ts_to_int(amxc_var_t * const dest,
-                             const amxc_var_t * const src) {
+static int variant_ts_to_int(amxc_var_t* const dest,
+                             const amxc_var_t* const src) {
     dest->data.i64 = src->data.ts.sec;
     return 0;
 }
 
-static int variant_ts_to_double(amxc_var_t * const dest,
-                                const amxc_var_t * const src) {
+static int variant_ts_to_double(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
     dest->data.d = src->data.ts.sec + src->data.ts.nsec / 1000000000;
     return 0;
 }
 
-static int variant_ts_convert_to(amxc_var_t * const dest,
-                                 const amxc_var_t * const src) {
+static int variant_ts_convert_to(amxc_var_t* const dest,
+                                 const amxc_var_t* const src) {
     int retval = -1;
 
     amxc_var_convert_fn_t convfn[AMXC_VAR_ID_CUSTOM_BASE] = {
@@ -135,9 +135,9 @@ exit:
     return retval;
 }
 
-static int variant_ts_compare(const amxc_var_t * const lval,
-                              const amxc_var_t * const rval,
-                              int * const result) {
+static int variant_ts_compare(const amxc_var_t* const lval,
+                              const amxc_var_t* const rval,
+                              int* const result) {
     *result = amxc_ts_compare(&lval->data.ts, &rval->data.ts);
 
     return 0;
@@ -167,7 +167,7 @@ AMXC_DESTRUCTOR static void amxc_var_ts_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_ts);
 }
 
-int amxc_var_set_amxc_ts_t(amxc_var_t *var, amxc_ts_t *ts) {
+int amxc_var_set_amxc_ts_t(amxc_var_t* var, amxc_ts_t* ts) {
     int retval = -1;
     when_null(var, exit);
     when_null(ts, exit);
@@ -184,14 +184,14 @@ exit:
     return retval;
 }
 
-amxc_ts_t *amxc_var_get_amxc_ts_t(const amxc_var_t *var) {
-    amxc_ts_t *ts = NULL;
+amxc_ts_t* amxc_var_get_amxc_ts_t(const amxc_var_t* var) {
+    amxc_ts_t* ts = NULL;
     when_null(var, exit);
 
     amxc_var_t variant;
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_TIMESTAMP), exit);
-    ts = (amxc_ts_t *) calloc(1, sizeof(amxc_ts_t));
+    ts = (amxc_ts_t*) calloc(1, sizeof(amxc_ts_t));
     when_null(ts, exit);
 
     ts->sec = variant.data.ts.sec;
@@ -202,8 +202,8 @@ exit:
     return ts;
 }
 
-const amxc_ts_t *amxc_var_get_const_amxc_ts_t(const amxc_var_t * const var) {
-    const amxc_ts_t *retval = NULL;
+const amxc_ts_t* amxc_var_get_const_amxc_ts_t(const amxc_var_t* const var) {
+    const amxc_ts_t* retval = NULL;
     when_null(var, exit);
     when_true(var->type_id != AMXC_VAR_ID_TIMESTAMP, exit);
 
@@ -213,8 +213,8 @@ exit:
     return retval;
 }
 
-amxc_var_t *amxc_var_add_new_amxc_ts_t(amxc_var_t * const var, amxc_ts_t *ts) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_amxc_ts_t(amxc_var_t* const var, amxc_ts_t* ts) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new(var);
@@ -232,10 +232,10 @@ exit:
     return subvar;
 }
 
-amxc_var_t *amxc_var_add_new_key_amxc_ts_t(amxc_var_t * const var,
-                                           const char *key,
-                                           amxc_ts_t *ts) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_key_amxc_ts_t(amxc_var_t* const var,
+                                           const char* key,
+                                           amxc_ts_t* ts) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new_key(var, key);

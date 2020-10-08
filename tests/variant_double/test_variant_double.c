@@ -80,7 +80,7 @@
 
 #define UNUSED __attribute__((unused))
 
-void test_variant_double_copy(UNUSED void **state) {
+void test_variant_double_copy(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -98,7 +98,7 @@ void test_variant_double_copy(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_double_convert_to_bool(UNUSED void **state) {
+void test_variant_double_convert_to_bool(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -123,7 +123,7 @@ void test_variant_double_convert_to_bool(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_double_convert_to_integer(UNUSED void **state) {
+void test_variant_double_convert_to_integer(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -163,7 +163,7 @@ void test_variant_double_convert_to_integer(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_double_convert_to_htable(UNUSED void **state) {
+void test_variant_double_convert_to_htable(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -182,7 +182,7 @@ void test_variant_double_convert_to_htable(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_double_convert_to_list(UNUSED void **state) {
+void test_variant_double_convert_to_list(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -200,7 +200,7 @@ void test_variant_double_convert_to_list(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_double_convert_to_string(UNUSED void **state) {
+void test_variant_double_convert_to_string(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -218,7 +218,7 @@ void test_variant_double_convert_to_string(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_double_compare(UNUSED void **state) {
+void test_variant_double_compare(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
     int result = 0;
@@ -244,7 +244,7 @@ void test_variant_double_compare(UNUSED void **state) {
     amxc_var_clean(&var2);
 }
 
-void test_variant_double_set_get(UNUSED void **state) {
+void test_variant_double_set_get(UNUSED void** state) {
     amxc_var_t var;
 
     assert_int_equal(amxc_var_init(&var), 0);
@@ -258,10 +258,10 @@ void test_variant_double_set_get(UNUSED void **state) {
     amxc_var_clean(&var);
 }
 
-void test_variant_double_add(UNUSED void **state) {
+void test_variant_double_add(UNUSED void** state) {
     amxc_var_t var;
-    const amxc_llist_t *list = NULL;
-    const amxc_htable_t *table = NULL;
+    const amxc_llist_t* list = NULL;
+    const amxc_htable_t* table = NULL;
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_LIST), 0);

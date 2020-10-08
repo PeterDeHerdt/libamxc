@@ -63,12 +63,12 @@
 #include <amxc/amxc_llist.h>
 #include <amxc_assert.h>
 
-static bool amxc_llist_it_are_adjacent(amxc_llist_it_t * const it1,
-                                       amxc_llist_it_t * const it2) {
+static bool amxc_llist_it_are_adjacent(amxc_llist_it_t* const it1,
+                                       amxc_llist_it_t* const it2) {
     return (it1->next == it2);
 }
 
-static void amxc_llist_it_update(amxc_llist_it_t * const it) {
+static void amxc_llist_it_update(amxc_llist_it_t* const it) {
     if(it->prev == NULL) {
         if(it->llist != NULL) {
             it->llist->head = it;
@@ -92,7 +92,7 @@ static void amxc_llist_it_update(amxc_llist_it_t * const it) {
    Ambiorix linked list iterator API implementation
  */
 
-int amxc_llist_it_init(amxc_llist_it_t * const it) {
+int amxc_llist_it_init(amxc_llist_it_t* const it) {
     int retval = -1;
     when_null(it, exit);
 
@@ -106,14 +106,14 @@ exit:
     return retval;
 }
 
-void amxc_llist_it_clean(amxc_llist_it_t * const it, amxc_llist_it_delete_t func) {
+void amxc_llist_it_clean(amxc_llist_it_t* const it, amxc_llist_it_delete_t func) {
     amxc_llist_it_take(it);
     if((it != NULL) && (func != NULL)) {
         func(it);
     }
 }
 
-void amxc_llist_it_take(amxc_llist_it_t * const it) {
+void amxc_llist_it_take(amxc_llist_it_t* const it) {
     when_null(it, exit);
     when_null(it->llist, exit);
 
@@ -135,8 +135,8 @@ exit:
     return;
 }
 
-int amxc_llist_it_insert_before(amxc_llist_it_t * const reference,
-                                amxc_llist_it_t * const it) {
+int amxc_llist_it_insert_before(amxc_llist_it_t* const reference,
+                                amxc_llist_it_t* const it) {
     int retval = -1;
     when_null(reference, exit);
     when_null(it, exit);
@@ -160,8 +160,8 @@ exit:
     return retval;
 }
 
-int amxc_llist_it_insert_after(amxc_llist_it_t * const reference,
-                               amxc_llist_it_t * const it) {
+int amxc_llist_it_insert_after(amxc_llist_it_t* const reference,
+                               amxc_llist_it_t* const it) {
     int retval = -1;
     when_null(reference, exit);
     when_null(it, exit);
@@ -185,9 +185,9 @@ exit:
     return retval;
 }
 
-unsigned int amxc_llist_it_index_of(const amxc_llist_it_t * const it) {
+unsigned int amxc_llist_it_index_of(const amxc_llist_it_t* const it) {
     size_t index = 0;
-    const amxc_llist_it_t *pos = NULL;
+    const amxc_llist_it_t* pos = NULL;
     if((it == NULL) || (it->llist == NULL)) {
         index = AMXC_LLIST_RANGE;
         goto exit;
@@ -203,10 +203,10 @@ exit:
     return index;
 }
 
-int amxc_llist_it_swap(amxc_llist_it_t *it1,
-                       amxc_llist_it_t *it2) {
+int amxc_llist_it_swap(amxc_llist_it_t* it1,
+                       amxc_llist_it_t* it2) {
     int retval = -1;
-    amxc_llist_it_t *swapperVector[4] = { NULL, NULL, NULL, NULL };
+    amxc_llist_it_t* swapperVector[4] = { NULL, NULL, NULL, NULL };
 
     when_null(it1, exit);
     when_null(it2, exit);
@@ -217,13 +217,13 @@ int amxc_llist_it_swap(amxc_llist_it_t *it1,
     }
 
     if(it1->llist != it2->llist) {
-        amxc_llist_t *temp = it1->llist;
+        amxc_llist_t* temp = it1->llist;
         it1->llist = it2->llist;
         it2->llist = temp;
     }
 
     if(it2->next == it1) {
-        amxc_llist_it_t *temp = it1;
+        amxc_llist_it_t* temp = it1;
         it1 = it2;
         it2 = temp;
     }

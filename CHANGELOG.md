@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 0.7.0 - 2020-10-02(13:22:08 +0000)
+
+### Fixes
+
+- Fixes delete of empty array
+
+### Changes
+
+- Updates code style
+
+### New
+
+- Get sorted array of hash table keys
+
 ## Release 0.6.12 - 2020-09-17(12:57:45 +0000)
 
 ### Changes

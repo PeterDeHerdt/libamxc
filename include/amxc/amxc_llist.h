@@ -91,11 +91,11 @@ extern "C"
    The linked list iterator structure.
  */
 typedef struct _amxc_llist_it {
-    struct _amxc_llist_it *next; /**< Pointer to the next item
+    struct _amxc_llist_it* next; /**< Pointer to the next item
                                       in the linked list */
-    struct _amxc_llist_it *prev; /**< Pointer to the previous item
+    struct _amxc_llist_it* prev; /**< Pointer to the previous item
                                       in the linked list */
-    struct _amxc_llist *llist;   /**< Pointer to the linked list */
+    struct _amxc_llist* llist;   /**< Pointer to the linked list */
 } amxc_llist_it_t;
 
 /**
@@ -104,8 +104,8 @@ typedef struct _amxc_llist_it {
    The linked list structure.
  */
 typedef struct _amxc_llist {
-    amxc_llist_it_t *head; /**< Pointer to the first item in the linked list */
-    amxc_llist_it_t *tail; /**< Pointer to the last item in the linked list */
+    amxc_llist_it_t* head; /**< Pointer to the first item in the linked list */
+    amxc_llist_it_t* tail; /**< Pointer to the last item in the linked list */
 } amxc_llist_t;
 
 /**
@@ -114,7 +114,7 @@ typedef struct _amxc_llist {
    Gets the data pointer from a linked list iterator.
  */
 #define amxc_llist_it_get_data(it, type, member) \
-    ((type *) (((char *) it) - offsetof(type, member)))
+    ((type*) (((char*) it) - offsetof(type, member)))
 
 /**
    @ingroup amxc_llist
@@ -125,14 +125,30 @@ typedef struct _amxc_llist {
 
    @warning
    Do not modify the list itself while using this macro.
+   It is not possible to nest this macro
    It is allowed to delete or remove the current iterator from the list.
  */
 #define amxc_llist_for_each(it, list) \
-    for(amxc_llist_it_t *it = amxc_llist_get_first(list), \
-        *_next = amxc_llist_it_get_next(it); \
+    for(amxc_llist_it_t* it = amxc_llist_get_first(list), \
+        * _next = amxc_llist_it_get_next(it); \
         it; \
         it = _next, \
         _next = amxc_llist_it_get_next(it))
+
+/**
+   @ingroup amxc_llist
+   @brief
+   Loops over the list from head to tail.
+
+   Iterates over the list and updates the iterator each time.
+
+   @warning
+   Do not modify the list itself while using this macro.
+ */
+#define amxc_llist_iterate(it, list) \
+    for(amxc_llist_it_t* it = amxc_llist_get_first(list); \
+        it; \
+        it = amxc_llist_it_get_next(it))
 
 /**
    @ingroup amxc_llist
@@ -143,14 +159,30 @@ typedef struct _amxc_llist {
 
    @warning
    Do not modify the list itself while using this macro.
+   It is not possible to nest this macro
    It is allowed to delete or remove the current iterator from the list.
  */
 #define amxc_llist_for_each_reverse(it, list) \
-    for(amxc_llist_it_t *it = amxc_llist_get_last(list), \
-        *_prev = amxc_llist_it_get_previous(it); \
+    for(amxc_llist_it_t* it = amxc_llist_get_last(list), \
+        * _prev = amxc_llist_it_get_previous(it); \
         it; \
         it = _prev, \
         _prev = amxc_llist_it_get_previous(it))
+
+/**
+   @ingroup amxc_llist
+   @brief
+   Loops over the list from tail to head.
+
+   Iterates over the list and updates the iterator each time.
+
+   @warning
+   Do not modify the list itself while using this macro.
+ */
+#define amxc_llist_iterate_reverse(it, list) \
+    for(amxc_llist_it_t* it = amxc_llist_get_last(list); \
+        it; \
+        it = amxc_llist_it_get_previous(it))
 
 /**
    @ingroup amxc_llist
@@ -160,10 +192,10 @@ typedef struct _amxc_llist {
    A pointer to a delete function is used in the following functions
    @ref amxc_llist_delete, @ref amxc_llist_clean, @ref amxc_llist_it_clean.
  */
-typedef void (*amxc_llist_it_delete_t) (amxc_llist_it_t *it);
+typedef void (* amxc_llist_it_delete_t) (amxc_llist_it_t* it);
 
-typedef int (*amxc_llist_it_cmp_t) (amxc_llist_it_t *it1,
-                                    amxc_llist_it_t *it2);
+typedef int (* amxc_llist_it_cmp_t) (amxc_llist_it_t* it1,
+                                     amxc_llist_it_t* it2);
 
 /**
    @ingroup amxc_llist
@@ -185,7 +217,7 @@ typedef int (*amxc_llist_it_cmp_t) (amxc_llist_it_t *it1,
    @return
    -1 if an error occured. 0 on success
  */
-int amxc_llist_new(amxc_llist_t **llist);
+int amxc_llist_new(amxc_llist_t** llist);
 
 /**
    @ingroup amxc_llist
@@ -205,7 +237,7 @@ int amxc_llist_new(amxc_llist_t **llist);
    @param llist a pointer to the location where the pointer to the linked list is stored
    @param func a pointer to a function that is called to free each item in the linked list
  */
-void amxc_llist_delete(amxc_llist_t **llist, amxc_llist_it_delete_t func);
+void amxc_llist_delete(amxc_llist_t** llist, amxc_llist_it_delete_t func);
 
 /**
    @ingroup amxc_llist
@@ -228,7 +260,7 @@ void amxc_llist_delete(amxc_llist_t **llist, amxc_llist_it_delete_t func);
    0 on success.
    -1 if a NULL pointer is given.
  */
-int amxc_llist_init(amxc_llist_t * const llist);
+int amxc_llist_init(amxc_llist_t* const llist);
 
 /**
    @ingroup amxc_llist
@@ -243,7 +275,7 @@ int amxc_llist_init(amxc_llist_t * const llist);
    @param func a pointer to a function that is called to free each item in the
                linked list
  */
-void amxc_llist_clean(amxc_llist_t * const llist, amxc_llist_it_delete_t func);
+void amxc_llist_clean(amxc_llist_t* const llist, amxc_llist_it_delete_t func);
 
 /**
    @ingroup amxc_llist
@@ -256,7 +288,7 @@ void amxc_llist_clean(amxc_llist_t * const llist, amxc_llist_it_delete_t func);
    returns true when the linked list contains no items,
    false when there is at least one item in the list.
  */
-bool amxc_llist_is_empty(const amxc_llist_t * const llist);
+bool amxc_llist_is_empty(const amxc_llist_t* const llist);
 
 /**
    @ingroup amxc_llist
@@ -275,7 +307,7 @@ bool amxc_llist_is_empty(const amxc_llist_t * const llist);
    @return
    returns the number of items in linked list
  */
-size_t amxc_llist_size(const amxc_llist_t * const llist);
+size_t amxc_llist_size(const amxc_llist_t* const llist);
 
 /**
    @ingroup amxc_llist
@@ -295,7 +327,7 @@ size_t amxc_llist_size(const amxc_llist_t * const llist);
    @return
    returns 0 when the item is added, -1 when there was an error
  */
-int amxc_llist_append(amxc_llist_t * const llist, amxc_llist_it_t * const it);
+int amxc_llist_append(amxc_llist_t* const llist, amxc_llist_it_t* const it);
 
 /**
    @ingroup amxc_llist
@@ -315,8 +347,8 @@ int amxc_llist_append(amxc_llist_t * const llist, amxc_llist_it_t * const it);
    @return
    returns 0 when the item is added, -1 when there was an error
  */
-int amxc_llist_prepend(amxc_llist_t * const llist,
-                       amxc_llist_it_t * const it);
+int amxc_llist_prepend(amxc_llist_t* const llist,
+                       amxc_llist_it_t* const it);
 
 /**
    @ingroup amxc_llist
@@ -340,7 +372,7 @@ int amxc_llist_prepend(amxc_llist_t * const llist,
    Returns the iterator of the linked list item at the requested index,
    or NULL when there is no such item.
  */
-amxc_llist_it_t *amxc_llist_get_at(const amxc_llist_t * const llist,
+amxc_llist_it_t* amxc_llist_get_at(const amxc_llist_t* const llist,
                                    const unsigned int index);
 
 /**
@@ -366,9 +398,9 @@ amxc_llist_it_t *amxc_llist_get_at(const amxc_llist_t * const llist,
    @return
    returns 0 when the item is added, -1 when there was an error
  */
-int amxc_llist_set_at(amxc_llist_t *llist,
+int amxc_llist_set_at(amxc_llist_t* llist,
                       const unsigned int index,
-                      amxc_llist_it_t * const it);
+                      amxc_llist_it_t* const it);
 
 /**
    @ingroup amxc_llist
@@ -389,7 +421,7 @@ int amxc_llist_set_at(amxc_llist_t *llist,
    0 on success.
    -1 if a NULL pointer is given.
  */
-int amxc_llist_it_init(amxc_llist_it_t * const it);
+int amxc_llist_it_init(amxc_llist_it_t* const it);
 
 /**
    @ingroup amxc_llist
@@ -406,7 +438,7 @@ int amxc_llist_it_init(amxc_llist_it_t * const it);
    @param it a pointer to the linked list iterator structure
    @param func a pointer to a function that is called to free the linked list item
  */
-void amxc_llist_it_clean(amxc_llist_it_t * const it, amxc_llist_it_delete_t func);
+void amxc_llist_it_clean(amxc_llist_it_t* const it, amxc_llist_it_delete_t func);
 
 /**
    @ingroup amxc_llist
@@ -415,7 +447,7 @@ void amxc_llist_it_clean(amxc_llist_it_t * const it, amxc_llist_it_delete_t func
 
    @param it a pointer to the linked list iterator structure
  */
-void amxc_llist_it_take(amxc_llist_it_t * const it);
+void amxc_llist_it_take(amxc_llist_it_t* const it);
 
 /**
    @ingroup amxc_llist
@@ -433,8 +465,8 @@ void amxc_llist_it_take(amxc_llist_it_t * const it);
    -1 if the reference iterator is not in a list.
    0 if the iterator is inserted
  */
-int amxc_llist_it_insert_before(amxc_llist_it_t * const reference,
-                                amxc_llist_it_t * const it);
+int amxc_llist_it_insert_before(amxc_llist_it_t* const reference,
+                                amxc_llist_it_t* const it);
 
 /**
    @ingroup amxc_llist
@@ -453,8 +485,8 @@ int amxc_llist_it_insert_before(amxc_llist_it_t * const reference,
    -1 if the reference iterator is not in a list.
    0 if the iterator is inserted
  */
-int amxc_llist_it_insert_after(amxc_llist_it_t * const reference,
-                               amxc_llist_it_t * const it);
+int amxc_llist_it_insert_after(amxc_llist_it_t* const reference,
+                               amxc_llist_it_t* const it);
 
 /**
    @ingroup amxc_llist
@@ -467,12 +499,12 @@ int amxc_llist_it_insert_after(amxc_llist_it_t * const reference,
    @return
    The index of the iterator or AMXC_LLIST_RANGE if the iterator is not in a list.
  */
-unsigned int amxc_llist_it_index_of(const amxc_llist_it_t * const it);
+unsigned int amxc_llist_it_index_of(const amxc_llist_it_t* const it);
 
-int amxc_llist_it_swap(amxc_llist_it_t *it1,
-                       amxc_llist_it_t *it2);
+int amxc_llist_it_swap(amxc_llist_it_t* it1,
+                       amxc_llist_it_t* it2);
 
-int amxc_llist_sort(amxc_llist_t * const llist, amxc_llist_it_cmp_t cmp);
+int amxc_llist_sort(amxc_llist_t* const llist, amxc_llist_it_cmp_t cmp);
 
 /**
    @ingroup amxc_llist
@@ -489,7 +521,7 @@ int amxc_llist_sort(amxc_llist_t * const llist, amxc_llist_it_cmp_t cmp);
    or NULL when the linked list is empty.
  */
 AMXC_INLINE
-amxc_llist_it_t *amxc_llist_get_first(const amxc_llist_t * const llist) {
+amxc_llist_it_t* amxc_llist_get_first(const amxc_llist_t* const llist) {
     return llist != NULL ? llist->head : NULL;
 }
 
@@ -508,7 +540,7 @@ amxc_llist_it_t *amxc_llist_get_first(const amxc_llist_t * const llist) {
    or NULL when the linked list is empty.
  */
 AMXC_INLINE
-amxc_llist_it_t *amxc_llist_get_last(const amxc_llist_t * const llist) {
+amxc_llist_it_t* amxc_llist_get_last(const amxc_llist_t* const llist) {
     return llist != NULL ? llist->tail : NULL;
 }
 
@@ -528,8 +560,8 @@ amxc_llist_it_t *amxc_llist_get_last(const amxc_llist_t * const llist) {
    or NULL when the linked list is empty.
  */
 AMXC_INLINE
-amxc_llist_it_t *amxc_llist_take_first(amxc_llist_t * const llist) {
-    amxc_llist_it_t *it = amxc_llist_get_first(llist);
+amxc_llist_it_t* amxc_llist_take_first(amxc_llist_t* const llist) {
+    amxc_llist_it_t* it = amxc_llist_get_first(llist);
     amxc_llist_it_take(it);
     return it;
 }
@@ -550,8 +582,8 @@ amxc_llist_it_t *amxc_llist_take_first(amxc_llist_t * const llist) {
    or NULL when the linked list is empty.
  */
 AMXC_INLINE
-amxc_llist_it_t *amxc_llist_take_last(amxc_llist_t * const llist) {
-    amxc_llist_it_t *it = amxc_llist_get_last(llist);
+amxc_llist_it_t* amxc_llist_take_last(amxc_llist_t* const llist) {
+    amxc_llist_it_t* it = amxc_llist_get_last(llist);
     amxc_llist_it_take(it);
     return it;
 }
@@ -579,9 +611,9 @@ amxc_llist_it_t *amxc_llist_take_last(amxc_llist_t * const llist) {
    or NULL when there is no such item.
  */
 AMXC_INLINE
-amxc_llist_it_t *amxc_llist_take_at(const amxc_llist_t *llist,
+amxc_llist_it_t* amxc_llist_take_at(const amxc_llist_t* llist,
                                     const unsigned int index) {
-    amxc_llist_it_t *it = amxc_llist_get_at(llist, index);
+    amxc_llist_it_t* it = amxc_llist_get_at(llist, index);
     amxc_llist_it_take(it);
     return it;
 }
@@ -600,7 +632,7 @@ amxc_llist_it_t *amxc_llist_take_at(const amxc_llist_t *llist,
    or NULL when there is not more item in the linked list.
  */
 AMXC_INLINE
-amxc_llist_it_t *amxc_llist_it_get_next(const amxc_llist_it_t * const reference) {
+amxc_llist_it_t* amxc_llist_it_get_next(const amxc_llist_it_t* const reference) {
     return reference != NULL ? reference->next : NULL;
 }
 
@@ -618,7 +650,7 @@ amxc_llist_it_t *amxc_llist_it_get_next(const amxc_llist_it_t * const reference)
    or NULL when there is no more items in the linked list.
  */
 AMXC_INLINE
-amxc_llist_it_t *amxc_llist_it_get_previous(const amxc_llist_it_t * const reference) {
+amxc_llist_it_t* amxc_llist_it_get_previous(const amxc_llist_it_t* const reference) {
     return reference != NULL ? reference->prev : NULL;
 }
 
@@ -633,7 +665,7 @@ amxc_llist_it_t *amxc_llist_it_get_previous(const amxc_llist_it_t * const refere
    true when the iterator is in the list, or false if it is not in a list
  */
 AMXC_INLINE
-bool amxc_llist_it_is_in_list(const amxc_llist_it_t * const it) {
+bool amxc_llist_it_is_in_list(const amxc_llist_it_t* const it) {
     return (it != NULL && it->llist != NULL) ? true : false;
 }
 

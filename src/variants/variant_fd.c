@@ -66,12 +66,12 @@
 
 #include <amxc_variant_priv.h>
 
-static int variant_fd_to_string(amxc_var_t * const dest,
-                                const amxc_var_t * const src) {
+static int variant_fd_to_string(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
     int retval = -1;
     int check = 0;
     int size_needed = snprintf(NULL, 0, "%" PRId32, src->data.fd);
-    dest->data.s = (char *) calloc(size_needed + 1, sizeof(char));
+    dest->data.s = (char*) calloc(size_needed + 1, sizeof(char));
 
     when_null(dest->data.s, exit);
 
@@ -88,8 +88,8 @@ exit:
     return retval;
 }
 
-static int variant_fd_to_int8(amxc_var_t * const dest,
-                              const amxc_var_t * const src) {
+static int variant_fd_to_int8(amxc_var_t* const dest,
+                              const amxc_var_t* const src) {
     int retval = -1;
 
     /* verify overflow or underflow */
@@ -102,8 +102,8 @@ exit:
     return retval;
 }
 
-static int variant_fd_to_int16(amxc_var_t * const dest,
-                               const amxc_var_t * const src) {
+static int variant_fd_to_int16(amxc_var_t* const dest,
+                               const amxc_var_t* const src) {
     int retval = -1;
 
     /* verify overflow or underflow */
@@ -116,8 +116,8 @@ exit:
     return retval;
 }
 
-static int variant_fd_to_int32(amxc_var_t * const dest,
-                               const amxc_var_t * const src) {
+static int variant_fd_to_int32(amxc_var_t* const dest,
+                               const amxc_var_t* const src) {
     int retval = -1;
 
     /* verify overflow or underflow */
@@ -130,8 +130,8 @@ exit:
     return retval;
 }
 
-static int variant_fd_to_int64(amxc_var_t * const dest,
-                               const amxc_var_t * const src) {
+static int variant_fd_to_int64(amxc_var_t* const dest,
+                               const amxc_var_t* const src) {
     int retval = -1;
 
     dest->data.i64 = (int64_t) src->data.fd;
@@ -140,8 +140,8 @@ static int variant_fd_to_int64(amxc_var_t * const dest,
     return retval;
 }
 
-static int variant_fd_to_uint8(amxc_var_t * const dest,
-                               const amxc_var_t * const src) {
+static int variant_fd_to_uint8(amxc_var_t* const dest,
+                               const amxc_var_t* const src) {
     int retval = -1;
 
     /* verify overflow or underflow */
@@ -154,8 +154,8 @@ exit:
     return retval;
 }
 
-static int variant_fd_to_uint16(amxc_var_t * const dest,
-                                const amxc_var_t * const src) {
+static int variant_fd_to_uint16(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
     int retval = -1;
 
     /* verify overflow or underflow */
@@ -168,8 +168,8 @@ exit:
     return retval;
 }
 
-static int variant_fd_to_uint32(amxc_var_t * const dest,
-                                const amxc_var_t * const src) {
+static int variant_fd_to_uint32(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
     int retval = -1;
 
     /* verify overflow or underflow */
@@ -182,34 +182,34 @@ exit:
     return retval;
 }
 
-static int variant_fd_to_uint64(amxc_var_t * const dest,
-                                const amxc_var_t * const src) {
+static int variant_fd_to_uint64(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
     dest->data.ui64 = llabs(src->data.fd);
     return 0;
 }
 
 
-static int variant_fd_to_float(amxc_var_t * const dest,
-                               const amxc_var_t * const src) {
+static int variant_fd_to_float(amxc_var_t* const dest,
+                               const amxc_var_t* const src) {
     dest->data.f = (float) src->data.fd;
     return 0;
 }
 
-static int variant_fd_to_double(amxc_var_t * const dest,
-                                const amxc_var_t * const src) {
+static int variant_fd_to_double(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
     dest->data.d = (double) src->data.fd;
     return 0;
 }
 
-static int variant_fd_to_bool(amxc_var_t * const dest,
-                              const amxc_var_t * const src) {
+static int variant_fd_to_bool(amxc_var_t* const dest,
+                              const amxc_var_t* const src) {
 
     dest->data.b = fcntl((int) llabs(src->data.fd), F_GETFD) != 0 ? false : true;
     return 0;
 }
 
-static int variant_fd_convert_to(amxc_var_t * const dest,
-                                 const amxc_var_t * const src) {
+static int variant_fd_convert_to(amxc_var_t* const dest,
+                                 const amxc_var_t* const src) {
     int retval = -1;
 
     amxc_var_convert_fn_t convfn[AMXC_VAR_ID_CUSTOM_BASE] = {
@@ -250,9 +250,9 @@ exit:
     return retval;
 }
 
-static int variant_fd_compare(const amxc_var_t * const lval,
-                              const amxc_var_t * const rval,
-                              int * const result) {
+static int variant_fd_compare(const amxc_var_t* const lval,
+                              const amxc_var_t* const rval,
+                              int* const result) {
     if(lval->data.fd == rval->data.fd) {
         *result = 0;
     } else if(lval->data.fd > rval->data.fd) {
@@ -287,7 +287,7 @@ AMXC_DESTRUCTOR static void amxc_var_fd_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_fd);
 }
 
-int amxc_var_set_fd_t(amxc_var_t *var, int val) {
+int amxc_var_set_fd_t(amxc_var_t* var, int val) {
     int retval = -1;
     struct rlimit nofile = { 0, 0 };
     when_null(var, exit);
@@ -306,7 +306,7 @@ exit:
     return retval;
 }
 
-fd_t amxc_var_get_fd_t(const amxc_var_t *var) {
+fd_t amxc_var_get_fd_t(const amxc_var_t* var) {
     int64_t retval = 0;
     when_null(var, exit);
 
@@ -319,7 +319,7 @@ exit:
     return retval;
 }
 
-fd_t amxc_var_get_const_fd_t(const amxc_var_t * const var) {
+fd_t amxc_var_get_const_fd_t(const amxc_var_t* const var) {
     fd_t retval = -1;
     when_null(var, exit);
     when_true(var->type_id != AMXC_VAR_ID_FD, exit);
@@ -330,8 +330,8 @@ exit:
     return retval;
 }
 
-amxc_var_t *amxc_var_add_new_fd_t(amxc_var_t * const var, int val) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_fd_t(amxc_var_t* const var, int val) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new(var);
@@ -345,8 +345,8 @@ exit:
     return subvar;
 }
 
-amxc_var_t *amxc_var_add_new_key_fd_t(amxc_var_t * const var, const char *key, int val) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_key_fd_t(amxc_var_t* const var, const char* key, int val) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new_key(var, key);

@@ -61,11 +61,11 @@
 #ifndef __TEST_AMXC_AQUEUE_H__
 #define __TEST_AMXC_AQUEUE_H__
 
-void amxc_astack_new_delete_null_check(void **state);
-void amxc_astack_new_delete_check(void **state);
-void amxc_astack_init_clean_null_check(void **state);
-void amxc_astack_init_clean_check(void **state);
-void amxc_astack_push_check(void **state);
-void amxc_astack_pop_check(void **state);
+void amxc_astack_new_delete_null_check(void** state);
+void amxc_astack_new_delete_check(void** state);
+void amxc_astack_init_clean_null_check(void** state);
+void amxc_astack_init_clean_check(void** state);
+void amxc_astack_push_check(void** state);
+void amxc_astack_pop_check(void** state);
 
 #endif  // __TEST_AMXC_AQUEUE_H__

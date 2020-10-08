@@ -65,12 +65,12 @@
 #include <amxc/amxc_rbuffer.h>
 #include <amxc_assert.h>
 
-static char *amxc_rbuffer_alloc(amxc_rbuffer_t * const rb, const size_t size) {
-    char *buffer = NULL;
+static char* amxc_rbuffer_alloc(amxc_rbuffer_t* const rb, const size_t size) {
+    char* buffer = NULL;
     if(rb->buffer_start == NULL) {
-        buffer = (char *) calloc(1, size);
+        buffer = (char*) calloc(1, size);
     } else {
-        buffer = (char *) realloc(rb->buffer_start, size);
+        buffer = (char*) realloc(rb->buffer_start, size);
     }
 
     return buffer;
@@ -82,11 +82,11 @@ static char *amxc_rbuffer_alloc(amxc_rbuffer_t * const rb, const size_t size) {
    Ambiorix ring buffer API implementation
  */
 
-int amxc_rbuffer_new(amxc_rbuffer_t **rb, const size_t size) {
+int amxc_rbuffer_new(amxc_rbuffer_t** rb, const size_t size) {
     int retval = -1;
     when_null(rb, exit);
 
-    *rb = (amxc_rbuffer_t *) calloc(1, sizeof(amxc_rbuffer_t));
+    *rb = (amxc_rbuffer_t*) calloc(1, sizeof(amxc_rbuffer_t));
     when_null(*rb, exit);
 
     retval = amxc_rbuffer_init(*rb, size);
@@ -99,7 +99,7 @@ exit:
     return retval;
 }
 
-void amxc_rbuffer_delete(amxc_rbuffer_t **rb) {
+void amxc_rbuffer_delete(amxc_rbuffer_t** rb) {
     when_null(rb, exit);
 
     amxc_rbuffer_clean(*rb);
@@ -110,7 +110,7 @@ exit:
     return;
 }
 
-int amxc_rbuffer_init(amxc_rbuffer_t * const rb, const size_t size) {
+int amxc_rbuffer_init(amxc_rbuffer_t* const rb, const size_t size) {
     int retval = -1;
     when_null(rb, exit);
 
@@ -137,7 +137,7 @@ exit:
     return retval;
 }
 
-void amxc_rbuffer_clean(amxc_rbuffer_t * const rb) {
+void amxc_rbuffer_clean(amxc_rbuffer_t* const rb) {
     when_null(rb, exit);
 
     free(rb->buffer_start);
@@ -150,12 +150,12 @@ exit:
     return;
 }
 
-int amxc_rbuffer_grow(amxc_rbuffer_t * const rb, const size_t size) {
+int amxc_rbuffer_grow(amxc_rbuffer_t* const rb, const size_t size) {
     int retval = -1;
     size_t read_pos = 0;
     size_t write_pos = 0;
     size_t new_size = 0;
-    char *new_buffer = NULL;
+    char* new_buffer = NULL;
 
     when_null(rb, exit);
 
@@ -193,13 +193,13 @@ exit:
 }
 
 // TODO: this function needs refactorying/splitting up - too long
-int amxc_rbuffer_shrink(amxc_rbuffer_t * const rb, const size_t size) {
+int amxc_rbuffer_shrink(amxc_rbuffer_t* const rb, const size_t size) {
     int retval = -1;
     size_t buffer_size = 0;
     size_t new_size = 0;
     size_t read_pos = 0;
     size_t write_pos = 0;
-    char *new_buffer = NULL;
+    char* new_buffer = NULL;
     when_null(rb, exit);
 
     buffer_size = rb->buffer_end - rb->buffer_start;
@@ -240,7 +240,7 @@ int amxc_rbuffer_shrink(amxc_rbuffer_t * const rb, const size_t size) {
     read_pos = rb->read_pos - rb->buffer_start;
     write_pos = rb->write_pos - rb->buffer_start;
 
-    new_buffer = (char *) realloc(rb->buffer_start, new_size);
+    new_buffer = (char*) realloc(rb->buffer_start, new_size);
 
     rb->buffer_start = new_buffer;
     rb->buffer_end = rb->buffer_start + new_size;
@@ -253,8 +253,8 @@ exit:
     return retval;
 }
 
-ssize_t amxc_rbuffer_read(amxc_rbuffer_t * const rb,
-                          char * const buf,
+ssize_t amxc_rbuffer_read(amxc_rbuffer_t* const rb,
+                          char* const buf,
                           size_t count) {
     ssize_t retval = -1;
     when_null(rb, exit);
@@ -294,8 +294,8 @@ exit:
     return retval;
 }
 
-ssize_t amxc_rbuffer_write(amxc_rbuffer_t * const rb,
-                           const char * const buf,
+ssize_t amxc_rbuffer_write(amxc_rbuffer_t* const rb,
+                           const char* const buf,
                            const size_t count) {
     ssize_t retval = -1;
     size_t free_space = 0;
@@ -329,7 +329,7 @@ exit:
     return retval;
 }
 
-size_t amxc_rbuffer_size(const amxc_rbuffer_t * const rb) {
+size_t amxc_rbuffer_size(const amxc_rbuffer_t* const rb) {
     size_t retval = 0;
     when_null(rb, exit);
     when_true(rb->read_pos == rb->write_pos, exit);

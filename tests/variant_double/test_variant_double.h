@@ -61,14 +61,14 @@
 #ifndef __TEST_VARIANT_DOUBLE_H__
 #define __TEST_VARIANT_DOuBLE_H__
 
-void test_variant_double_copy(void **state);
-void test_variant_double_convert_to_bool(void **state);
-void test_variant_double_convert_to_integer(void **state);
-void test_variant_double_convert_to_htable(void **state);
-void test_variant_double_convert_to_list(void **state);
-void test_variant_double_convert_to_string(void **state);
-void test_variant_double_set_get(void **state);
-void test_variant_double_compare(void **state);
-void test_variant_double_add(void **state);
+void test_variant_double_copy(void** state);
+void test_variant_double_convert_to_bool(void** state);
+void test_variant_double_convert_to_integer(void** state);
+void test_variant_double_convert_to_htable(void** state);
+void test_variant_double_convert_to_list(void** state);
+void test_variant_double_convert_to_string(void** state);
+void test_variant_double_set_get(void** state);
+void test_variant_double_compare(void** state);
+void test_variant_double_add(void** state);
 
 #endif // __TEST_VARIANT_LIST_H__

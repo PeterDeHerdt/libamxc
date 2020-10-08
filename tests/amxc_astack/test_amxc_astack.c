@@ -68,33 +68,33 @@
 
 #define UNUSED __attribute__((unused))
 
-void amxc_astack_new_delete_null_check(UNUSED void **state) {
+void amxc_astack_new_delete_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_astack_new(NULL), -1);
     amxc_astack_delete(NULL, NULL);
 }
 
-void amxc_astack_new_delete_check(UNUSED void **state) {
-    amxc_astack_t *astack = NULL;
+void amxc_astack_new_delete_check(UNUSED void** state) {
+    amxc_astack_t* astack = NULL;
     assert_int_equal(amxc_astack_new(&astack), 0);
     amxc_astack_delete(&astack, NULL);
     assert_ptr_equal(astack, NULL);
 }
 
-void amxc_astack_init_clean_null_check(UNUSED void **state) {
+void amxc_astack_init_clean_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_astack_init(NULL), -1);
     amxc_astack_clean(NULL, NULL);
 }
 
-void amxc_astack_init_clean_check(UNUSED void **state) {
+void amxc_astack_init_clean_check(UNUSED void** state) {
     amxc_astack_t astack;
 
     assert_int_equal(amxc_astack_init(&astack), 0);
     amxc_astack_clean(&astack, NULL);
 }
 
-void amxc_astack_push_check(UNUSED void **state) {
+void amxc_astack_push_check(UNUSED void** state) {
     amxc_astack_t astack;
     char data[] = "abcdefg";
 
@@ -113,7 +113,7 @@ void amxc_astack_push_check(UNUSED void **state) {
     amxc_astack_clean(&astack, NULL);
 }
 
-void amxc_astack_pop_check(UNUSED void **state) {
+void amxc_astack_pop_check(UNUSED void** state) {
     amxc_astack_t astack;
     char data[] = "abcdefg";
 

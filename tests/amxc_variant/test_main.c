@@ -70,9 +70,9 @@
 #include "test_amxc_variant.h"
 
 int main(void) {
-    amxc_array_t *types = amxc_variant_get_types_array();
+    amxc_array_t* types = amxc_variant_get_types_array();
     for(int i = 0; i < AMXC_VAR_ID_CUSTOM_BASE + 1; i++) {
-        amxc_array_it_t *ait = amxc_array_get_at(types, i);
+        amxc_array_it_t* ait = amxc_array_get_at(types, i);
         amxc_array_it_take_data(ait);
     }
     const struct CMUnitTest tests[] = {

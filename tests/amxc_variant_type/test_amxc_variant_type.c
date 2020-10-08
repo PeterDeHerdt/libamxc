@@ -112,8 +112,8 @@ static amxc_var_type_t dummy4 =
     .name = "dummy4_t"
 };
 
-void test_amxc_var_add_type(UNUSED void **state) {
-    amxc_array_t *types = amxc_variant_get_types_array();
+void test_amxc_var_add_type(UNUSED void** state) {
+    amxc_array_t* types = amxc_variant_get_types_array();
 
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
     assert_ptr_equal(amxc_array_get_at(types, 0)->data, &dummy1);
@@ -142,8 +142,8 @@ void test_amxc_var_add_type(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy4), 0);
 }
 
-void test_amxc_var_remove_type(UNUSED void **state) {
-    amxc_array_t *types = amxc_variant_get_types_array();
+void test_amxc_var_remove_type(UNUSED void** state) {
+    amxc_array_t* types = amxc_variant_get_types_array();
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
     assert_int_equal(amxc_var_add_type(&dummy2, -1), AMXC_VAR_ID_CUSTOM_BASE);
 
@@ -164,7 +164,7 @@ void test_amxc_var_remove_type(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy1), 0);
 }
 
-void test_amxc_var_get_type(UNUSED void **state) {
+void test_amxc_var_get_type(UNUSED void** state) {
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
     assert_int_equal(amxc_var_add_type(&dummy2, -1), AMXC_VAR_ID_CUSTOM_BASE);
 
@@ -176,8 +176,8 @@ void test_amxc_var_get_type(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy2), 0);
 }
 
-void test_amxc_var_register_type(UNUSED void **state) {
-    amxc_array_t *types = amxc_variant_get_types_array();
+void test_amxc_var_register_type(UNUSED void** state) {
+    amxc_array_t* types = amxc_variant_get_types_array();
 
     assert_int_equal(amxc_var_register_type(NULL), AMXC_VAR_ID_MAX);
 
@@ -193,8 +193,8 @@ void test_amxc_var_register_type(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy2), 0);
 }
 
-void test_amxc_var_unregister_type(UNUSED void **state) {
-    amxc_array_t *types = amxc_variant_get_types_array();
+void test_amxc_var_unregister_type(UNUSED void** state) {
+    amxc_array_t* types = amxc_variant_get_types_array();
 
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
     assert_int_equal(amxc_var_add_type(&dummy2, AMXC_VAR_ID_MAX), AMXC_VAR_ID_CUSTOM_BASE);
@@ -211,7 +211,7 @@ void test_amxc_var_unregister_type(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy1), 0);
 }
 
-void test_amxc_var_get_type_name_from_id(UNUSED void **state) {
+void test_amxc_var_get_type_name_from_id(UNUSED void** state) {
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
     assert_int_equal(amxc_var_add_type(&dummy2, -1), AMXC_VAR_ID_CUSTOM_BASE);
 
@@ -225,7 +225,7 @@ void test_amxc_var_get_type_name_from_id(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy2), 0);
 }
 
-void test_amxc_var_get_type_id_from_name(UNUSED void **state) {
+void test_amxc_var_get_type_id_from_name(UNUSED void** state) {
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
     assert_int_equal(amxc_var_add_type(&dummy2, -1), AMXC_VAR_ID_CUSTOM_BASE);
 

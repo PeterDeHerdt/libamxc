@@ -61,14 +61,14 @@
 #ifndef __TEST_AMXC_TIMESTAMP_H__
 #define __TEST_AMXC_TIMESTAMP_H__
 
-void test_amxc_ts_now(void **state);
-void test_amxc_ts_parse_valid(void **state);
-void test_amxc_ts_parse_invalid(void **state);
-void test_amxc_ts_format_valid(void **state);
-void test_amxc_ts_format_invalid(void **state);
-void test_amxc_ts_format_precision_valid(void **state);
-void test_amxc_ts_is_valid(void **state);
-void test_amxc_ts_compare(void **state);
-void test_amxc_ts_to_tm(void **state);
+void test_amxc_ts_now(void** state);
+void test_amxc_ts_parse_valid(void** state);
+void test_amxc_ts_parse_invalid(void** state);
+void test_amxc_ts_format_valid(void** state);
+void test_amxc_ts_format_invalid(void** state);
+void test_amxc_ts_format_precision_valid(void** state);
+void test_amxc_ts_is_valid(void** state);
+void test_amxc_ts_compare(void** state);
+void test_amxc_ts_to_tm(void** state);
 
 #endif  // __TEST_AMXC_TIMESTAMP_H__

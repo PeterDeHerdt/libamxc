@@ -86,7 +86,7 @@ extern "C"
    Gets the data pointer from an hash table iterator
  */
 #define amxc_htable_it_get_data(it, type, member) \
-    ((type *) (((char *) it) - offsetof(type, member)))
+    ((type*) (((char*) it) - offsetof(type, member)))
 
 /**
    @ingroup amxc_htable
@@ -97,15 +97,30 @@ extern "C"
 
    @warning
    Do not modify the hash table itself while using this macro.
+   It is not possible to nest this macro
    It is allowed to delete or remove the current iterator from the hash table.
  */
 #define amxc_htable_for_each(it, htable) \
-    for(amxc_htable_it_t *it = amxc_htable_get_first(htable), \
-        *_next = amxc_htable_it_get_next(it); \
+    for(amxc_htable_it_t* it = amxc_htable_get_first(htable), \
+        * _next = amxc_htable_it_get_next(it); \
         it; \
         it = _next, \
         _next = amxc_htable_it_get_next(it))
 
+/**
+   @ingroup amxc_htable
+   @brief
+   Loops over items in the hash table
+
+   Iterates over the hash table and updates the iterator each time.
+
+   @warning
+   Do not modify the hash table itself while using this macro.
+ */
+#define amxc_htable_iterate(it, htable) \
+    for(amxc_htable_it_t* it = amxc_htable_get_first(htable); \
+        it; \
+        it = amxc_htable_it_get_next(it))
 
 /**
    @ingroup amxc_htable
@@ -122,9 +137,9 @@ typedef struct _amxc_htable_it amxc_htable_it_t;
    The hash table iterator structure.
  */
 struct _amxc_htable_it {
-    amxc_array_it_t *ait;           /**< Pointer to position in the array */
-    char *key;                      /**< The key */
-    amxc_htable_it_t *next;         /**< The next one if chained */
+    amxc_array_it_t* ait;           /**< Pointer to position in the array */
+    char* key;                      /**< The key */
+    amxc_htable_it_t* next;         /**< The next one if chained */
 };
 
 /**
@@ -141,7 +156,7 @@ struct _amxc_htable_it {
    The calculated hash is used to calculate the index of the position of the key
    in the array.
  */
-typedef unsigned int (*amxc_htable_hash_func_t) (const char *key, const unsigned int len);
+typedef unsigned int (* amxc_htable_hash_func_t) (const char* key, const unsigned int len);
 
 /**
    @ingroup amxc_htable
@@ -151,7 +166,7 @@ typedef unsigned int (*amxc_htable_hash_func_t) (const char *key, const unsigned
    A pointer to a delete function is used in the following functions
    @ref amxc_htable_delete, @ref amxc_htable_clean, @ref amxc_htable_it_clean.
  */
-typedef void (*amxc_htable_it_delete_t) (const char *key, amxc_htable_it_t *it);
+typedef void (* amxc_htable_it_delete_t) (const char* key, amxc_htable_it_t* it);
 
 /**
    @ingroup amxc_htable
@@ -186,7 +201,7 @@ typedef struct _amxc_htable {
    @return
    -1 if an error occured. 0 on success
  */
-int amxc_htable_new(amxc_htable_t **htable, const size_t reserve);
+int amxc_htable_new(amxc_htable_t** htable, const size_t reserve);
 
 /**
    @ingroup amxc_htable
@@ -207,7 +222,7 @@ int amxc_htable_new(amxc_htable_t **htable, const size_t reserve);
    @param func pointer to a function that is called to free each item in the
                hash table
  */
-void amxc_htable_delete(amxc_htable_t **htable, amxc_htable_it_delete_t func);
+void amxc_htable_delete(amxc_htable_t** htable, amxc_htable_it_delete_t func);
 
 /**
    @ingroup amxc_htable
@@ -232,7 +247,7 @@ void amxc_htable_delete(amxc_htable_t **htable, amxc_htable_it_delete_t func);
    0 on success.
    -1 if a NULL pointer is given.
  */
-int amxc_htable_init(amxc_htable_t * const htable, const size_t reserve);
+int amxc_htable_init(amxc_htable_t* const htable, const size_t reserve);
 
 /**
    @ingroup amxc_htable
@@ -247,7 +262,7 @@ int amxc_htable_init(amxc_htable_t * const htable, const size_t reserve);
    @param func pointer to a function that is called to free each item in
                the hash table
  */
-void amxc_htable_clean(amxc_htable_t * const htable, amxc_htable_it_delete_t func);
+void amxc_htable_clean(amxc_htable_t* const htable, amxc_htable_it_delete_t func);
 
 /**
    @ingroup amxc_htable
@@ -262,7 +277,7 @@ void amxc_htable_clean(amxc_htable_t * const htable, amxc_htable_it_delete_t fun
    @param func pointer to a function that is called for each hash that needs
                be calculated
  */
-void amxc_htable_set_hash_func(amxc_htable_t * const htable, amxc_htable_hash_func_t func);
+void amxc_htable_set_hash_func(amxc_htable_t* const htable, amxc_htable_hash_func_t func);
 
 /**
    @ingroup amxc_htable
@@ -279,8 +294,8 @@ void amxc_htable_set_hash_func(amxc_htable_t * const htable, amxc_htable_hash_fu
    The calculated index or @ref AMXC_HTABLE_RANGE if no reserved items are
    available in the table
  */
-unsigned int amxc_htable_key2index(const amxc_htable_t * const htable,
-                                   const char * const key);
+unsigned int amxc_htable_key2index(const amxc_htable_t* const htable,
+                                   const char* const key);
 
 /**
    @ingroup amxc_htable
@@ -294,7 +309,7 @@ unsigned int amxc_htable_key2index(const amxc_htable_t * const htable,
    false when there is at least one item in the table.
  */
 AMXC_INLINE
-bool amxc_htable_is_empty(const amxc_htable_t * const htable) {
+bool amxc_htable_is_empty(const amxc_htable_t* const htable) {
     return htable != NULL ? (htable->items == 0) : true;
 }
 
@@ -317,7 +332,7 @@ bool amxc_htable_is_empty(const amxc_htable_t * const htable) {
    returns the number of items in hash table
  */
 AMXC_INLINE
-size_t amxc_htable_size(const amxc_htable_t * const htable) {
+size_t amxc_htable_size(const amxc_htable_t* const htable) {
     return htable != NULL ? htable->items : 0;
 }
 
@@ -334,7 +349,7 @@ size_t amxc_htable_size(const amxc_htable_t * const htable) {
    returns the number of reserved item positions in hash table
  */
 AMXC_INLINE
-size_t amxc_htable_capacity(const amxc_htable_t * const htable) {
+size_t amxc_htable_capacity(const amxc_htable_t* const htable) {
     return htable != NULL ? htable->table.items : 0;
 }
 
@@ -357,9 +372,9 @@ size_t amxc_htable_capacity(const amxc_htable_t * const htable) {
    @return
    0 when the item is inserted, -1 when an error occured
  */
-int amxc_htable_insert(amxc_htable_t * const htable,
-                       const char * const key,
-                       amxc_htable_it_t * const it);
+int amxc_htable_insert(amxc_htable_t* const htable,
+                       const char* const key,
+                       amxc_htable_it_t* const it);
 
 /**
    @ingroup amxc_htable
@@ -384,8 +399,8 @@ int amxc_htable_insert(amxc_htable_t * const htable,
    the given key. The pointer can be converted to the real data pointer
    using @ref amxc_htable_it_get_data
  */
-amxc_htable_it_t *amxc_htable_get(const amxc_htable_t * const htable,
-                                  const char * const key);
+amxc_htable_it_t* amxc_htable_get(const amxc_htable_t* const htable,
+                                  const char* const key);
 
 /**
    @ingroup amxc_htable
@@ -409,7 +424,7 @@ amxc_htable_it_t *amxc_htable_get(const amxc_htable_t * const htable,
    the given key. The pointer can be converted to the real data pointer
    using @ref amxc_htable_it_get_data
  */
-amxc_htable_it_t *amxc_htable_take(amxc_htable_t * const htable, const char * const key);
+amxc_htable_it_t* amxc_htable_take(amxc_htable_t* const htable, const char* const key);
 
 /**
    @ingroup amxc_htable
@@ -430,7 +445,34 @@ amxc_htable_it_t *amxc_htable_take(amxc_htable_t * const htable, const char * co
    Pointer to the hash table iterator
    or NULL if no items were stored in the hash table.
  */
-amxc_htable_it_t *amxc_htable_get_first(const amxc_htable_t * const htable);
+amxc_htable_it_t* amxc_htable_get_first(const amxc_htable_t* const htable);
+
+/**
+   @ingroup amxc_htable
+   @brief
+   Creates an array containing all keys of the hash table
+
+   The array will be sorted in ascending order. If the hash table contains
+   duplicate keys, the sorted array will contain duplicate keys as well.
+
+   The array will not contain empty items and the size is matching the number
+   of items in the hash table.
+
+   The returned array should be deleted when not used anymore
+   using @ref amxc_array_delete, no delete function is needed.
+
+   @warning
+   Never delete the strings in the array, as these strings are no copies of the
+   keys in the hash table. The array contains pointers to the keys in the
+   hash table. Deleting them will render the hash table unusable and could lead
+   to undefined behavior.
+
+   @param htable a pointer to the hash table structure
+
+   @return
+   A pointer to an amxc_array_t or NULL when the hash table is empty.
+ */
+amxc_array_t* amxc_htable_get_sorted_keys(const amxc_htable_t* const htable);
 
 /**
    @ingroup amxc_htable
@@ -444,7 +486,7 @@ amxc_htable_it_t *amxc_htable_get_first(const amxc_htable_t * const htable);
    True when the key is at least once found in the table, false otherwise.
  */
 AMXC_INLINE
-bool amxc_htable_contains(const amxc_htable_t * const htable, const char * const key) {
+bool amxc_htable_contains(const amxc_htable_t* const htable, const char* const key) {
     return amxc_htable_get(htable, key) ? true : false;
 }
 
@@ -467,7 +509,7 @@ bool amxc_htable_contains(const amxc_htable_t * const htable, const char * const
    0 on success.
    -1 if a NULL pointer is given.
  */
-int amxc_htable_it_init(amxc_htable_it_t * const it);
+int amxc_htable_it_init(amxc_htable_it_t* const it);
 
 /**
    @ingroup amxc_htable
@@ -484,7 +526,7 @@ int amxc_htable_it_init(amxc_htable_it_t * const it);
    @param it a pointer to the hash table iterator structure
    @param func pointer to a function that is called to free the hash table item
  */
-void amxc_htable_it_clean(amxc_htable_it_t * const it, amxc_htable_it_delete_t func);
+void amxc_htable_it_clean(amxc_htable_it_t* const it, amxc_htable_it_delete_t func);
 
 /**
    @ingroup amxc_htable
@@ -502,7 +544,7 @@ void amxc_htable_it_clean(amxc_htable_it_t * const it, amxc_htable_it_delete_t f
    The next iterator in the hash table, starting from the reference
    or NULL if the reference was the last in the table.
  */
-amxc_htable_it_t *amxc_htable_it_get_next(const amxc_htable_it_t * const reference);
+amxc_htable_it_t* amxc_htable_it_get_next(const amxc_htable_it_t* const reference);
 
 /**
    @ingroup amxc_htable
@@ -519,7 +561,7 @@ amxc_htable_it_t *amxc_htable_it_get_next(const amxc_htable_it_t * const referen
    The next iterator in the hash table with the same key, starting from the
    reference or NULL if the reference was the last in the table with that key.
  */
-amxc_htable_it_t *amxc_htable_it_get_next_key(const amxc_htable_it_t * const reference);
+amxc_htable_it_t* amxc_htable_it_get_next_key(const amxc_htable_it_t* const reference);
 
 /**
    @ingroup amxc_htable
@@ -531,7 +573,7 @@ amxc_htable_it_t *amxc_htable_it_get_next_key(const amxc_htable_it_t * const ref
 
    @param it a pointer to the hash table iterator structure
  */
-void amxc_htable_it_take(amxc_htable_it_t * const it);
+void amxc_htable_it_take(amxc_htable_it_t* const it);
 
 /**
    @ingroup amxc_htable
@@ -547,7 +589,7 @@ void amxc_htable_it_take(amxc_htable_it_t * const it);
    the key of the iterator or NULL if the iterator has no key
  */
 AMXC_INLINE
-const char *amxc_htable_it_get_key(const amxc_htable_it_t * const it) {
+const char* amxc_htable_it_get_key(const amxc_htable_it_t* const it) {
     return it != NULL ? it->key : NULL;
 }
 
@@ -571,8 +613,8 @@ const char *amxc_htable_it_get_key(const amxc_htable_it_t * const it) {
    or NULL if no items were stored in the hash table.
  */
 AMXC_INLINE
-amxc_htable_it_t *amxc_htable_take_first(const amxc_htable_t * const htable) {
-    amxc_htable_it_t *it = amxc_htable_get_first(htable);
+amxc_htable_it_t* amxc_htable_take_first(const amxc_htable_t* const htable) {
+    amxc_htable_it_t* it = amxc_htable_get_first(htable);
     amxc_htable_it_take(it);
     return it;
 }

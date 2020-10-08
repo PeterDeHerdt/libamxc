@@ -61,19 +61,19 @@
 #ifndef __TEST_VARIANT_LIST_H__
 #define __TEST_VARIANT_LIST_H__
 
-void test_variant_list_copy(void **state);
-void test_variant_list_convert_to_bool(void **state);
-void test_variant_list_convert_to_integer(void **state);
-void test_variant_list_convert_to_htable(void **state);
-void test_variant_list_convert_to_string(void **state);
-void test_variant_llist_set_get(void **state);
+void test_variant_list_copy(void** state);
+void test_variant_list_convert_to_bool(void** state);
+void test_variant_list_convert_to_integer(void** state);
+void test_variant_list_convert_to_htable(void** state);
+void test_variant_list_convert_to_string(void** state);
+void test_variant_llist_set_get(void** state);
 
-void test_variant_llist_get_index(void **state);
-void test_variant_llist_set_index(void **state);
-void test_variant_llist_set_key(void **state);
-void test_variant_llist_add_new(void **state);
-void test_variant_llist_add_new_key(void **state);
+void test_variant_llist_get_index(void** state);
+void test_variant_llist_set_index(void** state);
+void test_variant_llist_set_key(void** state);
+void test_variant_llist_add_new(void** state);
+void test_variant_llist_add_new_key(void** state);
 
-void test_variant_llist_get_path(void **state);
+void test_variant_llist_get_path(void** state);
 
 #endif // __TEST_VARIANT_LIST_H__

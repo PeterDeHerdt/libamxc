@@ -72,7 +72,7 @@
 
 #define UNUSED __attribute__((unused))
 
-void test_amxc_ts_now(UNUSED void **state) {
+void test_amxc_ts_now(UNUSED void** state) {
     amxc_ts_t ts1, ts2;
 
     assert_int_equal(amxc_ts_now(&ts1), 0);
@@ -92,9 +92,9 @@ void test_amxc_ts_now(UNUSED void **state) {
     assert_true(diff > 300 * 1000 * 1000L);
 }
 
-void test_amxc_ts_parse_valid(UNUSED void **state) {
+void test_amxc_ts_parse_valid(UNUSED void** state) {
     amxc_ts_t ts;
-    const char *formats[] = {
+    const char* formats[] = {
         "1970-07-28T15:45:00Z",
         "0001-01-01T00:00:00Z",
         "2020-02-29T16:16:16+02:00",
@@ -115,9 +115,9 @@ void test_amxc_ts_parse_valid(UNUSED void **state) {
     }
 }
 
-void test_amxc_ts_parse_invalid(UNUSED void **state) {
+void test_amxc_ts_parse_invalid(UNUSED void** state) {
     amxc_ts_t ts;
-    const char *formats[] = {
+    const char* formats[] = {
         "1970-14-28T15:45:00Z",
         "0001-01-32T00:00:00Z",
         "2020-02-30T16:16:16+02:00",
@@ -161,10 +161,10 @@ void test_amxc_ts_parse_invalid(UNUSED void **state) {
     assert_int_not_equal(amxc_ts_parse(&ts, formats[0], 10), 0);
 }
 
-void test_amxc_ts_format_valid(UNUSED void **state) {
+void test_amxc_ts_format_valid(UNUSED void** state) {
     amxc_ts_t ts;
     char str_ts[40];
-    const char *formats[] = {
+    const char* formats[] = {
         "1970-07-28T15:45:00Z",
         "0001-01-01T00:00:00Z",
         "2020-02-29T16:16:16+02:00",
@@ -186,7 +186,7 @@ void test_amxc_ts_format_valid(UNUSED void **state) {
     }
 }
 
-void test_amxc_ts_format_invalid(UNUSED void **state) {
+void test_amxc_ts_format_invalid(UNUSED void** state) {
     amxc_ts_t ts;
     char str_ts[40];
 
@@ -207,10 +207,10 @@ void test_amxc_ts_format_invalid(UNUSED void **state) {
 
 }
 
-void test_amxc_ts_format_precision_valid(UNUSED void **state) {
+void test_amxc_ts_format_precision_valid(UNUSED void** state) {
     amxc_ts_t ts;
     char str_ts[40];
-    const char *formats[] = {
+    const char* formats[] = {
         "1970-07-28T15:45:00Z",
         "0001-01-01T00:00:00Z",
         "2020-02-29T16:16:16+02:00",
@@ -234,7 +234,7 @@ void test_amxc_ts_format_precision_valid(UNUSED void **state) {
     }
 }
 
-void test_amxc_ts_is_valid(UNUSED void **state) {
+void test_amxc_ts_is_valid(UNUSED void** state) {
     char str_ts[40];
 
     amxc_ts_t ts;
@@ -266,7 +266,7 @@ void test_amxc_ts_is_valid(UNUSED void **state) {
     assert_false(amxc_ts_is_valid(NULL));
 }
 
-void test_amxc_ts_compare(UNUSED void **state) {
+void test_amxc_ts_compare(UNUSED void** state) {
     amxc_ts_t ts_a;
     amxc_ts_t ts_b;
 
@@ -288,7 +288,7 @@ void test_amxc_ts_compare(UNUSED void **state) {
     assert_true(amxc_ts_compare(&ts_a, NULL) == 0);
 }
 
-void test_amxc_ts_to_tm(UNUSED void **state) {
+void test_amxc_ts_to_tm(UNUSED void** state) {
     amxc_ts_t ts;
     struct tm tm;
 

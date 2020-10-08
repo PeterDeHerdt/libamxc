@@ -124,7 +124,7 @@ typedef amxc_array_it_delete_t amxc_astack_it_delete_t;
    -1 if an error occured. 0 on success
  */
 AMXC_INLINE
-int amxc_astack_new(amxc_astack_t **astack) {
+int amxc_astack_new(amxc_astack_t** astack) {
     return amxc_array_new(astack, 10);
 }
 
@@ -148,7 +148,7 @@ int amxc_astack_new(amxc_astack_t **astack) {
                array stack
  */
 AMXC_INLINE
-void amxc_astack_delete(amxc_astack_t **astack, amxc_astack_it_delete_t func) {
+void amxc_astack_delete(amxc_astack_t** astack, amxc_astack_it_delete_t func) {
     amxc_array_delete(astack, func);
 }
 
@@ -175,7 +175,7 @@ void amxc_astack_delete(amxc_astack_t **astack, amxc_astack_it_delete_t func) {
    -1 if a NULL pointer is given.
  */
 AMXC_INLINE
-int amxc_astack_init(amxc_astack_t * const astack) {
+int amxc_astack_init(amxc_astack_t* const astack) {
     return amxc_array_init(astack, 10);
 }
 
@@ -192,7 +192,7 @@ int amxc_astack_init(amxc_astack_t * const astack) {
                array stack
  */
 AMXC_INLINE
-void amxc_astack_clean(amxc_astack_t * const astack, amxc_astack_it_delete_t func) {
+void amxc_astack_clean(amxc_astack_t* const astack, amxc_astack_it_delete_t func) {
     amxc_array_clean(astack, func);
 }
 
@@ -210,7 +210,7 @@ void amxc_astack_clean(amxc_astack_t * const astack, amxc_astack_it_delete_t fun
    returns 0 when the item is added, -1 when there was an error
  */
 AMXC_INLINE
-amxc_astack_it_t *amxc_astack_push(amxc_astack_t * const astack, void *data) {
+amxc_astack_it_t* amxc_astack_push(amxc_astack_t* const astack, void* data) {
     return amxc_array_append_data(astack, data);
 }
 
@@ -226,7 +226,7 @@ amxc_astack_it_t *amxc_astack_push(amxc_astack_t * const astack, void *data) {
    or NULL if no more items on the stack.
  */
 AMXC_INLINE
-void *amxc_astack_pop(amxc_astack_t * const astack) {
+void* amxc_astack_pop(amxc_astack_t* const astack) {
     return amxc_array_take_last_data(astack);
 }
 
@@ -242,7 +242,7 @@ void *amxc_astack_pop(amxc_astack_t * const astack) {
    or NULL if no more items on the stack
  */
 AMXC_INLINE
-void *amxc_astack_peek(amxc_astack_t * const astack) {
+void* amxc_astack_peek(amxc_astack_t* const astack) {
     return amxc_array_get_last(astack);
 }
 
@@ -257,7 +257,7 @@ void *amxc_astack_peek(amxc_astack_t * const astack) {
    The number of items on the array stack.
  */
 AMXC_INLINE
-size_t amxc_astack_size(const amxc_astack_t * const astack) {
+size_t amxc_astack_size(const amxc_astack_t* const astack) {
     return amxc_array_size(astack);
 }
 
@@ -273,7 +273,7 @@ size_t amxc_astack_size(const amxc_astack_t * const astack) {
    false when there is at least one item on the stack.
  */
 AMXC_INLINE
-bool amxc_astack_is_empty(const amxc_astack_t * const astack) {
+bool amxc_astack_is_empty(const amxc_astack_t* const astack) {
     return amxc_array_is_empty(astack);
 }
 

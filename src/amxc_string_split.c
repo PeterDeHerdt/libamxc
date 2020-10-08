@@ -89,17 +89,17 @@ typedef struct _string_word_flags {
     int square_brackets;
 } amxc_string_word_flags_t;
 
-typedef int (*amxc_string_create_part_t) (const amxc_string_t * const string,
-                                          amxc_llist_t * const list,
-                                          const size_t start_pos,
-                                          const size_t length);
+typedef int (* amxc_string_create_part_t) (const amxc_string_t* const string,
+                                           amxc_llist_t* const list,
+                                           const size_t start_pos,
+                                           const size_t length);
 
-typedef bool (*amxc_string_check_delimiter_t) (amxc_llist_t *list,
-                                               const char delimiter);
+typedef bool (* amxc_string_check_delimiter_t) (amxc_llist_t* list,
+                                                const char delimiter);
 
-static void amxc_trim_llist(amxc_llist_t * const list) {
+static void amxc_trim_llist(amxc_llist_t* const list) {
     amxc_llist_for_each_reverse(it, list) {
-        amxc_string_t *part = amxc_string_from_llist_it(it);
+        amxc_string_t* part = amxc_string_from_llist_it(it);
         if(amxc_string_text_length(part) != 1) {
             break;
         }
@@ -110,12 +110,12 @@ static void amxc_trim_llist(amxc_llist_t * const list) {
     }
 
     while(true) {
-        amxc_llist_it_t *first = amxc_llist_get_first(list);
-        amxc_llist_it_t *last = amxc_llist_get_last(list);
+        amxc_llist_it_t* first = amxc_llist_get_first(list);
+        amxc_llist_it_t* last = amxc_llist_get_last(list);
 
         if((first != NULL) && (last != NULL)) {
-            amxc_string_t *fpart = amxc_string_from_llist_it(first);
-            amxc_string_t *lpart = amxc_string_from_llist_it(last);
+            amxc_string_t* fpart = amxc_string_from_llist_it(first);
+            amxc_string_t* lpart = amxc_string_from_llist_it(last);
 
             if((amxc_string_text_length(fpart) == 1) &&
                ( amxc_string_text_length(lpart) == 1)) {
@@ -131,13 +131,13 @@ static void amxc_trim_llist(amxc_llist_t * const list) {
     }
 }
 
-static int amxc_string_create_part(const amxc_string_t * const string,
-                                   amxc_llist_t * const list,
+static int amxc_string_create_part(const amxc_string_t* const string,
+                                   amxc_llist_t* const list,
                                    const size_t start_pos,
                                    const size_t length) {
     int retval = -1;
-    amxc_string_t *part = NULL;
-    char *buffer = NULL;
+    amxc_string_t* part = NULL;
+    char* buffer = NULL;
 
     buffer = amxc_string_dup(string, start_pos, length);
     when_null(buffer, exit);
@@ -160,9 +160,9 @@ exit:
     return retval;
 }
 
-static bool amxc_string_split_update_status(const amxc_string_t * const string,
+static bool amxc_string_split_update_status(const amxc_string_t* const string,
                                             size_t i,
-                                            amxc_string_word_flags_t *flags) {
+                                            amxc_string_word_flags_t* flags) {
     bool skip = false;
     if(string->buffer[i] == '\\') {
         flags->escape = true;
@@ -204,10 +204,10 @@ static bool amxc_string_split_update_status(const amxc_string_t * const string,
 }
 
 static amxc_string_split_status_t
-amxc_string_split_word_is_valid(amxc_string_word_flags_t *flags,
-                                const char **reason) {
+amxc_string_split_word_is_valid(amxc_string_word_flags_t* flags,
+                                const char** reason) {
     amxc_string_split_status_t retval = AMXC_STRING_SPLIT_OK;
-    const char *msg = "";
+    const char* msg = "";
 
     if(flags->between_double_quotes) {
         retval = AMXC_ERROR_STRING_MISSING_DQUOTE;
@@ -257,12 +257,12 @@ exit:
     return retval;
 }
 
-static bool amxc_need_to_add_delimiter(amxc_llist_t *list,
+static bool amxc_need_to_add_delimiter(amxc_llist_t* list,
                                        const char delimiter) {
     bool retval = false;
-    amxc_llist_it_t *it = amxc_llist_get_last(list);
-    amxc_string_t *str_part = NULL;
-    const char *part = NULL;
+    amxc_llist_it_t* it = amxc_llist_get_last(list);
+    amxc_string_t* str_part = NULL;
+    const char* part = NULL;
 
     if(it == NULL) {
         retval = (isspace(delimiter) == 0);
@@ -287,11 +287,11 @@ exit:
 }
 
 static amxc_string_split_status_t
-amxc_string_split_words_internal(const amxc_string_t * const string,
-                                 amxc_llist_t *list,
+amxc_string_split_words_internal(const amxc_string_t* const string,
+                                 amxc_llist_t* list,
                                  amxc_string_create_part_t create,
                                  amxc_string_check_delimiter_t check,
-                                 const char **reason) {
+                                 const char** reason) {
     amxc_string_word_flags_t flags;
     size_t start_pos = 0;
     size_t i = 0;
@@ -351,7 +351,7 @@ exit:
 }
 
 static amxc_string_split_status_t
-amxc_build_csv_var_list(amxc_llist_t *all, amxc_var_t *csv_list) {
+amxc_build_csv_var_list(amxc_llist_t* all, amxc_var_t* csv_list) {
     amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
     bool quotes = false;
     bool sqbrackets = false;
@@ -363,8 +363,8 @@ amxc_build_csv_var_list(amxc_llist_t *all, amxc_var_t *csv_list) {
 
     amxc_string_init(&csv_part, 0);
     amxc_llist_for_each(it, all) {
-        amxc_string_t *part = amxc_string_from_llist_it(it);
-        const char *txt_part = amxc_string_get(part, 0);
+        amxc_string_t* part = amxc_string_from_llist_it(it);
+        const char* txt_part = amxc_string_get(part, 0);
         last_is_comma = false;
         if(amxc_string_text_length(part) == 1) {
             switch(txt_part[0]) {
@@ -427,7 +427,7 @@ amxc_build_csv_var_list(amxc_llist_t *all, amxc_var_t *csv_list) {
 }
 
 static amxc_string_split_status_t
-amxc_build_ssv_var_list(amxc_llist_t *all, amxc_var_t *ssv_list) {
+amxc_build_ssv_var_list(amxc_llist_t* all, amxc_var_t* ssv_list) {
     amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
     bool quotes = false;
     bool sqbrackets = false;
@@ -437,8 +437,8 @@ amxc_build_ssv_var_list(amxc_llist_t *all, amxc_var_t *ssv_list) {
 
     amxc_string_init(&csv_part, 0);
     amxc_llist_for_each(it, all) {
-        amxc_string_t *part = amxc_string_from_llist_it(it);
-        const char *txt_part = amxc_string_get(part, 0);
+        amxc_string_t* part = amxc_string_from_llist_it(it);
+        const char* txt_part = amxc_string_get(part, 0);
         if(amxc_string_text_length(part) == 1) {
             switch(txt_part[0]) {
             case '"':
@@ -487,9 +487,9 @@ amxc_build_ssv_var_list(amxc_llist_t *all, amxc_var_t *ssv_list) {
 }
 
 amxc_string_split_status_t
-amxc_string_split_word(const amxc_string_t * const string,
-                       amxc_llist_t *list,
-                       const char **reason) {
+amxc_string_split_word(const amxc_string_t* const string,
+                       amxc_llist_t* list,
+                       const char** reason) {
     amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
 
     when_null(list, exit);
@@ -509,10 +509,10 @@ exit:
 }
 
 amxc_string_split_status_t
-amxc_string_split(const amxc_string_t * const string,
-                  amxc_var_t *var,
+amxc_string_split(const amxc_string_t* const string,
+                  amxc_var_t* var,
                   amxc_string_split_builder_t fn,
-                  const char **reason) {
+                  const char** reason) {
     amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
     amxc_llist_t all_parts;
 
@@ -528,7 +528,7 @@ amxc_string_split(const amxc_string_t * const string,
     } else {
         amxc_var_set_type(var, AMXC_VAR_ID_LIST);
         amxc_llist_for_each(it, (&all_parts)) {
-            amxc_string_t *part = amxc_string_from_llist_it(it);
+            amxc_string_t* part = amxc_string_from_llist_it(it);
             amxc_var_add(cstring_t, var, amxc_string_get(part, 0));
             amxc_string_delete(&part);
         }
@@ -540,25 +540,25 @@ exit:
 }
 
 amxc_string_split_status_t
-amxc_string_csv_to_var(const amxc_string_t * const string,
-                       amxc_var_t *var,
-                       const char **reason) {
+amxc_string_csv_to_var(const amxc_string_t* const string,
+                       amxc_var_t* var,
+                       const char** reason) {
     return amxc_string_split(string, var, amxc_build_csv_var_list, reason);
 }
 
 amxc_string_split_status_t
-amxc_string_ssv_to_var(const amxc_string_t * const string,
-                       amxc_var_t *var,
-                       const char **reason) {
+amxc_string_ssv_to_var(const amxc_string_t* const string,
+                       amxc_var_t* var,
+                       const char** reason) {
     return amxc_string_split(string, var, amxc_build_ssv_var_list, reason);
 }
 
 amxc_string_split_status_t
-amxc_string_split_to_llist(const amxc_string_t * const string,
-                           amxc_llist_t *list,
+amxc_string_split_to_llist(const amxc_string_t* const string,
+                           amxc_llist_t* list,
                            const char separator) {
     amxc_string_split_status_t retval = AMXC_ERROR_STRING_SPLIT_INVALID_INPUT;
-    amxc_string_t *current = NULL;
+    amxc_string_t* current = NULL;
     amxc_llist_t parts_list;
     bool in_sbrackets = false;
 
@@ -573,8 +573,8 @@ amxc_string_split_to_llist(const amxc_string_t * const string,
     amxc_trim_llist(&parts_list);
 
     amxc_llist_for_each(it, (&parts_list)) {
-        amxc_string_t *part = amxc_string_from_llist_it(it);
-        const char *txt_part = amxc_string_get(part, 0);
+        amxc_string_t* part = amxc_string_from_llist_it(it);
+        const char* txt_part = amxc_string_get(part, 0);
         amxc_llist_append(list, &part->it);
         if(amxc_string_text_length(part) == 1) {
             bool isspace_matches = (isspace(separator) != 0 &&
@@ -626,10 +626,10 @@ exit:
     return retval;
 }
 
-amxc_string_t *amxc_string_get_from_llist(const amxc_llist_t * const llist,
+amxc_string_t* amxc_string_get_from_llist(const amxc_llist_t* const llist,
                                           const unsigned int index) {
-    amxc_string_t *retval = NULL;
-    amxc_llist_it_t *it = NULL;
+    amxc_string_t* retval = NULL;
+    amxc_llist_it_t* it = NULL;
 
     when_null(llist, exit);
 
@@ -641,10 +641,10 @@ exit:
     return retval;
 }
 
-const char *amxc_string_get_text_from_llist(const amxc_llist_t * const llist,
+const char* amxc_string_get_text_from_llist(const amxc_llist_t* const llist,
                                             const unsigned int index) {
-    const char *retval = NULL;
-    amxc_string_t *var_str = NULL;
+    const char* retval = NULL;
+    amxc_string_t* var_str = NULL;
 
     var_str = amxc_string_get_from_llist(llist, index);
     when_null(var_str, exit);

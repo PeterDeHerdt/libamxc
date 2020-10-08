@@ -63,11 +63,11 @@
 
 #include <amxc_variant_priv.h>
 
-static int variant_bool_to_string(amxc_var_t * const dest,
-                                  const amxc_var_t * const src) {
+static int variant_bool_to_string(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
     int retval = -1;
     int check = 0;
-    dest->data.s = (char *) calloc(6, sizeof(char));
+    dest->data.s = (char*) calloc(6, sizeof(char));
 
     when_null(dest->data.s, exit);
 
@@ -84,26 +84,26 @@ exit:
     return retval;
 }
 
-static int variant_bool_to_int(amxc_var_t * const dest,
-                               const amxc_var_t * const src) {
+static int variant_bool_to_int(amxc_var_t* const dest,
+                               const amxc_var_t* const src) {
     dest->data.i64 = src->data.b ? 1 : 0;
     return 0;
 }
 
-static int variant_bool_to_float(amxc_var_t * const dest,
-                                 const amxc_var_t * const src) {
+static int variant_bool_to_float(amxc_var_t* const dest,
+                                 const amxc_var_t* const src) {
     dest->data.f = src->data.b ? 1 : 0;
     return 0;
 }
 
-static int variant_bool_to_double(amxc_var_t * const dest,
-                                  const amxc_var_t * const src) {
+static int variant_bool_to_double(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
     dest->data.d = src->data.b ? 1 : 0;
     return 0;
 }
 
-static int variant_bool_convert_to(amxc_var_t * const dest,
-                                   const amxc_var_t * const src) {
+static int variant_bool_convert_to(amxc_var_t* const dest,
+                                   const amxc_var_t* const src) {
     int retval = -1;
 
     amxc_var_convert_fn_t convfn[AMXC_VAR_ID_CUSTOM_BASE] = {
@@ -144,9 +144,9 @@ exit:
     return retval;
 }
 
-static int variant_bool_compare(const amxc_var_t * const lval,
-                                const amxc_var_t * const rval,
-                                int * const result) {
+static int variant_bool_compare(const amxc_var_t* const lval,
+                                const amxc_var_t* const rval,
+                                int* const result) {
     if(lval->data.b == rval->data.b) {
         *result = 0;
     } else if(lval->data.b) {
@@ -181,7 +181,7 @@ AMXC_DESTRUCTOR static void amxc_var_bool_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_bool);
 }
 
-int amxc_var_set_bool(amxc_var_t *var, bool boolean) {
+int amxc_var_set_bool(amxc_var_t* var, bool boolean) {
     int retval = -1;
     when_null(var, exit);
 
@@ -194,7 +194,7 @@ exit:
     return retval;
 }
 
-bool amxc_var_get_bool(const amxc_var_t *var) {
+bool amxc_var_get_bool(const amxc_var_t* var) {
     bool boolean = false;
     when_null(var, exit);
 
@@ -207,7 +207,7 @@ exit:
     return boolean;
 }
 
-bool amxc_var_get_const_bool(const amxc_var_t * const var) {
+bool amxc_var_get_const_bool(const amxc_var_t* const var) {
     bool retval = false;
     when_null(var, exit);
     when_true(var->type_id != AMXC_VAR_ID_BOOL, exit);
@@ -218,8 +218,8 @@ exit:
     return retval;
 }
 
-amxc_var_t *amxc_var_add_new_bool(amxc_var_t * const var, bool boolean) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_bool(amxc_var_t* const var, bool boolean) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new(var);
@@ -233,8 +233,8 @@ exit:
     return subvar;
 }
 
-amxc_var_t *amxc_var_add_new_key_bool(amxc_var_t * const var, const char *key, bool boolean) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_key_bool(amxc_var_t* const var, const char* key, bool boolean) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new_key(var, key);

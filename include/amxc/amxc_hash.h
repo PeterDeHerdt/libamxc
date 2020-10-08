@@ -93,7 +93,7 @@ extern "C"
    @return
    The calculated hash value
  */
-unsigned int amxc_RS_hash(const char *str, const unsigned int len);
+unsigned int amxc_RS_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -109,7 +109,7 @@ unsigned int amxc_RS_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_JS_hash(const char *str, const unsigned int len);
+unsigned int amxc_JS_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -127,7 +127,7 @@ unsigned int amxc_JS_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_PJW_hash(const char *str, const unsigned int len);
+unsigned int amxc_PJW_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -143,7 +143,7 @@ unsigned int amxc_PJW_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_ELF_hash(const char *str, const unsigned int len);
+unsigned int amxc_ELF_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -162,7 +162,7 @@ unsigned int amxc_ELF_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_BKDR_hash(const char *str, const unsigned int len);
+unsigned int amxc_BKDR_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -180,7 +180,7 @@ unsigned int amxc_BKDR_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_SDBM_hash(const char *str, const unsigned int len);
+unsigned int amxc_SDBM_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -197,7 +197,7 @@ unsigned int amxc_SDBM_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_DJB_hash(const char *str, const unsigned int len);
+unsigned int amxc_DJB_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -212,7 +212,7 @@ unsigned int amxc_DJB_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_DEK_hash(const char *str, const unsigned int len);
+unsigned int amxc_DEK_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -228,7 +228,7 @@ unsigned int amxc_DEK_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_BP_hash(const char *str, const unsigned int len);
+unsigned int amxc_BP_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -243,7 +243,7 @@ unsigned int amxc_BP_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_FNV_hash(const char *str, const unsigned int len);
+unsigned int amxc_FNV_hash(const char* str, const unsigned int len);
 
 /**
    @ingroup amxc_hash
@@ -268,7 +268,7 @@ unsigned int amxc_FNV_hash(const char *str, const unsigned int len);
    @return
    The calculated hash value
  */
-unsigned int amxc_AP_hash(const char *str, const unsigned int len);
+unsigned int amxc_AP_hash(const char* str, const unsigned int len);
 
 #ifdef __cplusplus
 }

@@ -60,7 +60,7 @@
 
 #include "amxc/amxc_hash.h"
 
-unsigned int amxc_RS_hash(const char *str, const unsigned int len) {
+unsigned int amxc_RS_hash(const char* str, const unsigned int len) {
     unsigned int b = 378551;
     unsigned int a = 63689;
     unsigned int hash = 0;
@@ -74,7 +74,7 @@ unsigned int amxc_RS_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_JS_hash(const char *str, const unsigned int len) {
+unsigned int amxc_JS_hash(const char* str, const unsigned int len) {
     unsigned int hash = 1315423911;
     unsigned int i = 0;
 
@@ -85,7 +85,7 @@ unsigned int amxc_JS_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_PJW_hash(const char *str, const unsigned int len) {
+unsigned int amxc_PJW_hash(const char* str, const unsigned int len) {
     const unsigned int BitsInUnsignedInt = (unsigned int) (sizeof(unsigned int) * 8);
     const unsigned int ThreeQuarters = (unsigned int) ((BitsInUnsignedInt * 3) / 4);
     const unsigned int OneEighth = (unsigned int) (BitsInUnsignedInt / 8);
@@ -105,7 +105,7 @@ unsigned int amxc_PJW_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_ELF_hash(const char *str, const unsigned int len) {
+unsigned int amxc_ELF_hash(const char* str, const unsigned int len) {
     unsigned int hash = 0;
     unsigned int x = 0;
     unsigned int i = 0;
@@ -121,7 +121,7 @@ unsigned int amxc_ELF_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_BKDR_hash(const char *str, const unsigned int len) {
+unsigned int amxc_BKDR_hash(const char* str, const unsigned int len) {
     unsigned int seed = 131; /* 31 131 1313 13131 131313 etc.. */
     unsigned int hash = 0;
     unsigned int i = 0;
@@ -133,7 +133,7 @@ unsigned int amxc_BKDR_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_SDBM_hash(const char *str, const unsigned int len) {
+unsigned int amxc_SDBM_hash(const char* str, const unsigned int len) {
     unsigned int hash = 0;
     unsigned int i = 0;
 
@@ -144,7 +144,7 @@ unsigned int amxc_SDBM_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_DJB_hash(const char *str, const unsigned int len) {
+unsigned int amxc_DJB_hash(const char* str, const unsigned int len) {
     unsigned int hash = 5381;
     unsigned int i = 0;
 
@@ -155,7 +155,7 @@ unsigned int amxc_DJB_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_DEK_hash(const char *str, const unsigned int len) {
+unsigned int amxc_DEK_hash(const char* str, const unsigned int len) {
     unsigned int hash = len;
     unsigned int i = 0;
 
@@ -165,7 +165,7 @@ unsigned int amxc_DEK_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_BP_hash(const char *str, const unsigned int len) {
+unsigned int amxc_BP_hash(const char* str, const unsigned int len) {
     unsigned int hash = 0;
     unsigned int i = 0;
     for(i = 0; i < len; str++, i++) {
@@ -175,7 +175,7 @@ unsigned int amxc_BP_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_FNV_hash(const char *str, const unsigned int len) {
+unsigned int amxc_FNV_hash(const char* str, const unsigned int len) {
     const unsigned int fnv_prime = 0x811C9DC5;
     unsigned int hash = 0;
     unsigned int i = 0;
@@ -188,7 +188,7 @@ unsigned int amxc_FNV_hash(const char *str, const unsigned int len) {
     return hash;
 }
 
-unsigned int amxc_AP_hash(const char *str, const unsigned int len) {
+unsigned int amxc_AP_hash(const char* str, const unsigned int len) {
     unsigned int hash = 0xAAAAAAAA;
     unsigned int i = 0;
 

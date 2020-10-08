@@ -70,33 +70,33 @@
 
 #define UNUSED __attribute__((unused))
 
-void amxc_lqueue_new_delete_null_check(UNUSED void **state) {
+void amxc_lqueue_new_delete_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_lqueue_new(NULL), -1);
     amxc_lqueue_delete(NULL, NULL);
 }
 
-void amxc_lqueue_new_delete_check(UNUSED void **state) {
-    amxc_lqueue_t *lqueue = NULL;
+void amxc_lqueue_new_delete_check(UNUSED void** state) {
+    amxc_lqueue_t* lqueue = NULL;
     assert_int_equal(amxc_lqueue_new(&lqueue), 0);
     amxc_lqueue_delete(&lqueue, NULL);
     assert_ptr_equal(lqueue, NULL);
 }
 
-void amxc_lqueue_init_clean_null_check(UNUSED void **state) {
+void amxc_lqueue_init_clean_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_lqueue_init(NULL), -1);
     amxc_lqueue_clean(NULL, NULL);
 }
 
-void amxc_lqueue_init_clean_check(UNUSED void **state) {
+void amxc_lqueue_init_clean_check(UNUSED void** state) {
     amxc_lqueue_t lqueue;
 
     assert_int_equal(amxc_lqueue_init(&lqueue), 0);
     amxc_lqueue_clean(&lqueue, NULL);
 }
 
-void amxc_lqueue_add_check(UNUSED void **state) {
+void amxc_lqueue_add_check(UNUSED void** state) {
     amxc_lqueue_t lqueue;
     amxc_lqueue_it_t it1;
     amxc_lqueue_it_t it2;
@@ -133,7 +133,7 @@ void amxc_lqueue_add_check(UNUSED void **state) {
 }
 
 
-void amxc_lqueue_remove_check(UNUSED void **state) {
+void amxc_lqueue_remove_check(UNUSED void** state) {
     amxc_lqueue_t lqueue;
     amxc_lqueue_it_t it1;
     amxc_lqueue_it_t it2;

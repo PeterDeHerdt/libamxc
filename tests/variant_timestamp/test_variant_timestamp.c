@@ -73,7 +73,7 @@
 
 #define UNUSED __attribute__((unused))
 
-void test_variant_ts_copy(UNUSED void **state) {
+void test_variant_ts_copy(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
     amxc_ts_t now;
@@ -96,7 +96,7 @@ void test_variant_ts_copy(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_ts_convert_to_string(UNUSED void **state) {
+void test_variant_ts_convert_to_string(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -112,7 +112,7 @@ void test_variant_ts_convert_to_string(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_ts_convert_to_int64(UNUSED void **state) {
+void test_variant_ts_convert_to_int64(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
     amxc_ts_t now;
@@ -131,7 +131,7 @@ void test_variant_ts_convert_to_int64(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_ts_convert_to_other_int(UNUSED void **state) {
+void test_variant_ts_convert_to_other_int(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
     amxc_ts_t now;
@@ -155,7 +155,7 @@ void test_variant_ts_convert_to_other_int(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_ts_convert_to_double(UNUSED void **state) {
+void test_variant_ts_convert_to_double(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
     amxc_ts_t now;
@@ -174,7 +174,7 @@ void test_variant_ts_convert_to_double(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_ts_convert_to_any(UNUSED void **state) {
+void test_variant_ts_convert_to_any(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
     amxc_ts_t now;
@@ -194,7 +194,7 @@ void test_variant_ts_convert_to_any(UNUSED void **state) {
 }
 
 
-void test_variant_ts_compare(UNUSED void **state) {
+void test_variant_ts_compare(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
     amxc_var_t var3;
@@ -220,11 +220,11 @@ void test_variant_ts_compare(UNUSED void **state) {
     amxc_var_clean(&var3);
 }
 
-void test_variant_ts_get(UNUSED void **state) {
+void test_variant_ts_get(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
-    amxc_ts_t *ts = NULL;
-    const amxc_ts_t *cts = NULL;
+    amxc_ts_t* ts = NULL;
+    const amxc_ts_t* cts = NULL;
 
     assert_int_equal(amxc_var_init(&var1), 0);
     assert_int_equal(amxc_var_init(&var2), 0);
@@ -254,7 +254,7 @@ void test_variant_ts_get(UNUSED void **state) {
     free(ts);
 }
 
-void test_variant_ts_add_to_composite_types(UNUSED void **state) {
+void test_variant_ts_add_to_composite_types(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
     amxc_ts_t now;

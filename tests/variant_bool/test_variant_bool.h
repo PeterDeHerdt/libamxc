@@ -61,10 +61,10 @@
 #ifndef __TEST_VARIANT_BOOL_H__
 #define __TEST_VARIANT_BOOL_H__
 
-void test_variant_bool_copy(void **state);
-void test_variant_bool_convert_to(void **state);
-void test_variant_bool_compare(void **state);
-void test_variant_bool_set_get(void **state);
-void test_variant_bool_add(void **state);
+void test_variant_bool_copy(void** state);
+void test_variant_bool_convert_to(void** state);
+void test_variant_bool_compare(void** state);
+void test_variant_bool_set_get(void** state);
+void test_variant_bool_add(void** state);
 
 #endif // __TEST_VARINAT_BOOL_H__

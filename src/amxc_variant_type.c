@@ -94,14 +94,14 @@ static void amxc_var_free_types(void) {
     amxc_array_clean(&amxc_array_types, NULL);
 }
 
-static amxc_array_it_t *amxc_var_next_available_id(void) {
-    amxc_array_it_t *ait = amxc_array_get_at(&amxc_array_types, AMXC_VAR_ID_CUSTOM_BASE - 1);
+static amxc_array_it_t* amxc_var_next_available_id(void) {
+    amxc_array_it_t* ait = amxc_array_get_at(&amxc_array_types, AMXC_VAR_ID_CUSTOM_BASE - 1);
     ait = amxc_array_it_get_next_free(ait);
     return ait;
 }
 
-static amxc_array_it_t *amxc_var_get_type_position(const uint32_t index) {
-    amxc_array_it_t *ait = NULL;
+static amxc_array_it_t* amxc_var_get_type_position(const uint32_t index) {
+    amxc_array_it_t* ait = NULL;
 
     if(index == UINT32_MAX) {
         // no index specified - take first free item after fixed types
@@ -122,11 +122,11 @@ exit:
     return ait;
 }
 
-uint32_t AMXC_PRIVATE amxc_var_add_type(amxc_var_type_t * const type,
+uint32_t AMXC_PRIVATE amxc_var_add_type(amxc_var_type_t* const type,
                                         const uint32_t index) {
     uint32_t type_id = -1;
-    amxc_array_it_t *ait = NULL;
-    amxc_htable_it_t *hit = NULL;
+    amxc_array_it_t* ait = NULL;
+    amxc_htable_it_t* hit = NULL;
     when_null(type, exit);
 
     hit = amxc_htable_get(&amxc_variant_types, type->name);
@@ -160,10 +160,10 @@ exit:
     return type_id;
 }
 
-int AMXC_PRIVATE amxc_var_remove_type(amxc_var_type_t * const type) {
+int AMXC_PRIVATE amxc_var_remove_type(amxc_var_type_t* const type) {
     int retval = -1;
-    amxc_array_it_t *it = NULL;
-    amxc_htable_it_t *hit = amxc_htable_get(&amxc_variant_types, type->name);
+    amxc_array_it_t* it = NULL;
+    amxc_htable_it_t* hit = amxc_htable_get(&amxc_variant_types, type->name);
     when_null(hit, exit);
     when_true(hit != &type->hit, exit);
 
@@ -187,22 +187,22 @@ exit:
     return retval;
 }
 
-amxc_array_t *amxc_variant_get_types_array(void) {
+amxc_array_t* amxc_variant_get_types_array(void) {
     return &amxc_array_types;
 }
 
-amxc_var_type_t *amxc_var_get_type(uint32_t type_id) {
-    amxc_var_type_t *type = NULL;
-    amxc_array_it_t *ait = amxc_array_get_at(&amxc_array_types, type_id);
+amxc_var_type_t* amxc_var_get_type(uint32_t type_id) {
+    amxc_var_type_t* type = NULL;
+    amxc_array_it_t* ait = amxc_array_get_at(&amxc_array_types, type_id);
     when_null(ait, exit);
 
-    type = (amxc_var_type_t *) ait->data;
+    type = (amxc_var_type_t*) ait->data;
 
 exit:
     return type;
 }
 
-uint32_t amxc_var_register_type(amxc_var_type_t * const type) {
+uint32_t amxc_var_register_type(amxc_var_type_t* const type) {
     int retval = -1;
     when_null(type, exit);
 
@@ -212,7 +212,7 @@ exit:
     return retval;
 }
 
-int amxc_var_unregister_type(amxc_var_type_t * const type) {
+int amxc_var_unregister_type(amxc_var_type_t* const type) {
     int retval = -1;
     when_null(type, exit);
     when_true(type->type_id < AMXC_VAR_ID_CUSTOM_BASE, exit);
@@ -223,24 +223,24 @@ exit:
     return retval;
 }
 
-const char *amxc_var_get_type_name_from_id(const uint32_t type_id) {
-    const char *name = NULL;
-    amxc_var_type_t *type = NULL;
-    amxc_array_it_t *ait = amxc_array_get_at(&amxc_array_types, type_id);
+const char* amxc_var_get_type_name_from_id(const uint32_t type_id) {
+    const char* name = NULL;
+    amxc_var_type_t* type = NULL;
+    amxc_array_it_t* ait = amxc_array_get_at(&amxc_array_types, type_id);
     when_null(ait, exit);
     when_null(ait->data, exit);
 
-    type = (amxc_var_type_t *) ait->data;
+    type = (amxc_var_type_t*) ait->data;
     name = type->name;
 
 exit:
     return name;
 }
 
-uint32_t amxc_var_get_type_id_from_name(const char * const name) {
+uint32_t amxc_var_get_type_id_from_name(const char* const name) {
     uint32_t type_id = AMXC_VAR_ID_MAX;
-    amxc_htable_it_t *hit = NULL;
-    amxc_var_type_t *type = NULL;
+    amxc_htable_it_t* hit = NULL;
+    amxc_var_type_t* type = NULL;
     when_null(name, exit);
     when_true(*name == 0, exit);
 

@@ -77,21 +77,21 @@
 
 char data[] = "abcdefghij";
 
-void test_amxc_string_new_delete_null(UNUSED void **state) {
+void test_amxc_string_new_delete_null(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_not_equal(amxc_string_new(NULL, 0), 0);
     amxc_string_delete(NULL);
 }
 
-void test_amxc_string_init_reset_clean_null(UNUSED void **state) {
+void test_amxc_string_init_reset_clean_null(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_string_init(NULL, 0), -1);
     amxc_string_clean(NULL);
     amxc_string_reset(NULL);
 }
 
-void test_amxc_string_new_delete(UNUSED void **state) {
-    amxc_string_t *string = NULL;
+void test_amxc_string_new_delete(UNUSED void** state) {
+    amxc_string_t* string = NULL;
 
     assert_int_equal(amxc_string_new(&string, 0), 0);
     assert_ptr_equal(string->buffer, NULL);
@@ -108,7 +108,7 @@ void test_amxc_string_new_delete(UNUSED void **state) {
     assert_ptr_equal(string, NULL);
 }
 
-void test_amxc_string_init_reset_clean(UNUSED void **state) {
+void test_amxc_string_init_reset_clean(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -132,11 +132,11 @@ void test_amxc_string_init_reset_clean(UNUSED void **state) {
     assert_int_equal(string.last_used, 0);
 }
 
-void test_amxc_string_grow_null(UNUSED void **state) {
+void test_amxc_string_grow_null(UNUSED void** state) {
     assert_int_equal(amxc_string_grow(NULL, 5), -1);
 }
 
-void test_amxc_string_grow(UNUSED void **state) {
+void test_amxc_string_grow(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 5), 0);
@@ -159,11 +159,11 @@ void test_amxc_string_grow(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_shrink_null(UNUSED void **state) {
+void test_amxc_string_shrink_null(UNUSED void** state) {
     assert_int_equal(amxc_string_shrink(NULL, 5), -1);
 }
 
-void test_amxc_string_shrink(UNUSED void **state) {
+void test_amxc_string_shrink(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 15), 0);
@@ -193,7 +193,7 @@ void test_amxc_string_shrink(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_append(UNUSED void **state) {
+void test_amxc_string_append(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 10), 0);
@@ -224,7 +224,7 @@ void test_amxc_string_append(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_prepend(UNUSED void **state) {
+void test_amxc_string_prepend(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 10), 0);
@@ -255,7 +255,7 @@ void test_amxc_string_prepend(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_buffer_length(UNUSED void **state) {
+void test_amxc_string_buffer_length(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 10), 0);
@@ -270,7 +270,7 @@ void test_amxc_string_buffer_length(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_text_length(UNUSED void **state) {
+void test_amxc_string_text_length(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 10), 0);
@@ -291,7 +291,7 @@ void test_amxc_string_text_length(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_set_at(UNUSED void **state) {
+void test_amxc_string_set_at(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 10), 0);
@@ -338,7 +338,7 @@ void test_amxc_string_set_at(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_remove_at(UNUSED void **state) {
+void test_amxc_string_remove_at(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 10), 0);
@@ -384,7 +384,7 @@ void test_amxc_string_remove_at(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_get(UNUSED void **state) {
+void test_amxc_string_get(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -407,9 +407,9 @@ void test_amxc_string_get(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_dup(UNUSED void **state) {
+void test_amxc_string_dup(UNUSED void** state) {
     amxc_string_t string;
-    char *dup_buffer = NULL;
+    char* dup_buffer = NULL;
 
     assert_int_equal(amxc_string_init(&string, 10), 0);
     assert_ptr_equal(amxc_string_dup(NULL, 0, 10), NULL);
@@ -447,7 +447,7 @@ void test_amxc_string_dup(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_trim(UNUSED void **state) {
+void test_amxc_string_trim(UNUSED void** state) {
     amxc_string_t string;
 
     amxc_string_triml(NULL, NULL);
@@ -513,9 +513,9 @@ void test_amxc_string_trim(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_take_push_buffer(UNUSED void **state) {
+void test_amxc_string_take_push_buffer(UNUSED void** state) {
     amxc_string_t string;
-    char *buffer = NULL;
+    char* buffer = NULL;
 
     assert_ptr_equal(amxc_string_take_buffer(NULL), NULL);
     assert_int_not_equal(amxc_string_push_buffer(NULL, NULL, 0), NULL);
@@ -539,7 +539,7 @@ void test_amxc_string_take_push_buffer(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_setf(UNUSED void **state) {
+void test_amxc_string_setf(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -562,7 +562,7 @@ void test_amxc_string_setf(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_appendf(UNUSED void **state) {
+void test_amxc_string_appendf(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -584,7 +584,7 @@ void test_amxc_string_appendf(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_prependf(UNUSED void **state) {
+void test_amxc_string_prependf(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -606,7 +606,7 @@ void test_amxc_string_prependf(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_is_numeric(UNUSED void **state) {
+void test_amxc_string_is_numeric(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -677,7 +677,7 @@ void test_amxc_string_is_numeric(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_resolve_env(UNUSED void **state) {
+void test_amxc_string_resolve_env(UNUSED void** state) {
     amxc_string_t string;
     setenv("TestEnvVar", "MyValue", 1);
     setenv("RefVar", "$(TestEnvVar)", 1);
@@ -720,7 +720,7 @@ void test_amxc_string_resolve_env(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_resolve_var(UNUSED void **state) {
+void test_amxc_string_resolve_var(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t data;
 
@@ -763,7 +763,7 @@ void test_amxc_string_resolve_var(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_resolve(UNUSED void **state) {
+void test_amxc_string_resolve(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t data;
 
@@ -797,7 +797,7 @@ void test_amxc_string_resolve(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_set_resolved(UNUSED void **state) {
+void test_amxc_string_set_resolved(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t data;
 
@@ -829,8 +829,8 @@ void test_amxc_string_set_resolved(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_new_resolved(UNUSED void **state) {
-    amxc_string_t *string = NULL;
+void test_amxc_string_new_resolved(UNUSED void** state) {
+    amxc_string_t* string = NULL;
     amxc_var_t data;
 
     setenv("TESTENV", "MyValue", 1);
@@ -863,7 +863,7 @@ void test_amxc_string_new_resolved(UNUSED void **state) {
     amxc_var_clean(&data);
 }
 
-void test_amxc_llist_add_string(UNUSED void **state) {
+void test_amxc_llist_add_string(UNUSED void** state) {
     amxc_llist_t list;
     amxc_llist_init(&list);
 

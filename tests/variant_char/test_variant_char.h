@@ -61,20 +61,20 @@
 #ifndef __TEST_VARIANT_CHAR_H__
 #define __TEST_VARIANT_CHAR_H__
 
-void test_variant_char_copy(void **state);
-void test_variant_char_convert_to_bool(void **state);
-void test_variant_char_convert_to_integer(void **state);
-void test_variant_char_convert_to_uinteger(void **state);
-void test_variant_char_convert_to_list(void **state);
-void test_variant_ssv_char_convert_to_list(void **state);
-void test_variant_char_convert_to_htable(void **state);
-void test_variant_char_convert_to_double(void **state);
-void test_variant_char_convert_to_float(void **state);
-void test_variant_char_convert_to_ts(void **state);
-void test_variant_char_compare(void **state);
-void test_variant_char_set_get(void **state);
-void test_variant_cstring_add(void **state);
-void test_variant_char_copy_null(void **state);
-void test_variant_char_take_push(void **state);
+void test_variant_char_copy(void** state);
+void test_variant_char_convert_to_bool(void** state);
+void test_variant_char_convert_to_integer(void** state);
+void test_variant_char_convert_to_uinteger(void** state);
+void test_variant_char_convert_to_list(void** state);
+void test_variant_ssv_char_convert_to_list(void** state);
+void test_variant_char_convert_to_htable(void** state);
+void test_variant_char_convert_to_double(void** state);
+void test_variant_char_convert_to_float(void** state);
+void test_variant_char_convert_to_ts(void** state);
+void test_variant_char_compare(void** state);
+void test_variant_char_set_get(void** state);
+void test_variant_cstring_add(void** state);
+void test_variant_char_copy_null(void** state);
+void test_variant_char_take_push(void** state);
 
 #endif // __TEST_VARIANT_CHAR_H__

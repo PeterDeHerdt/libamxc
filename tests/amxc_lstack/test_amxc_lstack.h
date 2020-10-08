@@ -61,11 +61,11 @@
 #ifndef __TEST_AMXC_LSTACK_H__
 #define __TEST_AMXC_LSTACK_H__
 
-void amxc_lstack_new_delete_null_check(void **state);
-void amxc_lstack_new_delete_check(void **state);
-void amxc_lstack_init_clean_null_check(void **state);
-void amxc_lstack_init_clean_check(void **state);
-void amxc_lstack_push_check(void **state);
-void amxc_lstack_pop_check(void **state);
+void amxc_lstack_new_delete_null_check(void** state);
+void amxc_lstack_new_delete_check(void** state);
+void amxc_lstack_init_clean_null_check(void** state);
+void amxc_lstack_init_clean_check(void** state);
+void amxc_lstack_push_check(void** state);
+void amxc_lstack_pop_check(void** state);
 
 #endif  // __TEST_AMXC_LSTACK_H__

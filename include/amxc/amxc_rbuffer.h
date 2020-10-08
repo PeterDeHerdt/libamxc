@@ -88,10 +88,10 @@ extern "C"
    The ring buffer structure.
  */
 typedef struct _amxc_rbuffer {
-    char *buffer_start;      /**< The beginning of the buffer */
-    char *buffer_end;        /**< The end of the buffer */
-    char *read_pos;          /**< Current read position */
-    char *write_pos;         /**< Current write position */
+    char* buffer_start;      /**< The beginning of the buffer */
+    char* buffer_end;        /**< The end of the buffer */
+    char* read_pos;          /**< Current read position */
+    char* write_pos;         /**< Current write position */
 } amxc_rbuffer_t;
 
 /**
@@ -124,7 +124,7 @@ typedef struct _amxc_rbuffer {
    @return
    -1 if an error occured. 0 on success
  */
-int amxc_rbuffer_new(amxc_rbuffer_t **rb, const size_t size);
+int amxc_rbuffer_new(amxc_rbuffer_t** rb, const size_t size);
 
 /**
    @ingroup amxc_rbuffer
@@ -142,7 +142,7 @@ int amxc_rbuffer_new(amxc_rbuffer_t **rb, const size_t size);
    @param rb a pointer to the location where the pointer to the ring buffer is
              stored
  */
-void amxc_rbuffer_delete(amxc_rbuffer_t **rb);
+void amxc_rbuffer_delete(amxc_rbuffer_t** rb);
 
 /**
    @ingroup amxc_rbuffer
@@ -169,7 +169,7 @@ void amxc_rbuffer_delete(amxc_rbuffer_t **rb);
    @return
    0 on success or -1 when an error occured.
  */
-int amxc_rbuffer_init(amxc_rbuffer_t * const rb, const size_t size);
+int amxc_rbuffer_init(amxc_rbuffer_t* const rb, const size_t size);
 
 /**
    @ingroup amxc_rbuffer
@@ -178,7 +178,7 @@ int amxc_rbuffer_init(amxc_rbuffer_t * const rb, const size_t size);
 
    @param rb a pointer to the ring buffer structure
  */
-void amxc_rbuffer_clean(amxc_rbuffer_t * const rb);
+void amxc_rbuffer_clean(amxc_rbuffer_t* const rb);
 
 /**
    @ingroup amxc_rbuffer
@@ -197,7 +197,7 @@ void amxc_rbuffer_clean(amxc_rbuffer_t * const rb);
    0 on success.
    -1 if an error has occured.
  */
-int amxc_rbuffer_grow(amxc_rbuffer_t * const rb, const size_t size);
+int amxc_rbuffer_grow(amxc_rbuffer_t* const rb, const size_t size);
 
 /**
    @ingroup amxc_rbuffer
@@ -218,7 +218,7 @@ int amxc_rbuffer_grow(amxc_rbuffer_t * const rb, const size_t size);
    0 on success.
    -1 if an error has occured.
  */
-int amxc_rbuffer_shrink(amxc_rbuffer_t * const rb, const size_t size);
+int amxc_rbuffer_shrink(amxc_rbuffer_t* const rb, const size_t size);
 
 /**
    @ingroup amxc_rbuffer
@@ -238,8 +238,8 @@ int amxc_rbuffer_shrink(amxc_rbuffer_t * const rb, const size_t size);
    The number of bytes copied, when less then the specified maximum,
    the ring buffer is empty.
  */
-ssize_t amxc_rbuffer_read(amxc_rbuffer_t * const rb,
-                          char * const buf,
+ssize_t amxc_rbuffer_read(amxc_rbuffer_t* const rb,
+                          char* const buf,
                           size_t count);
 
 /**
@@ -259,8 +259,8 @@ ssize_t amxc_rbuffer_read(amxc_rbuffer_t * const rb,
    @return
    The number of bytes copied or -1 when failed to copy the bytes in the ring buffer.
  */
-ssize_t amxc_rbuffer_write(amxc_rbuffer_t * const rb,
-                           const char * const buf,
+ssize_t amxc_rbuffer_write(amxc_rbuffer_t* const rb,
+                           const char* const buf,
                            const size_t count);
 
 /**
@@ -273,7 +273,7 @@ ssize_t amxc_rbuffer_write(amxc_rbuffer_t * const rb,
    @return
    The number of bytes stored in the ring buffer
  */
-size_t amxc_rbuffer_size(const amxc_rbuffer_t * const rb);
+size_t amxc_rbuffer_size(const amxc_rbuffer_t* const rb);
 
 /**
    @ingroup amxc_rbuffer
@@ -289,7 +289,7 @@ size_t amxc_rbuffer_size(const amxc_rbuffer_t * const rb);
    The number of bytes that can be stored in the ring buffer
  */
 AMXC_INLINE
-size_t amxc_rbuffer_capacity(const amxc_rbuffer_t * const rb) {
+size_t amxc_rbuffer_capacity(const amxc_rbuffer_t* const rb) {
     return rb != NULL ? rb->buffer_end - rb->buffer_start : 0;
 }
 
@@ -305,7 +305,7 @@ size_t amxc_rbuffer_capacity(const amxc_rbuffer_t * const rb) {
    or false when there is at least 1 byte of data stored in the ring buffer.
  */
 AMXC_INLINE
-bool amxc_rbuffer_is_empty(const amxc_rbuffer_t * const rb) {
+bool amxc_rbuffer_is_empty(const amxc_rbuffer_t* const rb) {
     return rb != NULL ? (rb->read_pos == rb->write_pos) : true;
 }
 

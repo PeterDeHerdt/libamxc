@@ -61,18 +61,18 @@
 #ifndef __TEST_AMXC_HASH_FUNC_H__
 #define __TEST_AMXC_HASH_FUNC_H__
 
-void amxc_hash_generation_check(void **state);
-void amxc_hash_distibution_RS_check(void **state);
-void amxc_hash_distibution_JS_check(void **state);
-void amxc_hash_distibution_PJW_check(void **state);
-void amxc_hash_distibution_ELF_check(void **state);
-void amxc_hash_distibution_BKDR_check(void **state);
-void amxc_hash_distibution_SBDM_check(void **state);
-void amxc_hash_distibution_DJB_check(void **state);
-void amxc_hash_distibution_DEK_check(void **state);
-void amxc_hash_distibution_BP_check(void **state);
-void amxc_hash_distibution_FNV_check(void **state);
-void amxc_hash_distibution_AP_check(void **state);
-void amxc_hash_BKDR_hashes_check(void **state);
+void amxc_hash_generation_check(void** state);
+void amxc_hash_distibution_RS_check(void** state);
+void amxc_hash_distibution_JS_check(void** state);
+void amxc_hash_distibution_PJW_check(void** state);
+void amxc_hash_distibution_ELF_check(void** state);
+void amxc_hash_distibution_BKDR_check(void** state);
+void amxc_hash_distibution_SBDM_check(void** state);
+void amxc_hash_distibution_DJB_check(void** state);
+void amxc_hash_distibution_DEK_check(void** state);
+void amxc_hash_distibution_BP_check(void** state);
+void amxc_hash_distibution_FNV_check(void** state);
+void amxc_hash_distibution_AP_check(void** state);
+void amxc_hash_BKDR_hashes_check(void** state);
 
 #endif //__TEST_AMXC_HASH_FUNC_H__

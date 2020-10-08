@@ -69,16 +69,16 @@
 
 #define UNUSED __attribute__((unused))
 
-static void generate_string(char *str, size_t length) {
-    const char *base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+static void generate_string(char* str, size_t length) {
+    const char* base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     size_t len = strlen(base);
     for(unsigned int i = 0; i < length; i++) {
         str[i] = base[rand() % len];
     }
 }
 
-void amxc_hash_generation_check(UNUSED void **state) {
-    char *key[] = { "abcdefghijklmnopqrstuvwxyz1234567890",
+void amxc_hash_generation_check(UNUSED void** state) {
+    char* key[] = { "abcdefghijklmnopqrstuvwxyz1234567890",
         "0987654321zyxwvutsrqponmlkjihgfedcba",
         "Damien",
         "Tom",
@@ -150,7 +150,7 @@ static int amxc_hash_distribution_teardown() {
     return 0;
 }
 
-void amxc_hash_distibution_RS_check(UNUSED void **state) {
+void amxc_hash_distibution_RS_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("RS hash algorithm\n");
 
@@ -167,7 +167,7 @@ void amxc_hash_distibution_RS_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_JS_check(UNUSED void **state) {
+void amxc_hash_distibution_JS_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("JS hash algorithm\n");
 
@@ -184,7 +184,7 @@ void amxc_hash_distibution_JS_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_PJW_check(UNUSED void **state) {
+void amxc_hash_distibution_PJW_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("PJW hash algorithm\n");
 
@@ -201,7 +201,7 @@ void amxc_hash_distibution_PJW_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_ELF_check(UNUSED void **state) {
+void amxc_hash_distibution_ELF_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("ELF hash algorithm\n");
 
@@ -218,7 +218,7 @@ void amxc_hash_distibution_ELF_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_BKDR_check(UNUSED void **state) {
+void amxc_hash_distibution_BKDR_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("BKDR hash algorithm\n");
 
@@ -235,7 +235,7 @@ void amxc_hash_distibution_BKDR_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_SBDM_check(UNUSED void **state) {
+void amxc_hash_distibution_SBDM_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("SBDM hash algorithm\n");
 
@@ -252,7 +252,7 @@ void amxc_hash_distibution_SBDM_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_DJB_check(UNUSED void **state) {
+void amxc_hash_distibution_DJB_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("DJB hash algorithm\n");
 
@@ -269,7 +269,7 @@ void amxc_hash_distibution_DJB_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_DEK_check(UNUSED void **state) {
+void amxc_hash_distibution_DEK_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("DEK hash algorithm\n");
 
@@ -286,7 +286,7 @@ void amxc_hash_distibution_DEK_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_BP_check(UNUSED void **state) {
+void amxc_hash_distibution_BP_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("BP hash algorithm\n");
 
@@ -303,7 +303,7 @@ void amxc_hash_distibution_BP_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_FNV_check(UNUSED void **state) {
+void amxc_hash_distibution_FNV_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("FNV hash algorithm\n");
 
@@ -320,7 +320,7 @@ void amxc_hash_distibution_FNV_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_distibution_AP_check(UNUSED void **state) {
+void amxc_hash_distibution_AP_check(UNUSED void** state) {
     amxc_hash_distribution_setup();
     printf("AP hash algorithm\n");
 
@@ -337,7 +337,7 @@ void amxc_hash_distibution_AP_check(UNUSED void **state) {
     amxc_hash_distribution_teardown();
 }
 
-void amxc_hash_BKDR_hashes_check(UNUSED void **state) {
+void amxc_hash_BKDR_hashes_check(UNUSED void** state) {
     printf("[Key1] = %d\n", amxc_BKDR_hash("Key1", 4) % 64);
     printf("[Key2] = %d\n", amxc_BKDR_hash("Key2", 4) % 64);
     printf("[Key3] = %d\n", amxc_BKDR_hash("Key3", 4) % 64);

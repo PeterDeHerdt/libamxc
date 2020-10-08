@@ -162,9 +162,9 @@ extern "C"
    @brief
    Convenience macro
  */
-#define cstring_t char *
-#define csv_string_t char *
-#define ssv_string_t char *
+#define cstring_t char*
+#define csv_string_t char*
+#define ssv_string_t char*
 
 /**
    @brief
@@ -254,7 +254,7 @@ extern "C"
    Gives the pointer to the variant.
  */
 #define amxc_var_from_htable_it(ht_it) \
-    ((amxc_var_t *) (((char *) ht_it) - offsetof(amxc_var_t, hit)))
+    ((amxc_var_t*) (((char*) ht_it) - offsetof(amxc_var_t, hit)))
 
 /**
    @brief
@@ -265,11 +265,11 @@ extern "C"
    Gives the pointer to the variant.
  */
 #define amxc_var_from_llist_it(ll_it) \
-    ((amxc_var_t *) (((char *) ll_it) - offsetof(amxc_var_t, lit)))
+    ((amxc_var_t*) (((char*) ll_it) - offsetof(amxc_var_t, lit)))
 
 #define amxc_var_for_each(var, var_list) \
-    for(amxc_var_t *var = amxc_var_from_llist_it(amxc_llist_get_first(&var_list->data.vl)), \
-        *_next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)); \
+    for(amxc_var_t* var = amxc_var_from_llist_it(amxc_llist_get_first(&var_list->data.vl)), \
+        * _next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)); \
         var; \
         var = _next, \
         _next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)))
@@ -281,7 +281,7 @@ typedef struct _amxc_var {
     uint32_t type_id;           /**< Variant type */
     union
     {
-        char *s;                /**< String */
+        char* s;                /**< String */
         int8_t i8;              /**< 8 bit signed integer */
         int16_t i16;            /**< 16 bit signed integer */
         int32_t i32;            /**< 32 bit signed integer */
@@ -297,7 +297,7 @@ typedef struct _amxc_var {
         amxc_htable_t vm;       /**< ambiorix hash table (key - value pair) of variants */
         int fd;                 /**< file descriptor */
         amxc_ts_t ts;           /**< time stamp */
-        void *data;             /**< pointer to hold custom data types */
+        void* data;             /**< pointer to hold custom data types */
     } data;                     /**< Variant data */
 } amxc_var_t;
 
@@ -317,7 +317,7 @@ typedef struct _amxc_var {
    @return
    When allocation is successfull, this functions returns 0.
  */
-int amxc_var_new(amxc_var_t **var);
+int amxc_var_new(amxc_var_t** var);
 
 /**
    @ingroup amxc_variant
@@ -333,7 +333,7 @@ int amxc_var_new(amxc_var_t **var);
    @param var a pointer to the location where the pointer to the variant is
               stored
  */
-void amxc_var_delete(amxc_var_t **var);
+void amxc_var_delete(amxc_var_t** var);
 
 /**
    @ingroup amxc_variant
@@ -358,7 +358,7 @@ void amxc_var_delete(amxc_var_t **var);
    @return
    When initialization is successful, this functions returns 0.
  */
-int amxc_var_init(amxc_var_t * const var);
+int amxc_var_init(amxc_var_t* const var);
 
 /**
    @ingroup amxc_variant
@@ -370,7 +370,7 @@ int amxc_var_init(amxc_var_t * const var);
 
    @param var pointer to a variant structure.
  */
-void amxc_var_clean(amxc_var_t * const var);
+void amxc_var_clean(amxc_var_t* const var);
 
 /**
    @ingroup amxc_variant
@@ -386,7 +386,7 @@ void amxc_var_clean(amxc_var_t * const var);
    @return
    When the type is set, this functions returns 0, any other value in case of failure.
  */
-int amxc_var_set_type(amxc_var_t * const var, const uint32_t type);
+int amxc_var_set_type(amxc_var_t* const var, const uint32_t type);
 
 /**
    @ingroup amxc_variant
@@ -408,7 +408,7 @@ int amxc_var_set_type(amxc_var_t * const var, const uint32_t type);
    When the copy fails, this functions returns a none 0 value and the destination
    variant is reset to a null variant.
  */
-int amxc_var_copy(amxc_var_t * const dest, const amxc_var_t * const src);
+int amxc_var_copy(amxc_var_t* const dest, const amxc_var_t* const src);
 
 /**
    @ingroup amxc_variant
@@ -434,8 +434,8 @@ int amxc_var_copy(amxc_var_t * const dest, const amxc_var_t * const src);
    When the conversion fails, this functions returns a none 0 value and
    the destination variant is reset to a null variant.
  */
-int amxc_var_convert(amxc_var_t * const dest,
-                     const amxc_var_t *src,
+int amxc_var_convert(amxc_var_t* const dest,
+                     const amxc_var_t* src,
                      int type_id);
 /**
    @ingroup amxc_variant
@@ -459,9 +459,9 @@ int amxc_var_convert(amxc_var_t * const dest,
    if it is not possible to compare the variants (depends on the types),
    this function returns none 0.
  */
-int amxc_var_compare(const amxc_var_t * const var1,
-                     const amxc_var_t * const var2,
-                     int * const result);
+int amxc_var_compare(const amxc_var_t* const var1,
+                     const amxc_var_t* const var2,
+                     int* const result);
 
 /**
    @ingroup amxc_variant
@@ -481,8 +481,8 @@ int amxc_var_compare(const amxc_var_t * const var1,
    The pointer returned is pointing to a real part and should not be freed unless
    the variant part must be removed from the composed variant.
  */
-amxc_var_t *amxc_var_get_key(const amxc_var_t * const var,
-                             const char * const key,
+amxc_var_t* amxc_var_get_key(const amxc_var_t* const var,
+                             const char* const key,
                              const int flags);
 /**
    @ingroup amxc_variant
@@ -511,9 +511,9 @@ amxc_var_t *amxc_var_get_key(const amxc_var_t * const var,
    When the data has been set this function returns 0, when failed, the function
    returns a non-zero value.
  */
-int amxc_var_set_key(amxc_var_t * const var,
-                     const char * const key,
-                     amxc_var_t *data,
+int amxc_var_set_key(amxc_var_t* const var,
+                     const char* const key,
+                     amxc_var_t* data,
                      const int flags);
 
 /**
@@ -533,7 +533,7 @@ int amxc_var_set_key(amxc_var_t * const var,
    When no part is found with the given key a null pointer is returned.
    The pointer returned is pointing to a real part.
  */
-amxc_var_t *amxc_var_get_index(const amxc_var_t * const var,
+amxc_var_t* amxc_var_get_index(const amxc_var_t* const var,
                                const int64_t index,
                                const int flags);
 /**
@@ -555,9 +555,9 @@ amxc_var_t *amxc_var_get_index(const amxc_var_t * const var,
    When the data has been set this function returns 0, when failed, the function
    returns a non-zero value.
  */
-int amxc_var_set_index(amxc_var_t * const var,
+int amxc_var_set_index(amxc_var_t* const var,
                        const int64_t index,
-                       amxc_var_t *data,
+                       amxc_var_t* data,
                        const int flags);
 
 /**
@@ -577,8 +577,8 @@ int amxc_var_set_index(amxc_var_t * const var,
    Pointer to the new added variant or NULL when it was not possible to add a new
    key to the variant.
  */
-amxc_var_t *amxc_var_add_new_key(amxc_var_t * const var,
-                                 const char *key);
+amxc_var_t* amxc_var_add_new_key(amxc_var_t* const var,
+                                 const char* key);
 
 /**
    @ingroup amxc_variant
@@ -596,7 +596,7 @@ amxc_var_t *amxc_var_add_new_key(amxc_var_t * const var,
    Pointer to the new added variant or NULL when it was not possible to add a new
    key to the variant.
  */
-amxc_var_t *amxc_var_add_new(amxc_var_t * const var);
+amxc_var_t* amxc_var_add_new(amxc_var_t* const var);
 
 
 /**
@@ -618,8 +618,8 @@ amxc_var_t *amxc_var_add_new(amxc_var_t * const var);
    @return
    Pointer to the variant at the given path or NULL if the path does not exist.
  */
-amxc_var_t *amxc_var_get_path(const amxc_var_t * const var,
-                              const char * const path,
+amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
+                              const char* const path,
                               const int flags);
 
 /**
@@ -643,9 +643,9 @@ amxc_var_t *amxc_var_get_path(const amxc_var_t * const var,
    @return
    Pointer to the variant at the given path or NULL if the path does not exist.
  */
-amxc_var_t *amxc_var_get_pathf(const amxc_var_t * const var,
+amxc_var_t* amxc_var_get_pathf(const amxc_var_t* const var,
                                const int flags,
-                               const char * const fmt,
+                               const char* const fmt,
                                ...
                                ) __attribute__ ((format(printf, 3, 4)));
 
@@ -660,7 +660,7 @@ amxc_var_t *amxc_var_get_pathf(const amxc_var_t * const var,
    The variant type id, or -1 if the type does not exists or if it is
    an invalid variant.
  */
-uint32_t amxc_var_type_of(const amxc_var_t * const var);
+uint32_t amxc_var_type_of(const amxc_var_t* const var);
 
 /**
    @ingroup amxc_variant
@@ -673,7 +673,7 @@ uint32_t amxc_var_type_of(const amxc_var_t * const var);
    A constant string containing the name of the variant type.
    Or a null pointer when the type does not exists or it is an invalid variant.
  */
-const char *amxc_var_type_name_of(const amxc_var_t * const var);
+const char* amxc_var_type_name_of(const amxc_var_t* const var);
 
 /**
    @ingroup amxc_variant
@@ -686,14 +686,14 @@ const char *amxc_var_type_name_of(const amxc_var_t * const var);
    true when variant pointer is NULL or the variant is of the "null" type.
  */
 AMXC_INLINE
-bool amxc_var_is_null(const amxc_var_t * const var) {
+bool amxc_var_is_null(const amxc_var_t* const var) {
     return var == NULL ? true : (var->type_id == AMXC_VAR_ID_NULL);
 }
 
-void variant_list_it_free(amxc_llist_it_t *it);
-void variant_htable_it_free(const char *key, amxc_htable_it_t *it);
-int amxc_var_dump(const amxc_var_t * const var, int fd);
-int amxc_var_log(const amxc_var_t * const var);
+void variant_list_it_free(amxc_llist_it_t* it);
+void variant_htable_it_free(const char* key, amxc_htable_it_t* it);
+int amxc_var_dump(const amxc_var_t* const var, int fd);
+int amxc_var_log(const amxc_var_t* const var);
 
 /*
    Set of wrapper functions to easier access variants
@@ -702,17 +702,17 @@ int amxc_var_log(const amxc_var_t * const var);
 /*
    Use amxc_var_set(<type>, <var>, <value>) to call one of the following functions
  */
-int amxc_var_set_bool(amxc_var_t * const var, bool boolean);
-int amxc_var_set_int32_t(amxc_var_t * const var, int32_t val);
-int amxc_var_set_uint32_t(amxc_var_t * const var, uint32_t val);
-int amxc_var_set_int64_t(amxc_var_t * const var, int64_t val);
-int amxc_var_set_uint64_t(amxc_var_t * const var, uint64_t val);
-int amxc_var_set_cstring_t(amxc_var_t * const var, const char * const val);
-int amxc_var_set_csv_string_t(amxc_var_t * const var, const char * const val);
-int amxc_var_set_ssv_string_t(amxc_var_t * const var, const char * const val);
-int amxc_var_set_double(amxc_var_t *var, double val);
-int amxc_var_set_fd_t(amxc_var_t *var, int val);
-int amxc_var_set_amxc_ts_t(amxc_var_t *var, amxc_ts_t *val);
+int amxc_var_set_bool(amxc_var_t* const var, bool boolean);
+int amxc_var_set_int32_t(amxc_var_t* const var, int32_t val);
+int amxc_var_set_uint32_t(amxc_var_t* const var, uint32_t val);
+int amxc_var_set_int64_t(amxc_var_t* const var, int64_t val);
+int amxc_var_set_uint64_t(amxc_var_t* const var, uint64_t val);
+int amxc_var_set_cstring_t(amxc_var_t* const var, const char* const val);
+int amxc_var_set_csv_string_t(amxc_var_t* const var, const char* const val);
+int amxc_var_set_ssv_string_t(amxc_var_t* const var, const char* const val);
+int amxc_var_set_double(amxc_var_t* var, double val);
+int amxc_var_set_fd_t(amxc_var_t* var, int val);
+int amxc_var_set_amxc_ts_t(amxc_var_t* var, amxc_ts_t* val);
 
 /*
    Use amxc_var_dyncast(<type>, <var>) to call one of the following functions.
@@ -720,121 +720,121 @@ int amxc_var_set_amxc_ts_t(amxc_var_t *var, amxc_ts_t *val);
    data. If a pointer is returned, call the correct function to free the
    allocated memory if no longer needed.
  */
-bool amxc_var_get_bool(const amxc_var_t * const var);
-int32_t amxc_var_get_int32_t(const amxc_var_t * const var);
-uint32_t amxc_var_get_uint32_t(const amxc_var_t *var);
-int64_t amxc_var_get_int64_t(const amxc_var_t * const var);
-uint64_t amxc_var_get_uint64_t(const amxc_var_t * const var);
-cstring_t amxc_var_get_cstring_t(const amxc_var_t * const var);
-amxc_htable_t *amxc_var_get_amxc_htable_t(const amxc_var_t * const var);
-amxc_llist_t *amxc_var_get_amxc_llist_t(const amxc_var_t * const var);
-double amxc_var_get_double(const amxc_var_t *var);
-fd_t amxc_var_get_fd_t(const amxc_var_t *var);
-amxc_ts_t *amxc_var_get_amxc_ts_t(const amxc_var_t *var);
+bool amxc_var_get_bool(const amxc_var_t* const var);
+int32_t amxc_var_get_int32_t(const amxc_var_t* const var);
+uint32_t amxc_var_get_uint32_t(const amxc_var_t* var);
+int64_t amxc_var_get_int64_t(const amxc_var_t* const var);
+uint64_t amxc_var_get_uint64_t(const amxc_var_t* const var);
+cstring_t amxc_var_get_cstring_t(const amxc_var_t* const var);
+amxc_htable_t* amxc_var_get_amxc_htable_t(const amxc_var_t* const var);
+amxc_llist_t* amxc_var_get_amxc_llist_t(const amxc_var_t* const var);
+double amxc_var_get_double(const amxc_var_t* var);
+fd_t amxc_var_get_fd_t(const amxc_var_t* var);
+amxc_ts_t* amxc_var_get_amxc_ts_t(const amxc_var_t* var);
 
 AMXC_INLINE
-cstring_t amxc_var_get_csv_string_t(const amxc_var_t * const var) {
+cstring_t amxc_var_get_csv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_cstring_t(var);
 }
 
 AMXC_INLINE
-cstring_t amxc_var_get_ssv_string_t(const amxc_var_t * const var) {
+cstring_t amxc_var_get_ssv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_cstring_t(var);
 }
 
 /*
    Use amxc_var_constcast(<type>, <var>) to call one of the following functions
  */
-const char *amxc_var_get_const_cstring_t(const amxc_var_t * const var);
-const amxc_htable_t *amxc_var_get_const_amxc_htable_t(const amxc_var_t * const var);
-const amxc_llist_t *amxc_var_get_const_amxc_llist_t(const amxc_var_t * const var);
-bool amxc_var_get_const_bool(const amxc_var_t * const var);
-int32_t amxc_var_get_const_int32_t(const amxc_var_t * const var);
-int64_t amxc_var_get_const_int64_t(const amxc_var_t * const var);
-uint32_t amxc_var_get_const_uint32_t(const amxc_var_t * const var);
-uint64_t amxc_var_get_const_uint64_t(const amxc_var_t * const var);
-double amxc_var_get_const_double(const amxc_var_t * const var);
-fd_t amxc_var_get_const_fd_t(const amxc_var_t * const var);
-const amxc_ts_t *amxc_var_get_const_amxc_ts_t(const amxc_var_t * const var);
+const char* amxc_var_get_const_cstring_t(const amxc_var_t* const var);
+const amxc_htable_t* amxc_var_get_const_amxc_htable_t(const amxc_var_t* const var);
+const amxc_llist_t* amxc_var_get_const_amxc_llist_t(const amxc_var_t* const var);
+bool amxc_var_get_const_bool(const amxc_var_t* const var);
+int32_t amxc_var_get_const_int32_t(const amxc_var_t* const var);
+int64_t amxc_var_get_const_int64_t(const amxc_var_t* const var);
+uint32_t amxc_var_get_const_uint32_t(const amxc_var_t* const var);
+uint64_t amxc_var_get_const_uint64_t(const amxc_var_t* const var);
+double amxc_var_get_const_double(const amxc_var_t* const var);
+fd_t amxc_var_get_const_fd_t(const amxc_var_t* const var);
+const amxc_ts_t* amxc_var_get_const_amxc_ts_t(const amxc_var_t* const var);
 
 AMXC_INLINE
-const char *amxc_var_get_const_csv_string_t(const amxc_var_t * const var) {
+const char* amxc_var_get_const_csv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_const_cstring_t(var);
 }
 
 AMXC_INLINE
-const char *amxc_var_get_const_ssv_string_t(const amxc_var_t * const var) {
+const char* amxc_var_get_const_ssv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_const_cstring_t(var);
 }
 
 /*
 
  */
-amxc_var_t *amxc_var_add_new_bool(amxc_var_t * const var, bool boolean);
-amxc_var_t *amxc_var_add_new_int32_t(amxc_var_t * const var, int32_t val);
-amxc_var_t *amxc_var_add_new_uint32_t(amxc_var_t * const var, uint32_t val);
-amxc_var_t *amxc_var_add_new_int64_t(amxc_var_t * const var, int64_t val);
-amxc_var_t *amxc_var_add_new_uint64_t(amxc_var_t * const var, uint64_t val);
-amxc_var_t *amxc_var_add_new_cstring_t(amxc_var_t * const var, const char * const val);
-amxc_var_t *amxc_var_add_new_csv_string_t(amxc_var_t * const var, const char * const val);
-amxc_var_t *amxc_var_add_new_ssv_string_t(amxc_var_t * const var, const char * const val);
-amxc_var_t *amxc_var_add_new_double(amxc_var_t * const var, double val);
-amxc_var_t *amxc_var_add_new_fd_t(amxc_var_t * const var, int val);
-amxc_var_t *amxc_var_add_new_amxc_ts_t(amxc_var_t * const var, amxc_ts_t *ts);
+amxc_var_t* amxc_var_add_new_bool(amxc_var_t* const var, bool boolean);
+amxc_var_t* amxc_var_add_new_int32_t(amxc_var_t* const var, int32_t val);
+amxc_var_t* amxc_var_add_new_uint32_t(amxc_var_t* const var, uint32_t val);
+amxc_var_t* amxc_var_add_new_int64_t(amxc_var_t* const var, int64_t val);
+amxc_var_t* amxc_var_add_new_uint64_t(amxc_var_t* const var, uint64_t val);
+amxc_var_t* amxc_var_add_new_cstring_t(amxc_var_t* const var, const char* const val);
+amxc_var_t* amxc_var_add_new_csv_string_t(amxc_var_t* const var, const char* const val);
+amxc_var_t* amxc_var_add_new_ssv_string_t(amxc_var_t* const var, const char* const val);
+amxc_var_t* amxc_var_add_new_double(amxc_var_t* const var, double val);
+amxc_var_t* amxc_var_add_new_fd_t(amxc_var_t* const var, int val);
+amxc_var_t* amxc_var_add_new_amxc_ts_t(amxc_var_t* const var, amxc_ts_t* ts);
 
 /* when list is NULL, empty list is added */
-amxc_var_t *amxc_var_add_new_amxc_llist_t(amxc_var_t * const var,
-                                          const amxc_llist_t *list);
+amxc_var_t* amxc_var_add_new_amxc_llist_t(amxc_var_t* const var,
+                                          const amxc_llist_t* list);
 
 /* when htable is NULL, empty htable is added */
-amxc_var_t *amxc_var_add_new_amxc_htable_t(amxc_var_t * const var,
-                                           const amxc_htable_t *htable);
+amxc_var_t* amxc_var_add_new_amxc_htable_t(amxc_var_t* const var,
+                                           const amxc_htable_t* htable);
 
-amxc_var_t *amxc_var_add_new_key_bool(amxc_var_t * const var, const char *key, bool boolean);
-amxc_var_t *amxc_var_add_new_key_int32_t(amxc_var_t * const var, const char *key, int32_t val);
-amxc_var_t *amxc_var_add_new_key_uint32_t(amxc_var_t * const var, const char *key, uint32_t val);
-amxc_var_t *amxc_var_add_new_key_int64_t(amxc_var_t * const var, const char *key, int64_t val);
-amxc_var_t *amxc_var_add_new_key_uint64_t(amxc_var_t * const var, const char *key, uint64_t val);
-amxc_var_t *amxc_var_add_new_key_cstring_t(amxc_var_t * const var, const char *key, const char * const val);
-amxc_var_t *amxc_var_add_new_key_csv_string_t(amxc_var_t * const var, const char *key, const char * const val);
-amxc_var_t *amxc_var_add_new_key_ssv_string_t(amxc_var_t * const var, const char *key, const char * const val);
-amxc_var_t *amxc_var_add_new_key_double(amxc_var_t * const var, const char *key, double val);
-amxc_var_t *amxc_var_add_new_key_fd_t(amxc_var_t * const var, const char *key, int val);
-amxc_var_t *amxc_var_add_new_key_amxc_ts_t(amxc_var_t * const var, const char *key, amxc_ts_t *ts);
+amxc_var_t* amxc_var_add_new_key_bool(amxc_var_t* const var, const char* key, bool boolean);
+amxc_var_t* amxc_var_add_new_key_int32_t(amxc_var_t* const var, const char* key, int32_t val);
+amxc_var_t* amxc_var_add_new_key_uint32_t(amxc_var_t* const var, const char* key, uint32_t val);
+amxc_var_t* amxc_var_add_new_key_int64_t(amxc_var_t* const var, const char* key, int64_t val);
+amxc_var_t* amxc_var_add_new_key_uint64_t(amxc_var_t* const var, const char* key, uint64_t val);
+amxc_var_t* amxc_var_add_new_key_cstring_t(amxc_var_t* const var, const char* key, const char* const val);
+amxc_var_t* amxc_var_add_new_key_csv_string_t(amxc_var_t* const var, const char* key, const char* const val);
+amxc_var_t* amxc_var_add_new_key_ssv_string_t(amxc_var_t* const var, const char* key, const char* const val);
+amxc_var_t* amxc_var_add_new_key_double(amxc_var_t* const var, const char* key, double val);
+amxc_var_t* amxc_var_add_new_key_fd_t(amxc_var_t* const var, const char* key, int val);
+amxc_var_t* amxc_var_add_new_key_amxc_ts_t(amxc_var_t* const var, const char* key, amxc_ts_t* ts);
 
 /* when list is NULL, empty list is added */
-amxc_var_t *amxc_var_add_new_key_amxc_llist_t(amxc_var_t * const var,
-                                              const char *key,
-                                              const amxc_llist_t *list);
+amxc_var_t* amxc_var_add_new_key_amxc_llist_t(amxc_var_t* const var,
+                                              const char* key,
+                                              const amxc_llist_t* list);
 
 /* when htable is NULL, empty htable is added */
-amxc_var_t *amxc_var_add_new_key_amxc_htable_t(amxc_var_t * const var,
-                                               const char *key,
-                                               const amxc_htable_t *htable);
+amxc_var_t* amxc_var_add_new_key_amxc_htable_t(amxc_var_t* const var,
+                                               const char* key,
+                                               const amxc_htable_t* htable);
 
 /*
 
  */
-cstring_t amxc_var_take_cstring_t(amxc_var_t * const var);
-amxc_string_t *amxc_var_take_amxc_string_t(amxc_var_t * const var);
+cstring_t amxc_var_take_cstring_t(amxc_var_t* const var);
+amxc_string_t* amxc_var_take_amxc_string_t(amxc_var_t* const var);
 
 AMXC_INLINE
-cstring_t amxc_var_take_csv_string_t(amxc_var_t * const var) {
+cstring_t amxc_var_take_csv_string_t(amxc_var_t* const var) {
     return amxc_var_take_cstring_t(var);
 }
 
 AMXC_INLINE
-cstring_t amxc_var_take_ssv_string_t(amxc_var_t * const var) {
+cstring_t amxc_var_take_ssv_string_t(amxc_var_t* const var) {
     return amxc_var_take_cstring_t(var);
 }
 
 /*
 
  */
-int amxc_var_push_cstring_t(amxc_var_t * const var, char *val);
-int amxc_var_push_csv_string_t(amxc_var_t * const var, char *val);
-int amxc_var_push_ssv_string_t(amxc_var_t * const var, char *val);
-int amxc_var_push_amxc_string_t(amxc_var_t * const var, amxc_string_t *val);
+int amxc_var_push_cstring_t(amxc_var_t* const var, char* val);
+int amxc_var_push_csv_string_t(amxc_var_t* const var, char* val);
+int amxc_var_push_ssv_string_t(amxc_var_t* const var, char* val);
+int amxc_var_push_amxc_string_t(amxc_var_t* const var, amxc_string_t* val);
 
 #ifdef __cplusplus
 }

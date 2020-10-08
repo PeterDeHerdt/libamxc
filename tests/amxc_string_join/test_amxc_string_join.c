@@ -75,10 +75,10 @@
 
 #define UNUSED __attribute__((unused))
 
-void test_can_join_variant_list_to_string(UNUSED void **state) {
+void test_can_join_variant_list_to_string(UNUSED void** state) {
     amxc_var_t var;
     amxc_string_t string;
-    amxc_var_t *sub_var = NULL;
+    amxc_var_t* sub_var = NULL;
 
     amxc_var_init(&var);
     amxc_string_init(&string, 0);
@@ -101,7 +101,7 @@ void test_can_join_variant_list_to_string(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_join_fails_on_wrong_variant_type(UNUSED void **state) {
+void test_join_fails_on_wrong_variant_type(UNUSED void** state) {
     amxc_var_t var;
     amxc_string_t string;
 
@@ -120,7 +120,7 @@ void test_join_fails_on_wrong_variant_type(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_join_adds_to_string(UNUSED void **state) {
+void test_join_adds_to_string(UNUSED void** state) {
     amxc_var_t var;
     amxc_string_t string;
 
@@ -145,7 +145,7 @@ void test_join_adds_to_string(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_split_and_join_to_list_provides_similar_string(UNUSED void **state) {
+void test_split_and_join_to_list_provides_similar_string(UNUSED void** state) {
     amxc_llist_t list;
     amxc_string_t string;
 
@@ -166,7 +166,7 @@ void test_split_and_join_to_list_provides_similar_string(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_join_fails_with_invalid_separators(UNUSED void **state) {
+void test_join_fails_with_invalid_separators(UNUSED void** state) {
     amxc_llist_t list;
     amxc_string_t string;
 
@@ -192,7 +192,7 @@ void test_join_fails_with_invalid_separators(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_join_does_input_argument_validation(UNUSED void **state) {
+void test_join_does_input_argument_validation(UNUSED void** state) {
     amxc_llist_t list;
     amxc_var_t var;
     amxc_string_t string;

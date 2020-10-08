@@ -75,12 +75,12 @@
 typedef struct _test_cases {
     uint32_t parts;
     char separator;
-    char *text;
+    char* text;
 } test_cases_t;
 
 #define UNUSED __attribute__((unused))
 
-void test_can_split_string_using_separator(UNUSED void **state) {
+void test_can_split_string_using_separator(UNUSED void** state) {
     test_cases_t cases[] = {
         { 4, ',', "a , b , c , d" },
         { 8, ',', "a,,b,,c,,d," },
@@ -111,7 +111,7 @@ void test_can_split_string_using_separator(UNUSED void **state) {
     }
 }
 
-void test_can_split_string_using_space_separators(UNUSED void **state) {
+void test_can_split_string_using_space_separators(UNUSED void** state) {
     test_cases_t cases[] = {
         { 4, '\t', "a b c d" },
         { 4, ' ', "a  b  c  d" },
@@ -137,9 +137,9 @@ void test_can_split_string_using_space_separators(UNUSED void **state) {
     }
 }
 
-void test_check_parts_are_correct(UNUSED void **state) {
+void test_check_parts_are_correct(UNUSED void** state) {
     amxc_string_t string;
-    char *txt = "a,[b,c],d";
+    char* txt = "a,[b,c],d";
     amxc_llist_t string_list;
 
     amxc_llist_init(&string_list);
@@ -195,12 +195,12 @@ void test_check_parts_are_correct(UNUSED void **state) {
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
 }
 
-void test_can_split_csv_string_to_variant(UNUSED void **state) {
+void test_can_split_csv_string_to_variant(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-    amxc_var_t *part = NULL;
+    const amxc_llist_t* string_list = NULL;
+    amxc_llist_it_t* it = NULL;
+    amxc_var_t* part = NULL;
 
     amxc_var_init(&variant);
 
@@ -240,11 +240,11 @@ void test_can_split_csv_string_to_variant(UNUSED void **state) {
     amxc_var_clean(&variant);
 }
 
-void test_split_csv_handles_sequence_of_commas_as_multiple_items(UNUSED void **state) {
+void test_split_csv_handles_sequence_of_commas_as_multiple_items(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    const char *text = "a,,,,,b";
+    const amxc_llist_t* string_list = NULL;
+    const char* text = "a,,,,,b";
 
     amxc_var_init(&variant);
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -260,11 +260,11 @@ void test_split_csv_handles_sequence_of_commas_as_multiple_items(UNUSED void **s
     amxc_var_clean(&variant);
 }
 
-void test_split_csv_string_handles_comma_in_quotes_correctly(UNUSED void **state) {
+void test_split_csv_string_handles_comma_in_quotes_correctly(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    const char *text = "','";
+    const amxc_llist_t* string_list = NULL;
+    const char* text = "','";
 
     amxc_var_init(&variant);
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -300,10 +300,10 @@ void test_split_csv_string_handles_comma_in_quotes_correctly(UNUSED void **state
     amxc_var_clean(&variant);
 }
 
-void test_split_csv_string_handles_empty_string_correctly(UNUSED void **state) {
+void test_split_csv_string_handles_empty_string_correctly(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
+    const amxc_llist_t* string_list = NULL;
 
     amxc_var_init(&variant);
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -318,12 +318,12 @@ void test_split_csv_string_handles_empty_string_correctly(UNUSED void **state) {
     amxc_var_clean(&variant);
 }
 
-void test_can_split_csv_string_with_multi_array_to_variant(UNUSED void **state) {
+void test_can_split_csv_string_with_multi_array_to_variant(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-    amxc_var_t *part = NULL;
+    const amxc_llist_t* string_list = NULL;
+    amxc_llist_it_t* it = NULL;
+    amxc_var_t* part = NULL;
 
     amxc_var_init(&variant);
 
@@ -359,12 +359,12 @@ void test_can_split_csv_string_with_multi_array_to_variant(UNUSED void **state) 
     amxc_var_clean(&variant);
 }
 
-void test_can_split_csv_string_can_start_with_array_to_variant(UNUSED void **state) {
+void test_can_split_csv_string_can_start_with_array_to_variant(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-    amxc_var_t *part = NULL;
+    const amxc_llist_t* string_list = NULL;
+    amxc_llist_it_t* it = NULL;
+    amxc_var_t* part = NULL;
 
     amxc_var_init(&variant);
 
@@ -400,10 +400,10 @@ void test_can_split_csv_string_can_start_with_array_to_variant(UNUSED void **sta
     amxc_var_clean(&variant);
 }
 
-void test_can_split_csv_string_supports_multi_level_array_to_variant(UNUSED void **state) {
+void test_can_split_csv_string_supports_multi_level_array_to_variant(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
+    const amxc_llist_t* string_list = NULL;
 
     amxc_var_init(&variant);
 
@@ -419,13 +419,13 @@ void test_can_split_csv_string_supports_multi_level_array_to_variant(UNUSED void
     amxc_var_clean(&variant);
 }
 
-void test_can_split_csv_string_with_single_quotes_to_variant(UNUSED void **state) {
+void test_can_split_csv_string_with_single_quotes_to_variant(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-    amxc_var_t *part = NULL;
-    char *text = "part1,'[part2,part3],part4',long text";
+    const amxc_llist_t* string_list = NULL;
+    amxc_llist_it_t* it = NULL;
+    amxc_var_t* part = NULL;
+    char* text = "part1,'[part2,part3],part4',long text";
     amxc_var_init(&variant);
 
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -461,12 +461,12 @@ void test_can_split_csv_string_with_single_quotes_to_variant(UNUSED void **state
     amxc_var_clean(&variant);
 }
 
-void test_can_split_csv_string_with_double_quotes_to_variant(UNUSED void **state) {
+void test_can_split_csv_string_with_double_quotes_to_variant(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-    amxc_var_t *part = NULL;
+    const amxc_llist_t* string_list = NULL;
+    amxc_llist_it_t* it = NULL;
+    amxc_var_t* part = NULL;
 
     amxc_var_init(&variant);
 
@@ -496,13 +496,13 @@ void test_can_split_csv_string_with_double_quotes_to_variant(UNUSED void **state
     amxc_var_clean(&variant);
 }
 
-void test_split_csv_can_handle_empty_sublist(UNUSED void **state) {
+void test_split_csv_can_handle_empty_sublist(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-    amxc_var_t *part = NULL;
-    const char *txt = "part1,[],part4";
+    const amxc_llist_t* string_list = NULL;
+    amxc_llist_it_t* it = NULL;
+    amxc_var_t* part = NULL;
+    const char* txt = "part1,[],part4";
 
     amxc_var_init(&variant);
 
@@ -532,12 +532,12 @@ void test_split_csv_can_handle_empty_sublist(UNUSED void **state) {
     amxc_var_clean(&variant);
 }
 
-void test_can_split_ssv_string_to_variant(UNUSED void **state) {
+void test_can_split_ssv_string_to_variant(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-    amxc_var_t *part = NULL;
+    const amxc_llist_t* string_list = NULL;
+    amxc_llist_it_t* it = NULL;
+    amxc_var_t* part = NULL;
 
     amxc_var_init(&variant);
 
@@ -577,11 +577,11 @@ void test_can_split_ssv_string_to_variant(UNUSED void **state) {
     amxc_var_clean(&variant);
 }
 
-void test_split_ssv_handles_sequence_of_spaces_as_one_separator(UNUSED void **state) {
+void test_split_ssv_handles_sequence_of_spaces_as_one_separator(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    const char *text = "a  \t  \tb";
+    const amxc_llist_t* string_list = NULL;
+    const char* text = "a  \t  \tb";
 
     amxc_var_init(&variant);
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -597,11 +597,11 @@ void test_split_ssv_handles_sequence_of_spaces_as_one_separator(UNUSED void **st
     amxc_var_clean(&variant);
 }
 
-void test_split_ssv_string_handles_spaces_in_quotes_correctly(UNUSED void **state) {
+void test_split_ssv_string_handles_spaces_in_quotes_correctly(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    const char *text = "' '";
+    const amxc_llist_t* string_list = NULL;
+    const char* text = "' '";
 
     amxc_var_init(&variant);
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -637,12 +637,12 @@ void test_split_ssv_string_handles_spaces_in_quotes_correctly(UNUSED void **stat
     amxc_var_clean(&variant);
 }
 
-void test_can_split_ssv_string_with_single_quotes_to_variant(UNUSED void **state) {
+void test_can_split_ssv_string_with_single_quotes_to_variant(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-    amxc_var_t *part = NULL;
+    const amxc_llist_t* string_list = NULL;
+    amxc_llist_it_t* it = NULL;
+    amxc_var_t* part = NULL;
 
     amxc_var_init(&variant);
 
@@ -672,10 +672,10 @@ void test_can_split_ssv_string_with_single_quotes_to_variant(UNUSED void **state
     amxc_var_clean(&variant);
 }
 
-void test_split_ssv_string_handles_empty_string_correctly(UNUSED void **state) {
+void test_split_ssv_string_handles_empty_string_correctly(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
+    const amxc_llist_t* string_list = NULL;
 
     amxc_var_init(&variant);
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -690,12 +690,12 @@ void test_split_ssv_string_handles_empty_string_correctly(UNUSED void **state) {
     amxc_var_clean(&variant);
 }
 
-void test_can_split_ssv_string_with_multi_array_to_variant(UNUSED void **state) {
+void test_can_split_ssv_string_with_multi_array_to_variant(UNUSED void** state) {
     amxc_string_t string;
     amxc_var_t variant;
-    const amxc_llist_t *string_list = NULL;
-    amxc_llist_it_t *it = NULL;
-    amxc_var_t *part = NULL;
+    const amxc_llist_t* string_list = NULL;
+    amxc_llist_it_t* it = NULL;
+    amxc_var_t* part = NULL;
 
     amxc_var_init(&variant);
 
@@ -731,11 +731,11 @@ void test_can_split_ssv_string_with_multi_array_to_variant(UNUSED void **state) 
     amxc_var_clean(&variant);
 }
 
-void test_split_word_checks_quotes(UNUSED void **state) {
+void test_split_word_checks_quotes(UNUSED void** state) {
     amxc_string_t string;
     amxc_llist_t string_list;
-    const char *text = "\"Double quoted string \\\" with double and ' single quote\"";
-    const char *reason = "";
+    const char* text = "\"Double quoted string \\\" with double and ' single quote\"";
+    const char* reason = "";
 
     amxc_llist_init(&string_list);
 
@@ -775,11 +775,11 @@ void test_split_word_checks_quotes(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_split_word_checks_curly_brackets(UNUSED void **state) {
+void test_split_word_checks_curly_brackets(UNUSED void** state) {
     amxc_string_t string;
     amxc_llist_t string_list;
-    const char *text = "{1, 2, 3}";
-    const char *reason = "";
+    const char* text = "{1, 2, 3}";
+    const char* reason = "";
 
     amxc_llist_init(&string_list);
 
@@ -814,11 +814,11 @@ void test_split_word_checks_curly_brackets(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_split_word_checks_square_brackets(UNUSED void **state) {
+void test_split_word_checks_square_brackets(UNUSED void** state) {
     amxc_string_t string;
     amxc_llist_t string_list;
-    const char *text = "[1, 2, 3]";
-    const char *reason = "";
+    const char* text = "[1, 2, 3]";
+    const char* reason = "";
 
     amxc_llist_init(&string_list);
 
@@ -853,11 +853,11 @@ void test_split_word_checks_square_brackets(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_split_word_checks_round_brackets(UNUSED void **state) {
+void test_split_word_checks_round_brackets(UNUSED void** state) {
     amxc_string_t string;
     amxc_llist_t string_list;
-    const char *text = "(1, 2, 3)";
-    const char *reason = "";
+    const char* text = "(1, 2, 3)";
+    const char* reason = "";
 
     amxc_llist_init(&string_list);
 
@@ -892,30 +892,30 @@ void test_split_word_checks_round_brackets(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_split_word(UNUSED void **state) {
+void test_amxc_string_split_word(UNUSED void** state) {
     amxc_string_t string;
     amxc_llist_t string_list;
-    const char *parts[] = {
+    const char* parts[] = {
         "This", " ", "is", " ", "a", " ", "text", " ", "with", " ", "space", " ", "characters", " ", "and",
         " ", "\"", "quoted text with \\\" escapes", "\"", " ", "and", " ", ",", " ", "some", " ", "(",
         "punctuation", ")", ".", " ", "A", " ", "=", " ", "The", " ", "end", " ", NULL
     };
 
-    const char *text = "  This is a text\t\t  with space characters and \"quoted text with \\\" escapes\" and , some (punctuation). A = The end   ";
+    const char* text = "  This is a text\t\t  with space characters and \"quoted text with \\\" escapes\" and , some (punctuation). A = The end   ";
     amxc_llist_init(&string_list);
     assert_int_equal(amxc_string_init(&string, 0), 0);
     assert_int_equal(amxc_string_append(&string, text, strlen(text)), 0);
 
     assert_int_equal(amxc_string_split_word(&string, &string_list, NULL), 0);
     amxc_llist_for_each(it, (&string_list)) {
-        amxc_string_t *s = amxc_string_from_llist_it(it);
-        const char *p = amxc_string_get(s, 0);
+        amxc_string_t* s = amxc_string_from_llist_it(it);
+        const char* p = amxc_string_get(s, 0);
         printf("*%s*\n", p);
     }
     assert_int_equal(amxc_llist_size(&string_list), 39);
 
     for(int i = 0; parts[i] != NULL; i++) {
-        const char *txt_part = amxc_string_get_text_from_llist(&string_list, i);
+        const char* txt_part = amxc_string_get_text_from_llist(&string_list, i);
         assert_string_equal(txt_part, parts[i]);
     }
 
@@ -923,12 +923,12 @@ void test_amxc_string_split_word(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_split_word_quotes2(UNUSED void **state) {
+void test_amxc_string_split_word_quotes2(UNUSED void** state) {
     amxc_string_t string;
     amxc_llist_t string_list;
     int counter = 0;
 
-    const char *text = "!History.save \"/tmp/test.txt\"";
+    const char* text = "!History.save \"/tmp/test.txt\"";
 
     amxc_llist_init(&string_list);
     assert_int_equal(amxc_string_init(&string, 0), 0);
@@ -936,8 +936,8 @@ void test_amxc_string_split_word_quotes2(UNUSED void **state) {
     assert_int_equal(amxc_string_split_word(&string, &string_list, NULL), 0);
 
     amxc_llist_for_each(it, (&string_list)) {
-        amxc_string_t *s = amxc_string_from_llist_it(it);
-        const char *p = amxc_string_get(s, 0);
+        amxc_string_t* s = amxc_string_from_llist_it(it);
+        const char* p = amxc_string_get(s, 0);
         assert_ptr_not_equal(p, NULL);
 
         switch(counter) {
@@ -959,11 +959,11 @@ void test_amxc_string_split_word_quotes2(UNUSED void **state) {
     amxc_string_clean(&string);
 }
 
-void test_amxc_string_split_word_can_start_with_punctuation(UNUSED void **state) {
+void test_amxc_string_split_word_can_start_with_punctuation(UNUSED void** state) {
     amxc_string_t string;
     amxc_llist_t string_list;
 
-    const char *text = ",some more text here";
+    const char* text = ",some more text here";
     amxc_llist_init(&string_list);
     assert_int_equal(amxc_string_init(&string, 0), 0);
     assert_int_equal(amxc_string_append(&string, text, strlen(text)), 0);
@@ -975,11 +975,11 @@ void test_amxc_string_split_word_can_start_with_punctuation(UNUSED void **state)
     amxc_string_clean(&string);
 }
 
-void test_functions_validates_input_arguments(UNUSED void **state) {
+void test_functions_validates_input_arguments(UNUSED void** state) {
     amxc_string_t string;
     amxc_llist_t string_list;
 
-    const char *text = "some,more [text,here";
+    const char* text = "some,more [text,here";
     amxc_llist_init(&string_list);
     assert_int_equal(amxc_string_init(&string, 0), 0);
     assert_int_equal(amxc_string_append(&string, text, strlen(text)), 0);

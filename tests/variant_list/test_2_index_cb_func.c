@@ -80,11 +80,11 @@
 
 #define UNUSED __attribute__((unused))
 
-void test_variant_llist_get_index(UNUSED void **state) {
+void test_variant_llist_get_index(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t string;
-    amxc_var_t *key_part = NULL;
-    const amxc_var_t *key_part_const = NULL;
+    amxc_var_t* key_part = NULL;
+    const amxc_var_t* key_part_const = NULL;
 
     amxc_var_init(&var);
     amxc_var_init(&string);
@@ -118,12 +118,12 @@ void test_variant_llist_get_index(UNUSED void **state) {
     amxc_var_clean(&var);
 }
 
-void test_variant_llist_set_index(UNUSED void **state) {
+void test_variant_llist_set_index(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t string;
-    amxc_var_t *key_part = NULL;
-    amxc_var_t *key_part_copy = NULL;
-    const amxc_var_t *key_part_const = NULL;
+    amxc_var_t* key_part = NULL;
+    amxc_var_t* key_part_copy = NULL;
+    const amxc_var_t* key_part_const = NULL;
 
     amxc_var_init(&var);
     amxc_var_init(&string);
@@ -216,11 +216,11 @@ void test_variant_llist_set_index(UNUSED void **state) {
     amxc_var_clean(&var);
 }
 
-void test_variant_llist_set_key(UNUSED void **state) {
+void test_variant_llist_set_key(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t string;
-    amxc_var_t *key_part = NULL;
-    const amxc_var_t *key_part_const = NULL;
+    amxc_var_t* key_part = NULL;
+    const amxc_var_t* key_part_const = NULL;
 
     amxc_var_init(&var);
     amxc_var_init(&string);

@@ -71,7 +71,7 @@
    Ambiorix hash table iterator API implementation
  */
 
-int amxc_htable_it_init(amxc_htable_it_t * const it) {
+int amxc_htable_it_init(amxc_htable_it_t* const it) {
     int retval = -1;
     when_null(it, exit);
 
@@ -85,8 +85,8 @@ exit:
     return retval;
 }
 
-void amxc_htable_it_clean(amxc_htable_it_t * const it, amxc_htable_it_delete_t func) {
-    char *key = NULL;
+void amxc_htable_it_clean(amxc_htable_it_t* const it, amxc_htable_it_delete_t func) {
+    char* key = NULL;
     when_null(it, exit);
 
     // remove from htable if it is in one
@@ -103,25 +103,25 @@ exit:
     return;
 }
 
-amxc_htable_it_t *amxc_htable_it_get_next(const amxc_htable_it_t * const reference) {
-    amxc_htable_it_t *it = NULL;
+amxc_htable_it_t* amxc_htable_it_get_next(const amxc_htable_it_t* const reference) {
+    amxc_htable_it_t* it = NULL;
     when_null(reference, exit);
     when_null(reference->ait, exit);
 
     if(reference->next != NULL) {
         it = reference->next;
     } else {
-        amxc_array_it_t *ait = amxc_array_it_get_next(reference->ait);
+        amxc_array_it_t* ait = amxc_array_it_get_next(reference->ait);
         when_null(ait, exit);
-        it = (amxc_htable_it_t *) ait->data;
+        it = (amxc_htable_it_t*) ait->data;
     }
 
 exit:
     return it;
 }
 
-amxc_htable_it_t *amxc_htable_it_get_next_key(const amxc_htable_it_t * const reference) {
-    amxc_htable_it_t *it = NULL;
+amxc_htable_it_t* amxc_htable_it_get_next_key(const amxc_htable_it_t* const reference) {
+    amxc_htable_it_t* it = NULL;
     when_null(reference, exit);
     when_null(reference->ait, exit);
 
@@ -134,14 +134,14 @@ exit:
     return it;
 }
 
-void amxc_htable_it_take(amxc_htable_it_t * const it) {
-    amxc_htable_t *htable = NULL;
+void amxc_htable_it_take(amxc_htable_it_t* const it) {
+    amxc_htable_t* htable = NULL;
     when_null(it, exit);
     when_null(it->ait, exit);
 
-    htable = (amxc_htable_t *) it->ait->array;
+    htable = (amxc_htable_t*) it->ait->array;
     if(it->ait->data != it) {
-        amxc_htable_it_t *prev = (amxc_htable_it_t *) it->ait->data;
+        amxc_htable_it_t* prev = (amxc_htable_it_t*) it->ait->data;
         while(prev->next != it) {
             prev = prev->next;
         }

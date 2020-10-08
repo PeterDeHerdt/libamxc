@@ -69,11 +69,11 @@
    Ambiorix linked list API implementation
  */
 
-int amxc_llist_new(amxc_llist_t **llist) {
+int amxc_llist_new(amxc_llist_t** llist) {
     int retval = -1;
     when_null(llist, exit);
 
-    *llist = (amxc_llist_t *) calloc(1, sizeof(amxc_llist_t));
+    *llist = (amxc_llist_t*) calloc(1, sizeof(amxc_llist_t));
     if((*llist) != NULL) {
         retval = 0;
     }
@@ -82,7 +82,7 @@ exit:
     return retval;
 }
 
-void amxc_llist_delete(amxc_llist_t **llist, amxc_llist_it_delete_t func) {
+void amxc_llist_delete(amxc_llist_t** llist, amxc_llist_it_delete_t func) {
     when_null(llist, exit);
 
     amxc_llist_clean(*llist, func);
@@ -92,7 +92,7 @@ exit:
     return;
 }
 
-int amxc_llist_init(amxc_llist_t * const llist) {
+int amxc_llist_init(amxc_llist_t* const llist) {
     int retval = -1;
     when_null(llist, exit);
 
@@ -105,8 +105,8 @@ exit:
     return retval;
 }
 
-void amxc_llist_clean(amxc_llist_t * const llist, amxc_llist_it_delete_t func) {
-    amxc_llist_it_t *it = llist != NULL ? llist->head : NULL;
+void amxc_llist_clean(amxc_llist_t* const llist, amxc_llist_it_delete_t func) {
+    amxc_llist_it_t* it = llist != NULL ? llist->head : NULL;
     while(it != NULL) {
         amxc_llist_it_take(it);
         if(func != NULL) {
@@ -116,12 +116,12 @@ void amxc_llist_clean(amxc_llist_t * const llist, amxc_llist_it_delete_t func) {
     }
 }
 
-size_t amxc_llist_size(const amxc_llist_t * const llist) {
+size_t amxc_llist_size(const amxc_llist_t* const llist) {
     size_t count = 0;
 
     // no check on null pointer is needed here.
     // amxc_llist_first will return null anyway.
-    for(amxc_llist_it_t *it = llist != NULL ? llist->head : NULL;
+    for(amxc_llist_it_t* it = llist != NULL ? llist->head : NULL;
         it != NULL;
         it = it->next) {
         count++;
@@ -130,11 +130,11 @@ size_t amxc_llist_size(const amxc_llist_t * const llist) {
     return count;
 }
 
-bool amxc_llist_is_empty(const amxc_llist_t * const llist) {
+bool amxc_llist_is_empty(const amxc_llist_t* const llist) {
     return llist != NULL ? (llist->head == NULL) : true;
 }
 
-int amxc_llist_append(amxc_llist_t * const llist, amxc_llist_it_t * const it) {
+int amxc_llist_append(amxc_llist_t* const llist, amxc_llist_it_t* const it) {
     int retval = -1;
     when_null(llist, exit);
     when_null(it, exit);
@@ -161,7 +161,7 @@ exit:
     return retval;
 }
 
-int amxc_llist_prepend(amxc_llist_t * const llist, amxc_llist_it_t * const it) {
+int amxc_llist_prepend(amxc_llist_t* const llist, amxc_llist_it_t* const it) {
     int retval = -1;
     when_null(llist, exit);
     when_null(it, exit);
@@ -187,9 +187,9 @@ exit:
     return retval;
 }
 
-amxc_llist_it_t *amxc_llist_get_at(const amxc_llist_t * const llist,
+amxc_llist_it_t* amxc_llist_get_at(const amxc_llist_t* const llist,
                                    const unsigned int index) {
-    amxc_llist_it_t *it = NULL;
+    amxc_llist_it_t* it = NULL;
     size_t count = 0;
 
     for(it = llist != NULL ? llist->head : NULL; it; it = it->next) {
@@ -202,11 +202,11 @@ amxc_llist_it_t *amxc_llist_get_at(const amxc_llist_t * const llist,
     return it;
 }
 
-int amxc_llist_set_at(amxc_llist_t * const llist,
+int amxc_llist_set_at(amxc_llist_t* const llist,
                       const unsigned int index,
-                      amxc_llist_it_t * const it) {
+                      amxc_llist_it_t* const it) {
     int retval = -1;
-    amxc_llist_it_t *reference = NULL;
+    amxc_llist_it_t* reference = NULL;
 
     size_t count = 0;
 
@@ -227,13 +227,13 @@ int amxc_llist_set_at(amxc_llist_t * const llist,
     return retval;
 }
 
-static int amxc_llist_sort_internal(amxc_llist_t * const llist,
+static int amxc_llist_sort_internal(amxc_llist_t* const llist,
                                     amxc_llist_it_cmp_t cmp) {
     int retval = 0;
     bool swapped = false;
 
     do {
-        amxc_llist_it_t *it = amxc_llist_get_first(llist);
+        amxc_llist_it_t* it = amxc_llist_get_first(llist);
         swapped = false;
         while(it->next != NULL) {
             if(cmp(it, it->next) > 0) {
@@ -248,7 +248,7 @@ static int amxc_llist_sort_internal(amxc_llist_t * const llist,
     return retval;
 }
 
-int amxc_llist_sort(amxc_llist_t * const llist, amxc_llist_it_cmp_t cmp) {
+int amxc_llist_sort(amxc_llist_t* const llist, amxc_llist_it_cmp_t cmp) {
     int retval = -1;
     when_null(llist, exit);
     when_null(cmp, exit);

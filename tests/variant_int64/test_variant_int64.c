@@ -79,7 +79,7 @@
 
 #define UNUSED __attribute__((unused))
 
-void test_variant_int64_copy(UNUSED void **state) {
+void test_variant_int64_copy(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -95,7 +95,7 @@ void test_variant_int64_copy(UNUSED void **state) {
     assert_int_equal(copy_var.data.i64, 4026531840);
 }
 
-void test_variant_int64_convert_to(UNUSED void **state) {
+void test_variant_int64_convert_to(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -235,7 +235,7 @@ void test_variant_int64_convert_to(UNUSED void **state) {
 
 }
 
-void test_variant_int64_compare(UNUSED void **state) {
+void test_variant_int64_compare(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
     int result = 0;
@@ -262,7 +262,7 @@ void test_variant_int64_compare(UNUSED void **state) {
 
 }
 
-void test_variant_int64_set_get(UNUSED void **state) {
+void test_variant_int64_set_get(UNUSED void** state) {
     amxc_var_t var1;
 
     assert_int_equal(amxc_var_init(&var1), 0);
@@ -281,10 +281,10 @@ void test_variant_int64_set_get(UNUSED void **state) {
     assert_int_equal(amxc_var_constcast(int64_t, NULL), 0);
 }
 
-void test_variant_int64_add(UNUSED void **state) {
+void test_variant_int64_add(UNUSED void** state) {
     amxc_var_t var;
-    const amxc_llist_t *list = NULL;
-    const amxc_htable_t *table = NULL;
+    const amxc_llist_t* list = NULL;
+    const amxc_htable_t* table = NULL;
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_LIST), 0);

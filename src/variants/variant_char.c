@@ -67,9 +67,9 @@
 #include <amxc/amxc_string_split.h>
 #include <amxc_variant_priv.h>
 
-static const char *variant_char_validate_number(const amxc_var_t * const src, int *retval) {
+static const char* variant_char_validate_number(const amxc_var_t* const src, int* retval) {
     *retval = -1;
-    const char *buffer = NULL;
+    const char* buffer = NULL;
     when_true((src->data.s == NULL) || (*(src->data.s) == 0), exit);
 
     buffer = src->data.s;
@@ -85,12 +85,12 @@ exit:
     return buffer;
 }
 
-static int variant_char_to_signed_int(amxc_var_t * const dest,
-                                      const amxc_var_t * const src) {
+static int variant_char_to_signed_int(amxc_var_t* const dest,
+                                      const amxc_var_t* const src) {
     int retval = -1;
     amxc_var_t intermediate;
-    const char *buffer = NULL;
-    char *endptr = NULL;
+    const char* buffer = NULL;
+    char* endptr = NULL;
 
     intermediate.type_id = AMXC_VAR_ID_INT64;
     intermediate.data.i64 = 0;
@@ -113,12 +113,12 @@ exit:
     return retval;
 }
 
-static int variant_char_to_unsigned_int(amxc_var_t * const dest,
-                                        const amxc_var_t * const src) {
+static int variant_char_to_unsigned_int(amxc_var_t* const dest,
+                                        const amxc_var_t* const src) {
     int retval = -1;
     amxc_var_t intermediate;
-    const char *buffer = NULL;
-    char *endptr = NULL;
+    const char* buffer = NULL;
+    char* endptr = NULL;
 
     intermediate.type_id = AMXC_VAR_ID_UINT64;
     intermediate.data.ui64 = 0;
@@ -141,11 +141,11 @@ exit:
     return retval;
 }
 
-static int variant_char_to_double(amxc_var_t * const dest,
-                                  const amxc_var_t * const src) {
+static int variant_char_to_double(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
     int retval = -1;
-    const char *buffer = NULL;
-    char *endptr = NULL;
+    const char* buffer = NULL;
+    char* endptr = NULL;
 
     buffer = variant_char_validate_number(src, &retval);
     when_true(retval != 0, exit);
@@ -167,11 +167,11 @@ exit:
     return retval;
 }
 
-static int variant_char_to_float(amxc_var_t * const dest,
-                                 const amxc_var_t * const src) {
+static int variant_char_to_float(amxc_var_t* const dest,
+                                 const amxc_var_t* const src) {
     int retval = -1;
-    const char *buffer = NULL;
-    char *endptr = NULL;
+    const char* buffer = NULL;
+    char* endptr = NULL;
 
     buffer = variant_char_validate_number(src, &retval);
     when_true(retval != 0, exit);
@@ -193,10 +193,10 @@ exit:
     return retval;
 }
 
-static int variant_char_to_bool(amxc_var_t * const dest,
-                                const amxc_var_t * const src) {
+static int variant_char_to_bool(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
     int retval = -1;
-    char *lower_src = NULL;
+    char* lower_src = NULL;
     int src_len = 0;
     int src_pos = 0;
     const char true_values[3][5] = { "true", "yes", "1" };
@@ -205,7 +205,7 @@ static int variant_char_to_bool(amxc_var_t * const dest,
     when_true((src->data.s == NULL) || (*(src->data.s) == 0), exit);
 
     src_len = strlen(src->data.s) + 1;
-    lower_src = (char *) calloc(1, src_len);
+    lower_src = (char*) calloc(1, src_len);
     when_null(lower_src, exit);
 
     for(int i = 0; i < src_len; i++) {
@@ -235,8 +235,8 @@ exit:
     return retval;
 }
 
-static int variant_char_to_list(amxc_var_t * const dest,
-                                const amxc_var_t * const src) {
+static int variant_char_to_list(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
     amxc_string_t str;
     int retval = -1;
 
@@ -260,24 +260,24 @@ exit:
     return retval;
 }
 
-static int variant_char_to_htable(amxc_var_t * const dest,
-                                  const amxc_var_t * const src) {
-    char *temp = NULL;
+static int variant_char_to_htable(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
+    char* temp = NULL;
     int retval = -1;
-    char *element = NULL;
+    char* element = NULL;
     int length = 0;
     when_true((src->data.s == NULL) || (*(src->data.s) == 0), exit);
 
     length = strlen(src->data.s) + 1;
-    temp = (char *) calloc(1, length);
+    temp = (char*) calloc(1, length);
     when_null(temp, exit);
     memcpy(temp, src->data.s, length);
 
     element = strtok(temp, ",");
     while(element) {
-        amxc_var_t *var = NULL;
-        char *key = NULL;
-        char *data = NULL;
+        amxc_var_t* var = NULL;
+        char* key = NULL;
+        char* data = NULL;
         when_failed(amxc_var_new(&var), exit);
 
         var->type_id = AMXC_VAR_ID_CSTRING;
@@ -293,7 +293,7 @@ static int variant_char_to_htable(amxc_var_t * const dest,
         key = element;
         if(data != NULL) {
             length = strlen(data) + 1;
-            var->data.s = (char *) calloc(1, length);
+            var->data.s = (char*) calloc(1, length);
             if(var->data.s == NULL) {
                 amxc_var_delete(&var);
                 amxc_htable_clean(&dest->data.vm, variant_htable_it_free);
@@ -312,19 +312,19 @@ exit:
     return retval;
 }
 
-static int variant_char_to_ts(amxc_var_t * const dest,
-                              const amxc_var_t * const src) {
+static int variant_char_to_ts(amxc_var_t* const dest,
+                              const amxc_var_t* const src) {
 
     int retval = amxc_ts_parse(&dest->data.ts, src->data.s, strlen(src->data.s));
     return retval;
 }
 
-static int variant_char_copy(amxc_var_t * const dest,
-                             const amxc_var_t * const src) {
+static int variant_char_copy(amxc_var_t* const dest,
+                             const amxc_var_t* const src) {
     int retval = -1;
     if(src->data.s != NULL) {
         int length = strlen(src->data.s) + 1;
-        dest->data.s = (char *) calloc(1, length);
+        dest->data.s = (char*) calloc(1, length);
         when_null(dest->data.s, exit);
         memcpy(dest->data.s, src->data.s, length);
     }
@@ -334,13 +334,13 @@ exit:
     return retval;
 }
 
-static void variant_char_delete(amxc_var_t * const var) {
+static void variant_char_delete(amxc_var_t* const var) {
     free(var->data.s);
     var->data.s = NULL;
 }
 
-static int variant_char_convert_to(amxc_var_t * const dest,
-                                   const amxc_var_t * const src) {
+static int variant_char_convert_to(amxc_var_t* const dest,
+                                   const amxc_var_t* const src) {
     int retval = -1;
 
     amxc_var_convert_fn_t convfn[AMXC_VAR_ID_CUSTOM_BASE] = {
@@ -381,9 +381,9 @@ exit:
     return retval;
 }
 
-static int variant_char_compare(const amxc_var_t * const lval,
-                                const amxc_var_t * const rval,
-                                int * const result) {
+static int variant_char_compare(const amxc_var_t* const lval,
+                                const amxc_var_t* const rval,
+                                int* const result) {
     *result = strcmp(lval->data.s == NULL ? "" : lval->data.s,
                      rval->data.s == NULL ? "" : rval->data.s);
     return 0;
@@ -449,12 +449,12 @@ AMXC_DESTRUCTOR static void amxc_var_char_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_ssv_char);
 }
 
-static int amxc_var_set_data(amxc_var_t * const var, const char * const val) {
+static int amxc_var_set_data(amxc_var_t* const var, const char* const val) {
     int retval = -1;
     int length = 0;
 
     length = strlen(val) + 1;
-    var->data.s = (char *) calloc(1, length);
+    var->data.s = (char*) calloc(1, length);
     when_null(var->data.s, exit);
     memcpy(var->data.s, val, length);
     retval = 0;
@@ -466,7 +466,7 @@ exit:
     return retval;
 }
 
-int amxc_var_set_cstring_t(amxc_var_t * const var, const char * const val) {
+int amxc_var_set_cstring_t(amxc_var_t* const var, const char* const val) {
     int retval = -1;
     when_null(var, exit);
     when_null(val, exit);
@@ -478,7 +478,7 @@ exit:
     return retval;
 }
 
-int amxc_var_set_csv_string_t(amxc_var_t * const var, const char * const val) {
+int amxc_var_set_csv_string_t(amxc_var_t* const var, const char* const val) {
     int retval = -1;
     when_null(var, exit);
     when_null(val, exit);
@@ -490,7 +490,7 @@ exit:
     return retval;
 }
 
-int amxc_var_set_ssv_string_t(amxc_var_t * const var, const char * const val) {
+int amxc_var_set_ssv_string_t(amxc_var_t* const var, const char* const val) {
     int retval = -1;
     when_null(var, exit);
     when_null(val, exit);
@@ -502,8 +502,8 @@ exit:
     return retval;
 }
 
-cstring_t amxc_var_get_cstring_t(const amxc_var_t * const var) {
-    char *retval = NULL;
+cstring_t amxc_var_get_cstring_t(const amxc_var_t* const var) {
+    char* retval = NULL;
     when_null(var, exit);
 
     amxc_var_t variant;
@@ -515,8 +515,8 @@ exit:
     return retval;
 }
 
-const cstring_t amxc_var_get_const_cstring_t(const amxc_var_t * const var) {
-    const char *retval = NULL;
+const cstring_t amxc_var_get_const_cstring_t(const amxc_var_t* const var) {
+    const char* retval = NULL;
     when_null(var, exit);
     when_true(var->type_id != AMXC_VAR_ID_CSTRING &&
               var->type_id != AMXC_VAR_ID_CSV_STRING &&
@@ -528,8 +528,8 @@ exit:
     return retval;
 }
 
-cstring_t amxc_var_take_cstring_t(amxc_var_t * const var) {
-    char *retval = NULL;
+cstring_t amxc_var_take_cstring_t(amxc_var_t* const var) {
+    char* retval = NULL;
     when_null(var, exit);
     when_true(var->type_id != AMXC_VAR_ID_CSTRING &&
               var->type_id != AMXC_VAR_ID_CSV_STRING &&
@@ -544,7 +544,7 @@ exit:
     return retval;
 }
 
-int amxc_var_push_cstring_t(amxc_var_t * const var, char *val) {
+int amxc_var_push_cstring_t(amxc_var_t* const var, char* val) {
     int retval = -1;
 
     when_null(var, exit);
@@ -559,7 +559,7 @@ exit:
     return retval;
 }
 
-int amxc_var_push_csv_string_t(amxc_var_t * const var, char *val) {
+int amxc_var_push_csv_string_t(amxc_var_t* const var, char* val) {
     int retval = -1;
 
     retval = amxc_var_push_cstring_t(var, val);
@@ -570,7 +570,7 @@ int amxc_var_push_csv_string_t(amxc_var_t * const var, char *val) {
     return retval;
 }
 
-int amxc_var_push_ssv_string_t(amxc_var_t * const var, char *val) {
+int amxc_var_push_ssv_string_t(amxc_var_t* const var, char* val) {
     int retval = -1;
 
     retval = amxc_var_push_cstring_t(var, val);
@@ -581,8 +581,8 @@ int amxc_var_push_ssv_string_t(amxc_var_t * const var, char *val) {
     return retval;
 }
 
-amxc_var_t *amxc_var_add_new_cstring_t(amxc_var_t * const var, const char * const val) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_cstring_t(amxc_var_t* const var, const char* const val) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new(var);
@@ -596,8 +596,8 @@ exit:
     return subvar;
 }
 
-amxc_var_t *amxc_var_add_new_csv_string_t(amxc_var_t * const var, const char * const val) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_csv_string_t(amxc_var_t* const var, const char* const val) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new(var);
@@ -611,8 +611,8 @@ exit:
     return subvar;
 }
 
-amxc_var_t *amxc_var_add_new_ssv_string_t(amxc_var_t * const var, const char * const val) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_ssv_string_t(amxc_var_t* const var, const char* const val) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new(var);
@@ -626,10 +626,10 @@ exit:
     return subvar;
 }
 
-amxc_var_t *amxc_var_add_new_key_cstring_t(amxc_var_t * const var,
-                                           const char *key,
-                                           const char * const val) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_key_cstring_t(amxc_var_t* const var,
+                                           const char* key,
+                                           const char* const val) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new_key(var, key);
@@ -643,10 +643,10 @@ exit:
     return subvar;
 }
 
-amxc_var_t *amxc_var_add_new_key_csv_string_t(amxc_var_t * const var,
-                                              const char *key,
-                                              const char * const val) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_key_csv_string_t(amxc_var_t* const var,
+                                              const char* key,
+                                              const char* const val) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new_key(var, key);
@@ -660,10 +660,10 @@ exit:
     return subvar;
 }
 
-amxc_var_t *amxc_var_add_new_key_ssv_string_t(amxc_var_t * const var,
-                                              const char *key,
-                                              const char * const val) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_key_ssv_string_t(amxc_var_t* const var,
+                                              const char* key,
+                                              const char* const val) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new_key(var, key);

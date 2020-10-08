@@ -61,14 +61,14 @@
 #ifndef __TEST_VARIANT_TIMESTAMP_H__
 #define __TEST_VARIANT_TIMESTAMP_H__
 
-void test_variant_ts_copy(void **state);
-void test_variant_ts_convert_to_string(void **state);
-void test_variant_ts_convert_to_int64(void **state);
-void test_variant_ts_convert_to_other_int(void **state);
-void test_variant_ts_convert_to_double(void **state);
-void test_variant_ts_convert_to_any(void **state);
-void test_variant_ts_compare(void **state);
-void test_variant_ts_get(void **state);
-void test_variant_ts_add_to_composite_types(void **state);
+void test_variant_ts_copy(void** state);
+void test_variant_ts_convert_to_string(void** state);
+void test_variant_ts_convert_to_int64(void** state);
+void test_variant_ts_convert_to_other_int(void** state);
+void test_variant_ts_convert_to_double(void** state);
+void test_variant_ts_convert_to_any(void** state);
+void test_variant_ts_compare(void** state);
+void test_variant_ts_get(void** state);
+void test_variant_ts_add_to_composite_types(void** state);
 
 #endif // __TEST_VARIANT_TIMESTAMP_H__

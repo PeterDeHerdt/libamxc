@@ -61,17 +61,17 @@
 #ifndef __TEST_AMXC_VARIANT_H__
 #define __TEST_AMXC_VARIANT_H__
 
-void test_amxc_var_new_delete(void **state);
-void test_amxc_var_init_clean(void **state);
-void test_amxc_var_set_type(void **state);
-void test_amxc_var_copy(void **state);
-void test_amxc_var_convert(void **state);
-void test_amxc_var_compare(void **state);
-void test_amxc_var_type_of(void **state);
-void test_amxc_var_get_set_key(void **state);
-void test_amxc_var_add_new_key(void **state);
-void test_amxc_var_add_new(void **state);
-void test_amxc_var_get_path(void **state);
-void test_amxc_var_push_take_amxc_string(void **state);
+void test_amxc_var_new_delete(void** state);
+void test_amxc_var_init_clean(void** state);
+void test_amxc_var_set_type(void** state);
+void test_amxc_var_copy(void** state);
+void test_amxc_var_convert(void** state);
+void test_amxc_var_compare(void** state);
+void test_amxc_var_type_of(void** state);
+void test_amxc_var_get_set_key(void** state);
+void test_amxc_var_add_new_key(void** state);
+void test_amxc_var_add_new(void** state);
+void test_amxc_var_get_path(void** state);
+void test_amxc_var_push_take_amxc_string(void** state);
 
 #endif // __TEST_AMXC_VARIANT_H__

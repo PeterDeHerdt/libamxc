@@ -69,9 +69,9 @@
    Ambiorix array iterator API implementation
  */
 
-amxc_array_it_t *amxc_array_it_get_next(const amxc_array_it_t * const reference) {
-    amxc_array_it_t *it = NULL;
-    amxc_array_t *array = NULL;
+amxc_array_it_t* amxc_array_it_get_next(const amxc_array_it_t* const reference) {
+    amxc_array_it_t* it = NULL;
+    amxc_array_t* array = NULL;
     size_t pos = 0;
     when_null(reference, exit);
 
@@ -90,9 +90,9 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_it_get_next_free(const amxc_array_it_t * const reference) {
-    amxc_array_it_t *it = NULL;
-    amxc_array_t *array = NULL;
+amxc_array_it_t* amxc_array_it_get_next_free(const amxc_array_it_t* const reference) {
+    amxc_array_it_t* it = NULL;
+    amxc_array_t* array = NULL;
     size_t pos = 0;
     when_null(reference, exit);
 
@@ -111,9 +111,9 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_it_get_previous(const amxc_array_it_t * const reference) {
-    amxc_array_it_t *it = NULL;
-    amxc_array_t *array = NULL;
+amxc_array_it_t* amxc_array_it_get_previous(const amxc_array_it_t* const reference) {
+    amxc_array_it_t* it = NULL;
+    amxc_array_t* array = NULL;
     size_t pos = 0;
     when_null(reference, exit);
 
@@ -131,9 +131,9 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_it_get_previous_free(const amxc_array_it_t * const reference) {
-    amxc_array_it_t *it = NULL;
-    amxc_array_t *array = NULL;
+amxc_array_it_t* amxc_array_it_get_previous_free(const amxc_array_it_t* const reference) {
+    amxc_array_it_t* it = NULL;
+    amxc_array_t* array = NULL;
     size_t pos = 0;
     when_null(reference, exit);
 
@@ -151,7 +151,7 @@ exit:
     return it;
 }
 
-unsigned int amxc_array_it_index(const amxc_array_it_t * const it) {
+unsigned int amxc_array_it_index(const amxc_array_it_t* const it) {
     size_t index = 0;
     when_null(it, exit);
 
@@ -161,10 +161,10 @@ exit:
     return index;
 }
 
-int amxc_array_it_set_data(amxc_array_it_t * const it, void *data) {
+int amxc_array_it_set_data(amxc_array_it_t* const it, void* data) {
     int retval = -1;
     unsigned int index = 0;
-    amxc_array_t *array = NULL;
+    amxc_array_t* array = NULL;
 
     when_null(it, exit);
     when_null(data, exit);
@@ -186,10 +186,10 @@ exit:
     return retval;
 }
 
-void *amxc_array_it_take_data(amxc_array_it_t *it) {
-    void *data = NULL;
+void* amxc_array_it_take_data(amxc_array_it_t* it) {
+    void* data = NULL;
     unsigned int index = 0;
-    amxc_array_t *array = NULL;
+    amxc_array_t* array = NULL;
 
     when_null(it, exit);
     when_null(it->data, exit);
@@ -221,10 +221,10 @@ exit:
     return data;
 }
 
-int amxc_array_it_swap(amxc_array_it_t * const it1,
-                       amxc_array_it_t * const it2) {
+int amxc_array_it_swap(amxc_array_it_t* const it1,
+                       amxc_array_it_t* const it2) {
     int retval = -1;
-    void *data = NULL;
+    void* data = NULL;
 
     when_null(it1, exit);
     when_null(it2, exit);

@@ -125,7 +125,7 @@ typedef amxc_array_it_delete_t amxc_aqueue_it_delete_t;
    -1 if an error occured. 0 on success
  */
 AMXC_INLINE
-int amxc_aqueue_new(amxc_aqueue_t **aqueue) {
+int amxc_aqueue_new(amxc_aqueue_t** aqueue) {
     return amxc_array_new(aqueue, 10);
 }
 
@@ -149,7 +149,7 @@ int amxc_aqueue_new(amxc_aqueue_t **aqueue) {
                array queue
  */
 AMXC_INLINE
-void amxc_aqueue_delete(amxc_aqueue_t **aqueue, amxc_aqueue_it_delete_t func) {
+void amxc_aqueue_delete(amxc_aqueue_t** aqueue, amxc_aqueue_it_delete_t func) {
     amxc_array_delete(aqueue, func);
 }
 
@@ -176,7 +176,7 @@ void amxc_aqueue_delete(amxc_aqueue_t **aqueue, amxc_aqueue_it_delete_t func) {
    -1 if a NULL pointer is given.
  */
 AMXC_INLINE
-int amxc_aqueue_init(amxc_aqueue_t * const aqueue) {
+int amxc_aqueue_init(amxc_aqueue_t* const aqueue) {
     return amxc_array_init(aqueue, 10);
 }
 
@@ -193,7 +193,7 @@ int amxc_aqueue_init(amxc_aqueue_t * const aqueue) {
                array queue
  */
 AMXC_INLINE
-void amxc_aqueue_clean(amxc_aqueue_t * const aqueue,
+void amxc_aqueue_clean(amxc_aqueue_t* const aqueue,
                        amxc_aqueue_it_delete_t func) {
     amxc_array_clean(aqueue, func);
 }
@@ -211,7 +211,7 @@ void amxc_aqueue_clean(amxc_aqueue_t * const aqueue,
    failed
  */
 AMXC_INLINE
-amxc_aqueue_it_t *amxc_aqueue_add(amxc_aqueue_t * const aqueue, void *data) {
+amxc_aqueue_it_t* amxc_aqueue_add(amxc_aqueue_t* const aqueue, void* data) {
     return amxc_array_append_data(aqueue, data);
 }
 
@@ -226,7 +226,7 @@ amxc_aqueue_it_t *amxc_aqueue_add(amxc_aqueue_t * const aqueue, void *data) {
    Pointer to the first added data or NULL if no more items on the queue
  */
 AMXC_INLINE
-void *amxc_aqueue_remove(amxc_aqueue_t * const aqueue) {
+void* amxc_aqueue_remove(amxc_aqueue_t* const aqueue) {
     return amxc_array_take_first_data(aqueue);
 }
 
@@ -241,7 +241,7 @@ void *amxc_aqueue_remove(amxc_aqueue_t * const aqueue) {
    The number of items in the array queue.
  */
 AMXC_INLINE
-size_t amxc_aqueue_size(const amxc_aqueue_t * const aqueue) {
+size_t amxc_aqueue_size(const amxc_aqueue_t* const aqueue) {
     return amxc_array_size(aqueue);
 }
 
@@ -257,7 +257,7 @@ size_t amxc_aqueue_size(const amxc_aqueue_t * const aqueue) {
    least one item in the queue.
  */
 AMXC_INLINE
-size_t amxc_aqueue_is_empty(const amxc_aqueue_t * const aqueue) {
+size_t amxc_aqueue_is_empty(const amxc_aqueue_t* const aqueue) {
     return amxc_array_is_empty(aqueue);
 }
 

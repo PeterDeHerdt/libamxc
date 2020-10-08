@@ -70,31 +70,31 @@
 #include "amxc_assert.h"
 #include "amxc_priv.h"
 
-typedef void (*amxc_string_replace_cb_t) (amxc_string_t * const string,
-                                          size_t pos,
-                                          size_t length,
-                                          const char *txt,
-                                          const void *priv);
+typedef void (* amxc_string_replace_cb_t) (amxc_string_t* const string,
+                                           size_t pos,
+                                           size_t length,
+                                           const char* txt,
+                                           const void* priv);
 
-static void amxc_string_resolve_replace_env(amxc_string_t * const string,
+static void amxc_string_resolve_replace_env(amxc_string_t* const string,
                                             size_t pos,
                                             size_t length,
-                                            const char *txt,
-                                            AMXC_UNUSED const void *priv) {
-    char *value = getenv(txt);
+                                            const char* txt,
+                                            AMXC_UNUSED const void* priv) {
+    char* value = getenv(txt);
     amxc_string_remove_at(string, pos, length);
     if(value) {
         amxc_string_insert_at(string, pos, value, strlen(value));
     }
 }
 
-static void amxc_string_resolve_replace_var(amxc_string_t * const string,
+static void amxc_string_resolve_replace_var(amxc_string_t* const string,
                                             size_t pos,
                                             size_t length,
-                                            const char *txt,
-                                            const void *priv) {
-    amxc_var_t *data = (amxc_var_t *) priv;
-    char *value = amxc_var_dyncast(cstring_t,
+                                            const char* txt,
+                                            const void* priv) {
+    amxc_var_t* data = (amxc_var_t*) priv;
+    char* value = amxc_var_dyncast(cstring_t,
                                    amxc_var_get_path(data,
                                                      txt,
                                                      AMXC_VAR_FLAG_DEFAULT));
@@ -106,11 +106,11 @@ static void amxc_string_resolve_replace_var(amxc_string_t * const string,
 
 }
 
-static int amxc_string_generic_resolve(amxc_string_t * const string,
-                                       const char *start_string,
-                                       const char *end_string,
+static int amxc_string_generic_resolve(amxc_string_t* const string,
+                                       const char* start_string,
+                                       const char* end_string,
                                        amxc_string_replace_cb_t fn,
-                                       const void *priv) {
+                                       const void* priv) {
     int retval = 0;
     size_t start_length = strlen(start_string);
     size_t end_length = strlen(end_string);
@@ -148,7 +148,7 @@ static int amxc_string_generic_resolve(amxc_string_t * const string,
     return retval;
 }
 
-int amxc_string_resolve_env(amxc_string_t * const string) {
+int amxc_string_resolve_env(amxc_string_t* const string) {
     int retval = 0;
 
     when_null(string, exit);
@@ -164,8 +164,8 @@ exit:
     return retval;
 }
 
-int amxc_string_resolve_var(amxc_string_t * const string,
-                            const amxc_var_t * const data) {
+int amxc_string_resolve_var(amxc_string_t* const string,
+                            const amxc_var_t* const data) {
     int retval = 0;
 
     when_null(string, exit);
@@ -183,8 +183,8 @@ exit:
     return retval;
 }
 
-int amxc_string_resolve(amxc_string_t * const string,
-                        const amxc_var_t * const data) {
+int amxc_string_resolve(amxc_string_t* const string,
+                        const amxc_var_t* const data) {
     int changes = 0;
     int total = 0;
     do {
@@ -197,9 +197,9 @@ int amxc_string_resolve(amxc_string_t * const string,
     return total;
 }
 
-int amxc_string_set_resolved(amxc_string_t *string,
-                             const char *text,
-                             const amxc_var_t * const data) {
+int amxc_string_set_resolved(amxc_string_t* string,
+                             const char* text,
+                             const amxc_var_t* const data) {
     int retval = 0;
     size_t length = 0;
     size_t i = 0;
@@ -228,9 +228,9 @@ exit:
     return retval;
 }
 
-int amxc_string_new_resolved(amxc_string_t **string,
-                             const char *text,
-                             const amxc_var_t * const data) {
+int amxc_string_new_resolved(amxc_string_t** string,
+                             const char* text,
+                             const amxc_var_t* const data) {
     int retval = -1;
 
     when_null(string, exit);
@@ -245,10 +245,10 @@ exit:
     return retval;
 }
 
-amxc_llist_it_t *amxc_llist_add_string(amxc_llist_t * const llist,
-                                       const char *text) {
-    amxc_llist_it_t *it = NULL;
-    amxc_string_t *string = NULL;
+amxc_llist_it_t* amxc_llist_add_string(amxc_llist_t* const llist,
+                                       const char* text) {
+    amxc_llist_it_t* it = NULL;
+    amxc_string_t* string = NULL;
 
     when_null(llist, exit);
     when_null(text, exit);
@@ -266,7 +266,7 @@ exit:
     return it;
 }
 
-void amxc_string_list_it_free(amxc_llist_it_t *it) {
-    amxc_string_t *part = amxc_string_from_llist_it(it);
+void amxc_string_list_it_free(amxc_llist_it_t* it) {
+    amxc_string_t* part = amxc_string_from_llist_it(it);
     amxc_string_delete(&part);
 }

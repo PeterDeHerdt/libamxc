@@ -61,10 +61,10 @@
 #ifndef __TEST_VARIANT_UINT64_H__
 #define __TEST_VARIANT_UINT64_H__
 
-void test_variant_uint64_copy(void **state);
-void test_variant_uint64_convert_to(void **state);
-void test_variant_uint64_compare(void **state);
-void test_variant_uint64_set_get(void **state);
-void test_variant_uint64_add(void **state);
+void test_variant_uint64_copy(void** state);
+void test_variant_uint64_convert_to(void** state);
+void test_variant_uint64_compare(void** state);
+void test_variant_uint64_set_get(void** state);
+void test_variant_uint64_add(void** state);
 
 #endif // __TEST_VARIANT_UINT64_H__

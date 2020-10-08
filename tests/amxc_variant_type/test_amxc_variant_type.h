@@ -61,12 +61,12 @@
 #ifndef __TEST_AMXC_VARIANT_TYPE_H__
 #define __TEST_AMXC_VARIANT_TYPE_H__
 
-void test_amxc_var_add_type(void **state);
-void test_amxc_var_remove_type(void **state);
-void test_amxc_var_get_type(void **state);
-void test_amxc_var_register_type(void **state);
-void test_amxc_var_unregister_type(void **state);
-void test_amxc_var_get_type_name_from_id(void **state);
-void test_amxc_var_get_type_id_from_name(void **state);
+void test_amxc_var_add_type(void** state);
+void test_amxc_var_remove_type(void** state);
+void test_amxc_var_get_type(void** state);
+void test_amxc_var_register_type(void** state);
+void test_amxc_var_unregister_type(void** state);
+void test_amxc_var_get_type_name_from_id(void** state);
+void test_amxc_var_get_type_id_from_name(void** state);
 
 #endif // __TEST_AMXC_VARIANT_TYPE_H__

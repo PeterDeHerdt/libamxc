@@ -73,8 +73,8 @@
    Ambiorix array API implementation
  */
 
-static void amxc_array_initialize_items(amxc_array_t *array, const size_t start_pos) {
-    amxc_array_it_t *it = NULL;
+static void amxc_array_initialize_items(amxc_array_t* array, const size_t start_pos) {
+    amxc_array_it_t* it = NULL;
 
     for(size_t index = start_pos; index < array->items; index++) {
         it = &(array->buffer[index]);
@@ -83,11 +83,11 @@ static void amxc_array_initialize_items(amxc_array_t *array, const size_t start_
     }
 }
 
-static void amxc_array_clean_items(amxc_array_t *array,
+static void amxc_array_clean_items(amxc_array_t* array,
                                    const size_t start_pos,
                                    const size_t items,
                                    amxc_array_it_delete_t func) {
-    amxc_array_it_t *it = NULL;
+    amxc_array_it_t* it = NULL;
     for(unsigned int index = start_pos; index < start_pos + items; index++) {
         it = &(array->buffer[index]);
         if(it->data != NULL) {
@@ -101,14 +101,14 @@ static void amxc_array_clean_items(amxc_array_t *array,
     return;
 }
 
-static int amxc_array_realloc(amxc_array_t *array, const size_t items) {
+static int amxc_array_realloc(amxc_array_t* array, const size_t items) {
     int retval = -1;
-    amxc_array_it_t *buffer = NULL;
+    amxc_array_it_t* buffer = NULL;
 
     if(array->buffer != NULL) {
-        buffer = (amxc_array_it_t *) realloc(array->buffer, sizeof(amxc_array_it_t) * items);
+        buffer = (amxc_array_it_t*) realloc(array->buffer, sizeof(amxc_array_it_t) * items);
     } else {
-        buffer = (amxc_array_it_t *) calloc(items, sizeof(amxc_array_it_t));
+        buffer = (amxc_array_it_t*) calloc(items, sizeof(amxc_array_it_t));
     }
     if(buffer != NULL) {
         array->buffer = buffer;
@@ -119,7 +119,7 @@ static int amxc_array_realloc(amxc_array_t *array, const size_t items) {
     return retval;
 }
 
-static size_t amxc_array_calculate_last_used(amxc_array_t *array,
+static size_t amxc_array_calculate_last_used(amxc_array_t* array,
                                              const size_t start) {
     size_t index = start;
     while(index > 0 && array->buffer[index].data == NULL) {
@@ -129,7 +129,7 @@ static size_t amxc_array_calculate_last_used(amxc_array_t *array,
     return index;
 }
 
-static size_t amxc_array_calculate_first_used(amxc_array_t *array,
+static size_t amxc_array_calculate_first_used(amxc_array_t* array,
                                               const size_t start) {
     size_t index = start;
     while(index < array->items && array->buffer[index].data == NULL) {
@@ -139,7 +139,7 @@ static size_t amxc_array_calculate_first_used(amxc_array_t *array,
     return (index == array->items) ? 0 : index;
 }
 
-static int amxc_array_sort_internal(amxc_array_t * const array,
+static int amxc_array_sort_internal(amxc_array_t* const array,
                                     amxc_array_it_cmp_t cmp,
                                     int32_t lo,
                                     int32_t high) {
@@ -182,12 +182,12 @@ static int amxc_array_sort_internal(amxc_array_t * const array,
     return retval;
 }
 
-int8_t amxc_array_new(amxc_array_t **array, const size_t items) {
+int8_t amxc_array_new(amxc_array_t** array, const size_t items) {
     int8_t retval = -1;
     when_null(array, exit);
 
     /* allocate the array structure */
-    *array = (amxc_array_t *) calloc(1, sizeof(amxc_array_t));
+    *array = (amxc_array_t*) calloc(1, sizeof(amxc_array_t));
     when_null(*array, exit);
 
     /* set the number of items in the array */
@@ -216,8 +216,9 @@ exit:
     return retval;
 }
 
-void amxc_array_delete(amxc_array_t **array, amxc_array_it_delete_t func) {
+void amxc_array_delete(amxc_array_t** array, amxc_array_it_delete_t func) {
     when_null(array, exit);
+    when_null(*array, exit);
 
     if(func != NULL) {
         // When no delete callback function is given,
@@ -233,7 +234,7 @@ exit:
     return;
 }
 
-int amxc_array_init(amxc_array_t * const array, const size_t items) {
+int amxc_array_init(amxc_array_t* const array, const size_t items) {
     int retval = -1;
     when_null(array, exit);
 
@@ -263,7 +264,7 @@ exit:
     return retval;
 }
 
-void amxc_array_clean(amxc_array_t * const array, amxc_array_it_delete_t func) {
+void amxc_array_clean(amxc_array_t* const array, amxc_array_it_delete_t func) {
     when_null(array, exit);
 
     if(func != NULL) {
@@ -282,7 +283,7 @@ exit:
     return;
 }
 
-int amxc_array_grow(amxc_array_t * const array, const size_t items) {
+int amxc_array_grow(amxc_array_t* const array, const size_t items) {
     int retval = -1;
     size_t old_items = 0;
     when_null(array, exit);
@@ -300,7 +301,7 @@ exit:
     return retval;
 }
 
-int amxc_array_shrink(amxc_array_t * const array,
+int amxc_array_shrink(amxc_array_t* const array,
                       const size_t items,
                       amxc_array_it_delete_t func) {
     int retval = -1;
@@ -325,12 +326,12 @@ exit:
     return retval;
 }
 
-int amxc_array_shift_right(amxc_array_t * const array,
+int amxc_array_shift_right(amxc_array_t* const array,
                            const size_t items,
                            amxc_array_it_delete_t func) {
     int retval = -1;
-    amxc_array_it_t *src = NULL;
-    amxc_array_it_t *dst = NULL;
+    amxc_array_it_t* src = NULL;
+    amxc_array_it_t* dst = NULL;
     size_t len = 0;
     when_null(array, exit);
     when_true(items > array->items, exit);
@@ -363,12 +364,12 @@ exit:
     return retval;
 }
 
-int amxc_array_shift_left(amxc_array_t * const array,
+int amxc_array_shift_left(amxc_array_t* const array,
                           const size_t items,
                           amxc_array_it_delete_t func) {
     int retval = -1;
-    amxc_array_it_t *src = NULL;
-    amxc_array_it_t *dst = NULL;
+    amxc_array_it_t* src = NULL;
+    amxc_array_it_t* dst = NULL;
     size_t len = 0;
     when_null(array, exit);
     when_true(items > array->items, exit);
@@ -401,7 +402,7 @@ exit:
     return retval;
 }
 
-bool amxc_array_is_empty(const amxc_array_t * const array) {
+bool amxc_array_is_empty(const amxc_array_t* const array) {
     bool retval = true;
     when_null(array, exit);
 
@@ -417,7 +418,7 @@ exit:
     return retval;
 }
 
-size_t amxc_array_size(const amxc_array_t * const array) {
+size_t amxc_array_size(const amxc_array_t* const array) {
     size_t retval = 0;
     when_null(array, exit);
 
@@ -431,8 +432,8 @@ exit:
     return retval;
 }
 
-amxc_array_it_t *amxc_array_append_data(amxc_array_t * const array, void *data) {
-    amxc_array_it_t *it = NULL;
+amxc_array_it_t* amxc_array_append_data(amxc_array_t* const array, void* data) {
+    amxc_array_it_t* it = NULL;
     size_t index = 0;
     when_null(array, exit);
     when_null(data, exit);
@@ -451,8 +452,8 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_prepend_data(amxc_array_t * const array, void *data) {
-    amxc_array_it_t *it = NULL;
+amxc_array_it_t* amxc_array_prepend_data(amxc_array_t* const array, void* data) {
+    amxc_array_it_t* it = NULL;
     size_t index = 0;
     bool grow = false;
     when_null(array, exit);
@@ -476,10 +477,10 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_set_data_at(amxc_array_t * const array,
+amxc_array_it_t* amxc_array_set_data_at(amxc_array_t* const array,
                                         const unsigned int index,
-                                        void *data) {
-    amxc_array_it_t *it = amxc_array_get_at(array, index);
+                                        void* data) {
+    amxc_array_it_t* it = amxc_array_get_at(array, index);
     when_null(it, exit);
 
     if(data != NULL) {
@@ -492,7 +493,7 @@ amxc_array_it_t *amxc_array_set_data_at(amxc_array_t * const array,
         }
         it->data = data;
     } else {
-        void *tmp = it->data;
+        void* tmp = it->data;
         it->data = data;
         if((tmp != NULL) && (index == array->last_used)) {
             array->last_used = amxc_array_calculate_last_used(array, array->last_used);
@@ -506,9 +507,9 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_get_at(const amxc_array_t * const array,
+amxc_array_it_t* amxc_array_get_at(const amxc_array_t* const array,
                                    const unsigned int index) {
-    amxc_array_it_t *it = NULL;
+    amxc_array_it_t* it = NULL;
     when_null(array, exit);
     when_null(array->buffer, exit);
     when_true(index >= array->items, exit);
@@ -519,8 +520,8 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_get_first(const amxc_array_t * const array) {
-    amxc_array_it_t *it = NULL;
+amxc_array_it_t* amxc_array_get_first(const amxc_array_t* const array) {
+    amxc_array_it_t* it = NULL;
     when_null(array, exit);
 
     if(!amxc_array_is_empty(array)) {
@@ -531,8 +532,8 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_get_first_free(const amxc_array_t * const array) {
-    amxc_array_it_t *it = NULL;
+amxc_array_it_t* amxc_array_get_first_free(const amxc_array_t* const array) {
+    amxc_array_it_t* it = NULL;
     size_t index = 0;
     when_null(array, exit);
 
@@ -548,8 +549,8 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_get_last(const amxc_array_t * const array) {
-    amxc_array_it_t *it = NULL;
+amxc_array_it_t* amxc_array_get_last(const amxc_array_t* const array) {
+    amxc_array_it_t* it = NULL;
     when_null(array, exit);
 
     if(!amxc_array_is_empty(array)) {
@@ -560,8 +561,8 @@ exit:
     return it;
 }
 
-amxc_array_it_t *amxc_array_get_last_free(const amxc_array_t * const array) {
-    amxc_array_it_t *it = NULL;
+amxc_array_it_t* amxc_array_get_last_free(const amxc_array_t* const array) {
+    amxc_array_it_t* it = NULL;
     size_t index = 0;
     when_null(array, exit);
 
@@ -578,9 +579,9 @@ exit:
     return it;
 }
 
-void *amxc_array_take_first_data(amxc_array_t * const array) {
-    void *data = NULL;
-    amxc_array_it_t *it = amxc_array_get_first(array);
+void* amxc_array_take_first_data(amxc_array_t* const array) {
+    void* data = NULL;
+    amxc_array_it_t* it = amxc_array_get_first(array);
     if(it != NULL) {
         data = it->data;
         amxc_array_set_data_at(array, amxc_array_it_index(it), NULL);
@@ -588,9 +589,9 @@ void *amxc_array_take_first_data(amxc_array_t * const array) {
     return data;
 }
 
-void *amxc_array_take_last_data(amxc_array_t * const array) {
-    void *data = NULL;
-    amxc_array_it_t *it = amxc_array_get_last(array);
+void* amxc_array_take_last_data(amxc_array_t* const array) {
+    void* data = NULL;
+    amxc_array_it_t* it = amxc_array_get_last(array);
     if(it != NULL) {
         data = it->data;
         amxc_array_set_data_at(array, amxc_array_it_index(it), NULL);
@@ -598,7 +599,7 @@ void *amxc_array_take_last_data(amxc_array_t * const array) {
     return data;
 }
 
-int amxc_array_sort(amxc_array_t * const array, amxc_array_it_cmp_t cmp) {
+int amxc_array_sort(amxc_array_t* const array, amxc_array_it_cmp_t cmp) {
     int retval = -1;
     size_t i = 0;
     when_null(array, exit);

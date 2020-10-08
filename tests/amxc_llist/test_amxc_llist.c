@@ -71,14 +71,14 @@
 
 #define UNUSED __attribute__((unused))
 
-void amxc_llist_new_delete_null_check(UNUSED void **state) {
+void amxc_llist_new_delete_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_llist_new(NULL), -1);
     amxc_llist_delete(NULL, NULL);
 }
 
-void amxc_llist_new_delete_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_new_delete_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
     assert_int_not_equal(amxc_llist_new(&llist), -1);
     assert_ptr_not_equal(llist, NULL);
     assert_ptr_equal(llist->head, NULL);
@@ -87,13 +87,13 @@ void amxc_llist_new_delete_check(UNUSED void **state) {
     assert_ptr_equal(llist, NULL);
 }
 
-void amxc_llist_init_clean_null_check(UNUSED void **state) {
+void amxc_llist_init_clean_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_llist_init(NULL), -1);
     amxc_llist_clean(NULL, NULL);
 }
 
-void amxc_llist_init_clean_check(UNUSED void **state) {
+void amxc_llist_init_clean_check(UNUSED void** state) {
     amxc_llist_t llist;
 
     assert_int_equal(amxc_llist_init(&llist), 0);
@@ -104,12 +104,12 @@ void amxc_llist_init_clean_check(UNUSED void **state) {
 
 static amxc_llist_it_t s_it_func_check;
 
-static void check_it_delete_func(amxc_llist_it_t *it) {
+static void check_it_delete_func(amxc_llist_it_t* it) {
     assert_ptr_equal(it, &s_it_func_check);
 }
 
-void amxc_llist_delete_func_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_delete_func_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
 
     // create list
     assert_int_not_equal(amxc_llist_new(&llist), -1);
@@ -119,8 +119,8 @@ void amxc_llist_delete_func_check(UNUSED void **state) {
     amxc_llist_delete(&llist, check_it_delete_func);
 }
 
-void amxc_llist_clean_func_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_clean_func_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
 
     // create list
     assert_int_not_equal(amxc_llist_new(&llist), -1);
@@ -132,8 +132,8 @@ void amxc_llist_clean_func_check(UNUSED void **state) {
     amxc_llist_delete(&llist, check_it_delete_func);
 }
 
-void amxc_llist_delete_cb_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_delete_cb_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
 
     // create list
     assert_int_not_equal(amxc_llist_new(&llist), -1);
@@ -145,8 +145,8 @@ void amxc_llist_delete_cb_check(UNUSED void **state) {
     assert_ptr_equal(s_it_func_check.llist, NULL);
 }
 
-void amxc_llist_clean_cb_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_clean_cb_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
 
     // create list
     assert_int_not_equal(amxc_llist_new(&llist), -1);
@@ -159,8 +159,8 @@ void amxc_llist_clean_cb_check(UNUSED void **state) {
     amxc_llist_delete(&llist, NULL);
 }
 
-void amxc_llist_append_null_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_append_null_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
     amxc_llist_it_t it1;
 
     assert_int_equal(amxc_llist_new(&llist), 0);
@@ -174,8 +174,8 @@ void amxc_llist_append_null_check(UNUSED void **state) {
     amxc_llist_delete(&llist, NULL);
 }
 
-void amxc_llist_append_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_append_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
     amxc_llist_it_t it1;
     amxc_llist_it_t it2;
 
@@ -204,8 +204,8 @@ void amxc_llist_append_check(UNUSED void **state) {
     amxc_llist_delete(&llist, NULL);
 }
 
-void amxc_llist_prepend_null_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_prepend_null_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
     amxc_llist_it_t it1;
 
     assert_int_equal(amxc_llist_new(&llist), 0);
@@ -219,8 +219,8 @@ void amxc_llist_prepend_null_check(UNUSED void **state) {
     amxc_llist_delete(&llist, NULL);
 }
 
-void amxc_llist_prepend_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_prepend_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
     amxc_llist_it_t it1;
     amxc_llist_it_t it2;
 
@@ -249,9 +249,9 @@ void amxc_llist_prepend_check(UNUSED void **state) {
     amxc_llist_delete(&llist, NULL);
 }
 
-static amxc_llist_t *llist = NULL;
-static amxc_llist_t *llist1 = NULL;
-static amxc_llist_t *llist2 = NULL;
+static amxc_llist_t* llist = NULL;
+static amxc_llist_t* llist1 = NULL;
+static amxc_llist_t* llist2 = NULL;
 static amxc_llist_it_t it1;
 static amxc_llist_it_t it2;
 static amxc_llist_it_t it3;
@@ -274,7 +274,7 @@ static void amxc_llist_teardown(void) {
     amxc_llist_delete(&llist2, NULL);
 }
 
-void amxc_llist_append_move_same_list_check(UNUSED void **state) {
+void amxc_llist_append_move_same_list_check(UNUSED void** state) {
     amxc_llist_setup();
     // move iterator 1 from head to tail in llist1
     assert_int_equal(amxc_llist_append(llist1, &it1), 0);
@@ -302,7 +302,7 @@ void amxc_llist_append_move_same_list_check(UNUSED void **state) {
     amxc_llist_teardown();
 }
 
-void amxc_llist_prepend_move_same_list_check(UNUSED void **state) {
+void amxc_llist_prepend_move_same_list_check(UNUSED void** state) {
     amxc_llist_setup();
     // move iterator 3 from tail to head in llist1
     assert_int_equal(amxc_llist_prepend(llist1, &it3), 0);
@@ -330,13 +330,13 @@ void amxc_llist_prepend_move_same_list_check(UNUSED void **state) {
     amxc_llist_teardown();
 }
 
-void amxc_llist_is_empty_null_check(UNUSED void **state) {
+void amxc_llist_is_empty_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_llist_is_empty(NULL), true);
 }
 
-void amxc_llist_is_empty_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_is_empty_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
     amxc_llist_it_t it1;
 
     assert_int_equal(amxc_llist_new(&llist), 0);
@@ -349,13 +349,13 @@ void amxc_llist_is_empty_check(UNUSED void **state) {
     amxc_llist_delete(&llist, NULL);
 }
 
-void amxc_llist_size_null_check(UNUSED void **state) {
+void amxc_llist_size_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_llist_size(NULL), 0);
 }
 
-void amxc_llist_size_check(UNUSED void **state) {
-    amxc_llist_t *llist = NULL;
+void amxc_llist_size_check(UNUSED void** state) {
+    amxc_llist_t* llist = NULL;
     amxc_llist_it_t it1;
     amxc_llist_it_t it2;
 
@@ -375,7 +375,7 @@ void amxc_llist_size_check(UNUSED void **state) {
     amxc_llist_delete(&llist, NULL);
 }
 
-void amxc_llist_get_at_check(UNUSED void **state) {
+void amxc_llist_get_at_check(UNUSED void** state) {
     amxc_llist_setup();
     assert_ptr_equal(amxc_llist_get_at(NULL, 10), NULL);
     assert_ptr_equal(amxc_llist_get_at(llist1, 0), &it1);
@@ -385,7 +385,7 @@ void amxc_llist_get_at_check(UNUSED void **state) {
     amxc_llist_teardown();
 }
 
-void amxc_llist_set_at_check(UNUSED void **state) {
+void amxc_llist_set_at_check(UNUSED void** state) {
     amxc_llist_setup();
     amxc_llist_it_t it;
     assert_int_equal(amxc_llist_set_at(NULL, 10, &it1), -1);
@@ -419,20 +419,20 @@ void amxc_llist_set_at_check(UNUSED void **state) {
     amxc_llist_teardown();
 }
 
-void amxc_llist_get_first_check(UNUSED void **state) {
+void amxc_llist_get_first_check(UNUSED void** state) {
     assert_ptr_equal(amxc_llist_get_first(NULL), NULL);
 }
 
-void amxc_llist_get_last_check(UNUSED void **state) {
+void amxc_llist_get_last_check(UNUSED void** state) {
     assert_ptr_equal(amxc_llist_get_last(NULL), NULL);
 }
 
-void amxc_llist_it_init_null_check(UNUSED void **state) {
+void amxc_llist_it_init_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_llist_it_init(NULL), -1);
 }
 
-void amxc_llist_it_init_check(UNUSED void **state) {
+void amxc_llist_it_init_check(UNUSED void** state) {
     amxc_llist_it_t it;
 
     assert_int_equal(amxc_llist_it_init(&it), 0);
@@ -441,7 +441,7 @@ void amxc_llist_it_init_check(UNUSED void **state) {
     assert_ptr_equal(it.llist, NULL);
 }
 
-void amxc_llist_it_clean_null_check(UNUSED void **state) {
+void amxc_llist_it_clean_null_check(UNUSED void** state) {
     amxc_llist_it_t it;
 
     assert_int_equal(amxc_llist_it_init(&it), 0);
@@ -451,14 +451,14 @@ void amxc_llist_it_clean_null_check(UNUSED void **state) {
     amxc_llist_it_clean(&it, NULL);
 }
 
-void amxc_llist_it_clean_check(UNUSED void **state) {
+void amxc_llist_it_clean_check(UNUSED void** state) {
     amxc_llist_it_t it;
 
     assert_int_equal(amxc_llist_it_init(&it), 0);
     amxc_llist_it_clean(&it, NULL);
 }
 
-void amxc_llist_it_clean_cb_check(UNUSED void **state) {
+void amxc_llist_it_clean_cb_check(UNUSED void** state) {
     assert_int_equal(amxc_llist_it_init(&s_it_func_check), 0);
     amxc_llist_it_clean(&s_it_func_check, check_it_delete_func);
 }
@@ -479,11 +479,11 @@ static void amxc_llist_it_teardown(void) {
     amxc_llist_delete(&llist, NULL);
 }
 
-void amxc_llist_it_take_null_check(UNUSED void **state) {
+void amxc_llist_it_take_null_check(UNUSED void** state) {
     amxc_llist_it_take(NULL);
 }
 
-void amxc_llist_it_take_check(UNUSED void **state) {
+void amxc_llist_it_take_check(UNUSED void** state) {
     amxc_llist_it_setup();
     amxc_llist_it_take(&it2);
     assert_ptr_equal(llist->head, &it1);
@@ -498,7 +498,7 @@ void amxc_llist_it_take_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_take_double_check(UNUSED void **state) {
+void amxc_llist_it_take_double_check(UNUSED void** state) {
     amxc_llist_it_setup();
     amxc_llist_it_take(&it2);
     // remove the iterator again should not lead to segfault
@@ -506,7 +506,7 @@ void amxc_llist_it_take_double_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_insert_before_null_check(UNUSED void **state) {
+void amxc_llist_it_insert_before_null_check(UNUSED void** state) {
     amxc_llist_it_setup();
     assert_int_equal(amxc_llist_it_insert_before(NULL, NULL), -1);
     assert_int_equal(amxc_llist_it_insert_before(&it1, NULL), -1);
@@ -520,7 +520,7 @@ void amxc_llist_it_insert_before_null_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_insert_before_check(UNUSED void **state) {
+void amxc_llist_it_insert_before_check(UNUSED void** state) {
     amxc_llist_it_setup();
     assert_int_equal(amxc_llist_it_insert_before(&it2, &s_it_func_check), 0);
     assert_ptr_equal(it1.next, &s_it_func_check);
@@ -533,7 +533,7 @@ void amxc_llist_it_insert_before_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_insert_before_head_check(UNUSED void **state) {
+void amxc_llist_it_insert_before_head_check(UNUSED void** state) {
     amxc_llist_it_setup();
     assert_int_equal(amxc_llist_it_insert_before(&it1, &s_it_func_check), 0);
     assert_ptr_equal(it1.next, &it2);
@@ -544,7 +544,7 @@ void amxc_llist_it_insert_before_head_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_insert_before_invalid_it_check(UNUSED void **state) {
+void amxc_llist_it_insert_before_invalid_it_check(UNUSED void** state) {
     amxc_llist_it_setup();
     amxc_llist_it_take(&it2);
 
@@ -557,7 +557,7 @@ void amxc_llist_it_insert_before_invalid_it_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_insert_after_null_check(UNUSED void **state) {
+void amxc_llist_it_insert_after_null_check(UNUSED void** state) {
     amxc_llist_it_setup();
     assert_int_equal(amxc_llist_it_insert_after(NULL, NULL), -1);
     assert_int_equal(amxc_llist_it_insert_after(&it1, NULL), -1);
@@ -571,7 +571,7 @@ void amxc_llist_it_insert_after_null_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_insert_after_check(UNUSED void **state) {
+void amxc_llist_it_insert_after_check(UNUSED void** state) {
     amxc_llist_it_setup();
     assert_int_equal(amxc_llist_it_insert_after(&it2, &s_it_func_check), 0);
     assert_ptr_equal(it3.next, NULL);
@@ -584,7 +584,7 @@ void amxc_llist_it_insert_after_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_insert_after_tail_check(UNUSED void **state) {
+void amxc_llist_it_insert_after_tail_check(UNUSED void** state) {
     amxc_llist_it_setup();
     assert_int_equal(amxc_llist_it_insert_after(&it3, &s_it_func_check), 0);
     assert_ptr_equal(it3.next, &s_it_func_check);
@@ -595,7 +595,7 @@ void amxc_llist_it_insert_after_tail_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_insert_after_invalid_it_check(UNUSED void **state) {
+void amxc_llist_it_insert_after_invalid_it_check(UNUSED void** state) {
     amxc_llist_it_setup();
     amxc_llist_it_take(&it2);
 
@@ -608,7 +608,7 @@ void amxc_llist_it_insert_after_invalid_it_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_index_of_check(UNUSED void **state) {
+void amxc_llist_it_index_of_check(UNUSED void** state) {
     amxc_llist_it_setup();
     amxc_llist_it_t it;
 
@@ -621,7 +621,7 @@ void amxc_llist_it_index_of_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_next_prev_check(UNUSED void **state) {
+void amxc_llist_it_next_prev_check(UNUSED void** state) {
     amxc_llist_it_setup();
 
     assert_ptr_equal(amxc_llist_it_get_next(NULL), NULL);
@@ -635,7 +635,7 @@ void amxc_llist_it_next_prev_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_it_is_in_list_check(UNUSED void **state) {
+void amxc_llist_it_is_in_list_check(UNUSED void** state) {
     amxc_llist_it_setup();
     amxc_llist_it_t it;
 
@@ -650,7 +650,7 @@ void amxc_llist_it_is_in_list_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_take_at_check(UNUSED void **state) {
+void amxc_llist_take_at_check(UNUSED void** state) {
     amxc_llist_it_setup();
 
     assert_ptr_equal(amxc_llist_take_at(NULL, 0), NULL);
@@ -663,7 +663,7 @@ void amxc_llist_take_at_check(UNUSED void **state) {
     amxc_llist_it_teardown();
 }
 
-void amxc_llist_swap_in_same_llist_check(UNUSED void **state) {
+void amxc_llist_swap_in_same_llist_check(UNUSED void** state) {
     amxc_llist_setup();
 
     assert_ptr_equal(amxc_llist_get_first(llist1), &it1);
@@ -700,7 +700,7 @@ void amxc_llist_swap_in_same_llist_check(UNUSED void **state) {
     amxc_llist_teardown();
 }
 
-void amxc_llist_swap_in_different_llist_check(UNUSED void **state) {
+void amxc_llist_swap_in_different_llist_check(UNUSED void** state) {
     amxc_llist_setup();
 
     assert_int_equal(amxc_llist_append(llist2, &it4), 0);
@@ -726,9 +726,9 @@ typedef struct {
     char data;
 } test_data_t;
 
-static int test_cmp(amxc_llist_it_t *it1, amxc_llist_it_t *it2) {
-    test_data_t *d1 = amxc_llist_it_get_data(it1, test_data_t, it);
-    test_data_t *d2 = amxc_llist_it_get_data(it2, test_data_t, it);
+static int test_cmp(amxc_llist_it_t* it1, amxc_llist_it_t* it2) {
+    test_data_t* d1 = amxc_llist_it_get_data(it1, test_data_t, it);
+    test_data_t* d2 = amxc_llist_it_get_data(it2, test_data_t, it);
 
     if(d1->data < d2->data) {
         return -1;
@@ -739,27 +739,27 @@ static int test_cmp(amxc_llist_it_t *it1, amxc_llist_it_t *it2) {
     return 0;
 }
 
-static void test_del_data(amxc_llist_it_t *it) {
-    test_data_t *d = amxc_llist_it_get_data(it, test_data_t, it);
+static void test_del_data(amxc_llist_it_t* it) {
+    test_data_t* d = amxc_llist_it_get_data(it, test_data_t, it);
     free(d);
 }
 
-void test_amxc_llist_sort(UNUSED void **state) {
+void test_amxc_llist_sort(UNUSED void** state) {
     amxc_llist_t llist;
     const char data[16] = "KRATELEPUIMQCXOS";
     const char sorted[16] = "ACEEIKLMOPQRSTUX";
 
     amxc_llist_init(&llist);
     for(int i = 0; i < 16; i++) {
-        test_data_t *item = calloc(1, sizeof(test_data_t));
+        test_data_t* item = calloc(1, sizeof(test_data_t));
         item->data = data[i];
         amxc_llist_append(&llist, &item->it);
     }
 
     assert_int_equal(amxc_llist_sort(&llist, test_cmp), 0);
-    const amxc_llist_it_t *it = amxc_llist_get_first(&llist);
+    const amxc_llist_it_t* it = amxc_llist_get_first(&llist);
     for(unsigned int index = 0; index < 16; index++) {
-        test_data_t *d = amxc_llist_it_get_data(it, test_data_t, it);
+        test_data_t* d = amxc_llist_it_get_data(it, test_data_t, it);
         printf("%c\n", d->data);
         assert_int_equal(d->data, sorted[index]);
         it = amxc_llist_it_get_next(it);

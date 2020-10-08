@@ -61,12 +61,12 @@
 #ifndef __TEST_AMXC_LQUEUE_H__
 #define __TEST_AMXC_LQUEUE_H__
 
-void amxc_lqueue_new_delete_null_check(void **state);
-void amxc_lqueue_new_delete_check(void **state);
-void amxc_lqueue_init_clean_null_check(void **state);
-void amxc_lqueue_init_clean_check(void **state);
-void amxc_lqueue_add_check(void **state);
-void amxc_lqueue_remove_check(void **state);
+void amxc_lqueue_new_delete_null_check(void** state);
+void amxc_lqueue_new_delete_check(void** state);
+void amxc_lqueue_init_clean_null_check(void** state);
+void amxc_lqueue_init_clean_check(void** state);
+void amxc_lqueue_add_check(void** state);
+void amxc_lqueue_remove_check(void** state);
 
 
 #endif // __TEST_AMXC_LQUEUE_H__

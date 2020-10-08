@@ -90,22 +90,22 @@ extern "C"
    Allocating memory to store the data is allowed, but a callback function for
    freeing the data must be provided, see @ref amxc_var_free_fn_t
  */
-typedef int (*amxc_var_new_fn_t) (amxc_var_t * const var);
+typedef int (* amxc_var_new_fn_t) (amxc_var_t* const var);
 
 /**
    @ingroup amxc_variant_type
    @brief
    Variant type callback function prototype for freeing previous allocated memory.
  */
-typedef void (*amxc_var_free_fn_t) (amxc_var_t * const var);
+typedef void (* amxc_var_free_fn_t) (amxc_var_t* const var);
 
 /**
    @ingroup amxc_variant_type
    @brief
    Variant type callback function prototype for creating a copy.
  */
-typedef int (*amxc_var_copy_fn_t) (amxc_var_t * const dst,
-                                   const amxc_var_t * const src);
+typedef int (* amxc_var_copy_fn_t) (amxc_var_t* const dst,
+                                    const amxc_var_t* const src);
 
 /**
    @ingroup amxc_variant_type
@@ -113,8 +113,8 @@ typedef int (*amxc_var_copy_fn_t) (amxc_var_t * const dst,
    Variant type callback function prototype for dynamically converting one type
    to another.
  */
-typedef int (*amxc_var_convert_fn_t) (amxc_var_t * const dest,
-                                      const amxc_var_t * const src);
+typedef int (* amxc_var_convert_fn_t) (amxc_var_t* const dest,
+                                       const amxc_var_t* const src);
 
 /**
    @ingroup amxc_variant_type
@@ -122,17 +122,17 @@ typedef int (*amxc_var_convert_fn_t) (amxc_var_t * const dest,
    Variant type callback function prototype comparing two variants of the same
    type.
  */
-typedef int (*amxc_var_compare_fn_t) (const amxc_var_t * const var1,
-                                      const amxc_var_t * const var2,
-                                      int * const result);
+typedef int (* amxc_var_compare_fn_t) (const amxc_var_t* const var1,
+                                       const amxc_var_t* const var2,
+                                       int* const result);
 
 /**
    @ingroup amxc_variant_type
    @brief
    Variant type callback function prototype fetch part of variant by key
  */
-typedef amxc_var_t *(*amxc_var_get_key_fn_t) (const amxc_var_t * const src,
-                                              const char * const key,
+typedef amxc_var_t*(* amxc_var_get_key_fn_t) (const amxc_var_t* const src,
+                                              const char* const key,
                                               int flags);
 
 /**
@@ -140,17 +140,17 @@ typedef amxc_var_t *(*amxc_var_get_key_fn_t) (const amxc_var_t * const src,
    @brief
    Variant type callback function prototype set part of variant by key
  */
-typedef int (*amxc_var_set_key_fn_t) (amxc_var_t * const dest,
-                                      amxc_var_t * const src,
-                                      const char * const key,
-                                      int flags);
+typedef int (* amxc_var_set_key_fn_t) (amxc_var_t* const dest,
+                                       amxc_var_t* const src,
+                                       const char* const key,
+                                       int flags);
 
 /**
    @ingroup amxc_variant_type
    @brief
    Variant type callback function prototype fetch part of variant by index
  */
-typedef amxc_var_t *(*amxc_var_get_index_fn_t) (const amxc_var_t * const src,
+typedef amxc_var_t*(* amxc_var_get_index_fn_t) (const amxc_var_t* const src,
                                                 const int64_t index,
                                                 int flags);
 
@@ -159,10 +159,10 @@ typedef amxc_var_t *(*amxc_var_get_index_fn_t) (const amxc_var_t * const src,
    @brief
    Variant type callback function prototype set part of variant by index
  */
-typedef int (*amxc_var_set_index_fn_t) (amxc_var_t * const dest,
-                                        amxc_var_t * const src,
-                                        const int64_t index,
-                                        int flags);
+typedef int (* amxc_var_set_index_fn_t) (amxc_var_t* const dest,
+                                         amxc_var_t* const src,
+                                         const int64_t index,
+                                         int flags);
 
 /**
    @ingroup amxc_variant_type
@@ -219,7 +219,7 @@ typedef struct _amxc_var_type {
     amxc_var_set_index_fn_t set_index;   /**< Set part of the variant by index */
     uint32_t type_id;                    /**< Type id - assigned when registered */
     amxc_htable_it_t hit;                /**< Hash table iterator, used to store the type */
-    const char *name;                    /**< Unique name of the type */
+    const char* name;                    /**< Unique name of the type */
 } amxc_var_type_t;
 
 /**
@@ -243,7 +243,7 @@ typedef struct _amxc_var_type {
    @return
    When registration is successful this function returns 0.
  */
-uint32_t amxc_var_register_type(amxc_var_type_t * const type);
+uint32_t amxc_var_register_type(amxc_var_type_t* const type);
 
 /**
    @ingroup amxc_variant_type
@@ -267,7 +267,7 @@ uint32_t amxc_var_register_type(amxc_var_type_t * const type);
    @return
    When unregistration is successful this function returns 0.
  */
-int amxc_var_unregister_type(amxc_var_type_t * const type);
+int amxc_var_unregister_type(amxc_var_type_t* const type);
 
 /**
    @ingroup amxc_variant_type
@@ -282,7 +282,7 @@ int amxc_var_unregister_type(amxc_var_type_t * const type);
    returns the name of the type id, or NULL pointer when no type exists with that
    type id.
  */
-const char *amxc_var_get_type_name_from_id(const uint32_t type_id);
+const char* amxc_var_get_type_name_from_id(const uint32_t type_id);
 
 /**
    @ingroup amxc_variant_type
@@ -297,9 +297,9 @@ const char *amxc_var_get_type_name_from_id(const uint32_t type_id);
    returns the type id, or AMXC_VAR_ID_MAX if no type with the given name
    was not found
  */
-uint32_t amxc_var_get_type_id_from_name(const char * const name);
+uint32_t amxc_var_get_type_id_from_name(const char* const name);
 
-amxc_var_type_t *amxc_var_get_type(unsigned int type_id);
+amxc_var_type_t* amxc_var_get_type(unsigned int type_id);
 
 
 #ifdef __cplusplus

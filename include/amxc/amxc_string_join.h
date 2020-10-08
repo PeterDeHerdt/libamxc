@@ -68,19 +68,19 @@ extern "C"
 
 #include <amxc/amxc_variant.h>
 
-int amxc_string_join_llist(amxc_string_t *string,
-                           amxc_llist_t *list,
+int amxc_string_join_llist(amxc_string_t* string,
+                           amxc_llist_t* list,
                            char separator);
 
-int amxc_string_join_var(amxc_string_t *string,
-                         const amxc_var_t * const var,
-                         const char *sep);
+int amxc_string_join_var(amxc_string_t* string,
+                         const amxc_var_t* const var,
+                         const char* sep);
 
-int amxc_string_csv_join_var(amxc_string_t *string,
-                             const amxc_var_t * const var);
+int amxc_string_csv_join_var(amxc_string_t* string,
+                             const amxc_var_t* const var);
 
-int amxc_string_ssv_join_var(amxc_string_t *string,
-                             const amxc_var_t * const var);
+int amxc_string_ssv_join_var(amxc_string_t* string,
+                             const amxc_var_t* const var);
 #ifdef __cplusplus
 }
 #endif

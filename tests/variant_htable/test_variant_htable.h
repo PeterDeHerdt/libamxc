@@ -61,18 +61,18 @@
 #ifndef __TEST_VARIANT_HTABLE_H__
 #define __TEST_VARIANT_HTABLE_H__
 
-void test_variant_htable_init(void **state);
-void test_variant_htable_copy(void **state);
-void test_variant_htable_convert_to_bool(void **state);
-void test_variant_htable_convert_to_integer(void **state);
-void test_variant_htable_convert_to_list(void **state);
-void test_variant_htable_convert_to_string(void **state);
-void test_variant_htable_set_get(void **state);
+void test_variant_htable_init(void** state);
+void test_variant_htable_copy(void** state);
+void test_variant_htable_convert_to_bool(void** state);
+void test_variant_htable_convert_to_integer(void** state);
+void test_variant_htable_convert_to_list(void** state);
+void test_variant_htable_convert_to_string(void** state);
+void test_variant_htable_set_get(void** state);
 
-void test_variant_htable_get_key(void **state);
-void test_variant_htable_set_key(void **state);
-void test_variant_htable_add_new(void **state);
-void test_variant_htable_add_new_key(void **state);
-void test_variant_htable_add_new_key_duplicate(void **state);
+void test_variant_htable_get_key(void** state);
+void test_variant_htable_set_key(void** state);
+void test_variant_htable_add_new(void** state);
+void test_variant_htable_add_new_key(void** state);
+void test_variant_htable_add_new_key_duplicate(void** state);
 
 #endif // __TEST_VARIANT_HTABLE_H__

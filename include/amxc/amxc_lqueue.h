@@ -125,7 +125,7 @@ typedef amxc_llist_it_delete_t amxc_lqueue_it_delete_t;
    -1 if an error occured. 0 on success
  */
 AMXC_INLINE
-int amxc_lqueue_new(amxc_lqueue_t **lqueue) {
+int amxc_lqueue_new(amxc_lqueue_t** lqueue) {
     return amxc_llist_new(lqueue);
 }
 
@@ -150,7 +150,7 @@ int amxc_lqueue_new(amxc_lqueue_t **lqueue) {
                linked queue
  */
 AMXC_INLINE
-void amxc_lqueue_delete(amxc_lqueue_t **lqueue, amxc_lqueue_it_delete_t func) {
+void amxc_lqueue_delete(amxc_lqueue_t** lqueue, amxc_lqueue_it_delete_t func) {
     amxc_llist_delete(lqueue, func);
 }
 
@@ -176,7 +176,7 @@ void amxc_lqueue_delete(amxc_lqueue_t **lqueue, amxc_lqueue_it_delete_t func) {
    -1 if a NULL pointer is given.
  */
 AMXC_INLINE
-int amxc_lqueue_init(amxc_lqueue_t * const lqueue) {
+int amxc_lqueue_init(amxc_lqueue_t* const lqueue) {
     return amxc_llist_init(lqueue);
 }
 
@@ -193,7 +193,7 @@ int amxc_lqueue_init(amxc_lqueue_t * const lqueue) {
    @param func a pointer to a function that is called to free each item in the linked queue
  */
 AMXC_INLINE
-void amxc_lqueue_clean(amxc_lqueue_t * const lqueue, amxc_lqueue_it_delete_t func) {
+void amxc_lqueue_clean(amxc_lqueue_t* const lqueue, amxc_lqueue_it_delete_t func) {
     amxc_llist_clean(lqueue, func);
 }
 
@@ -216,7 +216,7 @@ void amxc_lqueue_clean(amxc_lqueue_t * const lqueue, amxc_lqueue_it_delete_t fun
    returns 0 when the item is added, -1 when there was an error
  */
 AMXC_INLINE
-int amxc_lqueue_add(amxc_lqueue_t * const lqueue, amxc_lqueue_it_t * const it) {
+int amxc_lqueue_add(amxc_lqueue_t* const lqueue, amxc_lqueue_it_t* const it) {
     return amxc_llist_append(lqueue, it);
 }
 
@@ -231,7 +231,7 @@ int amxc_lqueue_add(amxc_lqueue_t * const lqueue, amxc_lqueue_it_t * const it) {
    The iterator to the first added item or NULL if no more items on the queue
  */
 AMXC_INLINE
-amxc_lqueue_it_t *amxc_lqueue_remove(amxc_lqueue_t * const lqueue) {
+amxc_lqueue_it_t* amxc_lqueue_remove(amxc_lqueue_t* const lqueue) {
     return amxc_llist_take_first(lqueue);
 }
 
@@ -246,7 +246,7 @@ amxc_lqueue_it_t *amxc_lqueue_remove(amxc_lqueue_t * const lqueue) {
    The number of items on the linked queue.
  */
 AMXC_INLINE
-size_t amxc_lqueue_size(const amxc_lqueue_t * const lqueue) {
+size_t amxc_lqueue_size(const amxc_lqueue_t* const lqueue) {
     return amxc_llist_size(lqueue);
 }
 
@@ -262,7 +262,7 @@ size_t amxc_lqueue_size(const amxc_lqueue_t * const lqueue) {
    false when there is at least one item on the queue.
  */
 AMXC_INLINE
-bool amxc_lqueue_is_empty(const amxc_lqueue_t * const lqueue) {
+bool amxc_lqueue_is_empty(const amxc_lqueue_t* const lqueue) {
     return amxc_llist_is_empty(lqueue);
 }
 
@@ -286,7 +286,7 @@ bool amxc_lqueue_is_empty(const amxc_lqueue_t * const lqueue) {
    -1 if a NULL pointer is given.
  */
 AMXC_INLINE
-int amxc_lqueue_it_init(amxc_lqueue_it_t * const it) {
+int amxc_lqueue_it_init(amxc_lqueue_it_t* const it) {
     return amxc_llist_it_init(it);
 }
 

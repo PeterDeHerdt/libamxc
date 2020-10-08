@@ -74,8 +74,8 @@
    Ambiorix string API implementation
  */
 
-static int amxc_string_realloc(amxc_string_t *string, const size_t length) {
-    char *new_buffer = NULL;
+static int amxc_string_realloc(amxc_string_t* string, const size_t length) {
+    char* new_buffer = NULL;
     int retval = -1;
 
     if(length == 0) {
@@ -84,9 +84,9 @@ static int amxc_string_realloc(amxc_string_t *string, const size_t length) {
         string->length = 0;
         retval = 0;
     } else if(string->buffer != NULL) {
-        new_buffer = (char *) realloc(string->buffer, sizeof(char) * length + 1);
+        new_buffer = (char*) realloc(string->buffer, sizeof(char) * length + 1);
     } else {
-        new_buffer = (char *) calloc(length + 1, sizeof(char));
+        new_buffer = (char*) calloc(length + 1, sizeof(char));
     }
     if(new_buffer != NULL) {
         string->buffer = new_buffer;
@@ -100,12 +100,12 @@ static int amxc_string_realloc(amxc_string_t *string, const size_t length) {
 }
 
 
-int amxc_string_new(amxc_string_t **string, const size_t length) {
+int amxc_string_new(amxc_string_t** string, const size_t length) {
     int retval = -1;
     when_null(string, exit);
 
     /* allocate the array structure */
-    *string = (amxc_string_t *) calloc(1, sizeof(amxc_string_t));
+    *string = (amxc_string_t*) calloc(1, sizeof(amxc_string_t));
     when_null(*string, exit);
 
     /* set the number of items in the array */
@@ -132,7 +132,7 @@ exit:
     return retval;
 }
 
-void amxc_string_delete(amxc_string_t **string) {
+void amxc_string_delete(amxc_string_t** string) {
     when_null(string, exit);
     when_null((*string), exit);
 
@@ -145,7 +145,7 @@ exit:
     return;
 }
 
-int amxc_string_init(amxc_string_t * const string, const size_t length) {
+int amxc_string_init(amxc_string_t* const string, const size_t length) {
     int retval = -1;
     when_null(string, exit);
 
@@ -171,7 +171,7 @@ exit:
     return retval;
 }
 
-void amxc_string_clean(amxc_string_t * const string) {
+void amxc_string_clean(amxc_string_t* const string) {
     when_null(string, exit);
 
     amxc_llist_it_take(&string->it);
@@ -185,7 +185,7 @@ exit:
     return;
 }
 
-void amxc_string_reset(amxc_string_t * const string) {
+void amxc_string_reset(amxc_string_t* const string) {
     when_null(string, exit);
 
     if(string->buffer) {
@@ -197,8 +197,8 @@ exit:
     return;
 }
 
-int amxc_string_copy(amxc_string_t * const dest,
-                     const amxc_string_t * const src) {
+int amxc_string_copy(amxc_string_t* const dest,
+                     const amxc_string_t* const src) {
     int retval = -1;
     when_null(dest, exit);
     when_null(src, exit);
@@ -214,7 +214,7 @@ exit:
     return retval;
 }
 
-int amxc_string_grow(amxc_string_t * const string, const size_t length) {
+int amxc_string_grow(amxc_string_t* const string, const size_t length) {
     int retval = -1;
     size_t old_length = 0;
     when_null(string, exit);
@@ -234,7 +234,7 @@ exit:
     return retval;
 }
 
-int amxc_string_shrink(amxc_string_t * const string, const size_t length) {
+int amxc_string_shrink(amxc_string_t* const string, const size_t length) {
     int retval = -1;
     when_null(string, exit);
     when_true(length > string->length, exit); // out of range
@@ -250,9 +250,9 @@ exit:
     return retval;
 }
 
-int amxc_string_set_at(amxc_string_t * const string,
+int amxc_string_set_at(amxc_string_t* const string,
                        const size_t pos,
-                       const char * const text,
+                       const char* const text,
                        const size_t length,
                        const amxc_string_flags_t flags) {
     int retval = -1;
@@ -288,7 +288,7 @@ exit:
     return retval;
 }
 
-int amxc_string_remove_at(amxc_string_t * const string,
+int amxc_string_remove_at(amxc_string_t* const string,
                           const size_t pos,
                           size_t length) {
     int retval = -1;
@@ -312,9 +312,9 @@ exit:
     return retval;
 }
 
-const char *amxc_string_get(const amxc_string_t * const string,
+const char* amxc_string_get(const amxc_string_t* const string,
                             const size_t offset) {
-    const char *text = NULL;
+    const char* text = NULL;
     when_null(string, exit);
     when_null(string->buffer, exit);
     when_true(offset > string->last_used, exit);
@@ -326,8 +326,8 @@ exit:
     return text;
 }
 
-char *amxc_string_take_buffer(amxc_string_t * const string) {
-    char *buffer = NULL;
+char* amxc_string_take_buffer(amxc_string_t* const string) {
+    char* buffer = NULL;
     when_null(string, exit);
 
     if(string->buffer != NULL) {
@@ -344,11 +344,11 @@ exit:
     return buffer;
 }
 
-int amxc_string_push_buffer(amxc_string_t * const string,
-                            char *buffer,
+int amxc_string_push_buffer(amxc_string_t* const string,
+                            char* buffer,
                             size_t length) {
     int retval = -1;
-    char *original = NULL;
+    char* original = NULL;
     when_null(string, exit);
 
     original = string->buffer;
@@ -372,11 +372,11 @@ exit:
     return retval;
 }
 
-char *amxc_string_dup(const amxc_string_t * const string,
+char* amxc_string_dup(const amxc_string_t* const string,
                       const size_t start,
                       size_t length) {
 
-    char *text = NULL;
+    char* text = NULL;
     when_null(string, exit);
     when_true(start > string->last_used, exit);
     when_true(length == 0, exit);
@@ -386,7 +386,7 @@ char *amxc_string_dup(const amxc_string_t * const string,
         length = string->last_used - start;
     }
 
-    text = (char *) calloc(length + 1, sizeof(char));
+    text = (char*) calloc(length + 1, sizeof(char));
     memcpy(text, string->buffer + start, length);
     text[length] = 0;
 
@@ -394,7 +394,7 @@ exit:
     return text;
 }
 
-void amxc_string_triml(amxc_string_t * const string, amxc_string_is_char_fn_t fn) {
+void amxc_string_triml(amxc_string_t* const string, amxc_string_is_char_fn_t fn) {
     uint32_t pos = 0;
     when_null(string, exit);
     when_true(string->last_used == 0, exit);
@@ -422,7 +422,7 @@ exit:
     return;
 }
 
-void amxc_string_trimr(amxc_string_t * const string, amxc_string_is_char_fn_t fn) {
+void amxc_string_trimr(amxc_string_t* const string, amxc_string_is_char_fn_t fn) {
     when_null(string, exit);
     when_true(string->last_used == 0, exit);
 
@@ -439,13 +439,13 @@ exit:
     return;
 }
 
-void amxc_string_trim(amxc_string_t * const string, amxc_string_is_char_fn_t fn) {
+void amxc_string_trim(amxc_string_t* const string, amxc_string_is_char_fn_t fn) {
     amxc_string_trimr(string, fn);
     amxc_string_triml(string, fn);
 }
 
-int amxc_string_vsetf(amxc_string_t * const string,
-                      const char *fmt,
+int amxc_string_vsetf(amxc_string_t* const string,
+                      const char* fmt,
                       va_list args) {
     int retval = -1;
     size_t size_needed = 0;
@@ -473,7 +473,7 @@ exit:
     return retval;
 }
 
-int amxc_string_setf(amxc_string_t * const string, const char *fmt, ...) {
+int amxc_string_setf(amxc_string_t* const string, const char* fmt, ...) {
     va_list args;
     int retval = -1;
     when_null(string, exit);
@@ -487,8 +487,8 @@ exit:
     return retval;
 }
 
-int amxc_string_vappendf(amxc_string_t * const string,
-                         const char *fmt,
+int amxc_string_vappendf(amxc_string_t* const string,
+                         const char* fmt,
                          va_list args) {
 
     int retval = -1;
@@ -520,7 +520,7 @@ exit:
     return retval;
 }
 
-int amxc_string_appendf(amxc_string_t * const string, const char *fmt, ...) {
+int amxc_string_appendf(amxc_string_t* const string, const char* fmt, ...) {
     va_list args;
     int retval = -1;
     when_null(string, exit);
@@ -534,8 +534,8 @@ exit:
     return retval;
 }
 
-int amxc_string_vprependf(amxc_string_t * const string,
-                          const char *fmt,
+int amxc_string_vprependf(amxc_string_t* const string,
+                          const char* fmt,
                           va_list args) {
 
     int retval = -1;
@@ -574,7 +574,7 @@ exit:
     return retval;
 }
 
-int amxc_string_prependf(amxc_string_t * const string, const char *fmt, ...) {
+int amxc_string_prependf(amxc_string_t* const string, const char* fmt, ...) {
     va_list args;
     int retval = -1;
     when_null(string, exit);
@@ -588,9 +588,9 @@ exit:
     return retval;
 }
 
-bool amxc_string_is_numeric(const amxc_string_t * const string) {
+bool amxc_string_is_numeric(const amxc_string_t* const string) {
     bool retval = false;
-    char *data = NULL;
+    char* data = NULL;
 
     when_true(amxc_string_is_empty(string), exit);
 

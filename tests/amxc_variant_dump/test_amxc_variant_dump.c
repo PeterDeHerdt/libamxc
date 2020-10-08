@@ -86,9 +86,9 @@ static amxc_var_type_t my_dummy_type =
     .name = "my_dummy_type_t"
 };
 
-void test_amxc_variant_dump(UNUSED void **state) {
+void test_amxc_variant_dump(UNUSED void** state) {
     amxc_var_t myvar;
-    amxc_var_t *subvar = NULL;
+    amxc_var_t* subvar = NULL;
 
     amxc_var_register_type(&my_dummy_type);
     int dummy_type_id = amxc_var_get_type_id_from_name(my_dummy_type.name);
@@ -117,9 +117,9 @@ void test_amxc_variant_dump(UNUSED void **state) {
     amxc_var_clean(&myvar);
 }
 
-void test_amxc_variant_log(UNUSED void **state) {
+void test_amxc_variant_log(UNUSED void** state) {
     amxc_var_t myvar;
-    amxc_var_t *subvar = NULL;
+    amxc_var_t* subvar = NULL;
 
     openlog("test", LOG_PID | LOG_CONS, LOG_DAEMON);
 

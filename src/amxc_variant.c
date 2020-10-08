@@ -68,22 +68,22 @@
 #include <amxc_variant_priv.h>
 #include <amxc_assert.h>
 
-int AMXC_PRIVATE amxc_var_default_copy(amxc_var_t * const dest,
-                                       const amxc_var_t * const src) {
+int AMXC_PRIVATE amxc_var_default_copy(amxc_var_t* const dest,
+                                       const amxc_var_t* const src) {
     dest->data = src->data;
     return 0;
 }
 
-int AMXC_PRIVATE amxc_var_default_convert_to_null(amxc_var_t * const dest,
-                                                  AMXC_UNUSED const amxc_var_t * const src) {
+int AMXC_PRIVATE amxc_var_default_convert_to_null(amxc_var_t* const dest,
+                                                  AMXC_UNUSED const amxc_var_t* const src) {
     dest->data.data = NULL;
     return 0;
 }
 
-int AMXC_PRIVATE amxc_var_default_convert_to_list(amxc_var_t * const dest,
-                                                  const amxc_var_t * const src) {
+int AMXC_PRIVATE amxc_var_default_convert_to_list(amxc_var_t* const dest,
+                                                  const amxc_var_t* const src) {
     int retval = -1;
-    amxc_var_t *var = NULL;
+    amxc_var_t* var = NULL;
 
     if(amxc_var_new(&var) != 0) {
         amxc_llist_clean(&dest->data.vl, NULL);
@@ -99,10 +99,10 @@ exit:
     return retval;
 }
 
-int AMXC_PRIVATE amxc_var_default_convert_to_htable(amxc_var_t * const dest,
-                                                    const amxc_var_t * const src) {
+int AMXC_PRIVATE amxc_var_default_convert_to_htable(amxc_var_t* const dest,
+                                                    const amxc_var_t* const src) {
     int retval = -1;
-    amxc_var_t *var = NULL;
+    amxc_var_t* var = NULL;
 
     if(amxc_var_new(&var) != 0) {
         amxc_htable_clean(&dest->data.vm, NULL);
@@ -119,11 +119,11 @@ exit:
 }
 
 
-int amxc_var_new(amxc_var_t **var) {
+int amxc_var_new(amxc_var_t** var) {
     int retval = -1;
     when_null(var, exit);
 
-    *var = (amxc_var_t *) calloc(1, sizeof(amxc_var_t));
+    *var = (amxc_var_t*) calloc(1, sizeof(amxc_var_t));
     when_null(*var, exit);
 
     retval = amxc_var_init(*var);
@@ -132,7 +132,7 @@ exit:
     return retval;
 }
 
-void amxc_var_delete(amxc_var_t **var) {
+void amxc_var_delete(amxc_var_t** var) {
     when_null(var, exit);
 
     if(*var != NULL) {
@@ -148,7 +148,7 @@ exit:
     return;
 }
 
-int amxc_var_init(amxc_var_t * const var) {
+int amxc_var_init(amxc_var_t* const var) {
     int retval = -1;
     when_null(var, exit);
 
@@ -162,8 +162,8 @@ exit:
     return retval;
 }
 
-void amxc_var_clean(amxc_var_t * const var) {
-    amxc_var_type_t *var_type = NULL;
+void amxc_var_clean(amxc_var_t* const var) {
+    amxc_var_type_t* var_type = NULL;
     when_null(var, exit);
 
     var_type = amxc_var_get_type(var->type_id);
@@ -186,9 +186,9 @@ exit:
     return;
 }
 
-int amxc_var_set_type(amxc_var_t * const var, const uint32_t type) {
+int amxc_var_set_type(amxc_var_t* const var, const uint32_t type) {
     int retval = -1;
-    amxc_var_type_t *var_type = NULL;
+    amxc_var_type_t* var_type = NULL;
     when_null(var, exit);
 
     var_type = amxc_var_get_type(type);
@@ -210,9 +210,9 @@ exit:
     return retval;
 }
 
-int amxc_var_copy(amxc_var_t * const dest, const amxc_var_t * const src) {
+int amxc_var_copy(amxc_var_t* const dest, const amxc_var_t* const src) {
     int retval = -1;
-    amxc_var_type_t *type = NULL;
+    amxc_var_type_t* type = NULL;
     when_null(dest, exit);
     when_null(src, exit);
 
@@ -231,12 +231,12 @@ exit:
     return retval;
 }
 
-int amxc_var_convert(amxc_var_t * const dest,
-                     const amxc_var_t * const src,
+int amxc_var_convert(amxc_var_t* const dest,
+                     const amxc_var_t* const src,
                      int type_id) {
     int retval = -1;
-    amxc_var_type_t *src_type = NULL;
-    amxc_var_type_t *dst_type = NULL;
+    amxc_var_type_t* src_type = NULL;
+    amxc_var_type_t* dst_type = NULL;
     when_null(dest, exit);
     when_null(src, exit);
 
@@ -270,12 +270,12 @@ exit:
     return retval;
 }
 
-int amxc_var_compare(const amxc_var_t * const var1,
-                     const amxc_var_t * const var2,
-                     int *result) {
+int amxc_var_compare(const amxc_var_t* const var1,
+                     const amxc_var_t* const var2,
+                     int* result) {
     int retval = -1;
-    amxc_var_type_t *var1_type = NULL;
-    amxc_var_type_t *var2_type = NULL;
+    amxc_var_type_t* var1_type = NULL;
+    amxc_var_type_t* var2_type = NULL;
     amxc_var_t converted_var;
     amxc_var_init(&converted_var);
     when_null(result, exit);
@@ -322,11 +322,11 @@ exit:
     return retval;
 }
 
-amxc_var_t *amxc_var_get_key(const amxc_var_t * const var,
-                             const char * const key,
+amxc_var_t* amxc_var_get_key(const amxc_var_t* const var,
+                             const char* const key,
                              const int flags) {
-    amxc_var_t *retval = NULL;
-    amxc_var_type_t *var_type = NULL;
+    amxc_var_t* retval = NULL;
+    amxc_var_type_t* var_type = NULL;
     when_null(var, exit);
     when_null(key, exit);
     when_true(*key == 0, exit);
@@ -341,12 +341,12 @@ exit:
     return retval;
 }
 
-int amxc_var_set_key(amxc_var_t * const var,
-                     const char * const key,
-                     amxc_var_t *data,
+int amxc_var_set_key(amxc_var_t* const var,
+                     const char* const key,
+                     amxc_var_t* data,
                      const int flags) {
     int retval = -1;
-    amxc_var_type_t *var_type = NULL;
+    amxc_var_type_t* var_type = NULL;
     when_null(var, exit);
     when_null(key, exit);
     when_true(*key == 0, exit);
@@ -362,12 +362,12 @@ exit:
     return retval;
 }
 
-amxc_var_t *amxc_var_get_index(const amxc_var_t * const var,
+amxc_var_t* amxc_var_get_index(const amxc_var_t* const var,
                                const int64_t index,
                                const int flags) {
 
-    amxc_var_t *retval = NULL;
-    amxc_var_type_t *var_type = NULL;
+    amxc_var_t* retval = NULL;
+    amxc_var_type_t* var_type = NULL;
     when_null(var, exit);
 
     var_type = amxc_var_get_type(var->type_id);
@@ -380,12 +380,12 @@ exit:
     return retval;
 }
 
-int amxc_var_set_index(amxc_var_t * const var,
+int amxc_var_set_index(amxc_var_t* const var,
                        const int64_t index,
-                       amxc_var_t *data,
+                       amxc_var_t* data,
                        const int flags) {
     int retval = -1;
-    amxc_var_type_t *var_type = NULL;
+    amxc_var_type_t* var_type = NULL;
     when_null(var, exit);
     when_null(data, exit);
 
@@ -399,10 +399,10 @@ exit:
     return retval;
 }
 
-amxc_var_t *amxc_var_add_new_key(amxc_var_t * const var,
-                                 const char *key) {
-    amxc_var_t *data = NULL;
-    amxc_var_type_t *var_type = NULL;
+amxc_var_t* amxc_var_add_new_key(amxc_var_t* const var,
+                                 const char* key) {
+    amxc_var_t* data = NULL;
+    amxc_var_type_t* var_type = NULL;
     int retval = -1;
     when_null(var, exit);
     when_null(key, exit);
@@ -424,9 +424,9 @@ exit:
     return data;
 }
 
-amxc_var_t *amxc_var_add_new(amxc_var_t * const var) {
-    amxc_var_t *data = NULL;
-    amxc_var_type_t *var_type = NULL;
+amxc_var_t* amxc_var_add_new(amxc_var_t* const var) {
+    amxc_var_t* data = NULL;
+    amxc_var_type_t* var_type = NULL;
     int retval = -1;
     when_null(var, exit);
 
@@ -446,26 +446,26 @@ exit:
     return data;
 }
 
-amxc_var_t *amxc_var_get_path(const amxc_var_t * const var,
-                              const char * const path,
+amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
+                              const char* const path,
                               const int flags) {
-    const amxc_var_t *retval = NULL;
-    char *dup_path = NULL;
-    char *token = NULL;
+    const amxc_var_t* retval = NULL;
+    char* dup_path = NULL;
+    char* token = NULL;
     int length = 0;
     when_null(var, exit);
     when_null(path, exit);
 
     retval = var;
     length = strlen(path);
-    dup_path = (char *) calloc(1, length + 1);
+    dup_path = (char*) calloc(1, length + 1);
     memcpy(dup_path, path, length);
     token = strtok(dup_path, ".");
 
     while(token && retval) {
-        amxc_var_t *temp = amxc_var_get_key(retval, token, AMXC_VAR_FLAG_DEFAULT);
+        amxc_var_t* temp = amxc_var_get_key(retval, token, AMXC_VAR_FLAG_DEFAULT);
         if(temp == NULL) {
-            char *endptr = NULL;
+            char* endptr = NULL;
             int index = strtol(token, &endptr, 0);
             if(*endptr == 0) {
                 temp = amxc_var_get_index(retval, index, AMXC_VAR_FLAG_DEFAULT);
@@ -480,7 +480,7 @@ amxc_var_t *amxc_var_get_path(const amxc_var_t * const var,
     when_null(retval, exit);
 
     if((flags & AMXC_VAR_FLAG_COPY) == AMXC_VAR_FLAG_COPY) {
-        amxc_var_t *copy = NULL;
+        amxc_var_t* copy = NULL;
         if(amxc_var_new(&copy) != 0) {
             retval = NULL;
             goto exit;
@@ -494,15 +494,15 @@ amxc_var_t *amxc_var_get_path(const amxc_var_t * const var,
     }
 
 exit:
-    return (amxc_var_t *) retval;
+    return (amxc_var_t*) retval;
 }
 
-amxc_var_t *amxc_var_get_pathf(const amxc_var_t * const var,
+amxc_var_t* amxc_var_get_pathf(const amxc_var_t* const var,
                                const int flags,
-                               const char * const fmt,
+                               const char* const fmt,
                                ...
                                ) {
-    amxc_var_t *retval = NULL;
+    amxc_var_t* retval = NULL;
     amxc_string_t path;
     va_list args;
 
@@ -521,16 +521,16 @@ exit:
     return retval;
 }
 
-uint32_t amxc_var_type_of(const amxc_var_t * const var) {
+uint32_t amxc_var_type_of(const amxc_var_t* const var) {
     return var != NULL ? var->type_id : AMXC_VAR_ID_INVALID;
 }
 
-const char *amxc_var_type_name_of(const amxc_var_t * const var) {
+const char* amxc_var_type_name_of(const amxc_var_t* const var) {
     return var != NULL ? amxc_var_get_type_name_from_id(var->type_id) : NULL;
 }
 
-amxc_string_t *amxc_var_take_amxc_string_t(amxc_var_t * const var) {
-    amxc_string_t *retval = NULL;
+amxc_string_t* amxc_var_take_amxc_string_t(amxc_var_t* const var) {
+    amxc_string_t* retval = NULL;
 
     when_null(var, exit);
     when_true(amxc_var_type_of(var) != AMXC_VAR_ID_CSTRING &&
@@ -549,9 +549,9 @@ exit:
     return retval;
 }
 
-int amxc_var_push_amxc_string_t(amxc_var_t * const var, amxc_string_t *val) {
+int amxc_var_push_amxc_string_t(amxc_var_t* const var, amxc_string_t* val) {
     int retval = -1;
-    char *buffer = NULL;
+    char* buffer = NULL;
 
     when_null(var, exit);
     when_null(val, exit);

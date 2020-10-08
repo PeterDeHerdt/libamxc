@@ -72,7 +72,7 @@
 
 static int counter = 0;
 
-static amxc_array_t *array1 = NULL;
+static amxc_array_t* array1 = NULL;
 char data[] = "abcdefghij";
 
 static void amxc_reset_test_array() {
@@ -83,12 +83,12 @@ static void amxc_reset_test_array() {
     amxc_array_set_data_at(array1, 9, &data[9]);
 }
 
-static void amxc_check_array_it_delete(amxc_array_it_t *it) {
+static void amxc_check_array_it_delete(amxc_array_it_t* it) {
     counter++;
     assert_ptr_not_equal(it->data, NULL);
 }
 
-int test_amxc_array_setup(UNUSED void **state) {
+int test_amxc_array_setup(UNUSED void** state) {
     assert_int_equal(amxc_array_new(&array1, 10), 0);
     assert_ptr_not_equal(array1, NULL);
     assert_ptr_not_equal(array1->buffer, NULL);
@@ -108,15 +108,15 @@ int test_amxc_array_setup(UNUSED void **state) {
     return 0;
 }
 
-int test_amxc_array_teardown(UNUSED void **state) {
+int test_amxc_array_teardown(UNUSED void** state) {
     amxc_array_delete(&array1, NULL);
 
     return 0;
 }
 
 
-void test_amxc_array_new_delete_null(UNUSED void **state) {
-    amxc_array_t *array = NULL;
+void test_amxc_array_new_delete_null(UNUSED void** state) {
+    amxc_array_t* array = NULL;
 
     // passing NULL pointers should not lead to segfault
     assert_int_not_equal(amxc_array_new(NULL, 0), 0);
@@ -124,13 +124,13 @@ void test_amxc_array_new_delete_null(UNUSED void **state) {
     amxc_array_delete(NULL, NULL);
 }
 
-void test_amxc_array_init_clean_null(UNUSED void **state) {
+void test_amxc_array_init_clean_null(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_array_init(NULL, 0), -1);
     amxc_array_clean(NULL, NULL);
 }
 
-void test_amxc_array_init_clean(UNUSED void **state) {
+void test_amxc_array_init_clean(UNUSED void** state) {
     amxc_array_t array;
 
     // initialize array with 0 items
@@ -148,7 +148,7 @@ void test_amxc_array_init_clean(UNUSED void **state) {
     assert_int_equal(array.items, 0);
 }
 
-void test_amxc_array_clean_cb(UNUSED void **state) {
+void test_amxc_array_clean_cb(UNUSED void** state) {
     amxc_array_t array;
 
     // initialize array with 10 items
@@ -166,7 +166,7 @@ void test_amxc_array_clean_cb(UNUSED void **state) {
     assert_int_equal(array.items, 10);
     const char data[10] = "1234567890";
     for(unsigned int index = 0; index < 10; index++) {
-        assert_ptr_equal(amxc_array_set_data_at(&array, index, (void *) &data[index]), &array.buffer[index]);
+        assert_ptr_equal(amxc_array_set_data_at(&array, index, (void*) &data[index]), &array.buffer[index]);
     }
     counter = 0;
     amxc_array_clean(&array, amxc_check_array_it_delete);
@@ -174,9 +174,9 @@ void test_amxc_array_clean_cb(UNUSED void **state) {
     assert_int_equal(counter, 10);
 }
 
-void test_amxc_array_get_at_null(UNUSED void **state) {
-    amxc_array_t *array = NULL;
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_at_null(UNUSED void** state) {
+    amxc_array_t* array = NULL;
+    amxc_array_it_t* it = NULL;
 
     it = amxc_array_get_at(NULL, 5);
     assert_ptr_equal(it, NULL);
@@ -189,8 +189,8 @@ void test_amxc_array_get_at_null(UNUSED void **state) {
     assert_ptr_equal(array, NULL);
 }
 
-void test_amxc_array_get_at(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_at(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     for(int i = 0; i < 10; i++) {
         it = amxc_array_get_at(array1, i);
         assert_ptr_equal(it, &array1->buffer[i]);
@@ -203,82 +203,82 @@ void test_amxc_array_get_at(UNUSED void **state) {
     }
 }
 
-void test_amxc_array_get_first_null(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_first_null(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_first(NULL);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_get_first(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_first(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_first(array1);
     assert_ptr_equal(it, &array1->buffer[3]);
     assert_ptr_equal(it->array, array1);
     assert_ptr_equal(it->data, &data[3]);
 }
 
-void test_amxc_array_get_first_empty(UNUSED void **state) {
-    amxc_array_t *array = NULL;
+void test_amxc_array_get_first_empty(UNUSED void** state) {
+    amxc_array_t* array = NULL;
     assert_int_not_equal(amxc_array_new(&array, 10), -1);
     assert_ptr_not_equal(array, NULL);
     assert_ptr_not_equal(array->buffer, NULL);
 
-    amxc_array_it_t *it = NULL;
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_first(array);
     assert_ptr_equal(it, NULL);
 
     amxc_array_delete(&array, NULL);
 }
 
-void test_amxc_array_get_first_free_null(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_first_free_null(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_first_free(NULL);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_get_first_free(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_first_free(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_first_free(array1);
     assert_ptr_equal(it, &array1->buffer[0]);
     assert_ptr_equal(it->array, array1);
     assert_ptr_equal(it->data, NULL);
 }
 
-void test_amxc_array_get_last_null(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_last_null(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_last(NULL);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_get_last(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_last(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_last(array1);
     assert_ptr_equal(it, &array1->buffer[9]);
     assert_ptr_equal(it->array, array1);
     assert_ptr_equal(it->data, &data[9]);
 }
 
-void test_amxc_array_get_last_empty(UNUSED void **state) {
-    amxc_array_t *array = NULL;
+void test_amxc_array_get_last_empty(UNUSED void** state) {
+    amxc_array_t* array = NULL;
     assert_int_not_equal(amxc_array_new(&array, 10), -1);
     assert_ptr_not_equal(array, NULL);
     assert_ptr_not_equal(array->buffer, NULL);
 
-    amxc_array_it_t *it = NULL;
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_last(array);
     assert_ptr_equal(it, NULL);
 
     amxc_array_delete(&array, NULL);
 }
 
-void test_amxc_array_get_last_free_null(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_last_free_null(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_last_free(NULL);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_get_last_free(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_get_last_free(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_last_free(array1);
     assert_ptr_not_equal(it, NULL);
     assert_ptr_equal(it, &array1->buffer[8]);
@@ -286,32 +286,32 @@ void test_amxc_array_get_last_free(UNUSED void **state) {
     assert_ptr_equal(it->data, NULL);
 }
 
-void test_amxc_array_get_first_free_full(UNUSED void **state) {
+void test_amxc_array_get_first_free_full(UNUSED void** state) {
     for(int i = 0; i < 10; i++) {
         amxc_array_set_data_at(array1, i, &data[i]);
     }
 
-    amxc_array_it_t *it = amxc_array_get_first_free(array1);
+    amxc_array_it_t* it = amxc_array_get_first_free(array1);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_get_last_free_full(UNUSED void **state) {
+void test_amxc_array_get_last_free_full(UNUSED void** state) {
     for(int i = 0; i < 10; i++) {
         amxc_array_set_data_at(array1, i, &data[i]);
     }
 
-    amxc_array_it_t *it = amxc_array_get_last_free(array1);
+    amxc_array_it_t* it = amxc_array_get_last_free(array1);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_it_get_next_null(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_it_get_next_null(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_it_get_next(NULL);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_it_get_next(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_it_get_next(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_first(array1);
 
     it = amxc_array_it_get_next(it);
@@ -328,14 +328,14 @@ void test_amxc_array_it_get_next(UNUSED void **state) {
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_it_get_next_free_null(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_it_get_next_free_null(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_it_get_next_free(NULL);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_it_get_next_free(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_it_get_next_free(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_first(array1);
 
     it = amxc_array_it_get_next_free(it);
@@ -362,15 +362,15 @@ void test_amxc_array_it_get_next_free(UNUSED void **state) {
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_it_get_previous_null(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_it_get_previous_null(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_it_get_previous(NULL);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_it_get_previous(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
-    amxc_array_it_t *rit = amxc_array_set_data_at(array1, 1, &data[1]);
+void test_amxc_array_it_get_previous(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
+    amxc_array_it_t* rit = amxc_array_set_data_at(array1, 1, &data[1]);
 
     it = amxc_array_get_last(array1);
 
@@ -395,14 +395,14 @@ void test_amxc_array_it_get_previous(UNUSED void **state) {
     amxc_array_it_take_data(rit);
 }
 
-void test_amxc_array_it_get_previous_free_null(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_it_get_previous_free_null(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_it_get_previous_free(NULL);
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_it_get_previous_free(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_it_get_previous_free(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_last(array1);
 
     it = amxc_array_it_get_previous_free(it);
@@ -444,12 +444,12 @@ void test_amxc_array_it_get_previous_free(UNUSED void **state) {
     assert_ptr_equal(it, NULL);
 }
 
-void test_amxc_array_it_get_data_null(UNUSED void **state) {
+void test_amxc_array_it_get_data_null(UNUSED void** state) {
     assert_ptr_equal(amxc_array_it_get_data(NULL), NULL);
 }
 
-void test_amxc_array_it_get_data(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_it_get_data(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
     it = amxc_array_get_at(array1, 0);
     assert_ptr_equal(amxc_array_it_get_data(it), NULL);
 
@@ -463,37 +463,37 @@ void test_amxc_array_it_get_data(UNUSED void **state) {
     assert_ptr_equal(amxc_array_it_get_data(it), &data[3]);
 }
 
-void test_amxc_array_is_empty_null(UNUSED void **state) {
+void test_amxc_array_is_empty_null(UNUSED void** state) {
     assert_int_equal(amxc_array_is_empty(NULL), true);
 }
 
-void test_amxc_array_is_empty(UNUSED void **state) {
+void test_amxc_array_is_empty(UNUSED void** state) {
     assert_int_equal(amxc_array_is_empty(array1), false);
     amxc_array_clean(array1, NULL);
     assert_int_equal(amxc_array_is_empty(array1), true);
 }
 
-void test_amxc_array_size_null(UNUSED void **state) {
+void test_amxc_array_size_null(UNUSED void** state) {
     assert_int_equal(amxc_array_size(NULL), 0);
 }
 
-void test_amxc_array_size(UNUSED void **state) {
+void test_amxc_array_size(UNUSED void** state) {
     assert_int_equal(amxc_array_size(array1), 3);
 }
 
-void test_amxc_array_capacity_null(UNUSED void **state) {
+void test_amxc_array_capacity_null(UNUSED void** state) {
     assert_int_equal(amxc_array_capacity(NULL), 0);
 }
 
-void test_amxc_array_capacity(UNUSED void **state) {
+void test_amxc_array_capacity(UNUSED void** state) {
     assert_int_equal(amxc_array_capacity(array1), 10);
 }
 
-void test_amxc_array_grow_null(UNUSED void **state) {
+void test_amxc_array_grow_null(UNUSED void** state) {
     assert_int_equal(amxc_array_grow(NULL, 0), -1);
 }
 
-void test_amxc_array_grow(UNUSED void **state) {
+void test_amxc_array_grow(UNUSED void** state) {
     assert_int_equal(amxc_array_grow(array1, 10), 0);
     assert_int_equal(amxc_array_capacity(array1), 20);
     assert_int_equal(array1->first_used, 3);
@@ -507,11 +507,11 @@ void test_amxc_array_grow(UNUSED void **state) {
     assert_int_equal(amxc_array_shrink(array1, 10, NULL), 0);
 }
 
-void test_amxc_array_shrink_null(UNUSED void **state) {
+void test_amxc_array_shrink_null(UNUSED void** state) {
     assert_int_equal(amxc_array_shrink(NULL, 0, NULL), -1);
 }
 
-void test_amxc_array_shrink(UNUSED void **state) {
+void test_amxc_array_shrink(UNUSED void** state) {
     assert_int_equal(amxc_array_shrink(array1, 15, NULL), -1);
 
     assert_int_equal(amxc_array_shrink(array1, 5, NULL), 0);
@@ -543,12 +543,12 @@ void test_amxc_array_shrink(UNUSED void **state) {
     assert_int_equal(array1->last_used, 9);
 }
 
-void test_amxc_array_shift_null(UNUSED void **state) {
+void test_amxc_array_shift_null(UNUSED void** state) {
     assert_int_equal(amxc_array_shift_left(NULL, 0, NULL), -1);
     assert_int_equal(amxc_array_shift_right(NULL, 0, NULL), -1);
 }
 
-void test_amxc_array_shift_left(UNUSED void **state) {
+void test_amxc_array_shift_left(UNUSED void** state) {
     assert_int_equal(amxc_array_shift_left(array1, 15, NULL), -1);
     assert_int_equal(amxc_array_shift_left(array1, 0, NULL), 0);
 
@@ -580,7 +580,7 @@ void test_amxc_array_shift_left(UNUSED void **state) {
     assert_int_equal(array1->last_used, 0);
 }
 
-void test_amxc_array_shift_left_all(UNUSED void **state) {
+void test_amxc_array_shift_left_all(UNUSED void** state) {
     assert_int_equal(amxc_array_shift_left(array1, 10, NULL), 0);
     assert_int_equal(amxc_array_capacity(array1), 10);
     assert_int_equal(amxc_array_size(array1), 0);
@@ -593,7 +593,7 @@ void test_amxc_array_shift_left_all(UNUSED void **state) {
     amxc_reset_test_array();
 }
 
-void test_amxc_array_shift_right(UNUSED void **state) {
+void test_amxc_array_shift_right(UNUSED void** state) {
     assert_int_equal(amxc_array_shift_right(array1, 15, NULL), -1);
     assert_int_equal(amxc_array_shift_right(array1, 0, NULL), 0);
 
@@ -625,7 +625,7 @@ void test_amxc_array_shift_right(UNUSED void **state) {
     amxc_reset_test_array();
 }
 
-void test_amxc_array_shift_right_all(UNUSED void **state) {
+void test_amxc_array_shift_right_all(UNUSED void** state) {
     assert_int_equal(amxc_array_shift_right(array1, 10, NULL), 0);
     assert_int_equal(amxc_array_capacity(array1), 10);
     assert_int_equal(amxc_array_size(array1), 0);
@@ -639,11 +639,11 @@ void test_amxc_array_shift_right_all(UNUSED void **state) {
 }
 
 
-void test_amxc_array_set_at_null(UNUSED void **state) {
+void test_amxc_array_set_at_null(UNUSED void** state) {
     assert_ptr_equal(amxc_array_set_data_at(NULL, 0, NULL), NULL);
 }
 
-void test_amxc_array_set_at(UNUSED void **state) {
+void test_amxc_array_set_at(UNUSED void** state) {
     assert_ptr_equal(amxc_array_set_data_at(array1, 2, NULL), &array1->buffer[2]);
     assert_int_equal(array1->first_used, 3);
     assert_int_equal(array1->last_used, 9);
@@ -692,9 +692,9 @@ void test_amxc_array_set_at(UNUSED void **state) {
     amxc_reset_test_array();
 }
 
-void test_amxc_array_it_set_data_null(UNUSED void **state) {
+void test_amxc_array_it_set_data_null(UNUSED void** state) {
     assert_int_equal(amxc_array_it_set_data(NULL, NULL), -1);
-    amxc_array_it_t *it = amxc_array_get_at(array1, 2);
+    amxc_array_it_t* it = amxc_array_get_at(array1, 2);
     assert_int_equal(amxc_array_it_set_data(it, NULL), -1);
     assert_int_equal(array1->first_used, 3);
     assert_int_equal(amxc_array_grow(array1, 10), 0);
@@ -703,8 +703,8 @@ void test_amxc_array_it_set_data_null(UNUSED void **state) {
     assert_int_equal(array1->last_used, 9);
 }
 
-void test_amxc_array_it_set_data(UNUSED void **state) {
-    amxc_array_it_t *it = NULL;
+void test_amxc_array_it_set_data(UNUSED void** state) {
+    amxc_array_it_t* it = NULL;
 
     amxc_array_clean(array1, NULL);
     amxc_array_init(array1, 9);
@@ -726,12 +726,12 @@ void test_amxc_array_it_set_data(UNUSED void **state) {
     amxc_reset_test_array();
 }
 
-void test_amxc_array_append_data_null(UNUSED void **state) {
+void test_amxc_array_append_data_null(UNUSED void** state) {
     assert_ptr_equal(amxc_array_append_data(NULL, NULL), NULL);
 }
 
-void test_amxc_array_append_data(UNUSED void **state) {
-    amxc_array_it_t *it = amxc_array_append_data(array1, NULL);
+void test_amxc_array_append_data(UNUSED void** state) {
+    amxc_array_it_t* it = amxc_array_append_data(array1, NULL);
     assert_ptr_equal(it, NULL);
     assert_int_equal(amxc_array_capacity(array1), 10);
     assert_int_equal(amxc_array_size(array1), 3);
@@ -769,12 +769,12 @@ void test_amxc_array_append_data(UNUSED void **state) {
     amxc_reset_test_array();
 }
 
-void test_amxc_array_prepend_data_null(UNUSED void **state) {
+void test_amxc_array_prepend_data_null(UNUSED void** state) {
     assert_ptr_equal(amxc_array_prepend_data(NULL, NULL), NULL);
 }
 
-void test_amxc_array_prepend_data(UNUSED void **state) {
-    amxc_array_it_t *it = amxc_array_prepend_data(array1, NULL);
+void test_amxc_array_prepend_data(UNUSED void** state) {
+    amxc_array_it_t* it = amxc_array_prepend_data(array1, NULL);
     assert_ptr_equal(it, NULL);
     assert_int_equal(amxc_array_capacity(array1), 10);
     assert_int_equal(amxc_array_size(array1), 3);
@@ -812,12 +812,12 @@ void test_amxc_array_prepend_data(UNUSED void **state) {
     amxc_reset_test_array();
 }
 
-void test_amxc_array_take_first_data_null(UNUSED void **state) {
+void test_amxc_array_take_first_data_null(UNUSED void** state) {
     assert_ptr_equal(amxc_array_take_first_data(NULL), NULL);
 }
 
-void test_amxc_array_take_first_data(UNUSED void **state) {
-    char *d = amxc_array_take_first_data(array1);
+void test_amxc_array_take_first_data(UNUSED void** state) {
+    char* d = amxc_array_take_first_data(array1);
     assert_ptr_equal(d, &data[3]);
     assert_int_equal(amxc_array_capacity(array1), 10);
     assert_int_equal(amxc_array_size(array1), 2);
@@ -838,12 +838,12 @@ void test_amxc_array_take_first_data(UNUSED void **state) {
     amxc_reset_test_array();
 }
 
-void test_amxc_array_take_last_data_null(UNUSED void **state) {
+void test_amxc_array_take_last_data_null(UNUSED void** state) {
     assert_ptr_equal(amxc_array_take_last_data(NULL), NULL);
 }
 
-void test_amxc_array_take_last_data(UNUSED void **state) {
-    char *d = amxc_array_take_last_data(array1);
+void test_amxc_array_take_last_data(UNUSED void** state) {
+    char* d = amxc_array_take_last_data(array1);
     assert_ptr_equal(d, &data[9]);
     assert_int_equal(amxc_array_capacity(array1), 10);
     assert_int_equal(amxc_array_size(array1), 2);
@@ -864,13 +864,13 @@ void test_amxc_array_take_last_data(UNUSED void **state) {
     amxc_reset_test_array();
 }
 
-void test_amxc_array_it_take_data_null(UNUSED void **state) {
+void test_amxc_array_it_take_data_null(UNUSED void** state) {
     assert_int_equal(amxc_array_it_index(NULL), 0);
 }
 
-void test_amxc_array_it_take_data(UNUSED void **state) {
+void test_amxc_array_it_take_data(UNUSED void** state) {
     assert_ptr_equal(amxc_array_it_take_data(NULL), NULL);
-    amxc_array_it_t *it = amxc_array_get_at(array1, 3);
+    amxc_array_it_t* it = amxc_array_get_at(array1, 3);
     assert_ptr_equal(amxc_array_it_take_data(it), &data[3]);
     assert_int_equal(array1->first_used, 6);
     assert_int_equal(array1->last_used, 9);
@@ -893,20 +893,20 @@ void test_amxc_array_it_take_data(UNUSED void **state) {
     assert_int_equal(amxc_array_is_empty(array1), true);
 }
 
-void test_amxc_array_it_index_null(UNUSED void **state) {
+void test_amxc_array_it_index_null(UNUSED void** state) {
     assert_int_equal(amxc_array_it_index(NULL), 0);
 }
 
-void test_amxc_array_it_index(UNUSED void **state) {
+void test_amxc_array_it_index(UNUSED void** state) {
     for(unsigned int index = 0; index < amxc_array_capacity(array1); index++) {
-        amxc_array_it_t *it = amxc_array_get_at(array1, index);
+        amxc_array_it_t* it = amxc_array_get_at(array1, index);
         assert_int_equal(amxc_array_it_index(it), index);
     }
 }
 
-static int test_cmp(amxc_array_it_t *it1, amxc_array_it_t *it2) {
-    char *d1 = amxc_array_it_get_data(it1);
-    char *d2 = amxc_array_it_get_data(it2);
+static int test_cmp(amxc_array_it_t* it1, amxc_array_it_t* it2) {
+    char* d1 = amxc_array_it_get_data(it1);
+    char* d2 = amxc_array_it_get_data(it2);
 
     if(d1[0] < d2[0]) {
         return -1;
@@ -917,7 +917,7 @@ static int test_cmp(amxc_array_it_t *it1, amxc_array_it_t *it2) {
     return 0;
 }
 
-void test_amxc_array_sort(UNUSED void **state) {
+void test_amxc_array_sort(UNUSED void** state) {
     amxc_array_t array;
     const char data[16] = "KRATELEPUIMQCXOS";
     const char sorted[16] = "ACEEIKLMOPQRSTUX";
@@ -929,12 +929,12 @@ void test_amxc_array_sort(UNUSED void **state) {
     // initialize array with 10 items
     assert_int_equal(amxc_array_init(&array, 20), 0);
     for(unsigned int index = 0; index < 16; index++) {
-        assert_ptr_equal(amxc_array_set_data_at(&array, index, (void *) &data[index]), &array.buffer[index]);
+        assert_ptr_equal(amxc_array_set_data_at(&array, index, (void*) &data[index]), &array.buffer[index]);
     }
 
     assert_int_equal(amxc_array_sort(&array, test_cmp), 0);
     for(unsigned int index = 0; index < 16; index++) {
-        char *d = amxc_array_it_get_data(amxc_array_get_at(&array, index));
+        char* d = amxc_array_it_get_data(amxc_array_get_at(&array, index));
         printf("%c\n", d[0]);
         assert_int_equal(d[0], sorted[index]);
     }
@@ -942,12 +942,12 @@ void test_amxc_array_sort(UNUSED void **state) {
 
     assert_int_equal(amxc_array_init(&array, 40), 0);
     for(unsigned int index = 0; index < 32; index += 2) {
-        assert_ptr_equal(amxc_array_set_data_at(&array, index, (void *) &data[index / 2]), &array.buffer[index]);
+        assert_ptr_equal(amxc_array_set_data_at(&array, index, (void*) &data[index / 2]), &array.buffer[index]);
     }
 
     assert_int_equal(amxc_array_sort(&array, test_cmp), 0);
     for(unsigned int index = 0; index < 16; index++) {
-        char *d = amxc_array_it_get_data(amxc_array_get_at(&array, index));
+        char* d = amxc_array_it_get_data(amxc_array_get_at(&array, index));
         printf("%c\n", d[0]);
         assert_int_equal(d[0], sorted[index]);
     }
@@ -958,12 +958,12 @@ void test_amxc_array_sort(UNUSED void **state) {
         printf("\n %d - ", sets);
         assert_int_equal(amxc_array_init(&array, 20), 0);
         for(unsigned int index = 0; index < 3; index++) {
-            assert_ptr_equal(amxc_array_set_data_at(&array, index, (void *) &data_sets[sets][index]), &array.buffer[index]);
+            assert_ptr_equal(amxc_array_set_data_at(&array, index, (void*) &data_sets[sets][index]), &array.buffer[index]);
         }
 
         assert_int_equal(amxc_array_sort(&array, test_cmp), 0);
         for(unsigned int index = 0; index < 3; index++) {
-            char *d = amxc_array_it_get_data(amxc_array_get_at(&array, index));
+            char* d = amxc_array_it_get_data(amxc_array_get_at(&array, index));
             printf("%c", d[0]);
         }
         amxc_array_clean(&array, NULL);

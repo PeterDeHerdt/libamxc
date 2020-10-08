@@ -73,50 +73,50 @@
 
 #define UNUSED __attribute__((unused))
 
-int amxc_var_init_success(amxc_var_t * const var);
-int amxc_var_init_fail(amxc_var_t * const var);
-void amxc_var_del(amxc_var_t * const var);
-int amxc_var_copy_success(amxc_var_t * const dst, const amxc_var_t * const src);
-int amxc_var_copy_fail(amxc_var_t * const dest, const amxc_var_t * const src);
-int amxc_var_convert_success(amxc_var_t * const dest, const amxc_var_t * const src);
-int amxc_var_convert_fail(amxc_var_t * const dest, const amxc_var_t * const src);
-int amxc_var_compare_success(const amxc_var_t * const var1,
-                             const amxc_var_t * const var2,
-                             int * const result);
-int amxc_var_compare_fail(const amxc_var_t * const var1,
-                          const amxc_var_t * const var2,
-                          int * const result);
-int dummy4_convert_to(amxc_var_t * const dest,
-                      const amxc_var_t * const src);
+int amxc_var_init_success(amxc_var_t* const var);
+int amxc_var_init_fail(amxc_var_t* const var);
+void amxc_var_del(amxc_var_t* const var);
+int amxc_var_copy_success(amxc_var_t* const dst, const amxc_var_t* const src);
+int amxc_var_copy_fail(amxc_var_t* const dest, const amxc_var_t* const src);
+int amxc_var_convert_success(amxc_var_t* const dest, const amxc_var_t* const src);
+int amxc_var_convert_fail(amxc_var_t* const dest, const amxc_var_t* const src);
+int amxc_var_compare_success(const amxc_var_t* const var1,
+                             const amxc_var_t* const var2,
+                             int* const result);
+int amxc_var_compare_fail(const amxc_var_t* const var1,
+                          const amxc_var_t* const var2,
+                          int* const result);
+int dummy4_convert_to(amxc_var_t* const dest,
+                      const amxc_var_t* const src);
 
-void free_variant_htable(const char *key, amxc_htable_it_t *it);
-void free_variant_llist(amxc_llist_it_t *it);
+void free_variant_htable(const char* key, amxc_htable_it_t* it);
+void free_variant_llist(amxc_llist_it_t* it);
 
-int amxc_var_init_success(UNUSED amxc_var_t * const var) {
+int amxc_var_init_success(UNUSED amxc_var_t* const var) {
     return 0;
 }
 
-int amxc_var_init_fail(UNUSED amxc_var_t * const var) {
+int amxc_var_init_fail(UNUSED amxc_var_t* const var) {
     return -1;
 }
 
-void amxc_var_del(UNUSED amxc_var_t * const var) {
+void amxc_var_del(UNUSED amxc_var_t* const var) {
     return;
 }
 
-int amxc_var_copy_success(amxc_var_t * const dest, const amxc_var_t * const src) {
+int amxc_var_copy_success(amxc_var_t* const dest, const amxc_var_t* const src) {
     dest->type_id = src->type_id;
     dest->data.ui32 = src->data.ui32;
     return 0;
 }
 
-int amxc_var_copy_fail(UNUSED amxc_var_t * const dest,
-                       UNUSED const amxc_var_t * const src) {
+int amxc_var_copy_fail(UNUSED amxc_var_t* const dest,
+                       UNUSED const amxc_var_t* const src) {
     return -1;
 }
 
-int amxc_var_convert_success(amxc_var_t * const dest,
-                             const amxc_var_t * const src) {
+int amxc_var_convert_success(amxc_var_t* const dest,
+                             const amxc_var_t* const src) {
 
     if(dest->type_id != src->type_id) {
         dest->data.ui32 = src->data.ui32 >> 1;
@@ -126,14 +126,14 @@ int amxc_var_convert_success(amxc_var_t * const dest,
     return 0;
 }
 
-int amxc_var_convert_fail(UNUSED amxc_var_t * const dest,
-                          UNUSED const amxc_var_t * const src) {
+int amxc_var_convert_fail(UNUSED amxc_var_t* const dest,
+                          UNUSED const amxc_var_t* const src) {
     return -1;
 }
 
-int amxc_var_compare_success(const amxc_var_t * const var1,
-                             const amxc_var_t * const var2,
-                             int * const result) {
+int amxc_var_compare_success(const amxc_var_t* const var1,
+                             const amxc_var_t* const var2,
+                             int* const result) {
     if(var1->data.ui32 < var2->data.ui32) {
         *result = -1;
     } else if(var1->data.ui32 > var2->data.ui32) {
@@ -144,14 +144,14 @@ int amxc_var_compare_success(const amxc_var_t * const var1,
     return 0;
 }
 
-int amxc_var_compare_fail(UNUSED const amxc_var_t * const var1,
-                          UNUSED const amxc_var_t * const var2,
-                          UNUSED int * const result) {
+int amxc_var_compare_fail(UNUSED const amxc_var_t* const var1,
+                          UNUSED const amxc_var_t* const var2,
+                          UNUSED int* const result) {
     return -1;
 }
 
-int dummy4_convert_to(amxc_var_t * const dest,
-                      const amxc_var_t * const src) {
+int dummy4_convert_to(amxc_var_t* const dest,
+                      const amxc_var_t* const src) {
     int retval = -1;
     amxc_var_convert_fn_t convfn[AMXC_VAR_ID_CUSTOM_BASE] = {
         amxc_var_default_convert_to_null,
@@ -186,15 +186,15 @@ exit:
 
 static amxc_var_t test_var;
 
-static amxc_var_t *amxc_var_test_get_key(UNUSED const amxc_var_t * const src,
-                                         const char * const key,
+static amxc_var_t* amxc_var_test_get_key(UNUSED const amxc_var_t* const src,
+                                         const char* const key,
                                          int flags) {
     if(strcmp(key, "valid") != 0) {
         return NULL;
     }
 
     if((flags & AMXC_VAR_FLAG_COPY) == AMXC_VAR_FLAG_COPY) {
-        amxc_var_t *copy_var = NULL;
+        amxc_var_t* copy_var = NULL;
         amxc_var_new(&copy_var);
         amxc_var_copy(copy_var, &test_var);
         return copy_var;
@@ -203,9 +203,9 @@ static amxc_var_t *amxc_var_test_get_key(UNUSED const amxc_var_t * const src,
     return &test_var;
 }
 
-static int amxc_var_test_set_key(UNUSED amxc_var_t * const dest,
-                                 UNUSED amxc_var_t * const src,
-                                 UNUSED const char * const key,
+static int amxc_var_test_set_key(UNUSED amxc_var_t* const dest,
+                                 UNUSED amxc_var_t* const src,
+                                 UNUSED const char* const key,
                                  UNUSED int flags) {
     if(strcmp(key, "valid") != 0) {
         return -1;
@@ -214,7 +214,7 @@ static int amxc_var_test_set_key(UNUSED amxc_var_t * const dest,
     return 0;
 }
 
-static amxc_var_t *amxc_var_test_get_index(UNUSED const amxc_var_t * const src,
+static amxc_var_t* amxc_var_test_get_index(UNUSED const amxc_var_t* const src,
                                            const int64_t index,
                                            int flags) {
 
@@ -223,7 +223,7 @@ static amxc_var_t *amxc_var_test_get_index(UNUSED const amxc_var_t * const src,
     }
 
     if((flags & AMXC_VAR_FLAG_COPY) == AMXC_VAR_FLAG_COPY) {
-        amxc_var_t *copy_var = NULL;
+        amxc_var_t* copy_var = NULL;
         amxc_var_new(&copy_var);
         amxc_var_copy(copy_var, &test_var);
         return copy_var;
@@ -232,8 +232,8 @@ static amxc_var_t *amxc_var_test_get_index(UNUSED const amxc_var_t * const src,
     return &test_var;
 }
 
-static int amxc_var_test_set_index(UNUSED amxc_var_t * const dest,
-                                   UNUSED amxc_var_t * const src,
+static int amxc_var_test_set_index(UNUSED amxc_var_t* const dest,
+                                   UNUSED amxc_var_t* const src,
                                    UNUSED const int64_t index,
                                    UNUSED int flags) {
     if((index > 5) && (index != UINT32_MAX)) {
@@ -285,8 +285,8 @@ static amxc_var_type_t dummy3 =
     .name = "dummy3_t"
 };
 
-void test_amxc_var_new_delete(UNUSED void **state) {
-    amxc_var_t *var = NULL;
+void test_amxc_var_new_delete(UNUSED void** state) {
+    amxc_var_t* var = NULL;
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
     assert_int_equal(amxc_var_add_type(&dummy2, -1), AMXC_VAR_ID_CUSTOM_BASE);
 
@@ -306,7 +306,7 @@ void test_amxc_var_new_delete(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy2), 0);
 }
 
-void test_amxc_var_init_clean(UNUSED void **state) {
+void test_amxc_var_init_clean(UNUSED void** state) {
     amxc_var_t var;
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
     assert_int_equal(amxc_var_add_type(&dummy2, -1), AMXC_VAR_ID_CUSTOM_BASE);
@@ -328,7 +328,7 @@ void test_amxc_var_init_clean(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy2), 0);
 }
 
-void test_amxc_var_set_type(UNUSED void **state) {
+void test_amxc_var_set_type(UNUSED void** state) {
     amxc_var_t var;
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
     assert_int_equal(amxc_var_add_type(&dummy2, -1), AMXC_VAR_ID_CUSTOM_BASE);
@@ -361,7 +361,7 @@ void test_amxc_var_set_type(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy2), 0);
 }
 
-void test_amxc_var_copy(UNUSED void **state) {
+void test_amxc_var_copy(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
@@ -409,7 +409,7 @@ void test_amxc_var_copy(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy3), 0);
 }
 
-void test_amxc_var_convert(UNUSED void **state) {
+void test_amxc_var_convert(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
     assert_int_equal(amxc_var_add_type(&dummy1, 0), 0);
@@ -465,7 +465,7 @@ void test_amxc_var_convert(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy3), 0);
 }
 
-void test_amxc_var_compare(UNUSED void **state) {
+void test_amxc_var_compare(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
     amxc_var_t var3;
@@ -525,17 +525,17 @@ void test_amxc_var_compare(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy3), 0);
 }
 
-void free_variant_htable(UNUSED const char *key, amxc_htable_it_t *it) {
-    amxc_var_t *var = amxc_htable_it_get_data(it, amxc_var_t, hit);
+void free_variant_htable(UNUSED const char* key, amxc_htable_it_t* it) {
+    amxc_var_t* var = amxc_htable_it_get_data(it, amxc_var_t, hit);
     amxc_var_delete(&var);
 }
 
-void free_variant_llist(amxc_llist_it_t *it) {
-    amxc_var_t *var = amxc_llist_it_get_data(it, amxc_var_t, lit);
+void free_variant_llist(amxc_llist_it_t* it) {
+    amxc_var_t* var = amxc_llist_it_get_data(it, amxc_var_t, lit);
     amxc_var_delete(&var);
 }
 
-void test_amxc_var_type_of(UNUSED void **state) {
+void test_amxc_var_type_of(UNUSED void** state) {
     amxc_var_t var1;
 
     assert_int_equal(amxc_var_add_type(&dummy1, AMXC_VAR_ID_NULL), AMXC_VAR_ID_NULL);
@@ -549,9 +549,9 @@ void test_amxc_var_type_of(UNUSED void **state) {
     assert_int_equal(amxc_var_remove_type(&dummy1), 0);
 }
 
-void test_amxc_var_get_set_key(UNUSED void **state) {
+void test_amxc_var_get_set_key(UNUSED void** state) {
     amxc_var_t var1;
-    amxc_var_t *subvar = NULL;
+    amxc_var_t* subvar = NULL;
 
     assert_int_equal(amxc_var_add_type(&dummy3, AMXC_VAR_ID_NULL), AMXC_VAR_ID_NULL);
     assert_int_equal(amxc_var_init(&var1), 0);
@@ -571,10 +571,10 @@ void test_amxc_var_get_set_key(UNUSED void **state) {
     amxc_var_remove_type(&dummy3);
 }
 
-void test_amxc_var_add_new_key(UNUSED void **state) {
+void test_amxc_var_add_new_key(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
-    amxc_var_t *subvar = NULL;
+    amxc_var_t* subvar = NULL;
 
     assert_int_equal(amxc_var_add_type(&dummy3, AMXC_VAR_ID_UINT16), AMXC_VAR_ID_UINT16);
     assert_int_equal(amxc_var_add_type(&dummy2, AMXC_VAR_ID_UINT32), AMXC_VAR_ID_UINT32);
@@ -599,10 +599,10 @@ void test_amxc_var_add_new_key(UNUSED void **state) {
     amxc_var_remove_type(&dummy3);
 }
 
-void test_amxc_var_add_new(UNUSED void **state) {
+void test_amxc_var_add_new(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
-    amxc_var_t *subvar = NULL;
+    amxc_var_t* subvar = NULL;
 
     assert_int_equal(amxc_var_add_type(&dummy3, -1), AMXC_VAR_ID_CUSTOM_BASE);
     assert_int_equal(amxc_var_add_type(&dummy2, -1), AMXC_VAR_ID_CUSTOM_BASE + 1);
@@ -625,9 +625,9 @@ void test_amxc_var_add_new(UNUSED void **state) {
     amxc_var_remove_type(&dummy3);
 }
 
-void test_amxc_var_get_path(UNUSED void **state) {
+void test_amxc_var_get_path(UNUSED void** state) {
     amxc_var_t var1;
-    amxc_var_t *subvar = NULL;
+    amxc_var_t* subvar = NULL;
 
     assert_int_equal(amxc_var_add_type(&dummy3, -1), AMXC_VAR_ID_CUSTOM_BASE);
     assert_int_equal(amxc_var_add_type(&dummy1, -1), AMXC_VAR_ID_CUSTOM_BASE + 1);
@@ -681,10 +681,10 @@ void test_amxc_var_get_path(UNUSED void **state) {
     amxc_var_remove_type(&dummy1);
 }
 
-void test_amxc_var_push_take_amxc_string(UNUSED void **state) {
+void test_amxc_var_push_take_amxc_string(UNUSED void** state) {
     amxc_var_t var1;
     amxc_string_t source;
-    amxc_string_t *string = NULL;
+    amxc_string_t* string = NULL;
 
     assert_int_equal(amxc_string_init(&source, 0), 0);
     assert_int_equal(amxc_string_append(&source, "This is a test string", 21), 0);

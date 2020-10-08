@@ -79,7 +79,7 @@
 
 #define UNUSED __attribute__((unused))
 
-void test_variant_char_copy(UNUSED void **state) {
+void test_variant_char_copy(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -95,7 +95,7 @@ void test_variant_char_copy(UNUSED void **state) {
     free(copy_var.data.s);
 }
 
-void test_variant_char_convert_to_bool(UNUSED void **state) {
+void test_variant_char_convert_to_bool(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -145,7 +145,7 @@ void test_variant_char_convert_to_bool(UNUSED void **state) {
     assert_true(copy_var.data.b);
 }
 
-void test_variant_char_convert_to_integer(UNUSED void **state) {
+void test_variant_char_convert_to_integer(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -190,7 +190,7 @@ void test_variant_char_convert_to_integer(UNUSED void **state) {
     assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT64), 0);
 }
 
-void test_variant_char_convert_to_uinteger(UNUSED void **state) {
+void test_variant_char_convert_to_uinteger(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -233,10 +233,10 @@ void test_variant_char_convert_to_uinteger(UNUSED void **state) {
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_UINT64), 0);
 }
 
-void test_variant_char_convert_to_list(UNUSED void **state) {
+void test_variant_char_convert_to_list(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
-    amxc_llist_it_t *it = NULL;
+    amxc_llist_it_t* it = NULL;
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_init(&copy_var), 0);
@@ -350,10 +350,10 @@ void test_variant_char_convert_to_list(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_ssv_char_convert_to_list(UNUSED void **state) {
+void test_variant_ssv_char_convert_to_list(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
-    amxc_llist_it_t *it = NULL;
+    amxc_llist_it_t* it = NULL;
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_init(&copy_var), 0);
@@ -427,10 +427,10 @@ void test_variant_ssv_char_convert_to_list(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_char_convert_to_htable(UNUSED void **state) {
+void test_variant_char_convert_to_htable(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
-    amxc_htable_it_t *it = NULL;
+    amxc_htable_it_t* it = NULL;
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_init(&copy_var), 0);
@@ -493,7 +493,7 @@ void test_variant_char_convert_to_htable(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_char_convert_to_double(UNUSED void **state) {
+void test_variant_char_convert_to_double(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -534,7 +534,7 @@ void test_variant_char_convert_to_double(UNUSED void **state) {
     assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_DOUBLE), 0);
 }
 
-void test_variant_char_convert_to_float(UNUSED void **state) {
+void test_variant_char_convert_to_float(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -571,7 +571,7 @@ void test_variant_char_convert_to_float(UNUSED void **state) {
     assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_FLOAT), 0);
 }
 
-void test_variant_char_convert_to_ts(UNUSED void **state) {
+void test_variant_char_convert_to_ts(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
 
@@ -589,7 +589,7 @@ void test_variant_char_convert_to_ts(UNUSED void **state) {
     amxc_var_clean(&var2);
 }
 
-void test_variant_char_compare(UNUSED void **state) {
+void test_variant_char_compare(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
     int result = 0;
@@ -619,10 +619,10 @@ void test_variant_char_compare(UNUSED void **state) {
     assert_true(result > 0);
 }
 
-void test_variant_char_set_get(UNUSED void **state) {
+void test_variant_char_set_get(UNUSED void** state) {
     amxc_var_t var1;
-    char *text = NULL;
-    const char *consttext = NULL;
+    char* text = NULL;
+    const char* consttext = NULL;
 
     assert_int_equal(amxc_var_init(&var1), 0);
     assert_int_equal(amxc_var_set_cstring_t(&var1, "Hello world"), 0);
@@ -706,10 +706,10 @@ void test_variant_char_set_get(UNUSED void **state) {
     amxc_var_clean(&var1);
 }
 
-void test_variant_cstring_add(UNUSED void **state) {
+void test_variant_cstring_add(UNUSED void** state) {
     amxc_var_t var;
-    const amxc_llist_t *list = NULL;
-    const amxc_htable_t *table = NULL;
+    const amxc_llist_t* list = NULL;
+    const amxc_htable_t* table = NULL;
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_LIST), 0);
@@ -740,7 +740,7 @@ void test_variant_cstring_add(UNUSED void **state) {
     amxc_var_clean(&var);
 }
 
-void test_variant_char_copy_null(UNUSED void **state) {
+void test_variant_char_copy_null(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
 
@@ -753,9 +753,9 @@ void test_variant_char_copy_null(UNUSED void **state) {
     amxc_var_clean(&var2);
 }
 
-void test_variant_char_take_push(UNUSED void **state) {
+void test_variant_char_take_push(UNUSED void** state) {
     amxc_var_t var1;
-    char *txt = NULL;
+    char* txt = NULL;
 
     amxc_var_init(&var1);
     amxc_var_set(cstring_t, &var1, "Hello World.");

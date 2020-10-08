@@ -98,7 +98,7 @@ extern "C"
    Gives the pointer to the string structure.
  */
 #define amxc_string_from_llist_it(ll_it) \
-    ((amxc_string_t *) (((char *) ll_it) - offsetof(amxc_string_t, it)))
+    ((amxc_string_t*) (((char*) ll_it) - offsetof(amxc_string_t, it)))
 
 /**
    @ingroup amxc_string
@@ -106,7 +106,7 @@ extern "C"
    The string structure.
  */
 typedef struct _amxc_string {
-    char *buffer;                  /**< Buffer containing the string */
+    char* buffer;                  /**< Buffer containing the string */
     size_t length;                 /**< Length of the allocated buffer */
     size_t last_used;              /**< End of string, is alway smaller then
                                          the length of the buffer */
@@ -120,7 +120,7 @@ typedef enum _amxc_string_flags {
     amxc_string_overwrite = 0x01
 } amxc_string_flags_t;
 
-typedef int (*amxc_string_is_char_fn_t) (int c);
+typedef int (* amxc_string_is_char_fn_t) (int c);
 
 /**
    @ingroup amxc_string
@@ -150,7 +150,7 @@ typedef int (*amxc_string_is_char_fn_t) (int c);
    @return
    -1 if an error occured. 0 on success
  */
-int amxc_string_new(amxc_string_t **string, const size_t length);
+int amxc_string_new(amxc_string_t** string, const size_t length);
 
 /**
    @ingroup amxc_string
@@ -166,7 +166,7 @@ int amxc_string_new(amxc_string_t **string, const size_t length);
    @param string a pointer to the location where the pointer to the string is
                  stored
  */
-void amxc_string_delete(amxc_string_t **string);
+void amxc_string_delete(amxc_string_t** string);
 
 /**
    @ingroup amxc_string
@@ -194,7 +194,7 @@ void amxc_string_delete(amxc_string_t **string);
    0 on success.
    -1 if a NULL pointer is given.
  */
-int amxc_string_init(amxc_string_t * const string, const size_t length);
+int amxc_string_init(amxc_string_t* const string, const size_t length);
 
 /**
    @ingroup amxc_string
@@ -203,7 +203,7 @@ int amxc_string_init(amxc_string_t * const string, const size_t length);
 
    @param string a pointer to the string structure
  */
-void amxc_string_clean(amxc_string_t * const string);
+void amxc_string_clean(amxc_string_t* const string);
 
 /**
    @ingroup amxc_string
@@ -212,7 +212,7 @@ void amxc_string_clean(amxc_string_t * const string);
 
    @param string a pointer to the string structure
  */
-void amxc_string_reset(amxc_string_t * const string);
+void amxc_string_reset(amxc_string_t* const string);
 
 /**
    @ingroup amxc_string
@@ -226,8 +226,8 @@ void amxc_string_reset(amxc_string_t * const string);
    0 on success.
    -1 if a NULL pointer is given.
  */
-int amxc_string_copy(amxc_string_t * const dest,
-                     const amxc_string_t * const src);
+int amxc_string_copy(amxc_string_t* const dest,
+                     const amxc_string_t* const src);
 
 /**
    @ingroup amxc_string
@@ -245,7 +245,7 @@ int amxc_string_copy(amxc_string_t * const dest,
    0 on success.
    -1 if an error has occured.
  */
-int amxc_string_grow(amxc_string_t * const string, const size_t length);
+int amxc_string_grow(amxc_string_t* const string, const size_t length);
 
 /**
    @ingroup amxc_string
@@ -265,7 +265,7 @@ int amxc_string_grow(amxc_string_t * const string, const size_t length);
    0 on success.
    -1 if an error has occured
  */
-int amxc_string_shrink(amxc_string_t * const string,
+int amxc_string_shrink(amxc_string_t* const string,
                        const size_t length);
 
 /**
@@ -295,9 +295,9 @@ int amxc_string_shrink(amxc_string_t * const string,
    0 on success.
    -1 if an error has occured
  */
-int amxc_string_set_at(amxc_string_t * const string,
+int amxc_string_set_at(amxc_string_t* const string,
                        const size_t pos,
-                       const char * const text,
+                       const char* const text,
                        const size_t length,
                        const amxc_string_flags_t flags);
 
@@ -322,7 +322,7 @@ int amxc_string_set_at(amxc_string_t * const string,
    0 on success.
    -1 if an error has occured
  */
-int amxc_string_remove_at(amxc_string_t * const string,
+int amxc_string_remove_at(amxc_string_t* const string,
                           const size_t pos,
                           size_t length);
 
@@ -342,7 +342,7 @@ int amxc_string_remove_at(amxc_string_t * const string,
    @return
    Pointer to the string buffer, or a NULL pointer if no buffer is available
  */
-const char *amxc_string_get(const amxc_string_t * const string,
+const char* amxc_string_get(const amxc_string_t* const string,
                             const size_t offset);
 
 /**
@@ -365,7 +365,7 @@ const char *amxc_string_get(const amxc_string_t * const string,
    @return
    Pointer to the string buffer, or a NULL pointer if no buffer is available
  */
-char *amxc_string_take_buffer(amxc_string_t * const string);
+char* amxc_string_take_buffer(amxc_string_t* const string);
 
 /**
    @ingroup amxc_string
@@ -389,8 +389,8 @@ char *amxc_string_take_buffer(amxc_string_t * const string);
    @return
    0 when successful, none 0 otherwise.
  */
-int amxc_string_push_buffer(amxc_string_t * const string,
-                            char *buffer,
+int amxc_string_push_buffer(amxc_string_t* const string,
+                            char* buffer,
                             size_t length);
 
 /**
@@ -419,7 +419,7 @@ int amxc_string_push_buffer(amxc_string_t * const string,
    Pointer to the string buffer or NULL when no buffer was available or the
    start position is over the last used position in the buffer.
  */
-char *amxc_string_dup(const amxc_string_t * const string,
+char* amxc_string_dup(const amxc_string_t* const string,
                       const size_t start,
                       size_t length);
 
@@ -441,7 +441,7 @@ char *amxc_string_dup(const amxc_string_t * const string,
    @param string a pointer to the string structure
    @param fn a pointer to a character classification function or NULL
  */
-void amxc_string_triml(amxc_string_t * const string, amxc_string_is_char_fn_t fn);
+void amxc_string_triml(amxc_string_t* const string, amxc_string_is_char_fn_t fn);
 
 /**
    @ingroup amxc_string
@@ -461,7 +461,7 @@ void amxc_string_triml(amxc_string_t * const string, amxc_string_is_char_fn_t fn
    @param string a pointer to the string structure
    @param fn a pointer to a character classification function or NULL
  */
-void amxc_string_trimr(amxc_string_t * const string, amxc_string_is_char_fn_t fn);
+void amxc_string_trimr(amxc_string_t* const string, amxc_string_is_char_fn_t fn);
 
 /**
    @ingroup amxc_string
@@ -482,28 +482,28 @@ void amxc_string_trimr(amxc_string_t * const string, amxc_string_is_char_fn_t fn
    @param string a pointer to the string structure
    @param fn a pointer to a character classification function or NULL
  */
-void amxc_string_trim(amxc_string_t * const string, amxc_string_is_char_fn_t fn);
+void amxc_string_trim(amxc_string_t* const string, amxc_string_is_char_fn_t fn);
 
-int amxc_string_vsetf(amxc_string_t * const string, const char *fmt, va_list ap);
+int amxc_string_vsetf(amxc_string_t* const string, const char* fmt, va_list ap);
 
-int amxc_string_setf(amxc_string_t * const string, const char *fmt, ...) \
+int amxc_string_setf(amxc_string_t* const string, const char* fmt, ...) \
     __attribute__ ((format(printf, 2, 3)));
 
-int amxc_string_vappendf(amxc_string_t * const string,
-                         const char *fmt,
+int amxc_string_vappendf(amxc_string_t* const string,
+                         const char* fmt,
                          va_list ap);
 
-int amxc_string_appendf(amxc_string_t * const string, const char *fmt, ...) \
+int amxc_string_appendf(amxc_string_t* const string, const char* fmt, ...) \
     __attribute__ ((format(printf, 2, 3)));
 
-int amxc_string_vprependf(amxc_string_t * const string,
-                          const char *fmt,
+int amxc_string_vprependf(amxc_string_t* const string,
+                          const char* fmt,
                           va_list ap);
 
-int amxc_string_prependf(amxc_string_t * const string, const char *fmt, ...) \
+int amxc_string_prependf(amxc_string_t* const string, const char* fmt, ...) \
     __attribute__ ((format(printf, 2, 3)));
 
-bool amxc_string_is_numeric(const amxc_string_t * const string);
+bool amxc_string_is_numeric(const amxc_string_t* const string);
 
 /**
    @ingroup amxc_string
@@ -529,8 +529,8 @@ bool amxc_string_is_numeric(const amxc_string_t * const string);
    -1 if an error has occured
  */
 AMXC_INLINE
-int amxc_string_append(amxc_string_t * const string,
-                       const char * const text,
+int amxc_string_append(amxc_string_t* const string,
+                       const char* const text,
                        const size_t length) {
     return amxc_string_set_at(string,
                               string != NULL ? string->last_used : 0,
@@ -562,8 +562,8 @@ int amxc_string_append(amxc_string_t * const string,
    -1 if an error has occured
  */
 AMXC_INLINE
-int amxc_string_prepend(amxc_string_t * const string,
-                        const char * const text,
+int amxc_string_prepend(amxc_string_t* const string,
+                        const char* const text,
                         const size_t length) {
     return amxc_string_set_at(string, 0, text, length, amxc_string_no_flags);
 }
@@ -585,7 +585,7 @@ int amxc_string_prepend(amxc_string_t * const string,
    The size in bytes of the allocated memory for the string buffer.
  */
 AMXC_INLINE
-size_t amxc_string_buffer_length(const amxc_string_t * const string) {
+size_t amxc_string_buffer_length(const amxc_string_t* const string) {
     return string != NULL ? string->length : 0;
 }
 
@@ -606,7 +606,7 @@ size_t amxc_string_buffer_length(const amxc_string_t * const string) {
    The size in bytes of the allocated memory for the string buffer.
  */
 AMXC_INLINE
-size_t amxc_string_text_length(const amxc_string_t * const string) {
+size_t amxc_string_text_length(const amxc_string_t* const string) {
     return string != NULL ? string->last_used : 0;
 }
 
@@ -623,14 +623,14 @@ size_t amxc_string_text_length(const amxc_string_t * const string) {
    true when empty or false otherwise
  */
 AMXC_INLINE
-bool amxc_string_is_empty(const amxc_string_t * const string) {
+bool amxc_string_is_empty(const amxc_string_t* const string) {
     return string != NULL ? (string->last_used == 0) : true;
 }
 
 AMXC_INLINE
-int amxc_string_insert_at(amxc_string_t * const string,
+int amxc_string_insert_at(amxc_string_t* const string,
                           const size_t pos,
-                          char *text,
+                          char* text,
                           size_t length) {
     return amxc_string_set_at(string, pos, text, length, amxc_string_insert);
 }

@@ -71,10 +71,10 @@
    Ambiorix hash table API implementation
  */
 
-static int amxc_htable_grow(amxc_htable_t * const htable) {
+static int amxc_htable_grow(amxc_htable_t* const htable) {
     int retval = -1;
     size_t capacity = htable->items;
-    amxc_array_it_t *it = NULL;
+    amxc_array_it_t* it = NULL;
     amxc_array_t temp;
 
     retval = amxc_array_init(&temp, capacity);
@@ -83,11 +83,11 @@ static int amxc_htable_grow(amxc_htable_t * const htable) {
     // move the items to the temp array and reset the table
     it = amxc_array_get_first(&htable->table);
     while(it != NULL) {
-        amxc_htable_it_t *hit = (amxc_htable_it_t *) amxc_array_it_take_data(it);
+        amxc_htable_it_t* hit = (amxc_htable_it_t*) amxc_array_it_take_data(it);
         hit->ait = NULL;
         amxc_array_append_data(&temp, hit);
         while(hit->next != NULL) {
-            amxc_htable_it_t *hit_next = hit->next;
+            amxc_htable_it_t* hit_next = hit->next;
             hit->next = NULL;
             hit = hit_next;
             hit->ait = NULL;
@@ -104,7 +104,7 @@ static int amxc_htable_grow(amxc_htable_t * const htable) {
     // add the items back to the htable
     it = amxc_array_get_first(&temp);
     while(it != NULL) {
-        amxc_htable_it_t *hit = (amxc_htable_it_t *) amxc_array_it_take_data(it);
+        amxc_htable_it_t* hit = (amxc_htable_it_t*) amxc_array_it_take_data(it);
         amxc_htable_insert(htable, hit->key, hit);
         it = amxc_array_get_first(&temp);
     }
@@ -116,13 +116,13 @@ exit:
     return retval;
 }
 
-static void amxc_htable_it_delete_func(amxc_array_it_t * const it) {
-    amxc_htable_t *htable = (amxc_htable_t *) it->array;
-    amxc_htable_it_t *current = (amxc_htable_it_t *) it->data;
+static void amxc_htable_it_delete_func(amxc_array_it_t* const it) {
+    amxc_htable_t* htable = (amxc_htable_t*) it->array;
+    amxc_htable_it_t* current = (amxc_htable_it_t*) it->data;
 
     while(current != NULL) {
-        amxc_htable_it_t *next = current->next;
-        char *key = current->key;
+        amxc_htable_it_t* next = current->next;
+        char* key = current->key;
         current->key = NULL;
         amxc_htable_it_take(current);
         if(htable->it_del != NULL) {
@@ -133,11 +133,11 @@ static void amxc_htable_it_delete_func(amxc_array_it_t * const it) {
     }
 }
 
-int amxc_htable_new(amxc_htable_t **htable, const size_t reserve) {
+int amxc_htable_new(amxc_htable_t** htable, const size_t reserve) {
     int retval = -1;
     when_null(htable, exit);
 
-    *htable = (amxc_htable_t *) calloc(1, sizeof(amxc_htable_t));
+    *htable = (amxc_htable_t*) calloc(1, sizeof(amxc_htable_t));
     when_null(*htable, exit);
 
     retval = amxc_htable_init(*htable, reserve);
@@ -150,7 +150,14 @@ exit:
     return retval;
 }
 
-void amxc_htable_delete(amxc_htable_t **htable, amxc_htable_it_delete_t func) {
+static int amxc_htable_cmp_keys(amxc_array_it_t* it1, amxc_array_it_t* it2) {
+    const char* key1 = (const char*) amxc_array_it_get_data(it1);
+    const char* key2 = (const char*) amxc_array_it_get_data(it2);
+    return strcmp(key1, key2);
+}
+
+
+void amxc_htable_delete(amxc_htable_t** htable, amxc_htable_it_delete_t func) {
     when_null(htable, exit);
     when_null(*htable, exit);
 
@@ -163,7 +170,7 @@ exit:
     return;
 }
 
-int amxc_htable_init(amxc_htable_t * const htable, const size_t reserve) {
+int amxc_htable_init(amxc_htable_t* const htable, const size_t reserve) {
     int retval = -1;
     when_null(htable, exit);
 
@@ -178,7 +185,7 @@ exit:
     return retval;
 }
 
-void amxc_htable_clean(amxc_htable_t * const htable, amxc_htable_it_delete_t func) {
+void amxc_htable_clean(amxc_htable_t* const htable, amxc_htable_it_delete_t func) {
     when_null(htable, exit);
 
     htable->it_del = func;
@@ -189,7 +196,7 @@ exit:
     return;
 }
 
-void amxc_htable_set_hash_func(amxc_htable_t * const htable,
+void amxc_htable_set_hash_func(amxc_htable_t* const htable,
                                amxc_htable_hash_func_t func) {
     when_null(htable, exit);
 
@@ -203,8 +210,8 @@ exit:
     return;
 }
 
-unsigned int amxc_htable_key2index(const amxc_htable_t * const htable,
-                                   const char * const key) {
+unsigned int amxc_htable_key2index(const amxc_htable_t* const htable,
+                                   const char* const key) {
     unsigned int hash = AMXC_HTABLE_RANGE;
     when_null(htable, exit);
     when_true(htable->table.items == 0, exit);
@@ -215,12 +222,12 @@ exit:
     return hash;
 }
 
-int amxc_htable_insert(amxc_htable_t * const htable,
-                       const char * const key,
-                       amxc_htable_it_t * const it) {
+int amxc_htable_insert(amxc_htable_t* const htable,
+                       const char* const key,
+                       amxc_htable_it_t* const it) {
     int retval = -1;
     unsigned int index = 0;
-    amxc_array_it_t *ait = NULL;
+    amxc_array_it_t* ait = NULL;
     when_null(htable, exit);
     when_null(key, exit);
     when_true(*key == 0, exit);
@@ -244,7 +251,7 @@ int amxc_htable_insert(amxc_htable_t * const htable,
     // update htable iterator
     if(it->key == NULL) {
         size_t length = strlen(key);
-        it->key = (char *) calloc(length + 1, sizeof(char));
+        it->key = (char*) calloc(length + 1, sizeof(char));
         when_null(it->key, exit);
         memcpy(it->key, key, length);
     }
@@ -253,7 +260,7 @@ int amxc_htable_insert(amxc_htable_t * const htable,
     ait = amxc_array_get_at(&htable->table, index);
     // insert item
     if(ait->data != NULL) {
-        it->next = (amxc_htable_it_t *) ait->data;
+        it->next = (amxc_htable_it_t*) ait->data;
     }
     amxc_array_it_set_data(ait, it);
     it->ait = ait;
@@ -265,11 +272,11 @@ exit:
     return retval;
 }
 
-amxc_htable_it_t *amxc_htable_get(const amxc_htable_t * const htable,
-                                  const char * const key) {
-    amxc_htable_it_t *it = NULL;
+amxc_htable_it_t* amxc_htable_get(const amxc_htable_t* const htable,
+                                  const char* const key) {
+    amxc_htable_it_t* it = NULL;
     unsigned int index = 0;
-    amxc_array_it_t *ait = NULL;
+    amxc_array_it_t* ait = NULL;
 
     when_null(htable, exit);
     when_null(key, exit);
@@ -282,7 +289,7 @@ amxc_htable_it_t *amxc_htable_get(const amxc_htable_t * const htable,
     // the following line is always returning a valid array iterator pointer
     ait = amxc_array_get_at(&htable->table, index);
 
-    it = (amxc_htable_it_t *) ait->data;
+    it = (amxc_htable_it_t*) ait->data;
     while(it != NULL && strcmp(key, it->key) != 0) {
         it = it->next;
     }
@@ -291,24 +298,48 @@ exit:
     return it;
 }
 
-amxc_htable_it_t *amxc_htable_take(amxc_htable_t * const htable,
-                                   const char * const key) {
-    amxc_htable_it_t *it = amxc_htable_get(htable, key);
+amxc_htable_it_t* amxc_htable_take(amxc_htable_t* const htable,
+                                   const char* const key) {
+    amxc_htable_it_t* it = amxc_htable_get(htable, key);
     if(it != NULL) {
         amxc_htable_it_take(it);
     }
     return it;
 }
 
-amxc_htable_it_t *amxc_htable_get_first(const amxc_htable_t * const htable) {
-    amxc_htable_it_t *it = NULL;
-    amxc_array_it_t *ait = NULL;
+amxc_htable_it_t* amxc_htable_get_first(const amxc_htable_t* const htable) {
+    amxc_htable_it_t* it = NULL;
+    amxc_array_it_t* ait = NULL;
     when_null(htable, exit);
 
     ait = amxc_array_get_first(&htable->table);
     when_null(ait, exit);
-    it = (amxc_htable_it_t *) ait->data;
+    it = (amxc_htable_it_t*) ait->data;
 
 exit:
     return it;
+}
+
+amxc_array_t* amxc_htable_get_sorted_keys(const amxc_htable_t* const htable) {
+    amxc_array_t* keys = NULL;
+    uint32_t size = 0;
+    uint32_t index = 0;
+    when_null(htable, exit);
+
+    size = amxc_htable_size(htable);
+    when_true(size == 0, exit);
+
+    amxc_array_new(&keys, size);
+    when_null(keys, exit);
+
+    amxc_htable_for_each(it, htable) {
+        const char* key = amxc_htable_it_get_key(it);
+        amxc_array_set_data_at(keys, index, (void*) key);
+        index++;
+    }
+
+    amxc_array_sort(keys, amxc_htable_cmp_keys);
+
+exit:
+    return keys;
 }

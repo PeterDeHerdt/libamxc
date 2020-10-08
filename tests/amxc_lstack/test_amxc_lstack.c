@@ -70,33 +70,33 @@
 
 #define UNUSED __attribute__((unused))
 
-void amxc_lstack_new_delete_null_check(UNUSED void **state) {
+void amxc_lstack_new_delete_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_lstack_new(NULL), -1);
     amxc_lstack_delete(NULL, NULL);
 }
 
-void amxc_lstack_new_delete_check(UNUSED void **state) {
-    amxc_lstack_t *lstack = NULL;
+void amxc_lstack_new_delete_check(UNUSED void** state) {
+    amxc_lstack_t* lstack = NULL;
     assert_int_equal(amxc_lstack_new(&lstack), 0);
     amxc_lstack_delete(&lstack, NULL);
     assert_ptr_equal(lstack, NULL);
 }
 
-void amxc_lstack_init_clean_null_check(UNUSED void **state) {
+void amxc_lstack_init_clean_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_lstack_init(NULL), -1);
     amxc_lstack_clean(NULL, NULL);
 }
 
-void amxc_lstack_init_clean_check(UNUSED void **state) {
+void amxc_lstack_init_clean_check(UNUSED void** state) {
     amxc_lstack_t lstack;
 
     assert_int_equal(amxc_lstack_init(&lstack), 0);
     amxc_lstack_clean(&lstack, NULL);
 }
 
-void amxc_lstack_push_check(UNUSED void **state) {
+void amxc_lstack_push_check(UNUSED void** state) {
     amxc_lstack_t lstack;
     amxc_lstack_it_t it1;
     amxc_lstack_it_t it2;
@@ -132,7 +132,7 @@ void amxc_lstack_push_check(UNUSED void **state) {
     assert_ptr_equal(it3.prev, NULL);
 }
 
-void amxc_lstack_pop_check(UNUSED void **state) {
+void amxc_lstack_pop_check(UNUSED void** state) {
     amxc_lstack_t lstack;
     amxc_lstack_it_t it1;
     amxc_lstack_it_t it2;

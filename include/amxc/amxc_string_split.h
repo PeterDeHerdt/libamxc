@@ -78,8 +78,8 @@ typedef enum _amxc_string_split_status {
     AMXC_ERROR_STRING_MISSING_CBRACKET,
 } amxc_string_split_status_t;
 
-typedef amxc_string_split_status_t (*amxc_string_split_builder_t) (amxc_llist_t *all,
-                                                                   amxc_var_t *csv_list);
+typedef amxc_string_split_status_t (* amxc_string_split_builder_t) (amxc_llist_t* all,
+                                                                    amxc_var_t* csv_list);
 
 /**
    @ingroup amxc_string
@@ -100,7 +100,7 @@ typedef amxc_string_split_status_t (*amxc_string_split_builder_t) (amxc_llist_t 
    A pointer to the string (amxc_string_t) at the index of the llist, when successful.
    NULL when failed to to index the llist
  */
-amxc_string_t *amxc_string_get_from_llist(const amxc_llist_t * const llist,
+amxc_string_t* amxc_string_get_from_llist(const amxc_llist_t* const llist,
                                           const unsigned int index);
 
 /**
@@ -122,33 +122,33 @@ amxc_string_t *amxc_string_get_from_llist(const amxc_llist_t * const llist,
    Pointer to the string buffer at the index of the llist, when successful.
    NULL when failed to point to index the llist.
  */
-const char *amxc_string_get_text_from_llist(const amxc_llist_t * const llist,
+const char* amxc_string_get_text_from_llist(const amxc_llist_t* const llist,
                                             const unsigned int index);
 
 amxc_string_split_status_t
-amxc_string_split_word(const amxc_string_t * const string,
-                       amxc_llist_t *list,
-                       const char **reason);
+amxc_string_split_word(const amxc_string_t* const string,
+                       amxc_llist_t* list,
+                       const char** reason);
 
 amxc_string_split_status_t
-amxc_string_split(const amxc_string_t * const string,
-                  amxc_var_t *var,
+amxc_string_split(const amxc_string_t* const string,
+                  amxc_var_t* var,
                   amxc_string_split_builder_t fn,
-                  const char **reason);
+                  const char** reason);
 
 amxc_string_split_status_t
-amxc_string_csv_to_var(const amxc_string_t * const string,
-                       amxc_var_t *var,
-                       const char **reason);
+amxc_string_csv_to_var(const amxc_string_t* const string,
+                       amxc_var_t* var,
+                       const char** reason);
 
 amxc_string_split_status_t
-amxc_string_ssv_to_var(const amxc_string_t * const string,
-                       amxc_var_t *var,
-                       const char **reason);
+amxc_string_ssv_to_var(const amxc_string_t* const string,
+                       amxc_var_t* var,
+                       const char** reason);
 
 amxc_string_split_status_t
-amxc_string_split_to_llist(const amxc_string_t * const string,
-                           amxc_llist_t *list,
+amxc_string_split_to_llist(const amxc_string_t* const string,
+                           amxc_llist_t* list,
                            const char separator);
 
 

@@ -61,10 +61,10 @@
 #ifndef __TEST_VARIANT_FD_H__
 #define __TEST_VARIANT_FD_H__
 
-void test_variant_fd_copy(void **state);
-void test_variant_fd_convert_to(void **state);
-void test_variant_fd_compare(void **state);
-void test_variant_fd_set_get(void **state);
-void test_variant_fd_add(void **state);
+void test_variant_fd_copy(void** state);
+void test_variant_fd_convert_to(void** state);
+void test_variant_fd_compare(void** state);
+void test_variant_fd_set_get(void** state);
+void test_variant_fd_add(void** state);
 
 #endif // __TEST_VARIANT_FD_H__

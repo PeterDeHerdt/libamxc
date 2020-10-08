@@ -174,7 +174,7 @@ static amxc_var_type_t dummy_custom_t =
     .name = "dummy_custom_t"
 };
 
-static amxc_var_type_t *dummies[AMXC_VAR_ID_CUSTOM_BASE + 1] = {
+static amxc_var_type_t* dummies[AMXC_VAR_ID_CUSTOM_BASE + 1] = {
     NULL,
     NULL,
     &dummy_int8_t,

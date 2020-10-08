@@ -80,7 +80,7 @@
 
 #define UNUSED __attribute__((unused))
 
-void test_variant_htable_init(UNUSED void **state) {
+void test_variant_htable_init(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t string;
 
@@ -98,11 +98,11 @@ void test_variant_htable_init(UNUSED void **state) {
     amxc_var_clean(&var);
 }
 
-void test_variant_htable_copy(UNUSED void **state) {
+void test_variant_htable_copy(UNUSED void** state) {
     amxc_var_t string;
     amxc_var_t var;
     amxc_var_t copy_var;
-    amxc_htable_t *htable = NULL;
+    amxc_htable_t* htable = NULL;
 
     assert_int_equal(amxc_var_init(&string), 0);
     assert_int_equal(amxc_var_init(&var), 0);
@@ -121,7 +121,7 @@ void test_variant_htable_copy(UNUSED void **state) {
 
     htable = &copy_var.data.vm;
     amxc_htable_for_each(it, htable) {
-        amxc_var_t *item = amxc_var_from_htable_it(it);
+        amxc_var_t* item = amxc_var_from_htable_it(it);
         assert_int_equal(item->type_id, AMXC_VAR_ID_CSTRING);
     }
 
@@ -129,7 +129,7 @@ void test_variant_htable_copy(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_htable_convert_to_bool(UNUSED void **state) {
+void test_variant_htable_convert_to_bool(UNUSED void** state) {
     amxc_var_t string;
     amxc_var_t var;
     amxc_var_t copy_var;
@@ -158,7 +158,7 @@ void test_variant_htable_convert_to_bool(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_htable_convert_to_integer(UNUSED void **state) {
+void test_variant_htable_convert_to_integer(UNUSED void** state) {
     amxc_var_t string;
     amxc_var_t var;
     amxc_var_t copy_var;
@@ -187,7 +187,7 @@ void test_variant_htable_convert_to_integer(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_htable_convert_to_list(UNUSED void **state) {
+void test_variant_htable_convert_to_list(UNUSED void** state) {
     amxc_var_t string;
     amxc_var_t var;
     amxc_var_t copy_var;
@@ -219,7 +219,7 @@ void test_variant_htable_convert_to_list(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_htable_convert_to_string(UNUSED void **state) {
+void test_variant_htable_convert_to_string(UNUSED void** state) {
     amxc_var_t string;
     amxc_var_t var;
     amxc_var_t copy_var;
@@ -249,11 +249,11 @@ void test_variant_htable_convert_to_string(UNUSED void **state) {
     amxc_var_clean(&copy_var);
 }
 
-void test_variant_htable_set_get(UNUSED void **state) {
+void test_variant_htable_set_get(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t string;
-    amxc_htable_t *htable = NULL;
-    const amxc_htable_t *consthtable = NULL;
+    amxc_htable_t* htable = NULL;
+    const amxc_htable_t* consthtable = NULL;
 
     assert_int_equal(amxc_var_init(&string), 0);
     assert_int_equal(amxc_var_init(&var), 0);
@@ -280,11 +280,11 @@ void test_variant_htable_set_get(UNUSED void **state) {
     amxc_var_clean(&var);
 }
 
-void test_variant_htable_add_new(UNUSED void **state) {
+void test_variant_htable_add_new(UNUSED void** state) {
     amxc_var_t var;
-    amxc_var_t *item = NULL;
-    const amxc_htable_t *consttable = NULL;
-    const amxc_llist_t *constlist = NULL;
+    amxc_var_t* item = NULL;
+    const amxc_htable_t* consttable = NULL;
+    const amxc_llist_t* constlist = NULL;
     amxc_htable_t atable;
 
     assert_int_equal(amxc_htable_init(&atable, 0), 0);
@@ -315,10 +315,10 @@ void test_variant_htable_add_new(UNUSED void **state) {
     amxc_var_clean(&var);
 }
 
-void test_variant_htable_add_new_key(UNUSED void **state) {
+void test_variant_htable_add_new_key(UNUSED void** state) {
     amxc_var_t var;
-    amxc_var_t *item = NULL;
-    const amxc_htable_t *consttable = NULL;
+    amxc_var_t* item = NULL;
+    const amxc_htable_t* consttable = NULL;
     amxc_htable_t atable;
 
     assert_int_equal(amxc_htable_init(&atable, 0), 0);
@@ -349,9 +349,9 @@ void test_variant_htable_add_new_key(UNUSED void **state) {
     amxc_var_clean(&var);
 }
 
-void test_variant_htable_add_new_key_duplicate(UNUSED void **state) {
+void test_variant_htable_add_new_key_duplicate(UNUSED void** state) {
     amxc_var_t var;
-    amxc_var_t *item = NULL;
+    amxc_var_t* item = NULL;
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_HTABLE), 0);

@@ -72,7 +72,7 @@
 #define UNUSED __attribute__((unused))
 
 static unsigned int deletes = 0;
-static amxc_htable_t *htable = NULL;
+static amxc_htable_t* htable = NULL;
 static amxc_htable_it_t it[30];
 
 static void amxc_htable_setup(void) {
@@ -87,16 +87,16 @@ static void amxc_htable_teardown(void) {
     amxc_htable_delete(&htable, NULL);
 }
 
-static void amxc_delete_it_func(const char *key, amxc_htable_it_t *it) {
+static void amxc_delete_it_func(const char* key, amxc_htable_it_t* it) {
     assert_ptr_not_equal(it, NULL);
-    assert_ptr_not_equal((char *) key, NULL);
+    assert_ptr_not_equal((char*) key, NULL);
     assert_ptr_equal(it->key, NULL);
     assert_ptr_equal(it->ait, NULL);
     assert_ptr_equal(it->next, NULL);
     deletes++;
 }
 
-void amxc_htable_new_delete_null_check(UNUSED void **state) {
+void amxc_htable_new_delete_null_check(UNUSED void** state) {
     amxc_htable_setup();
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_htable_new(NULL, 0), -1);
@@ -104,9 +104,9 @@ void amxc_htable_new_delete_null_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_new_delete_check(UNUSED void **state) {
+void amxc_htable_new_delete_check(UNUSED void** state) {
     amxc_htable_setup();
-    amxc_htable_t *htable = NULL;
+    amxc_htable_t* htable = NULL;
     assert_int_equal(amxc_htable_new(&htable, 0), 0);
     assert_ptr_not_equal(htable, NULL);
     assert_ptr_not_equal(htable->hfunc, NULL);
@@ -119,7 +119,7 @@ void amxc_htable_new_delete_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_delete_func_check(UNUSED void **state) {
+void amxc_htable_delete_func_check(UNUSED void** state) {
     amxc_htable_setup();
     char key[10] = "";
 
@@ -133,7 +133,7 @@ void amxc_htable_delete_func_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_init_clean_null_check(UNUSED void **state) {
+void amxc_htable_init_clean_null_check(UNUSED void** state) {
     amxc_htable_setup();
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_htable_init(NULL, 0), -1);
@@ -141,7 +141,7 @@ void amxc_htable_init_clean_null_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_init_clean_check(UNUSED void **state) {
+void amxc_htable_init_clean_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_t htable;
 
@@ -159,7 +159,7 @@ void amxc_htable_init_clean_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_init_reserve_check(UNUSED void **state) {
+void amxc_htable_init_reserve_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_t htable;
 
@@ -179,7 +179,7 @@ void amxc_htable_init_reserve_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_set_hash_func_check(UNUSED void **state) {
+void amxc_htable_set_hash_func_check(UNUSED void** state) {
     amxc_htable_setup();
     // should not segfault
     amxc_htable_set_hash_func(NULL, NULL);
@@ -197,7 +197,7 @@ void amxc_htable_set_hash_func_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_key2index_null_check(UNUSED void **state) {
+void amxc_htable_key2index_null_check(UNUSED void** state) {
     amxc_htable_setup();
     // should not segfault
     assert_int_equal(amxc_htable_key2index(NULL, NULL), AMXC_HTABLE_RANGE);
@@ -209,7 +209,7 @@ void amxc_htable_key2index_null_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_key2index_check(UNUSED void **state) {
+void amxc_htable_key2index_check(UNUSED void** state) {
     amxc_htable_setup();
     // should not segfault
     assert_int_equal(amxc_htable_key2index(htable, "Key1"), 18);
@@ -217,7 +217,7 @@ void amxc_htable_key2index_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_insert_null_check(UNUSED void **state) {
+void amxc_htable_insert_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_insert(NULL, NULL, NULL), -1);
 
@@ -235,7 +235,7 @@ void amxc_htable_insert_null_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_insert_check(UNUSED void **state) {
+void amxc_htable_insert_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_insert(htable, "TestKey", &it[0]), 0);
     assert_ptr_not_equal(it[0].ait, NULL);
@@ -247,7 +247,7 @@ void amxc_htable_insert_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_insert_same_key_check(UNUSED void **state) {
+void amxc_htable_insert_same_key_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_insert(htable, "TestKey", &it[0]), 0);
     assert_ptr_not_equal(it[0].ait, NULL);
@@ -270,7 +270,7 @@ void amxc_htable_insert_same_key_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_insert_same_it_check(UNUSED void **state) {
+void amxc_htable_insert_same_it_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_insert(htable, "TestKey", &it[0]), 0);
 
@@ -286,7 +286,7 @@ void amxc_htable_insert_same_it_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_insert_grow_check(UNUSED void **state) {
+void amxc_htable_insert_grow_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_delete(&htable, NULL);
 
@@ -310,13 +310,13 @@ void amxc_htable_insert_grow_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_is_empty_null_check(UNUSED void **state) {
+void amxc_htable_is_empty_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_is_empty(NULL), true);
     amxc_htable_teardown();
 }
 
-void amxc_htable_is_empty_check(UNUSED void **state) {
+void amxc_htable_is_empty_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_is_empty(htable), true);
 
@@ -326,13 +326,13 @@ void amxc_htable_is_empty_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_size_null_check(UNUSED void **state) {
+void amxc_htable_size_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_size(NULL), 0);
     amxc_htable_teardown();
 }
 
-void amxc_htable_size_check(UNUSED void **state) {
+void amxc_htable_size_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_size(htable), 0);
 
@@ -347,13 +347,13 @@ void amxc_htable_size_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_capacity_null_check(UNUSED void **state) {
+void amxc_htable_capacity_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_capacity(NULL), 0);
     amxc_htable_teardown();
 }
 
-void amxc_htable_capacity_check(UNUSED void **state) {
+void amxc_htable_capacity_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_delete(&htable, NULL);
 
@@ -370,7 +370,7 @@ void amxc_htable_capacity_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_get_null_check(UNUSED void **state) {
+void amxc_htable_get_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_ptr_equal(amxc_htable_get(NULL, NULL), NULL);
 
@@ -379,7 +379,7 @@ void amxc_htable_get_null_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_get_check(UNUSED void **state) {
+void amxc_htable_get_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
     amxc_htable_insert(htable, "Key2", &it[1]);
@@ -415,7 +415,7 @@ void amxc_htable_get_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_get_chained_check(UNUSED void **state) {
+void amxc_htable_get_chained_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
     amxc_htable_insert(htable, "Key610", &it[1]);
@@ -431,7 +431,7 @@ void amxc_htable_get_chained_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_get_first_null_check(UNUSED void **state) {
+void amxc_htable_get_first_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_ptr_equal(amxc_htable_get_first(NULL), NULL);
 
@@ -439,7 +439,7 @@ void amxc_htable_get_first_null_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_get_first_check(UNUSED void **state) {
+void amxc_htable_get_first_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
 
@@ -453,7 +453,7 @@ void amxc_htable_get_first_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_take_null_check(UNUSED void **state) {
+void amxc_htable_take_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_ptr_equal(amxc_htable_take(NULL, NULL), NULL);
 
@@ -462,7 +462,7 @@ void amxc_htable_take_null_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_take_check(UNUSED void **state) {
+void amxc_htable_take_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
     amxc_htable_insert(htable, "Key2", &it[1]);
@@ -503,7 +503,7 @@ void amxc_htable_take_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_take_chained_check(UNUSED void **state) {
+void amxc_htable_take_chained_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
     amxc_htable_insert(htable, "Key610", &it[1]);
@@ -526,7 +526,7 @@ void amxc_htable_take_chained_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_take_first_null_check(UNUSED void **state) {
+void amxc_htable_take_first_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_ptr_equal(amxc_htable_take_first(NULL), NULL);
 
@@ -534,7 +534,7 @@ void amxc_htable_take_first_null_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_take_first_check(UNUSED void **state) {
+void amxc_htable_take_first_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
 
@@ -550,7 +550,7 @@ void amxc_htable_take_first_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_contains_null_check(UNUSED void **state) {
+void amxc_htable_contains_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_int_equal(amxc_htable_contains(NULL, NULL), false);
 
@@ -559,7 +559,7 @@ void amxc_htable_contains_null_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_contains_check(UNUSED void **state) {
+void amxc_htable_contains_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
     amxc_htable_insert(htable, "Key2", &it[1]);
@@ -570,14 +570,14 @@ void amxc_htable_contains_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_get_next_null_check(UNUSED void **state) {
+void amxc_htable_it_get_next_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_ptr_equal(amxc_htable_it_get_next(NULL), NULL);
     assert_ptr_equal(amxc_htable_it_get_next(&it[0]), NULL);
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_get_next_check(UNUSED void **state) {
+void amxc_htable_it_get_next_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
     amxc_htable_insert(htable, "Key2", &it[1]);
@@ -586,7 +586,7 @@ void amxc_htable_it_get_next_check(UNUSED void **state) {
     amxc_htable_insert(htable, "Key5", &it[4]);
 
     unsigned int count = 0;
-    amxc_htable_it_t *it = amxc_htable_get_first(htable);
+    amxc_htable_it_t* it = amxc_htable_get_first(htable);
     while(it) {
         it = amxc_htable_it_get_next(it);
         count++;
@@ -596,7 +596,7 @@ void amxc_htable_it_get_next_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_get_next_chained_check(UNUSED void **state) {
+void amxc_htable_it_get_next_chained_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key", &it[0]);
     amxc_htable_insert(htable, "Key", &it[1]);
@@ -604,9 +604,9 @@ void amxc_htable_it_get_next_chained_check(UNUSED void **state) {
     amxc_htable_insert(htable, "Key", &it[3]);
     amxc_htable_insert(htable, "Key", &it[4]);
 
-    amxc_array_it_t *ait = it[0].ait;
+    amxc_array_it_t* ait = it[0].ait;
     unsigned int count = 0;
-    amxc_htable_it_t *it = amxc_htable_get_first(htable);
+    amxc_htable_it_t* it = amxc_htable_get_first(htable);
     while(it) {
         assert_ptr_equal(it->ait, ait);
         it = amxc_htable_it_get_next(it);
@@ -617,14 +617,14 @@ void amxc_htable_it_get_next_chained_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_get_next_key_null_check(UNUSED void **state) {
+void amxc_htable_it_get_next_key_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_ptr_equal(amxc_htable_it_get_next_key(NULL), NULL);
     assert_ptr_equal(amxc_htable_it_get_next_key(&it[0]), NULL);
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_get_next_key_check(UNUSED void **state) {
+void amxc_htable_it_get_next_key_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
     amxc_htable_insert(htable, "Key2", &it[1]);
@@ -640,8 +640,8 @@ void amxc_htable_it_get_next_key_check(UNUSED void **state) {
     amxc_htable_insert(htable, "Key3", &it[10]);
 
     unsigned int count = 0;
-    amxc_array_it_t *ait = it[0].ait;
-    amxc_htable_it_t *iter = amxc_htable_get(htable, "Key1");
+    amxc_array_it_t* ait = it[0].ait;
+    amxc_htable_it_t* iter = amxc_htable_get(htable, "Key1");
     while(iter) {
         assert_ptr_equal(iter->ait, ait);
         iter = amxc_htable_it_get_next_key(iter);
@@ -672,14 +672,14 @@ void amxc_htable_it_get_next_key_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_take_null_check(UNUSED void **state) {
+void amxc_htable_it_take_null_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_it_take(NULL);
     amxc_htable_it_take(&it[0]);
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_take_check(UNUSED void **state) {
+void amxc_htable_it_take_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key1", &it[0]);
     amxc_htable_insert(htable, "Key2", &it[1]);
@@ -704,7 +704,7 @@ void amxc_htable_it_take_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_take_chained_check(UNUSED void **state) {
+void amxc_htable_it_take_chained_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_insert(htable, "Key", &it[0]);
     amxc_htable_insert(htable, "Key", &it[1]);
@@ -736,10 +736,10 @@ void amxc_htable_it_take_chained_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_get_key_check(UNUSED void **state) {
+void amxc_htable_it_get_key_check(UNUSED void** state) {
     amxc_htable_setup();
-    assert_ptr_equal((void *) amxc_htable_it_get_key(NULL), NULL);
-    assert_ptr_equal((void *) amxc_htable_it_get_key(&it[0]), NULL);
+    assert_ptr_equal((void*) amxc_htable_it_get_key(NULL), NULL);
+    assert_ptr_equal((void*) amxc_htable_it_get_key(&it[0]), NULL);
 
     amxc_htable_insert(htable, "SomeKey", &it[0]);
     assert_string_equal(amxc_htable_it_get_key(&it[0]), "SomeKey");
@@ -750,19 +750,19 @@ void amxc_htable_it_get_key_check(UNUSED void **state) {
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_init_null_check(UNUSED void **state) {
+void amxc_htable_it_init_null_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_it_init(NULL);
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_clean_null_check(UNUSED void **state) {
+void amxc_htable_it_clean_null_check(UNUSED void** state) {
     amxc_htable_setup();
     amxc_htable_it_clean(NULL, NULL);
     amxc_htable_teardown();
 }
 
-void amxc_htable_it_clean_func_check(UNUSED void **state) {
+void amxc_htable_it_clean_func_check(UNUSED void** state) {
     amxc_htable_setup();
     deletes = 0;
     amxc_htable_insert(htable, "SomeKey", &it[0]);

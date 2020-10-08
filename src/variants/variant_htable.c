@@ -65,27 +65,27 @@
 #include <amxc/amxc_string.h>
 #include <amxc_variant_priv.h>
 
-static int variant_htable_init(amxc_var_t * const var) {
+static int variant_htable_init(amxc_var_t* const var) {
     return amxc_htable_init(&var->data.vm, 10);
 }
 
-void variant_htable_it_free(AMXC_UNUSED const char *key, amxc_htable_it_t *it) {
-    amxc_var_t *var = amxc_var_from_htable_it(it);
+void variant_htable_it_free(AMXC_UNUSED const char* key, amxc_htable_it_t* it) {
+    amxc_var_t* var = amxc_var_from_htable_it(it);
     amxc_var_delete(&var);
 }
 
-static void variant_htable_delete(amxc_var_t *var) {
+static void variant_htable_delete(amxc_var_t* var) {
     amxc_htable_clean(&var->data.vm, variant_htable_it_free);
 }
 
-static int variant_htable_copy_htable(amxc_var_t * const dest,
-                                      const amxc_htable_t * const src_htable) {
+static int variant_htable_copy_htable(amxc_var_t* const dest,
+                                      const amxc_htable_t* const src_htable) {
     int retval = -1;
 
     amxc_htable_for_each(it, src_htable) {
-        amxc_var_t *var = NULL;
-        amxc_var_t *item = amxc_var_from_htable_it(it);
-        const char *key = amxc_htable_it_get_key(it);
+        amxc_var_t* var = NULL;
+        amxc_var_t* item = amxc_var_from_htable_it(it);
+        const char* key = amxc_htable_it_get_key(it);
         when_null(item, exit);
         when_failed(amxc_var_new(&var), exit);
         if(amxc_var_copy(var, item) != 0) {
@@ -101,27 +101,27 @@ exit:
     return retval;
 }
 
-static int variant_htable_copy(amxc_var_t * const dest,
-                               const amxc_var_t * const src) {
-    const amxc_htable_t *htable = &src->data.vm;
+static int variant_htable_copy(amxc_var_t* const dest,
+                               const amxc_var_t* const src) {
+    const amxc_htable_t* htable = &src->data.vm;
     return variant_htable_copy_htable(dest, htable);
 }
 
 // TODO - refactor function to long
-static int variant_htable_to_string(amxc_var_t * const dest,
-                                    const amxc_var_t * const src) {
+static int variant_htable_to_string(amxc_var_t* const dest,
+                                    const amxc_var_t* const src) {
     int retval = -1;
-    const amxc_htable_t *htable = &src->data.vm;
+    const amxc_htable_t* htable = &src->data.vm;
     amxc_string_t string;
     amxc_var_t intermediate;
-    const char *sep = "";
+    const char* sep = "";
 
     amxc_var_init(&intermediate);
     when_failed(amxc_string_init(&string, 100), exit);
 
     amxc_htable_for_each(it, htable) {
-        amxc_var_t *item = amxc_var_from_htable_it(it);
-        const char *key = amxc_htable_it_get_key(it);
+        amxc_var_t* item = amxc_var_from_htable_it(it);
+        const char* key = amxc_htable_it_get_key(it);
         size_t length = 0;
         size_t key_length = 0;
         if(amxc_var_convert(&intermediate, item, AMXC_VAR_ID_CSTRING) != 0) {
@@ -165,8 +165,8 @@ exit:
     return retval;
 }
 
-static int variant_htable_to_number(amxc_var_t * const dest,
-                                    const amxc_var_t * const src) {
+static int variant_htable_to_number(amxc_var_t* const dest,
+                                    const amxc_var_t* const src) {
     int retval = -1;
 
     amxc_var_t intermediate;
@@ -178,21 +178,21 @@ static int variant_htable_to_number(amxc_var_t * const dest,
     return retval;
 }
 
-static int variant_htable_to_bool(amxc_var_t * const dest,
-                                  const amxc_var_t * const src) {
+static int variant_htable_to_bool(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
     dest->data.b = !amxc_htable_is_empty(&src->data.vm);
 
     return 0;
 }
 
-static int variant_htable_to_llist(amxc_var_t * const dest,
-                                   const amxc_var_t * const src) {
+static int variant_htable_to_llist(amxc_var_t* const dest,
+                                   const amxc_var_t* const src) {
     int retval = -1;
-    const amxc_htable_t *htable = &src->data.vm;
+    const amxc_htable_t* htable = &src->data.vm;
 
     amxc_htable_for_each(it, htable) {
-        amxc_var_t *copy = NULL;
-        amxc_var_t *item = amxc_var_from_htable_it(it);
+        amxc_var_t* copy = NULL;
+        amxc_var_t* item = amxc_var_from_htable_it(it);
 
         when_failed(amxc_var_new(&copy), exit);
         if(amxc_var_copy(copy, item) != 0) {
@@ -211,8 +211,8 @@ exit:
     return retval;
 }
 
-static int variant_htable_convert_to(amxc_var_t * const dest,
-                                     const amxc_var_t * const src) {
+static int variant_htable_convert_to(amxc_var_t* const dest,
+                                     const amxc_var_t* const src) {
     int retval = -1;
 
     amxc_var_convert_fn_t convfn[AMXC_VAR_ID_CUSTOM_BASE] = {
@@ -253,13 +253,13 @@ exit:
     return retval;
 }
 
-static amxc_var_t *variant_htable_get_key(const amxc_var_t * const src,
-                                          const char * const key,
+static amxc_var_t* variant_htable_get_key(const amxc_var_t* const src,
+                                          const char* const key,
                                           int flags) {
-    amxc_var_t *retval = NULL;
-    const amxc_htable_t *htable = &src->data.vm;
-    amxc_htable_it_t *hit = amxc_htable_get(htable, key);
-    amxc_var_t *src_var = NULL;
+    amxc_var_t* retval = NULL;
+    const amxc_htable_t* htable = &src->data.vm;
+    amxc_htable_it_t* hit = amxc_htable_get(htable, key);
+    amxc_var_t* src_var = NULL;
 
     when_null(hit, exit);
 
@@ -275,14 +275,14 @@ exit:
     return retval;
 }
 
-static int variant_htable_set_key(amxc_var_t * const dest,
-                                  amxc_var_t * const src,
-                                  const char * const key,
+static int variant_htable_set_key(amxc_var_t* const dest,
+                                  amxc_var_t* const src,
+                                  const char* const key,
                                   int flags) {
     int retval = -1;
-    amxc_var_t *dest_var = NULL;
-    amxc_htable_t *htable = &dest->data.vm;
-    amxc_htable_it_t *current_hit = amxc_htable_take(htable, key);
+    amxc_var_t* dest_var = NULL;
+    amxc_htable_t* htable = &dest->data.vm;
+    amxc_htable_it_t* current_hit = amxc_htable_take(htable, key);
 
     if((current_hit != NULL) &&
        ((flags & AMXC_VAR_FLAG_UPDATE) == 0)) {
@@ -340,9 +340,9 @@ AMXC_DESTRUCTOR static void amxc_var_htable_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_htable);
 }
 
-amxc_htable_t *amxc_var_get_amxc_htable_t(const amxc_var_t * const var) {
-    amxc_htable_t *htable = NULL;
-    amxc_htable_it_t *it = NULL;
+amxc_htable_t* amxc_var_get_amxc_htable_t(const amxc_var_t* const var) {
+    amxc_htable_t* htable = NULL;
+    amxc_htable_it_t* it = NULL;
     when_null(var, exit);
 
     amxc_var_t variant;
@@ -356,7 +356,7 @@ amxc_htable_t *amxc_var_get_amxc_htable_t(const amxc_var_t * const var) {
 
     it = amxc_htable_take_first(&variant.data.vm);
     while(it != NULL) {
-        const char *key = amxc_htable_it_get_key(it);
+        const char* key = amxc_htable_it_get_key(it);
         amxc_htable_insert(htable, key, it);
         it = amxc_htable_take_first(&variant.data.vm);
     }
@@ -367,8 +367,8 @@ exit:
     return htable;
 }
 
-const amxc_htable_t *amxc_var_get_const_amxc_htable_t(const amxc_var_t * const var) {
-    const amxc_htable_t *retval = NULL;
+const amxc_htable_t* amxc_var_get_const_amxc_htable_t(const amxc_var_t* const var) {
+    const amxc_htable_t* retval = NULL;
     when_null(var, exit);
     when_true(var->type_id != AMXC_VAR_ID_HTABLE, exit);
 
@@ -378,9 +378,9 @@ exit:
     return retval;
 }
 
-amxc_var_t *amxc_var_add_new_amxc_htable_t(amxc_var_t * const var,
-                                           const amxc_htable_t *htable) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_amxc_htable_t(amxc_var_t* const var,
+                                           const amxc_htable_t* htable) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new(var);
@@ -397,10 +397,10 @@ exit:
     return subvar;
 }
 
-amxc_var_t *amxc_var_add_new_key_amxc_htable_t(amxc_var_t * const var,
-                                               const char *key,
-                                               const amxc_htable_t *htable) {
-    amxc_var_t *subvar = NULL;
+amxc_var_t* amxc_var_add_new_key_amxc_htable_t(amxc_var_t* const var,
+                                               const char* key,
+                                               const amxc_htable_t* htable) {
+    amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new_key(var, key);

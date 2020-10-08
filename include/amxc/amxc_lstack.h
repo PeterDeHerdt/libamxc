@@ -125,7 +125,7 @@ typedef amxc_llist_it_delete_t amxc_lstack_it_delete_t;
    -1 if an error occured. 0 on success
  */
 AMXC_INLINE
-int amxc_lstack_new(amxc_lstack_t **lstack) {
+int amxc_lstack_new(amxc_lstack_t** lstack) {
     return amxc_llist_new(lstack);
 }
 
@@ -149,7 +149,7 @@ int amxc_lstack_new(amxc_lstack_t **lstack) {
                the linked stack
  */
 AMXC_INLINE
-void amxc_lstack_delete(amxc_lstack_t **lstack, amxc_lstack_it_delete_t func) {
+void amxc_lstack_delete(amxc_lstack_t** lstack, amxc_lstack_it_delete_t func) {
     amxc_llist_delete(lstack, func);
 }
 
@@ -175,7 +175,7 @@ void amxc_lstack_delete(amxc_lstack_t **lstack, amxc_lstack_it_delete_t func) {
    -1 if a NULL pointer is given.
  */
 AMXC_INLINE
-int amxc_lstack_init(amxc_lstack_t * const lstack) {
+int amxc_lstack_init(amxc_lstack_t* const lstack) {
     return amxc_llist_init(lstack);
 }
 
@@ -193,7 +193,7 @@ int amxc_lstack_init(amxc_lstack_t * const lstack) {
                in the linked stack
  */
 AMXC_INLINE
-void amxc_lstack_clean(amxc_lstack_t * const lstack, amxc_lstack_it_delete_t func) {
+void amxc_lstack_clean(amxc_lstack_t* const lstack, amxc_lstack_it_delete_t func) {
     amxc_llist_clean(lstack, func);
 }
 
@@ -216,7 +216,7 @@ void amxc_lstack_clean(amxc_lstack_t * const lstack, amxc_lstack_it_delete_t fun
    returns 0 when the item is added, -1 when there was an error
  */
 AMXC_INLINE
-int amxc_lstack_push(amxc_lstack_t * const lstack, amxc_lstack_it_t * const it) {
+int amxc_lstack_push(amxc_lstack_t* const lstack, amxc_lstack_it_t* const it) {
     return amxc_llist_append(lstack, it);
 }
 
@@ -231,7 +231,7 @@ int amxc_lstack_push(amxc_lstack_t * const lstack, amxc_lstack_it_t * const it) 
    The iterator to the last added item or NULL if no more items on the stack
  */
 AMXC_INLINE
-amxc_lstack_it_t *amxc_lstack_pop(amxc_lstack_t * const lstack) {
+amxc_lstack_it_t* amxc_lstack_pop(amxc_lstack_t* const lstack) {
     return amxc_llist_take_last(lstack);
 }
 
@@ -246,7 +246,7 @@ amxc_lstack_it_t *amxc_lstack_pop(amxc_lstack_t * const lstack) {
    The iterator to the last added item or NULL if no more items on the stack
  */
 AMXC_INLINE
-amxc_lstack_it_t *amxc_lstack_peek(amxc_lstack_t * const lstack) {
+amxc_lstack_it_t* amxc_lstack_peek(amxc_lstack_t* const lstack) {
     return amxc_llist_get_last(lstack);
 }
 
@@ -262,7 +262,7 @@ amxc_lstack_it_t *amxc_lstack_peek(amxc_lstack_t * const lstack) {
    The number of items on the linked stack.
  */
 AMXC_INLINE
-size_t amxc_lstack_size(const amxc_lstack_t * const lstack) {
+size_t amxc_lstack_size(const amxc_lstack_t* const lstack) {
     return amxc_llist_size(lstack);
 }
 
@@ -278,7 +278,7 @@ size_t amxc_lstack_size(const amxc_lstack_t * const lstack) {
    false when there is at least one item on the stack.
  */
 AMXC_INLINE
-bool amxc_lstack_is_empty(const amxc_lstack_t * const lstack) {
+bool amxc_lstack_is_empty(const amxc_lstack_t* const lstack) {
     return amxc_llist_is_empty(lstack);
 }
 
@@ -302,7 +302,7 @@ bool amxc_lstack_is_empty(const amxc_lstack_t * const lstack) {
    -1 if a NULL pointer is given.
  */
 AMXC_INLINE
-int amxc_lstack_it_init(amxc_lstack_it_t * const it) {
+int amxc_lstack_it_init(amxc_lstack_it_t* const it) {
     return amxc_llist_it_init(it);
 }
 

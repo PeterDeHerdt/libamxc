@@ -67,21 +67,21 @@ extern "C"
 #endif
 
 // string utilities
-int amxc_string_resolve_env(amxc_string_t * const string);
-int amxc_string_resolve_var(amxc_string_t * const string,
-                            const amxc_var_t * const data);
-int amxc_string_resolve(amxc_string_t * const string,
-                        const amxc_var_t * const data);
-int amxc_string_set_resolved(amxc_string_t *string,
-                             const char *text,
-                             const amxc_var_t * const data);
-int amxc_string_new_resolved(amxc_string_t **string,
-                             const char *text,
-                             const amxc_var_t * const data);
+int amxc_string_resolve_env(amxc_string_t* const string);
+int amxc_string_resolve_var(amxc_string_t* const string,
+                            const amxc_var_t* const data);
+int amxc_string_resolve(amxc_string_t* const string,
+                        const amxc_var_t* const data);
+int amxc_string_set_resolved(amxc_string_t* string,
+                             const char* text,
+                             const amxc_var_t* const data);
+int amxc_string_new_resolved(amxc_string_t** string,
+                             const char* text,
+                             const amxc_var_t* const data);
 
 // llist/string utilities
-amxc_llist_it_t *amxc_llist_add_string(amxc_llist_t * const llist,
-                                       const char *text);
+amxc_llist_it_t* amxc_llist_add_string(amxc_llist_t* const llist,
+                                       const char* text);
 /**
    @ingroup amxc_string
    @brief
@@ -99,7 +99,7 @@ amxc_llist_it_t *amxc_llist_add_string(amxc_llist_t * const llist,
 
    @param it a pointer to a linked list iterator
  */
-void amxc_string_list_it_free(amxc_llist_it_t *it);
+void amxc_string_list_it_free(amxc_llist_it_t* it);
 
 #ifdef __cplusplus
 }

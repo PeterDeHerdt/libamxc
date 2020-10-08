@@ -70,14 +70,14 @@
 
 #define UNUSED __attribute__((unused))
 
-void amxc_rbuffer_new_delete_null_check(UNUSED void **state) {
+void amxc_rbuffer_new_delete_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_rbuffer_new(NULL, 0), -1);
     amxc_rbuffer_delete(NULL);
 }
 
-void amxc_rbuffer_new_delete_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_new_delete_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     assert_ptr_not_equal(rbuffer, NULL);
@@ -100,13 +100,13 @@ void amxc_rbuffer_new_delete_check(UNUSED void **state) {
     assert_ptr_equal(rbuffer, NULL);
 }
 
-void amxc_rbuffer_init_clean_null_check(UNUSED void **state) {
+void amxc_rbuffer_init_clean_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_rbuffer_init(NULL, 0), -1);
     amxc_rbuffer_clean(NULL);
 }
 
-void amxc_rbuffer_init_clean_check(UNUSED void **state) {
+void amxc_rbuffer_init_clean_check(UNUSED void** state) {
     amxc_rbuffer_t rbuffer;
 
     assert_int_equal(amxc_rbuffer_init(&rbuffer, 30), 0);
@@ -122,14 +122,14 @@ void amxc_rbuffer_init_clean_check(UNUSED void **state) {
     assert_ptr_equal(rbuffer.write_pos, NULL);
 }
 
-void amxc_rbuffer_grow_shrink_null_check(UNUSED void **state) {
+void amxc_rbuffer_grow_shrink_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_rbuffer_grow(NULL, 0), -1);
     assert_int_equal(amxc_rbuffer_shrink(NULL, 0), -1);
 }
 
-void amxc_rbuffer_grow_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_grow_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
 
@@ -142,8 +142,8 @@ void amxc_rbuffer_grow_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_grow_read_before_write_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_grow_read_before_write_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     rbuffer->read_pos = rbuffer->buffer_start + 10;
@@ -158,8 +158,8 @@ void amxc_rbuffer_grow_read_before_write_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_grow_write_before_read_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_grow_write_before_read_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     rbuffer->read_pos = rbuffer->buffer_start + 20;
@@ -174,8 +174,8 @@ void amxc_rbuffer_grow_write_before_read_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_shrink_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_shrink_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
 
@@ -190,8 +190,8 @@ void amxc_rbuffer_shrink_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_shrink_read_before_write_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_shrink_read_before_write_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     rbuffer->read_pos = rbuffer->buffer_start + 5;
@@ -206,8 +206,8 @@ void amxc_rbuffer_shrink_read_before_write_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_shrink_read_before_write_data_loss_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_shrink_read_before_write_data_loss_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     rbuffer->read_pos = rbuffer->buffer_start + 5;
@@ -222,8 +222,8 @@ void amxc_rbuffer_shrink_read_before_write_data_loss_check(UNUSED void **state) 
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_shrink_write_before_read_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_shrink_write_before_read_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     rbuffer->read_pos = rbuffer->buffer_start + 25;
@@ -238,8 +238,8 @@ void amxc_rbuffer_shrink_write_before_read_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_shrink_write_before_read_data_loss_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_shrink_write_before_read_data_loss_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     rbuffer->read_pos = rbuffer->buffer_start + 15;
@@ -266,8 +266,8 @@ void amxc_rbuffer_shrink_write_before_read_data_loss_check(UNUSED void **state) 
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_shrink_full(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_shrink_full(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     rbuffer->read_pos = rbuffer->buffer_start + 15;
@@ -282,13 +282,13 @@ void amxc_rbuffer_shrink_full(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_size_null_check(UNUSED void **state) {
+void amxc_rbuffer_size_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_rbuffer_size(NULL), 0);
 }
 
-void amxc_rbuffer_size_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_size_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     assert_int_equal(amxc_rbuffer_size(rbuffer), 0);
@@ -304,13 +304,13 @@ void amxc_rbuffer_size_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_capacity_null_check(UNUSED void **state) {
+void amxc_rbuffer_capacity_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_rbuffer_capacity(NULL), 0);
 }
 
-void amxc_rbuffer_capacity_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_capacity_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     assert_int_equal(amxc_rbuffer_capacity(rbuffer), 30);
@@ -324,13 +324,13 @@ void amxc_rbuffer_capacity_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_is_empty_null_check(UNUSED void **state) {
+void amxc_rbuffer_is_empty_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_rbuffer_is_empty(NULL), true);
 }
 
-void amxc_rbuffer_is_empty_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_is_empty_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     assert_int_equal(amxc_rbuffer_is_empty(rbuffer), true);
@@ -349,14 +349,14 @@ void amxc_rbuffer_is_empty_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_write_null_check(UNUSED void **state) {
+void amxc_rbuffer_write_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_rbuffer_write(NULL, NULL, 0), -1);
 }
 
-void amxc_rbuffer_write_buffer_empty_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
-    const char *data = "0123456789";
+void amxc_rbuffer_write_buffer_empty_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
+    const char* data = "0123456789";
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
 
@@ -374,9 +374,9 @@ void amxc_rbuffer_write_buffer_empty_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_write_buffer_wrap_buffer_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
-    const char *data = "0123456789";
+void amxc_rbuffer_write_buffer_wrap_buffer_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
+    const char* data = "0123456789";
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     rbuffer->read_pos = rbuffer->buffer_start + 25;
@@ -391,9 +391,9 @@ void amxc_rbuffer_write_buffer_wrap_buffer_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_write_buffer_need_to_grow_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
-    const char *data = "0123456789";
+void amxc_rbuffer_write_buffer_need_to_grow_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
+    const char* data = "0123456789";
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     rbuffer->read_pos = rbuffer->buffer_start + 1;
@@ -408,18 +408,18 @@ void amxc_rbuffer_write_buffer_need_to_grow_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_read_null_check(UNUSED void **state) {
+void amxc_rbuffer_read_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_rbuffer_read(NULL, NULL, 10), -1);
 
-    amxc_rbuffer_t *rbuffer = NULL;
+    amxc_rbuffer_t* rbuffer = NULL;
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
     assert_int_equal(amxc_rbuffer_read(rbuffer, NULL, 10), -1);
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_read_buffer_empty_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
+void amxc_rbuffer_read_buffer_empty_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
     char buffer[10] = "";
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
@@ -431,9 +431,9 @@ void amxc_rbuffer_read_buffer_empty_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_read_zero_bytes_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
-    const char *data = "0123456789";
+void amxc_rbuffer_read_zero_bytes_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
+    const char* data = "0123456789";
     char buffer[10] = "";
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
@@ -447,9 +447,9 @@ void amxc_rbuffer_read_zero_bytes_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_read_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
-    const char *data = "0123456789";
+void amxc_rbuffer_read_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
+    const char* data = "0123456789";
     char buffer[10] = "";
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
@@ -473,9 +473,9 @@ void amxc_rbuffer_read_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_read_short_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
-    const char *data = "0123456789";
+void amxc_rbuffer_read_short_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
+    const char* data = "0123456789";
     char buffer[30] = "";
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
@@ -502,9 +502,9 @@ void amxc_rbuffer_read_short_check(UNUSED void **state) {
     amxc_rbuffer_delete(&rbuffer);
 }
 
-void amxc_rbuffer_read_wrap_check(UNUSED void **state) {
-    amxc_rbuffer_t *rbuffer = NULL;
-    const char *data = "0123456789";
+void amxc_rbuffer_read_wrap_check(UNUSED void** state) {
+    amxc_rbuffer_t* rbuffer = NULL;
+    const char* data = "0123456789";
     char buffer[10] = "";
 
     assert_int_equal(amxc_rbuffer_new(&rbuffer, 30), 0);
