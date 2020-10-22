@@ -66,16 +66,16 @@
 
 #include <amxc_variant_priv.h>
 
-static int variant_int32_to_string(amxc_var_t* const dest,
+static int variant_uint8_to_string(amxc_var_t* const dest,
                                    const amxc_var_t* const src) {
     int retval = -1;
     int check = 0;
-    int size_needed = snprintf(NULL, 0, "%" PRId32, src->data.i32);
+    int size_needed = snprintf(NULL, 0, "%" PRIu8, src->data.ui8);
     dest->data.s = (char*) calloc(size_needed + 1, sizeof(char));
 
     when_null(dest->data.s, exit);
 
-    check = snprintf(dest->data.s, size_needed + 1, "%" PRId32, src->data.i32);
+    check = snprintf(dest->data.s, size_needed + 1, "%" PRIu8, src->data.ui8);
     if(check < 0) {
         free(dest->data.s);
         dest->data.s = NULL;
@@ -88,128 +88,118 @@ exit:
     return retval;
 }
 
-static int variant_int32_to_int8(amxc_var_t* const dest,
+static int variant_uint8_to_int8(amxc_var_t* const dest,
                                  const amxc_var_t* const src) {
     int retval = -1;
 
     /* verify overflow or underflow */
-    when_true(src->data.i32 > INT8_MAX || src->data.i32 < INT8_MIN, exit);
+    when_true(src->data.ui8 > INT8_MAX, exit);
 
-    dest->data.i8 = (int8_t) src->data.i32;
+    dest->data.i8 = (int8_t) src->data.ui8;
     retval = 0;
 
 exit:
     return retval;
 }
 
-static int variant_int32_to_int16(amxc_var_t* const dest,
+static int variant_uint8_to_int16(amxc_var_t* const dest,
                                   const amxc_var_t* const src) {
     int retval = -1;
 
-    /* verify overflow or underflow */
-    when_true(src->data.i32 > INT16_MAX || src->data.i32 < INT16_MIN, exit);
-
-    dest->data.i16 = (int16_t) src->data.i32;
+    dest->data.i16 = (int16_t) src->data.ui8;
     retval = 0;
 
-exit:
     return retval;
 }
 
-static int variant_int32_to_int64(amxc_var_t* const dest,
+static int variant_uint8_to_int32(amxc_var_t* const dest,
                                   const amxc_var_t* const src) {
     int retval = -1;
 
-    dest->data.i64 = (int64_t) src->data.i32;
+    dest->data.i32 = (int32_t) src->data.ui8;
     retval = 0;
 
     return retval;
 }
 
-static int variant_int32_to_uint8(amxc_var_t* const dest,
+static int variant_uint8_to_int64(amxc_var_t* const dest,
                                   const amxc_var_t* const src) {
     int retval = -1;
 
-    /* verify overflow or underflow */
-    when_true(src->data.i32 == INT32_MIN || llabs(src->data.i32) > UINT8_MAX, exit);
-
-    dest->data.i8 = (uint8_t) llabs(src->data.i32);
+    dest->data.i64 = (int64_t) src->data.ui8;
     retval = 0;
 
-exit:
     return retval;
 }
 
-static int variant_int32_to_uint16(amxc_var_t* const dest,
+static int variant_uint8_to_uint16(amxc_var_t* const dest,
                                    const amxc_var_t* const src) {
     int retval = -1;
 
-    /* verify overflow or underflow */
-    when_true(src->data.i32 == INT32_MIN || llabs(src->data.i32) > UINT16_MAX, exit);
-
-    dest->data.i16 = (uint16_t) llabs(src->data.i32);
+    dest->data.i16 = (uint16_t) src->data.ui8;
     retval = 0;
 
-exit:
     return retval;
 }
 
-static int variant_int32_to_uint32(amxc_var_t* const dest,
+static int variant_uint8_to_uint32(amxc_var_t* const dest,
                                    const amxc_var_t* const src) {
     int retval = -1;
 
-    /* verify overflow or underflow */
-    dest->data.i32 = (uint32_t) llabs(src->data.i32);
+    dest->data.ui32 = (uint32_t) src->data.ui8;
     retval = 0;
 
     return retval;
 }
 
-static int variant_int32_to_uint64(amxc_var_t* const dest,
+static int variant_uint8_to_uint64(amxc_var_t* const dest,
                                    const amxc_var_t* const src) {
-    dest->data.ui64 = llabs(src->data.i32);
+    int retval = -1;
+
+    dest->data.i64 = (uint64_t) src->data.ui8;
+    retval = 0;
+
+    return retval;
+}
+
+static int variant_uint8_to_float(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
+    dest->data.f = (float) src->data.ui8;
     return 0;
 }
 
-
-static int variant_int32_to_float(amxc_var_t* const dest,
-                                  const amxc_var_t* const src) {
-    dest->data.f = (float) src->data.i32;
-    return 0;
-}
-
-static int variant_int32_to_double(amxc_var_t* const dest,
+static int variant_uint8_to_double(amxc_var_t* const dest,
                                    const amxc_var_t* const src) {
-    dest->data.d = (double) src->data.i32;
+    dest->data.d = (double) src->data.ui8;
     return 0;
 }
 
-static int variant_int32_to_bool(amxc_var_t* const dest,
+static int variant_uint8_to_bool(amxc_var_t* const dest,
                                  const amxc_var_t* const src) {
-    dest->data.b = src->data.i32 == 0 ? false : true;
+    dest->data.b = src->data.ui8 == 0 ? false : true;
     return 0;
 }
 
-static int variant_int32_to_fd(amxc_var_t* const dest,
+static int variant_uint8_to_fd(amxc_var_t* const dest,
                                const amxc_var_t* const src) {
     int retval = -1;
     struct rlimit nofile = { 0, 0 };
     when_failed(getrlimit(RLIMIT_NOFILE, &nofile), exit);
 
-    when_true(src->data.i32 < 0 || (rlim_t) llabs(src->data.i32) > nofile.rlim_max, exit);
-    when_failed(fcntl((int) llabs(src->data.i32), F_GETFD), exit);
+    when_true((rlim_t) src->data.ui8 > nofile.rlim_max, exit);
+    when_failed(fcntl((int) src->data.ui8, F_GETFD), exit);
 
-    dest->data.fd = (int) llabs(src->data.i32);
+    dest->data.fd = (int) src->data.ui8;
     retval = 0;
 
 exit:
     return retval;
 }
 
-static int variant_int32_to_ts(amxc_var_t* const dest,
+static int variant_uint8_to_ts(amxc_var_t* const dest,
                                const amxc_var_t* const src) {
     int retval = -1;
-    dest->data.ts.sec = src->data.i32;
+    dest->data.ts.sec = src->data.ui8;
     if(amxc_ts_is_valid(&dest->data.ts)) {
         retval = 0;
     } else {
@@ -219,30 +209,30 @@ static int variant_int32_to_ts(amxc_var_t* const dest,
     return retval;
 }
 
-static int variant_int32_convert_to(amxc_var_t* const dest,
+static int variant_uint8_convert_to(amxc_var_t* const dest,
                                     const amxc_var_t* const src) {
     int retval = -1;
 
     amxc_var_convert_fn_t convfn[AMXC_VAR_ID_CUSTOM_BASE] = {
         amxc_var_default_convert_to_null,
-        variant_int32_to_string,
-        variant_int32_to_int8,
-        variant_int32_to_int16,
+        variant_uint8_to_string,
+        variant_uint8_to_int8,
+        variant_uint8_to_int16,
+        variant_uint8_to_int32,
+        variant_uint8_to_int64,
         amxc_var_default_copy,
-        variant_int32_to_int64,
-        variant_int32_to_uint8,
-        variant_int32_to_uint16,
-        variant_int32_to_uint32,
-        variant_int32_to_uint64,
-        variant_int32_to_float,
-        variant_int32_to_double,
-        variant_int32_to_bool,
+        variant_uint8_to_uint16,
+        variant_uint8_to_uint32,
+        variant_uint8_to_uint64,
+        variant_uint8_to_float,
+        variant_uint8_to_double,
+        variant_uint8_to_bool,
         amxc_var_default_convert_to_list,
         amxc_var_default_convert_to_htable,
-        variant_int32_to_fd,
-        variant_int32_to_ts,
-        variant_int32_to_string,
-        variant_int32_to_string,
+        variant_uint8_to_fd,
+        variant_uint8_to_ts,
+        variant_uint8_to_string,
+        variant_uint8_to_string,
         amxc_var_default_copy,
     };
 
@@ -252,7 +242,7 @@ static int variant_int32_convert_to(amxc_var_t* const dest,
 
     if(convfn[dest->type_id] != NULL) {
         if(dest->type_id == AMXC_VAR_ID_ANY) {
-            amxc_var_set_type(dest, AMXC_VAR_ID_INT32);
+            amxc_var_set_type(dest, AMXC_VAR_ID_UINT8);
         }
         retval = convfn[dest->type_id](dest, src);
     }
@@ -261,12 +251,12 @@ exit:
     return retval;
 }
 
-static int variant_int32_compare(const amxc_var_t* const lval,
+static int variant_uint8_compare(const amxc_var_t* const lval,
                                  const amxc_var_t* const rval,
                                  int* const result) {
-    if(lval->data.i32 == rval->data.i32) {
+    if(lval->data.ui8 == rval->data.ui8) {
         *result = 0;
-    } else if(lval->data.i32 > rval->data.i32) {
+    } else if(lval->data.ui8 > rval->data.ui8) {
         *result = 1;
     } else {
         *result = -1;
@@ -274,75 +264,75 @@ static int variant_int32_compare(const amxc_var_t* const lval,
     return 0;
 }
 
-static amxc_var_type_t amxc_variant_int32 = {
+static amxc_var_type_t amxc_variant_uint8 = {
     .init = NULL,
     .del = NULL,
     .copy = amxc_var_default_copy,
     .convert_from = NULL,
-    .convert_to = variant_int32_convert_to,
-    .compare = variant_int32_compare,
+    .convert_to = variant_uint8_convert_to,
+    .compare = variant_uint8_compare,
     .get_key = NULL,
     .set_key = NULL,
     .get_index = NULL,
     .set_index = NULL,
     .type_id = 0,
     .hit = { .ait = NULL, .key = NULL, .next = NULL },
-    .name = AMXC_VAR_NAME_INT32
+    .name = AMXC_VAR_NAME_UINT8
 };
 
-AMXC_CONSTRUCTOR static void amxc_var_int32_init(void) {
-    amxc_var_add_type(&amxc_variant_int32, AMXC_VAR_ID_INT32);
+AMXC_CONSTRUCTOR static void amxc_var_uint8_init(void) {
+    amxc_var_add_type(&amxc_variant_uint8, AMXC_VAR_ID_UINT8);
 }
 
-AMXC_DESTRUCTOR static void amxc_var_int32_cleanup(void) {
-    amxc_var_remove_type(&amxc_variant_int32);
+AMXC_DESTRUCTOR static void amxc_var_uint8_cleanup(void) {
+    amxc_var_remove_type(&amxc_variant_uint8);
 }
 
-int amxc_var_set_int32_t(amxc_var_t* var, int32_t val) {
+int amxc_var_set_uint8_t(amxc_var_t* var, uint8_t val) {
     int retval = -1;
     when_null(var, exit);
 
-    when_failed(amxc_var_set_type(var, AMXC_VAR_ID_INT32), exit);
+    when_failed(amxc_var_set_type(var, AMXC_VAR_ID_UINT8), exit);
 
-    var->data.i32 = val;
+    var->data.ui8 = val;
     retval = 0;
 
 exit:
     return retval;
 }
 
-int32_t amxc_var_get_int32_t(const amxc_var_t* var) {
-    int32_t retval = 0;
+uint8_t amxc_var_get_uint8_t(const amxc_var_t* var) {
+    uint32_t retval = 0;
     when_null(var, exit);
 
     amxc_var_t variant;
     amxc_var_init(&variant);
-    when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_INT32), exit);
-    retval = variant.data.i32;
+    when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_UINT8), exit);
+    retval = variant.data.ui8;
 
 exit:
     return retval;
 }
 
-int32_t amxc_var_get_const_int32_t(const amxc_var_t* const var) {
-    int32_t retval = 0;
+uint8_t amxc_var_get_const_uint8_t(const amxc_var_t* const var) {
+    uint32_t retval = 0;
     when_null(var, exit);
-    when_true(var->type_id != AMXC_VAR_ID_INT32, exit);
+    when_true(var->type_id != AMXC_VAR_ID_UINT8, exit);
 
-    retval = var->data.i32;
+    retval = var->data.ui8;
 
 exit:
     return retval;
 }
 
-amxc_var_t* amxc_var_add_new_int32_t(amxc_var_t* const var, int32_t val) {
+amxc_var_t* amxc_var_add_new_uint8_t(amxc_var_t* const var, uint8_t val) {
     amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new(var);
     when_null(subvar, exit);
 
-    if(amxc_var_set_int32_t(subvar, val) != 0) {
+    if(amxc_var_set_uint8_t(subvar, val) != 0) {
         amxc_var_delete(&subvar);
     }
 
@@ -350,14 +340,14 @@ exit:
     return subvar;
 }
 
-amxc_var_t* amxc_var_add_new_key_int32_t(amxc_var_t* const var, const char* key, int32_t val) {
+amxc_var_t* amxc_var_add_new_key_uint8_t(amxc_var_t* const var, const char* key, uint8_t val) {
     amxc_var_t* subvar = NULL;
 
     when_null(var, exit);
     subvar = amxc_var_add_new_key(var, key);
     when_null(subvar, exit);
 
-    if(amxc_var_set_int32_t(subvar, val) != 0) {
+    if(amxc_var_set_uint8_t(subvar, val) != 0) {
         amxc_var_delete(&subvar);
     }
 

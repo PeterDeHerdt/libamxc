@@ -171,6 +171,13 @@ void test_variant_uint64_convert_to(UNUSED void** state) {
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_UINT64);
     assert_int_equal(copy_var.data.ui64, 4294967295);
 
+    var.data.ui64 = 1000;
+    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_TIMESTAMP), 0);
+    assert_int_equal(copy_var.type_id, AMXC_VAR_ID_TIMESTAMP);
+    var.data.ui64 = -1000;
+    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_TIMESTAMP), 0);
+    assert_int_equal(copy_var.type_id, AMXC_VAR_ID_TIMESTAMP);
+
     var.data.ui64 = 0x00000000F0000000;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_BOOL), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_BOOL);

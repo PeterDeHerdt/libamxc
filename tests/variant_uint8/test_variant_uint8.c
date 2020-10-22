@@ -75,26 +75,26 @@
 #include <amxc/amxc_variant.h>
 #include <amxc_variant_priv.h>
 
-#include "test_variant_uint32.h"
+#include "test_variant_uint8.h"
 
 #define UNUSED __attribute__((unused))
 
-void test_variant_uint32_copy(UNUSED void** state) {
+void test_variant_uint8_copy(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_init(&copy_var), 0);
     assert_int_equal(var.type_id, AMXC_VAR_ID_NULL);
-    assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_UINT32), 0);
-    assert_int_equal(var.type_id, AMXC_VAR_ID_UINT32);
-    var.data.ui32 = 4026531840;
+    assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_UINT8), 0);
+    assert_int_equal(var.type_id, AMXC_VAR_ID_UINT8);
+    var.data.ui8 = 255;
 
     assert_int_equal(amxc_var_copy(&copy_var, &var), 0);
-    var.data.ui32 = 4026531840;
+    var.data.ui8 = 255;
 }
 
-void test_variant_uint32_convert_to(UNUSED void** state) {
+void test_variant_uint8_convert_to(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
 
@@ -102,106 +102,85 @@ void test_variant_uint32_convert_to(UNUSED void** state) {
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_init(&copy_var), 0);
     assert_int_equal(var.type_id, AMXC_VAR_ID_NULL);
-    assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_UINT32), 0);
-    assert_int_equal(var.type_id, AMXC_VAR_ID_UINT32);
+    assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_UINT8), 0);
+    assert_int_equal(var.type_id, AMXC_VAR_ID_UINT8);
 
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_NULL), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_NULL);
     assert_ptr_equal(copy_var.data.data, NULL);
-    var.data.ui32 = 0xF0000000;
+    var.data.ui8 = 0x0F;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_CSTRING), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_CSTRING);
-    assert_string_equal(copy_var.data.s, "4026531840");
+    assert_string_equal(copy_var.data.s, "15");
 
-    var.data.ui32 = 0xF0000000;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT8), 0);
-    var.data.ui32 = 0x10000001;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT8), 0);
-    var.data.ui32 = 127;
+    var.data.ui8 = 127;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT8), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_INT8);
     assert_int_equal(copy_var.data.i8, 127);
 
-    var.data.ui32 = 0xF0000000;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT16), 0);
-    var.data.ui32 = 0x10000001;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT16), 0);
-    var.data.ui32 = 1024;
+    var.data.ui8 = 128;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT16), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_INT16);
-    assert_int_equal(copy_var.data.i16, 1024);
+    assert_int_equal(copy_var.data.i16, 128);
 
-    var.data.ui32 = 32766;
+    var.data.ui8 = 255;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT32), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_INT32);
-    assert_int_equal(copy_var.data.i32, 32766);
+    assert_int_equal(copy_var.data.i32, 255);
 
-    var.data.ui32 = 0xF0000000;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT32), 0);
-    var.data.ui32 = 2147483648;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT32), 0);
-    var.data.ui32 = 32766;
-    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT32), 0);
-    assert_int_equal(copy_var.type_id, AMXC_VAR_ID_INT32);
-    assert_int_equal(copy_var.data.i32, 32766);
-
-    var.data.ui32 = UINT32_MAX;
+    var.data.ui8 = UINT8_MAX;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_INT64), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_INT64);
-    assert_int_equal(copy_var.data.i64, UINT32_MAX);
+    assert_int_equal(copy_var.data.i64, UINT8_MAX);
 
-    var.data.ui32 = 256;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_UINT8), 0);
-    var.data.ui32 = 255;
+    var.data.ui8 = 255;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_UINT8), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_UINT8);
     assert_int_equal(copy_var.data.ui8, 255);
 
-    var.data.ui32 = 65536;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_UINT16), 0);
-    var.data.ui32 = 65535;
+    var.data.ui8 = 128;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_UINT16), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_UINT16);
-    assert_int_equal(copy_var.data.ui16, 65535);
+    assert_int_equal(copy_var.data.ui16, 128);
 
-    var.data.ui32 = UINT32_MAX;
+    var.data.ui8 = 200;
+    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_UINT32), 0);
+    assert_int_equal(copy_var.type_id, AMXC_VAR_ID_UINT32);
+    assert_int_equal(copy_var.data.ui32, 200);
+
+    var.data.ui8 = UINT8_MAX;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_UINT64), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_UINT64);
-    assert_int_equal(copy_var.data.ui64, UINT32_MAX);
+    assert_int_equal(copy_var.data.ui64, UINT8_MAX);
 
-    var.data.ui32 = 1000;
-    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_TIMESTAMP), 0);
-    assert_int_equal(copy_var.type_id, AMXC_VAR_ID_TIMESTAMP);
-    var.data.ui32 = -1000;
+    var.data.ui8 = 100;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_TIMESTAMP), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_TIMESTAMP);
 
-    var.data.ui32 = 0xF0000000;
+    var.data.ui8 = 0x0A;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_BOOL), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_BOOL);
     assert_true(copy_var.data.b);
-    var.data.ui32 = 0x00;
+    var.data.ui8 = 0x00;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_BOOL), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_BOOL);
     assert_false(copy_var.data.b);
 
-    var.data.ui32 = UINT32_MAX;
+    var.data.ui8 = UINT8_MAX;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_FLOAT), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_FLOAT);
-    assert_true(copy_var.data.f == UINT32_MAX);
+    assert_true(copy_var.data.f == UINT8_MAX);
 
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_DOUBLE), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_DOUBLE);
-    assert_true(copy_var.data.d == UINT32_MAX);
+    assert_true(copy_var.data.d == UINT8_MAX);
 
     struct rlimit nofile = { 0, 0 };
     assert_int_equal(getrlimit(RLIMIT_NOFILE, &nofile), 0);
 
-    var.data.ui32 = 0xE0;
+    var.data.ui8 = 0xE0;
     assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_FD), 0);
-    var.data.ui32 = nofile.rlim_max + 1;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_FD), 0);
-    var.data.ui32 = STDIN_FILENO;
+    var.data.ui8 = STDIN_FILENO;
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_FD), 0);
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_FD);
     assert_int_equal(copy_var.data.fd, STDIN_FILENO);
@@ -210,19 +189,19 @@ void test_variant_uint32_convert_to(UNUSED void** state) {
 
 }
 
-void test_variant_uint32_compare(UNUSED void** state) {
+void test_variant_uint8_compare(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t var2;
     int result = 0;
 
     assert_int_equal(amxc_var_init(&var1), 0);
     assert_int_equal(amxc_var_init(&var2), 0);
-    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_UINT32), 0);
-    assert_int_equal(var1.type_id, AMXC_VAR_ID_UINT32);
-    var1.data.ui32 = 4026531840;
-    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_UINT32), 0);
-    assert_int_equal(var2.type_id, AMXC_VAR_ID_UINT32);
-    var2.data.ui32 = 10;
+    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_UINT8), 0);
+    assert_int_equal(var1.type_id, AMXC_VAR_ID_UINT8);
+    var1.data.ui8 = 255;
+    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_UINT8), 0);
+    assert_int_equal(var2.type_id, AMXC_VAR_ID_UINT8);
+    var2.data.ui8 = 10;
 
     assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
     assert_true(result > 0);
@@ -230,43 +209,42 @@ void test_variant_uint32_compare(UNUSED void** state) {
     assert_int_equal(amxc_var_compare(&var2, &var1, &result), 0);
     assert_true(result < 0);
 
-    var2.data.ui32 = 4026531840;
+    var2.data.ui8 = 255;
     assert_int_equal(amxc_var_compare(&var2, &var1, &result), 0);
     assert_true(result == 0);
 
 }
 
-void test_variant_uint32_set_get(UNUSED void** state) {
+void test_variant_uint8_set_get(UNUSED void** state) {
     amxc_var_t var1;
 
     assert_int_equal(amxc_var_init(&var1), 0);
-    assert_int_equal(amxc_var_set_uint32_t(&var1, 1024), 0);
-    assert_int_equal(var1.type_id, AMXC_VAR_ID_UINT32);
-    assert_true(var1.data.ui32 = 1024);
+    assert_int_equal(amxc_var_set_uint8_t(&var1, 240), 0);
+    assert_int_equal(var1.type_id, AMXC_VAR_ID_UINT8);
+    assert_true(var1.data.ui8 = 240);
 
-    assert_true(amxc_var_get_uint32_t(&var1) == 1024);
-    assert_true(amxc_var_dyncast(uint32_t, &var1) == 1024);
+    assert_true(amxc_var_get_uint8_t(&var1) == 240);
+    assert_true(amxc_var_dyncast(uint8_t, &var1) == 240);
 
-    assert_int_not_equal(amxc_var_set_uint32_t(NULL, 512), 0);
-    assert_true(amxc_var_get_uint32_t(NULL) == 0);
+    assert_int_not_equal(amxc_var_set_uint8_t(NULL, 240), 0);
+    assert_true(amxc_var_get_uint8_t(NULL) == 0);
 
-    assert_int_equal(amxc_var_constcast(uint32_t, &var1), 1024);
-    assert_int_equal(amxc_var_constcast(int32_t, &var1), 0);
-    assert_int_equal(amxc_var_constcast(uint32_t, NULL), 0);
+    assert_int_equal(amxc_var_constcast(int8_t, &var1), 0);
+    assert_int_equal(amxc_var_constcast(uint8_t, NULL), 0);
 }
 
-void test_variant_uint32_add(UNUSED void** state) {
+void test_variant_uint8_add(UNUSED void** state) {
     amxc_var_t var;
     const amxc_llist_t* list = NULL;
     const amxc_htable_t* table = NULL;
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_LIST), 0);
-    assert_ptr_not_equal(amxc_var_add(uint32_t, &var, 123), NULL);
-    assert_ptr_not_equal(amxc_var_add(uint32_t, &var, 456), NULL);
+    assert_ptr_not_equal(amxc_var_add(uint8_t, &var, 123), NULL);
+    assert_ptr_not_equal(amxc_var_add(uint8_t, &var, 220), NULL);
 
-    assert_ptr_equal(amxc_var_add(uint32_t, NULL, 123), NULL);
-    assert_ptr_equal(amxc_var_add(uint32_t, NULL, 456), NULL);
+    assert_ptr_equal(amxc_var_add(uint8_t, NULL, 123), NULL);
+    assert_ptr_equal(amxc_var_add(uint8_t, NULL, 220), NULL);
 
     list = amxc_var_constcast(amxc_llist_t, &var);
     assert_int_equal(amxc_llist_size(list), 2);
@@ -274,11 +252,11 @@ void test_variant_uint32_add(UNUSED void** state) {
 
     assert_int_equal(amxc_var_init(&var), 0);
     assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_HTABLE), 0);
-    assert_ptr_not_equal(amxc_var_add_key(uint32_t, &var, "B1", 123), NULL);
-    assert_ptr_not_equal(amxc_var_add_key(uint32_t, &var, "B2", 456), NULL);
+    assert_ptr_not_equal(amxc_var_add_key(uint8_t, &var, "B1", 123), NULL);
+    assert_ptr_not_equal(amxc_var_add_key(uint8_t, &var, "B2", 220), NULL);
 
-    assert_ptr_equal(amxc_var_add_key(uint32_t, NULL, "B1", 123), NULL);
-    assert_ptr_equal(amxc_var_add_key(uint32_t, NULL, "B2", 456), NULL);
+    assert_ptr_equal(amxc_var_add_key(uint8_t, NULL, "B1", 123), NULL);
+    assert_ptr_equal(amxc_var_add_key(uint8_t, NULL, "B2", 220), NULL);
 
     table = amxc_var_constcast(amxc_htable_t, &var);
     assert_int_equal(amxc_htable_size(table), 2);

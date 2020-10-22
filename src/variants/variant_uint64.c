@@ -224,7 +224,7 @@ static int variant_uint64_to_ts(amxc_var_t* const dest,
                                 const amxc_var_t* const src) {
     int retval = -1;
     dest->data.ts.sec = src->data.ui64;
-    if(amxc_ts_is_valid(&src->data.ts)) {
+    if(amxc_ts_is_valid(&dest->data.ts)) {
         retval = 0;
     } else {
         dest->data.ts.sec = 0;

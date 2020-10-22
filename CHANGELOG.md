@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 0.7.2 - 2020-10-19(18:39:06 +0000)
+
+### Changes
+
+- Update documentation variant.md - add 8 and 16 bit integers
+
+## Release 0.7.1 - 2020-10-14(05:52:36 +0000)
+
+### New
+
+- Variant types int8, uint8, int16, uint16
+
 ## Release 0.7.0 - 2020-10-02(13:22:08 +0000)
 
 ### Fixes

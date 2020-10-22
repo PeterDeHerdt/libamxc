@@ -44,9 +44,11 @@ The default supported `primitive` data types are:
 
 - null - `void` or `NULL`
 - string - `char *`
+- signed 8 bit integer - `int8_t`
 - signed 16 bit integer - `int16_t`
 - signed 32 bit integer - `int32_t`
 - signed 64 bit integer - `int64_t`
+- unsigned 8 bit integer - `uint8_t`
 - unsigned 16 bit integer - `uint16_t`
 - unsigned 32 bit integer - `uint32_t`
 - unsigned 64 bit integer - `uint64_t`
@@ -116,9 +118,11 @@ Each type has an identifier (integer) and a name (string). The default supported
 
 - ID = `AMXC_VAR_ID_NULL`, name = `null`
 - ID = `AMXC_VAR_ID_CSTRING`, name = `cstring_t`
+- ID = `AMXC_VAR_ID_INT8`, name = `int8_t`
 - ID = `AMXC_VAR_ID_INT16`, name = `int16_t`
 - ID = `AMXC_VAR_ID_INT32`, name = `int32_t`
 - ID = `AMXC_VAR_ID_INT64`, name = `int64_t`
+- ID = `AMXC_VAR_ID_UINT8`, name = `uint8_t`
 - ID = `AMXC_VAR_ID_UINT16`, name = `uint16_t`
 - ID = `AMXC_VAR_ID_UINT32`, name = `uint32_t`
 - ID = `AMXC_VAR_ID_UINT64`, name = `uint64_t`

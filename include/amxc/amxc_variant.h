@@ -703,6 +703,10 @@ int amxc_var_log(const amxc_var_t* const var);
    Use amxc_var_set(<type>, <var>, <value>) to call one of the following functions
  */
 int amxc_var_set_bool(amxc_var_t* const var, bool boolean);
+int amxc_var_set_int8_t(amxc_var_t* const var, int8_t val);
+int amxc_var_set_uint8_t(amxc_var_t* const var, uint8_t val);
+int amxc_var_set_int16_t(amxc_var_t* const var, int16_t val);
+int amxc_var_set_uint16_t(amxc_var_t* const var, uint16_t val);
 int amxc_var_set_int32_t(amxc_var_t* const var, int32_t val);
 int amxc_var_set_uint32_t(amxc_var_t* const var, uint32_t val);
 int amxc_var_set_int64_t(amxc_var_t* const var, int64_t val);
@@ -721,6 +725,10 @@ int amxc_var_set_amxc_ts_t(amxc_var_t* var, amxc_ts_t* val);
    allocated memory if no longer needed.
  */
 bool amxc_var_get_bool(const amxc_var_t* const var);
+int8_t amxc_var_get_int8_t(const amxc_var_t* const var);
+uint8_t amxc_var_get_uint8_t(const amxc_var_t* const var);
+int16_t amxc_var_get_int16_t(const amxc_var_t* const var);
+uint16_t amxc_var_get_uint16_t(const amxc_var_t* var);
 int32_t amxc_var_get_int32_t(const amxc_var_t* const var);
 uint32_t amxc_var_get_uint32_t(const amxc_var_t* var);
 int64_t amxc_var_get_int64_t(const amxc_var_t* const var);
@@ -749,8 +757,12 @@ const char* amxc_var_get_const_cstring_t(const amxc_var_t* const var);
 const amxc_htable_t* amxc_var_get_const_amxc_htable_t(const amxc_var_t* const var);
 const amxc_llist_t* amxc_var_get_const_amxc_llist_t(const amxc_var_t* const var);
 bool amxc_var_get_const_bool(const amxc_var_t* const var);
+int8_t amxc_var_get_const_int8_t(const amxc_var_t* const var);
+int16_t amxc_var_get_const_int16_t(const amxc_var_t* const var);
 int32_t amxc_var_get_const_int32_t(const amxc_var_t* const var);
 int64_t amxc_var_get_const_int64_t(const amxc_var_t* const var);
+uint8_t amxc_var_get_const_uint8_t(const amxc_var_t* const var);
+uint16_t amxc_var_get_const_uint16_t(const amxc_var_t* const var);
 uint32_t amxc_var_get_const_uint32_t(const amxc_var_t* const var);
 uint64_t amxc_var_get_const_uint64_t(const amxc_var_t* const var);
 double amxc_var_get_const_double(const amxc_var_t* const var);
@@ -771,6 +783,10 @@ const char* amxc_var_get_const_ssv_string_t(const amxc_var_t* const var) {
 
  */
 amxc_var_t* amxc_var_add_new_bool(amxc_var_t* const var, bool boolean);
+amxc_var_t* amxc_var_add_new_int8_t(amxc_var_t* const var, int8_t val);
+amxc_var_t* amxc_var_add_new_uint8_t(amxc_var_t* const var, uint8_t val);
+amxc_var_t* amxc_var_add_new_int16_t(amxc_var_t* const var, int16_t val);
+amxc_var_t* amxc_var_add_new_uint16_t(amxc_var_t* const var, uint16_t val);
 amxc_var_t* amxc_var_add_new_int32_t(amxc_var_t* const var, int32_t val);
 amxc_var_t* amxc_var_add_new_uint32_t(amxc_var_t* const var, uint32_t val);
 amxc_var_t* amxc_var_add_new_int64_t(amxc_var_t* const var, int64_t val);
@@ -791,6 +807,10 @@ amxc_var_t* amxc_var_add_new_amxc_htable_t(amxc_var_t* const var,
                                            const amxc_htable_t* htable);
 
 amxc_var_t* amxc_var_add_new_key_bool(amxc_var_t* const var, const char* key, bool boolean);
+amxc_var_t* amxc_var_add_new_key_int8_t(amxc_var_t* const var, const char* key, int8_t val);
+amxc_var_t* amxc_var_add_new_key_uint8_t(amxc_var_t* const var, const char* key, uint8_t val);
+amxc_var_t* amxc_var_add_new_key_int16_t(amxc_var_t* const var, const char* key, int16_t val);
+amxc_var_t* amxc_var_add_new_key_uint16_t(amxc_var_t* const var, const char* key, uint16_t val);
 amxc_var_t* amxc_var_add_new_key_int32_t(amxc_var_t* const var, const char* key, int32_t val);
 amxc_var_t* amxc_var_add_new_key_uint32_t(amxc_var_t* const var, const char* key, uint32_t val);
 amxc_var_t* amxc_var_add_new_key_int64_t(amxc_var_t* const var, const char* key, int64_t val);

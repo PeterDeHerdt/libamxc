@@ -4,6 +4,7 @@ variables:
   UTEST_TEST_COV_CMD: "make coverage"
   DOC_GEN_CMD: "make doc"
   BUILD_TARGET: libamxc
+  PC_BUILD_COMP_YOCTO: "off"
 
 include:
   # include default templates (needed by the default pipelines)
