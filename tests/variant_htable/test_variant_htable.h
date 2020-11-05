@@ -67,6 +67,7 @@ void test_variant_htable_convert_to_bool(void** state);
 void test_variant_htable_convert_to_integer(void** state);
 void test_variant_htable_convert_to_list(void** state);
 void test_variant_htable_convert_to_string(void** state);
+void test_variant_htable_convert_to_string_should_not_segfault(void** state);
 void test_variant_htable_set_get(void** state);
 
 void test_variant_htable_get_key(void** state);

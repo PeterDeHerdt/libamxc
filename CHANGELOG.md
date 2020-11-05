@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 0.7.4 - 2020-11-01(21:15:22 +0000)
+
+### Fixes
+
+- Complete timestamp API tests
+- Add timestamp api documentation
+
+## Release 0.7.3 - 2020-10-27(17:21:04 +0000)
+
+### Fixes
+
+- Converting htable variant to string variant segfaults
+
 ## Release 0.7.2 - 2020-10-19(18:39:06 +0000)
 
 ### Changes

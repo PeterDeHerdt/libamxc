@@ -98,7 +98,6 @@ void test_amxc_ts_parse_valid(UNUSED void** state) {
         "1970-07-28T15:45:00Z",
         "0001-01-01T00:00:00Z",
         "2020-02-29T16:16:16+02:00",
-        "2020-02-29T16:16:16+02:00",
         "2020-02-29T16:16:16.123+02:00",
         "2020-02-29T16:16:16-01:15",
         "2020-02-29T16:16:16.123456-01:15",
@@ -110,8 +109,23 @@ void test_amxc_ts_parse_valid(UNUSED void** state) {
         NULL
     };
 
+    const int64_t timestamps[] = {
+        18027900,
+        -62135596800,
+        1582985776,
+        1582985776,
+        1582997476,
+        1582997476,
+        951779640,
+        0,
+        0,
+        0,
+        0,
+    };
+
     for(int i = 0; formats[i] != NULL; i++) {
         assert_int_equal(amxc_ts_parse(&ts, formats[i], strlen(formats[i])), 0);
+        assert_int_equal(ts.sec, timestamps[i]);
     }
 }
 
@@ -168,7 +182,6 @@ void test_amxc_ts_format_valid(UNUSED void** state) {
         "1970-07-28T15:45:00Z",
         "0001-01-01T00:00:00Z",
         "2020-02-29T16:16:16+02:00",
-        "2020-02-29T16:16:16+02:00",
         "2020-02-29T16:16:16-01:15",
         "2000-02-28T23:14:00Z",
         "1970-01-01T00:00:00Z",
@@ -213,7 +226,6 @@ void test_amxc_ts_format_precision_valid(UNUSED void** state) {
     const char* formats[] = {
         "1970-07-28T15:45:00Z",
         "0001-01-01T00:00:00Z",
-        "2020-02-29T16:16:16+02:00",
         "2020-02-29T16:16:16+02:00",
         "2020-02-29T16:16:16-01:15",
         "2000-02-28T23:14:00Z",
@@ -292,14 +304,26 @@ void test_amxc_ts_to_tm(UNUSED void** state) {
     amxc_ts_t ts;
     struct tm tm;
 
-    assert_int_equal(amxc_ts_parse(&ts, "2020-06-17T15:00:00Z", strlen("2020-06-17T15:00:00Z")), 0);
+    assert_int_equal(amxc_ts_parse(&ts, "2020-06-17T15:35:22+02:00", strlen("2020-06-17T15:35:22+02:00")), 0);
     assert_int_equal(amxc_ts_to_tm_utc(&ts, &tm), 0);
+    assert_int_equal(tm.tm_hour, 13);
+    assert_int_equal(tm.tm_min, 35);
+    assert_int_equal(tm.tm_sec, 22);
+    assert_int_equal(tm.tm_mday, 17);
+    assert_int_equal(tm.tm_mon, 5);
+    assert_int_equal(tm.tm_year, 120);
+
     assert_int_equal(amxc_ts_to_tm_local(&ts, &tm), 0);
+    assert_int_equal(tm.tm_hour, 15);
+    assert_int_equal(tm.tm_min, 35);
+    assert_int_equal(tm.tm_sec, 22);
+    assert_int_equal(tm.tm_mday, 17);
+    assert_int_equal(tm.tm_mon, 5);
+    assert_int_equal(tm.tm_year, 120);
 
     assert_int_not_equal(amxc_ts_to_tm_utc(NULL, &tm), 0);
     assert_int_not_equal(amxc_ts_to_tm_utc(&ts, NULL), 0);
 
     ts.offset = 1440;
     assert_int_not_equal(amxc_ts_to_tm_utc(&ts, &tm), 0);
-
 }

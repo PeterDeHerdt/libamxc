@@ -95,29 +95,164 @@ extern "C"
 #include <stdint.h>
 #include <time.h>
 
+/**
+   @file
+   @brief
+   Ambiorix timestamp header file
+ */
+
+/**
+   @ingroup amxc_containers
+   @defgroup amxc_timestamp Timestamp
+ */
+
+/**
+   @ingroup amxc_timestamp
+   @brief
+   The timestamp structure (unix epoch time).
+ */
 typedef struct _timestamp {
     int64_t sec;    /* Number of seconds since the epoch of 1970-01-01T00:00:00Z */
     int32_t nsec;   /* Nanoseconds [0, 999999999] */
     int16_t offset; /* Offset from UTC in minutes [-1439, 1439] */
 } amxc_ts_t;
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Takes current time as unix epoch time.
+
+   Fills the given @ref amxc_ts_t structure with the current time in seconds
+   from the unix epoch time.
+
+   @param tsp a pointer to the timestamp structure
+
+   @return
+   -1 if an error occured. 0 on success.
+ */
 int amxc_ts_now(amxc_ts_t* tsp);
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Transforms the given string in to unix epoch time.
+
+   Transforms the time stored in a string in <https://tools.ietf.org/html/rfc3339>
+   format into unix epoch time stored as a struct.
+
+   @param tsp a pointer to a timestamp structure
+   @param str string containing time in RF3339 format
+   @param len length of the string
+
+   @return
+   -1 if an error occured. 0 on success.
+ */
 int amxc_ts_parse(amxc_ts_t* tsp, const char* str, size_t len);
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Transforms unix epoch time to a string.
+
+   Transforms unix epocht time to string in RFC3399 compatible format.
+
+   Use @ref amxc_ts_format_precision to specify the percision.
+
+   @note
+   The length of the provided string buffer must be at least 21 bytes.
+   The buffer length must be 36 bytes to be able to store nanoseconds and time
+   zone offset.
+   The buffer must be pre-allocated.
+
+   @param tsp a pointer to a timestamp structure
+   @param dst a pointer to a string
+   @param len size of the string buffer
+
+   @return
+   length of string dst
+ */
 size_t amxc_ts_format(const amxc_ts_t* tsp, char* dst, size_t len);
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Transforms unix epoch time to a string.
+
+   Transforms unix epocht time to string in RFC3399 compatible format.
+
+   @note
+   The length of the provided string buffer must be at least 21 bytes.
+   The buffer length must be 36 bytes to be able to store nanoseconds and time
+   zone offset.
+   The buffer must be pre-allocated.
+
+   @param tsp a pointer to a timestamp structure
+   @param dst a pointer to a string storing the UTC time
+   @param len size of the string buffer
+   @param precision number of digits used to express nanoseconds
+
+   @return
+   length of string dst
+ */
 size_t amxc_ts_format_precision(const amxc_ts_t* tsp,
                                 char* dst,
                                 size_t len,
                                 int precision);
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Checks if tsp1 comes after tsp2.
+
+   @param tsp1 a pointer to a timestamp structure
+   @param tsp2 a pointer to a timestamp structure
+
+   @return
+   0 if input is invallid
+   1 if tsp1 comes after tsp2
+   -1 if tsp2 comes after tsp1
+ */
 int amxc_ts_compare(const amxc_ts_t* tsp1, const amxc_ts_t* tsp2);
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Checks if a timestamp is valid.
+
+   @param tsp1 a pointer to a timestamp structure
+
+   @return
+   true if the timestamp is valid
+   false if the timestamp is invalid
+ */
 bool amxc_ts_is_valid(const amxc_ts_t* tsp);
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Converts timestamp in unix epoch time to a struct tm type in UTC time.
+
+   @param tsp a pointer to a timestamp structure
+   @param tmp a pointer to a struct tm type
+
+   @return
+   -1 if an error occurs
+   1 if the action succeeded
+ */
 int amxc_ts_to_tm_utc(const amxc_ts_t* tsp, struct tm* tmp);
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Converts timestamp in unix epoch time to a struct tm type in local time.
+
+   @param tsp a pointer to a timestamp structure
+   @param tmp a pointer to a struct tm type
+
+   @return
+   -1 if an error occurs
+   1 if the action succeeded
+ */
 int amxc_ts_to_tm_local(const amxc_ts_t* tsp, struct tm* tmp);
 
 #ifdef __cplusplus

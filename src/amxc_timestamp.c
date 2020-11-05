@@ -550,10 +550,9 @@ exit:
 }
 
 int amxc_ts_to_tm_utc(const amxc_ts_t* tsp, struct tm* tmp) {
-    return timestamp_to_tm(tsp, tmp, true);
-}
-
-int amxc_ts_to_tm_local(const amxc_ts_t* tsp, struct tm* tmp) {
     return timestamp_to_tm(tsp, tmp, false);
 }
 
+int amxc_ts_to_tm_local(const amxc_ts_t* tsp, struct tm* tmp) {
+    return timestamp_to_tm(tsp, tmp, true);
+}

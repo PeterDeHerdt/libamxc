@@ -145,7 +145,7 @@ static int variant_htable_to_string(amxc_var_t* const dest,
             amxc_string_clean(&string);
             goto exit;
         }
-        length = strlen(intermediate.data.s);
+        length = intermediate.data.s == NULL ? 0 : strlen(intermediate.data.s);
         if(length == 0) {
             continue;
         }

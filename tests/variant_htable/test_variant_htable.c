@@ -249,6 +249,29 @@ void test_variant_htable_convert_to_string(UNUSED void** state) {
     amxc_var_clean(&copy_var);
 }
 
+void test_variant_htable_convert_to_string_should_not_segfault(UNUSED void** state) {
+    amxc_var_t htable_var;
+    amxc_var_t* str_var = NULL;
+    amxc_var_t copy_var;
+
+    assert_int_equal(amxc_var_init(&htable_var), 0);
+    assert_int_equal(amxc_var_new(&str_var), 0);
+    assert_int_equal(amxc_var_init(&copy_var), 0);
+
+    assert_int_equal(amxc_var_set_type(str_var, AMXC_VAR_ID_CSTRING), 0);
+    assert_int_equal(str_var->type_id, AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_set_type(&htable_var, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(htable_var.type_id, AMXC_VAR_ID_HTABLE);
+
+    assert_true(amxc_htable_is_empty(&htable_var.data.vm));
+    amxc_htable_insert(&htable_var.data.vm, "test", &str_var->hit);
+
+    assert_int_equal(amxc_var_convert(&copy_var, &htable_var, AMXC_VAR_ID_CSTRING), 0);
+
+    amxc_var_clean(&htable_var);
+    amxc_var_clean(&copy_var);
+}
+
 void test_variant_htable_set_get(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t string;

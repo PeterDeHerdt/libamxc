@@ -73,6 +73,7 @@ int main(void) {
         cmocka_unit_test(test_variant_htable_convert_to_integer),
         cmocka_unit_test(test_variant_htable_convert_to_list),
         cmocka_unit_test(test_variant_htable_convert_to_string),
+        cmocka_unit_test(test_variant_htable_convert_to_string_should_not_segfault),
         cmocka_unit_test(test_variant_htable_set_get),
         cmocka_unit_test(test_variant_htable_get_key),
         cmocka_unit_test(test_variant_htable_set_key),

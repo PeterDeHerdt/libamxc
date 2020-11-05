@@ -1,3 +1,16 @@
+libamxc (0.7.4) unstable; urgency=medium
+
+  * Complete timestamp API tests
+  * Add timestamp api documentation
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Sun, 01 Nov 2020 21:15:27 +0000
+
+libamxc (0.7.3) unstable; urgency=medium
+
+  * Converting htable variant to string variant segfaults
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Tue, 27 Oct 2020 17:21:10 +0000
+
 libamxc (0.7.2) unstable; urgency=medium
 
   * Update documentation variant.md - add 8 and 16 bit integers
