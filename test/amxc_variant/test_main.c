@@ -63,38 +63,32 @@
 #include <stdarg.h>
 #include <cmocka.h>
 
-#include "test_amxc_string.h"
+#include <amxc/amxc.h>
+#include "amxc_variant_priv.h"
+#include "test_amxc_variant.h"
+
+#include "test_amxc_variant.h"
 
 int main(void) {
+    amxc_array_t* types = amxc_variant_get_types_array();
+    for(int i = 0; i < AMXC_VAR_ID_CUSTOM_BASE + 1; i++) {
+        amxc_array_it_t* ait = amxc_array_get_at(types, i);
+        amxc_array_it_take_data(ait);
+    }
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_amxc_string_new_delete_null),
-        cmocka_unit_test(test_amxc_string_init_reset_clean_null),
-        cmocka_unit_test(test_amxc_string_new_delete),
-        cmocka_unit_test(test_amxc_string_init_reset_clean),
-        cmocka_unit_test(test_amxc_string_grow_null),
-        cmocka_unit_test(test_amxc_string_grow),
-        cmocka_unit_test(test_amxc_string_shrink_null),
-        cmocka_unit_test(test_amxc_string_shrink),
-        cmocka_unit_test(test_amxc_string_append),
-        cmocka_unit_test(test_amxc_string_prepend),
-        cmocka_unit_test(test_amxc_string_buffer_length),
-        cmocka_unit_test(test_amxc_string_text_length),
-        cmocka_unit_test(test_amxc_string_set_at),
-        cmocka_unit_test(test_amxc_string_remove_at),
-        cmocka_unit_test(test_amxc_string_get),
-        cmocka_unit_test(test_amxc_string_dup),
-        cmocka_unit_test(test_amxc_string_trim),
-        cmocka_unit_test(test_amxc_string_take_push_buffer),
-        cmocka_unit_test(test_amxc_string_setf),
-        cmocka_unit_test(test_amxc_string_appendf),
-        cmocka_unit_test(test_amxc_string_prependf),
-        cmocka_unit_test(test_amxc_string_is_numeric),
-        cmocka_unit_test(test_amxc_string_resolve_env),
-        cmocka_unit_test(test_amxc_string_resolve_var),
-        cmocka_unit_test(test_amxc_string_resolve),
-        cmocka_unit_test(test_amxc_string_set_resolved),
-        cmocka_unit_test(test_amxc_string_new_resolved),
-        cmocka_unit_test(test_amxc_llist_add_string),
+        cmocka_unit_test(test_amxc_var_new_delete),
+        cmocka_unit_test(test_amxc_var_init_clean),
+        cmocka_unit_test(test_amxc_var_set_type),
+        cmocka_unit_test(test_amxc_var_copy),
+        cmocka_unit_test(test_amxc_var_convert),
+        cmocka_unit_test(test_amxc_var_compare),
+        cmocka_unit_test(test_amxc_var_type_of),
+        cmocka_unit_test(test_amxc_var_get_set_key),
+        cmocka_unit_test(test_amxc_var_add_new_key),
+        cmocka_unit_test(test_amxc_var_add_new),
+        cmocka_unit_test(test_amxc_var_get_path),
+        cmocka_unit_test(test_amxc_var_push_take_amxc_string),
+        cmocka_unit_test(test_amxc_var_move),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

@@ -79,6 +79,8 @@ amxc_array_t AMXC_PRIVATE* amxc_variant_get_types_array(void);
 
 int AMXC_PRIVATE amxc_var_default_copy(amxc_var_t* const dest,
                                        const amxc_var_t* const src);
+int AMXC_PRIVATE amxc_var_default_move(amxc_var_t* const dest,
+                                       amxc_var_t* const src);
 int AMXC_PRIVATE amxc_var_default_convert_to_null(amxc_var_t* const dest,
                                                   const amxc_var_t* const src);
 int AMXC_PRIVATE amxc_var_default_convert_to_list(amxc_var_t* const dest,

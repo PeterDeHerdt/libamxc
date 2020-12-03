@@ -285,6 +285,7 @@ static amxc_var_type_t amxc_variant_int64 = {
     .init = NULL,
     .del = NULL,
     .copy = amxc_var_default_copy,
+    .move = amxc_var_default_move,
     .convert_from = NULL,
     .convert_to = variant_int64_convert_to,
     .compare = variant_int64_compare,

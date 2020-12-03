@@ -114,6 +114,29 @@ void test_variant_list_copy(UNUSED void** state) {
     amxc_var_clean(&copy_var);
 }
 
+void test_variant_list_move(UNUSED void** state) {
+    amxc_var_t src;
+    amxc_var_t dst;
+
+    assert_int_equal(amxc_var_init(&src), 0);
+    assert_int_equal(amxc_var_init(&dst), 0);
+    amxc_var_set_type(&src, AMXC_VAR_ID_LIST);
+
+    amxc_var_add(cstring_t, &src, "item1");
+    amxc_var_add(cstring_t, &src, "item2");
+    amxc_var_add(cstring_t, &src, "item3");
+    amxc_var_add(cstring_t, &src, "item4");
+
+    assert_int_equal(amxc_llist_size(amxc_var_constcast(amxc_llist_t, &src)), 4);
+    assert_int_equal(amxc_var_move(&dst, &src), 0);
+    assert_true(amxc_var_is_null(&src));
+    assert_int_equal(amxc_var_type_of(&dst), AMXC_VAR_ID_LIST);
+    assert_int_equal(amxc_llist_size(amxc_var_constcast(amxc_llist_t, &dst)), 4);
+
+    amxc_var_clean(&dst);
+    amxc_var_clean(&src);
+}
+
 void test_variant_list_convert_to_bool(UNUSED void** state) {
     amxc_var_t string;
     amxc_var_t var;

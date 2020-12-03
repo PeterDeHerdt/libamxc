@@ -83,6 +83,129 @@ extern "C"
 /**
    @ingroup amxc_containers
    @defgroup amxc_llist Linked List
+
+   @brief
+   The Ambiorix Linked List is a doubly linked list.
+
+   A doubly linked list is a linked data structure that consists of a set of
+   sequentially linked records called nodes. Each node contains two fields:
+   a reference to the previous and to the next node in the sequence of nodes.
+   The beginning and ending nodes' previous and next links, respectively, point
+   to some kind of terminator, typically a sentinel node or null, to facilitate
+   traversal of the list.
+
+   The linked list itself contains two fields: a reference to the first node and
+   a reference to the last node
+
+   @image html amxc_llist.png
+
+   The nodes of an Ambiorix linked list are defined using the
+   @ref amxc_llist_it_t structure (the iterator). To create a linked list of
+   a C structure, put an linked list iterator as member of that structure.
+
+   @code{.c}
+   typedef struct person {
+      char* first_name;
+      char* last_name;
+      uint32_t age;
+      amxc_llist_it_t it;
+   } person_t;
+   @endcode
+
+   @par Creating A Linked List
+   A linked list can be declared on the stack or allocated in the heap. When
+   declaring a linked list on the stack it must be correctly initialized.
+
+   - @ref amxc_llist_init - initializes a linked list declared on the stack
+   - @ref amxc_llist_new - allocates a linked list in the heap.
+
+   @par Adding items
+   Items can be added:
+   - at the start of the linked list - @ref amxc_llist_prepend
+   - at the end of the linked list  - @ref amxc_llist_append
+   - before another node (iterator) - @ref amxc_llist_it_insert_before
+   - after another node (iterator)  - @ref amxc_llist_it_insert_after
+   - at a specific index - @ref amxc_llist_set_at
+
+   @par Looping Over A Linked List
+   Looping over a linked list can be done using the defined macros:
+   - @ref amxc_llist_for_each - allows deletion of the current item
+   - @ref amxc_llist_iterate
+
+   You can implement your own loop and use the linked list navigation functions:
+   - @ref amxc_llist_get_first
+   - @ref amxc_llist_get_last
+   - @ref amxc_llist_it_get_next
+   - @ref amxc_llist_it_get_previous
+
+   @par Convert An Linked List Iterator To Data Struct
+   Using the macro @ref amxc_container_of (or @ref amxc_llist_it_get_data)
+   the address of the containing data structure is calculated:
+
+   @code{.c}
+   (data address) = (iterator address) - (offsetof(<type>, <member>))
+   @endcode
+
+   @par Removing An Item
+   Any item can be removed from the linked list without deleting the item
+   itself.
+   - @ref amxc_llist_it_take - removes a node (iterator) from the linked list
+   - @ref amxc_llist_take_first - removes the first node (iterator) from the linked list
+   - @ref amxc_llist_take_last - removes the last node (iterator) from the linked list
+
+   @par Deleting An Item
+   Most of the time items in the linked list are allocated on the heap. The
+   linked list implementation can not by itself delete the allocated memory
+   for the item, but a callback function can be provided to achieve this.
+
+   Deleting an item can be done using:
+   - @ref amxc_llist_it_clean - deletes a single node (iterator)
+   - @ref amxc_llist_clean - removes all nodes (iterators)
+   - @ref amxc_llist_delete - removes all nodes (iterators)
+
+   @par Example
+   @code{.c}
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+
+ #include <amxc/amxc.h>
+
+   typedef struct person {
+      char first_name[64];
+      char last_name[64];
+      uint32_t age;
+      amxc_llist_it_t it;
+   } person_t;
+
+   static void delete_person(amxc_llist_it_t* it) {
+      person_t *person = amxc_container_of(it, person_t, it);
+      free(person);
+   }
+
+   int main(int argc, char** argv) {
+       amxc_llist_t contacts;
+       person_t *person = NULL;
+
+       amxc_llist_init(&contacts)
+
+       for(uint32_t i = 0; i < 10; i++) {
+         person = (person_t *)calloc(1, sizeof(person_t));
+         snprintf(person->first_name, 64, "first_name %d", i);
+         snprintf(person->last_name, 64, "last_name %d", i);
+         person->age = i;
+         amxc_llist_append(&contacts, &persion->it);
+       }
+
+       amxc_llist_for_each(it, (&contacts)) {
+          person = amxc_container_of(it, person_t, it);
+          printf("%s %s %d\n". person->first_name, person->last_name, person->age);
+       }
+
+       amxc_llist_clean(&contacts, delete_person);
+       return 0;
+   }
+   @endcode
  */
 
 /**
@@ -276,6 +399,27 @@ int amxc_llist_init(amxc_llist_t* const llist);
                linked list
  */
 void amxc_llist_clean(amxc_llist_t* const llist, amxc_llist_it_delete_t func);
+
+/**
+   @ingroup amxc_llist
+   @brief
+   Moves all items from one linked list to another linked list
+
+   After the move the source linked list will be empty.
+
+   If the destination linked list already contains items, the items of the
+   source are appended to the destination linked list.
+
+   @note
+   Moving items from one linked list to another linked list can not fail.
+
+   @param dest a pointer to the destiniation linked list
+   @param src a pointer to the source linked list
+
+   @return
+   Always 0.
+ */
+int amxc_llist_move(amxc_llist_t* const dest, amxc_llist_t* const src);
 
 /**
    @ingroup amxc_llist

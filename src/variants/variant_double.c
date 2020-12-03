@@ -282,6 +282,7 @@ static amxc_var_type_t amxc_variant_double = {
     .init = NULL,
     .del = NULL,
     .copy = amxc_var_default_copy,
+    .move = amxc_var_default_move,
     .convert_from = NULL,
     .convert_to = variant_double_convert_to,
     .compare = variant_double_compare,

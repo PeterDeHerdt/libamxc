@@ -4,7 +4,7 @@ SRCDIR = $(realpath ../../src)
 OBJDIR = $(realpath ../../output/$(MACHINE)/coverage)
 INCDIR = $(realpath ../../include ../../include_priv ../include)
 
-HEADERS = $(wildcard $(INCDIR)/$(TARGET)/*.h)
+HEADERS = $(wildcard $(INCDIR)/amxc/*.h)
 SOURCES = $(wildcard $(SRCDIR)/amxc_*.c) \
 		  $(wildcard $(SRCDIR)/variants/*.c) \
 		  $(wildcard ../common/*.c) \

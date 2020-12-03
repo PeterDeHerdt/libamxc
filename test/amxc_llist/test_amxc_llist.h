@@ -58,22 +58,56 @@
 **
 ****************************************************************************/
 
-#ifndef __TEST_VARIANT_HTABLE_H__
-#define __TEST_VARIANT_HTABLE_H__
+#ifndef __TEST_AMXC_LLIST_H__
+#define __TEST_AMXC_LLIST_H__
 
-void test_variant_htable_init(void** state);
-void test_variant_htable_copy(void** state);
-void test_variant_htable_convert_to_bool(void** state);
-void test_variant_htable_convert_to_integer(void** state);
-void test_variant_htable_convert_to_list(void** state);
-void test_variant_htable_convert_to_string(void** state);
-void test_variant_htable_convert_to_string_should_not_segfault(void** state);
-void test_variant_htable_set_get(void** state);
+void amxc_llist_new_delete_null_check(void** state);
+void amxc_llist_new_delete_check(void** state);
+void amxc_llist_init_clean_null_check(void** state);
+void amxc_llist_init_clean_check(void** state);
+void amxc_llist_delete_func_check(void** state);
+void amxc_llist_clean_func_check(void** state);
+void amxc_llist_delete_cb_check(void** state);
+void amxc_llist_clean_cb_check(void** state);
+void amxc_llist_append_null_check(void** state);
+void amxc_llist_append_check(void** state);
+void amxc_llist_prepend_null_check(void** state);
+void amxc_llist_prepend_check(void** state);
+void amxc_llist_append_move_same_list_check(void** state);
+void amxc_llist_prepend_move_same_list_check(void** state);
+void amxc_llist_is_empty_null_check(void** state);
+void amxc_llist_is_empty_check(void** state);
+void amxc_llist_size_null_check(void** state);
+void amxc_llist_size_check(void** state);
+void amxc_llist_get_at_check(void** state);
+void amxc_llist_set_at_check(void** state);
+void amxc_llist_get_first_check(void** state);
+void amxc_llist_get_last_check(void** state);
 
-void test_variant_htable_get_key(void** state);
-void test_variant_htable_set_key(void** state);
-void test_variant_htable_add_new(void** state);
-void test_variant_htable_add_new_key(void** state);
-void test_variant_htable_add_new_key_duplicate(void** state);
+void amxc_llist_it_init_null_check(void** state);
+void amxc_llist_it_init_check(void** state);
+void amxc_llist_it_clean_null_check(void** state);
+void amxc_llist_it_clean_check(void** state);
+void amxc_llist_it_clean_cb_check(void** state);
+void amxc_llist_it_take_check(void** state);
+void amxc_llist_it_take_null_check(void** state);
+void amxc_llist_it_take_double_check(void** state);
+void amxc_llist_it_insert_before_null_check(void** state);
+void amxc_llist_it_insert_before_check(void** state);
+void amxc_llist_it_insert_before_head_check(void** state);
+void amxc_llist_it_insert_before_invalid_it_check(void** state);
+void amxc_llist_it_insert_after_null_check(void** state);
+void amxc_llist_it_insert_after_check(void** state);
+void amxc_llist_it_insert_after_tail_check(void** state);
+void amxc_llist_it_insert_after_invalid_it_check(void** state);
+void amxc_llist_it_index_of_check(void** state);
+void amxc_llist_it_is_in_list_check(void** state);
+void amxc_llist_it_next_prev_check(void** state);
 
-#endif // __TEST_VARIANT_HTABLE_H__
+void amxc_llist_take_at_check(void** state);
+void amxc_llist_swap_in_same_llist_check(void** state);
+void amxc_llist_swap_in_different_llist_check(void** state);
+void test_amxc_llist_sort(void** state);
+void test_amxc_llist_move(void** state);
+
+#endif // __TEST_AMXC_LLIST_H__

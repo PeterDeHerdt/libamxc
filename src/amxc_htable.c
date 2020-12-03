@@ -71,46 +71,62 @@
    Ambiorix hash table API implementation
  */
 
-static int amxc_htable_grow(amxc_htable_t* const htable) {
-    int retval = -1;
-    size_t capacity = htable->items;
-    amxc_array_it_t* it = NULL;
-    amxc_array_t temp;
+static void amxc_htable_insert_it(amxc_htable_t* const htable,
+                                  amxc_htable_it_t* const it) {
+    unsigned int index = 0;
+    amxc_array_it_t* ait = NULL;
 
-    retval = amxc_array_init(&temp, capacity);
-    when_failed(retval, exit);
-
-    // move the items to the temp array and reset the table
-    it = amxc_array_get_first(&htable->table);
-    while(it != NULL) {
-        amxc_htable_it_t* hit = (amxc_htable_it_t*) amxc_array_it_take_data(it);
-        hit->ait = NULL;
-        amxc_array_append_data(&temp, hit);
-        while(hit->next != NULL) {
-            amxc_htable_it_t* hit_next = hit->next;
-            hit->next = NULL;
-            hit = hit_next;
-            hit->ait = NULL;
-            amxc_array_append_data(&temp, hit);
-        }
-        it = amxc_array_get_first(&htable->table);
+    amxc_htable_it_take(it);
+    index = amxc_htable_key2index(htable, it->key);
+    ait = amxc_array_get_at(&htable->table, index);
+    // insert item
+    if(ait->data != NULL) {
+        it->next = (amxc_htable_it_t*) ait->data;
     }
+    amxc_array_it_set_data(ait, it);
+    it->ait = ait;
+    htable->items++;
+}
+
+static int amxc_htable_grow(amxc_htable_t* const htable, size_t hint) {
+    int retval = -1;
+    size_t capacity = htable->table.items;
+    amxc_array_it_t* temp = htable->table.buffer;
+    size_t start_bucket = htable->table.first_used;
+    size_t end_bucket = htable->table.last_used;
+
+    htable->table.buffer = NULL;
+    htable->table.first_used = 0;
+    htable->table.last_used = 0;
+    htable->table.items = 0;
     htable->items = 0;
 
-    // grow
-    capacity = htable->table.items;
-    amxc_array_grow(&htable->table, capacity > 1024 ? 1024 : capacity);
-
-    // add the items back to the htable
-    it = amxc_array_get_first(&temp);
-    while(it != NULL) {
-        amxc_htable_it_t* hit = (amxc_htable_it_t*) amxc_array_it_take_data(it);
-        amxc_htable_insert(htable, hit->key, hit);
-        it = amxc_array_get_first(&temp);
+    if(hint != 0) {
+        retval = amxc_array_grow(&htable->table, capacity + hint);
+    } else {
+        retval = amxc_array_grow(&htable->table, capacity > 1024 ? capacity + 1024 : 2 * capacity);
     }
+    when_failed(retval, exit);
 
-    // remove temp array
-    amxc_array_clean(&temp, NULL);
+    for(size_t i = start_bucket; i <= end_bucket; i++) {
+        amxc_htable_it_t* hit = (amxc_htable_it_t*) temp[i].data;
+        amxc_htable_it_t* next = NULL;
+        if(hit == NULL) {
+            continue;
+        }
+        hit->ait = NULL;
+        next = hit->next;
+        hit->next = NULL;
+        amxc_htable_insert_it(htable, hit);
+        while(next) {
+            hit = next;
+            hit->ait = NULL;
+            next = hit->next;
+            hit->next = NULL;
+            amxc_htable_insert_it(htable, hit);
+        }
+    }
+    free(temp);
 
 exit:
     return retval;
@@ -177,7 +193,7 @@ int amxc_htable_init(amxc_htable_t* const htable, const size_t reserve) {
     htable->items = 0;
     htable->hfunc = amxc_BKDR_hash;
 
-    when_failed(amxc_array_init(&htable->table, reserve ? reserve : 64), exit);
+    when_failed(amxc_array_init(&htable->table, reserve != 0 ? reserve : 64), exit);
 
     retval = 0;
 
@@ -226,8 +242,7 @@ int amxc_htable_insert(amxc_htable_t* const htable,
                        const char* const key,
                        amxc_htable_it_t* const it) {
     int retval = -1;
-    unsigned int index = 0;
-    amxc_array_it_t* ait = NULL;
+
     when_null(htable, exit);
     when_null(key, exit);
     when_true(*key == 0, exit);
@@ -245,7 +260,7 @@ int amxc_htable_insert(amxc_htable_t* const htable,
     if((htable->table.items == 0) ||
        (((htable->items + 1) * 100) / htable->table.items >= 75)) {
         // time to grow the table
-        when_failed(amxc_htable_grow(htable), exit);
+        when_failed(amxc_htable_grow(htable, 0), exit);
     }
 
     // update htable iterator
@@ -256,15 +271,7 @@ int amxc_htable_insert(amxc_htable_t* const htable,
         memcpy(it->key, key, length);
     }
 
-    index = amxc_htable_key2index(htable, key);
-    ait = amxc_array_get_at(&htable->table, index);
-    // insert item
-    if(ait->data != NULL) {
-        it->next = (amxc_htable_it_t*) ait->data;
-    }
-    amxc_array_it_set_data(ait, it);
-    it->ait = ait;
-    htable->items++;
+    amxc_htable_insert_it(htable, it);
 
     retval = 0;
 
@@ -342,4 +349,33 @@ amxc_array_t* amxc_htable_get_sorted_keys(const amxc_htable_t* const htable) {
 
 exit:
     return keys;
+}
+
+int amxc_htable_move(amxc_htable_t* const dest, amxc_htable_t* const src) {
+    int retval = -1;
+    size_t needed_items = 0;
+    size_t needed_cap = 0;
+    size_t dest_cap = 0;
+
+    when_null(dest, exit);
+    when_null(src, exit);
+
+    needed_items = amxc_htable_size(src) + amxc_htable_size(dest);
+    needed_cap = ((needed_items + 1) * 100) / 75;
+    dest_cap = amxc_htable_capacity(dest);
+
+    retval = 0;
+    if(dest_cap < needed_cap) {
+        retval = amxc_htable_grow(dest, needed_cap - dest_cap);
+    }
+    when_failed(retval, exit);
+
+    amxc_htable_for_each(it, src) {
+        amxc_htable_insert_it(dest, it);
+    }
+
+    retval = 0;
+
+exit:
+    return retval;
 }

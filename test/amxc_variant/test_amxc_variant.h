@@ -58,52 +58,21 @@
 **
 ****************************************************************************/
 
-#ifndef __TEST_AMXC_HTABLE_H__
-#define __TEST_AMXC_HTABLE_H__
+#ifndef __TEST_AMXC_VARIANT_H__
+#define __TEST_AMXC_VARIANT_H__
 
-void amxc_htable_new_delete_null_check(void** state);
-void amxc_htable_new_delete_check(void** state);
-void amxc_htable_delete_func_check(void** state);
-void amxc_htable_init_clean_null_check(void** state);
-void amxc_htable_init_clean_check(void** state);
-void amxc_htable_init_reserve_check(void** state);
-void amxc_htable_set_hash_func_check(void** state);
-void amxc_htable_key2index_null_check(void** state);
-void amxc_htable_key2index_check(void** state);
-void amxc_htable_insert_null_check(void** state);
-void amxc_htable_insert_check(void** state);
-void amxc_htable_insert_same_key_check(void** state);
-void amxc_htable_insert_same_it_check(void** state);
-void amxc_htable_insert_grow_check(void** state);
-void amxc_htable_is_empty_null_check(void** state);
-void amxc_htable_is_empty_check(void** state);
-void amxc_htable_size_null_check(void** state);
-void amxc_htable_size_check(void** state);
-void amxc_htable_capacity_null_check(void** state);
-void amxc_htable_capacity_check(void** state);
-void amxc_htable_get_null_check(void** state);
-void amxc_htable_get_check(void** state);
-void amxc_htable_get_chained_check(void** state);
-void amxc_htable_get_first_null_check(void** state);
-void amxc_htable_get_first_check(void** state);
-void amxc_htable_take_null_check(void** state);
-void amxc_htable_take_check(void** state);
-void amxc_htable_take_chained_check(void** state);
-void amxc_htable_take_first_null_check(void** state);
-void amxc_htable_take_first_check(void** state);
-void amxc_htable_contains_null_check(void** state);
-void amxc_htable_contains_check(void** state);
-void amxc_htable_it_get_next_null_check(void** state);
-void amxc_htable_it_get_next_check(void** state);
-void amxc_htable_it_get_next_chained_check(void** state);
-void amxc_htable_it_get_next_key_null_check(void** state);
-void amxc_htable_it_get_next_key_check(void** state);
-void amxc_htable_it_take_null_check(void** state);
-void amxc_htable_it_take_check(void** state);
-void amxc_htable_it_take_chained_check(void** state);
-void amxc_htable_it_get_key_check(void** state);
-void amxc_htable_it_init_null_check(void** state);
-void amxc_htable_it_clean_null_check(void** state);
-void amxc_htable_it_clean_func_check(void** state);
+void test_amxc_var_new_delete(void** state);
+void test_amxc_var_init_clean(void** state);
+void test_amxc_var_set_type(void** state);
+void test_amxc_var_copy(void** state);
+void test_amxc_var_convert(void** state);
+void test_amxc_var_compare(void** state);
+void test_amxc_var_type_of(void** state);
+void test_amxc_var_get_set_key(void** state);
+void test_amxc_var_add_new_key(void** state);
+void test_amxc_var_add_new(void** state);
+void test_amxc_var_get_path(void** state);
+void test_amxc_var_push_take_amxc_string(void** state);
+void test_amxc_var_move(void** state);
 
-#endif //__TEST_AMXC_HTABLE_H__
+#endif // __TEST_AMXC_VARIANT_H__

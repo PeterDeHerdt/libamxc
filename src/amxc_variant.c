@@ -74,6 +74,13 @@ int AMXC_PRIVATE amxc_var_default_copy(amxc_var_t* const dest,
     return 0;
 }
 
+int AMXC_PRIVATE amxc_var_default_move(amxc_var_t* const dest,
+                                       amxc_var_t* const src) {
+    dest->data = src->data;
+    src->data.data = NULL;
+    return 0;
+}
+
 int AMXC_PRIVATE amxc_var_default_convert_to_null(amxc_var_t* const dest,
                                                   AMXC_UNUSED const amxc_var_t* const src) {
     dest->data.data = NULL;
@@ -216,6 +223,8 @@ int amxc_var_copy(amxc_var_t* const dest, const amxc_var_t* const src) {
     when_null(dest, exit);
     when_null(src, exit);
 
+    // reset destinationn variant
+    amxc_var_clean(dest);
     // get the type function pointers of the src
     type = amxc_var_get_type(src->type_id);
     when_null(type, exit);
@@ -225,6 +234,31 @@ int amxc_var_copy(amxc_var_t* const dest, const amxc_var_t* const src) {
     retval = type->copy(dest, src);
     if(retval != 0) {
         amxc_var_clean(dest);
+    }
+
+exit:
+    return retval;
+}
+
+int amxc_var_move(amxc_var_t* const dest, amxc_var_t* const src) {
+    int retval = -1;
+    amxc_var_type_t* type = NULL;
+    when_null(dest, exit);
+    when_null(src, exit);
+
+    // reset destinationn variant
+    amxc_var_clean(dest);
+    // get the type function pointers of the src
+    type = amxc_var_get_type(src->type_id);
+    when_null(type, exit);
+    when_null(type->move, exit);
+
+    when_failed(amxc_var_set_type(dest, src->type_id), exit);
+    retval = type->move(dest, src);
+    if(retval != 0) {
+        amxc_var_clean(dest);
+    } else {
+        amxc_var_clean(src);
     }
 
 exit:

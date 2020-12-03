@@ -110,6 +110,14 @@ typedef int (* amxc_var_copy_fn_t) (amxc_var_t* const dst,
 /**
    @ingroup amxc_variant_type
    @brief
+   Variant type callback function prototype for moving the content.
+ */
+typedef int (* amxc_var_move_fn_t) (amxc_var_t* const dst,
+                                    amxc_var_t* const src);
+
+/**
+   @ingroup amxc_variant_type
+   @brief
    Variant type callback function prototype for dynamically converting one type
    to another.
  */
@@ -210,6 +218,7 @@ typedef struct _amxc_var_type {
     amxc_var_new_fn_t init;              /**< Initialize function */
     amxc_var_free_fn_t del;              /**< free (delete) function */
     amxc_var_copy_fn_t copy;             /**< Copy function */
+    amxc_var_move_fn_t move;             /**< Move function */
     amxc_var_convert_fn_t convert_from;  /**< Convert from function */
     amxc_var_convert_fn_t convert_to;    /**< Convert to function */
     amxc_var_compare_fn_t compare;       /**< Compare function */

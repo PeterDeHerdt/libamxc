@@ -58,59 +58,23 @@
 **
 ****************************************************************************/
 
-#include <stdlib.h>
-#include <setjmp.h>
-#include <stdarg.h>
-#include <cmocka.h>
+#ifndef __TEST_VARIANT_LIST_H__
+#define __TEST_VARIANT_LIST_H__
 
-#include "test_amxc_htable.h"
+void test_variant_list_copy(void** state);
+void test_variant_list_move(void** state);
+void test_variant_list_convert_to_bool(void** state);
+void test_variant_list_convert_to_integer(void** state);
+void test_variant_list_convert_to_htable(void** state);
+void test_variant_list_convert_to_string(void** state);
+void test_variant_llist_set_get(void** state);
 
-int main(void) {
-    const struct CMUnitTest tests[] = {
-        cmocka_unit_test(amxc_htable_new_delete_null_check),
-        cmocka_unit_test(amxc_htable_new_delete_check),
-        cmocka_unit_test(amxc_htable_delete_func_check),
-        cmocka_unit_test(amxc_htable_init_clean_null_check),
-        cmocka_unit_test(amxc_htable_init_clean_check),
-        cmocka_unit_test(amxc_htable_init_reserve_check),
-        cmocka_unit_test(amxc_htable_set_hash_func_check),
-        cmocka_unit_test(amxc_htable_key2index_null_check),
-        cmocka_unit_test(amxc_htable_key2index_check),
-        cmocka_unit_test(amxc_htable_insert_null_check),
-        cmocka_unit_test(amxc_htable_insert_check),
-        cmocka_unit_test(amxc_htable_insert_same_key_check),
-        cmocka_unit_test(amxc_htable_insert_same_it_check),
-        cmocka_unit_test(amxc_htable_insert_grow_check),
-        cmocka_unit_test(amxc_htable_is_empty_null_check),
-        cmocka_unit_test(amxc_htable_is_empty_check),
-        cmocka_unit_test(amxc_htable_size_null_check),
-        cmocka_unit_test(amxc_htable_size_check),
-        cmocka_unit_test(amxc_htable_capacity_null_check),
-        cmocka_unit_test(amxc_htable_capacity_check),
-        cmocka_unit_test(amxc_htable_get_null_check),
-        cmocka_unit_test(amxc_htable_get_check),
-        cmocka_unit_test(amxc_htable_get_chained_check),
-        cmocka_unit_test(amxc_htable_get_first_null_check),
-        cmocka_unit_test(amxc_htable_get_first_check),
-        cmocka_unit_test(amxc_htable_take_null_check),
-        cmocka_unit_test(amxc_htable_take_check),
-        cmocka_unit_test(amxc_htable_take_chained_check),
-        cmocka_unit_test(amxc_htable_take_first_null_check),
-        cmocka_unit_test(amxc_htable_take_first_check),
-        cmocka_unit_test(amxc_htable_contains_null_check),
-        cmocka_unit_test(amxc_htable_contains_check),
-        cmocka_unit_test(amxc_htable_it_get_next_null_check),
-        cmocka_unit_test(amxc_htable_it_get_next_check),
-        cmocka_unit_test(amxc_htable_it_get_next_chained_check),
-        cmocka_unit_test(amxc_htable_it_get_next_key_null_check),
-        cmocka_unit_test(amxc_htable_it_get_next_key_check),
-        cmocka_unit_test(amxc_htable_it_take_null_check),
-        cmocka_unit_test(amxc_htable_it_take_check),
-        cmocka_unit_test(amxc_htable_it_take_chained_check),
-        cmocka_unit_test(amxc_htable_it_get_key_check),
-        cmocka_unit_test(amxc_htable_it_init_null_check),
-        cmocka_unit_test(amxc_htable_it_clean_null_check),
-        cmocka_unit_test(amxc_htable_it_clean_func_check)
-    };
-    return cmocka_run_group_tests(tests, NULL, NULL);
-}
+void test_variant_llist_get_index(void** state);
+void test_variant_llist_set_index(void** state);
+void test_variant_llist_set_key(void** state);
+void test_variant_llist_add_new(void** state);
+void test_variant_llist_add_new_key(void** state);
+
+void test_variant_llist_get_path(void** state);
+
+#endif // __TEST_VARIANT_LIST_H__

@@ -189,7 +189,7 @@ void amxc_string_reset(amxc_string_t* const string) {
     when_null(string, exit);
 
     if(string->buffer) {
-        string->buffer[string->last_used] = 0;
+        string->buffer[0] = 0;
     }
     string->last_used = 0;
 
@@ -204,9 +204,17 @@ int amxc_string_copy(amxc_string_t* const dest,
     when_null(src, exit);
 
     amxc_string_reset(dest);
+
+    if(src->length == 0) {
+        dest->last_used = 0;
+        retval = 0;
+        goto exit;
+    }
+
     amxc_string_realloc(dest, src->length);
     when_null(dest->buffer, exit);
     memcpy(dest->buffer, src->buffer, src->length);
+    dest->last_used = src->last_used;
 
     retval = 0;
 
@@ -294,6 +302,7 @@ int amxc_string_remove_at(amxc_string_t* const string,
     int retval = -1;
     size_t bytes_to_move = 0;
     when_null(string, exit);
+    when_null(string->buffer, exit);
     when_true(length == 0, exit);
     when_true(pos > string->last_used, exit);
 
@@ -410,6 +419,7 @@ void amxc_string_triml(amxc_string_t* const string, amxc_string_is_char_fn_t fn)
 
     if(pos >= string->last_used) {
         string->last_used = 0;
+        string->buffer[0] = 0;
         goto exit;
     }
 
@@ -417,6 +427,7 @@ void amxc_string_triml(amxc_string_t* const string, amxc_string_is_char_fn_t fn)
         memmove(string->buffer, string->buffer + pos, string->last_used - pos);
         string->last_used -= pos;
     }
+    string->buffer[string->last_used] = 0;
 
 exit:
     return;
@@ -434,6 +445,7 @@ void amxc_string_trimr(amxc_string_t* const string, amxc_string_is_char_fn_t fn)
           fn(string->buffer[string->last_used - 1]) != 0) {
         string->last_used--;
     }
+    string->buffer[string->last_used] = 0;
 
 exit:
     return;
@@ -605,4 +617,66 @@ bool amxc_string_is_numeric(const amxc_string_t* const string) {
     retval = true;
 exit:
     return retval;
+}
+
+int amxc_string_search(const amxc_string_t* const string,
+                       const char* needle,
+                       uint32_t start_pos) {
+    int retval = -1;
+    size_t needle_len = 0;
+    const char* needle_loc = NULL;
+
+    when_null(string, exit);
+    when_null(string->buffer, exit);
+    when_true(string->last_used == 0, exit);
+    when_true(needle == NULL || *needle == 0, exit);
+
+    needle_len = strlen(needle);
+    when_true(start_pos + needle_len > string->last_used, exit);
+
+    needle_loc = strstr(string->buffer + start_pos, needle);
+    if(needle_loc != NULL) {
+        retval = needle_loc - string->buffer;
+    }
+
+exit:
+    return retval;
+}
+
+int amxc_string_replace(amxc_string_t* const string,
+                        const char* needle,
+                        const char* newstr,
+                        uint32_t max) {
+    int retval = 0;
+    int pos = 0;
+    size_t needle_len = 0;
+    size_t newstr_len = 0;
+
+    when_null(string, exit);
+    when_null(string->buffer, exit);
+    when_true(string->last_used == 0, exit);
+    when_true(needle == NULL || *needle == 0, exit);
+    when_null(newstr, exit);
+
+    needle_len = strlen(needle);
+    newstr_len = strlen(newstr);
+
+    when_true(needle_len > string->last_used, exit);
+
+    pos = amxc_string_search(string, needle, pos);
+    while(pos != -1 && max > 0) {
+        amxc_string_remove_at(string, pos, needle_len);
+        if(newstr_len != 0) {
+            amxc_string_insert_at(string, pos, newstr, newstr_len);
+        }
+        retval++;
+        if(max != UINT32_MAX) {
+            max--;
+        }
+        pos = amxc_string_search(string, needle, pos + newstr_len);
+    }
+
+exit:
+    return retval;
+
 }

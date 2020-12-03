@@ -129,6 +129,41 @@ void test_variant_htable_copy(UNUSED void** state) {
     amxc_var_clean(&copy_var);
 }
 
+void test_variant_htable_move(UNUSED void** state) {
+    amxc_var_t src;
+    amxc_var_t dst;
+
+    assert_int_equal(amxc_var_init(&src), 0);
+    assert_int_equal(amxc_var_init(&dst), 0);
+    amxc_var_set_type(&src, AMXC_VAR_ID_HTABLE);
+
+    amxc_var_add_key(cstring_t, &src, "key1", "item1");
+    amxc_var_add_key(cstring_t, &src, "key2", "item2");
+    amxc_var_add_key(cstring_t, &src, "key3", "item3");
+    amxc_var_add_key(cstring_t, &src, "key4", "item4");
+    amxc_var_add_key(cstring_t, &src, "key5", "item5");
+    amxc_var_add_key(cstring_t, &src, "key6", "item6");
+    amxc_var_add_key(cstring_t, &src, "key7", "item7");
+    amxc_var_add_key(cstring_t, &src, "key8", "item8");
+    amxc_var_add_key(cstring_t, &src, "key9", "item9");
+    amxc_var_add_key(cstring_t, &src, "key10", "item10");
+
+    assert_int_equal(amxc_htable_size(amxc_var_constcast(amxc_htable_t, &src)), 10);
+    assert_int_equal(amxc_var_move(&dst, &src), 0);
+    assert_true(amxc_var_is_null(&src));
+    assert_int_equal(amxc_var_type_of(&dst), AMXC_VAR_ID_HTABLE);
+    assert_int_equal(amxc_htable_size(amxc_var_constcast(amxc_htable_t, &dst)), 10);
+
+    assert_non_null(GET_ARG(&dst, "key5"));
+    assert_non_null(GET_ARG(&dst, "key1"));
+    assert_non_null(GET_ARG(&dst, "key3"));
+    assert_non_null(GET_ARG(&dst, "key7"));
+    assert_non_null(GET_ARG(&dst, "key9"));
+
+    amxc_var_clean(&dst);
+    amxc_var_clean(&src);
+}
+
 void test_variant_htable_convert_to_bool(UNUSED void** state) {
     amxc_var_t string;
     amxc_var_t var;

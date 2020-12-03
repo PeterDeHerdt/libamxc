@@ -484,27 +484,207 @@ void amxc_string_trimr(amxc_string_t* const string, amxc_string_is_char_fn_t fn)
  */
 void amxc_string_trim(amxc_string_t* const string, amxc_string_is_char_fn_t fn);
 
+/**
+   @ingroup amxc_string
+   @brief
+   Sets the content of the string using printf like formatting
+
+   Using a string literal that can contain printf like formatting the
+   content of the string is filled.
+
+   If needed memory is allocated or the already allocated buffer grows so
+   the new content can be stored.
+
+   @param string a pointer to the string structure
+   @param fmt string literal that can contain printf formatting
+   @param ap a va_list, containig the values for the printf formatting
+
+   @return
+   0 when the new content is set
+
+ */
 int amxc_string_vsetf(amxc_string_t* const string, const char* fmt, va_list ap);
 
+/**
+   @ingroup amxc_string
+   @brief
+   Sets the content of the string using printf like formatting
+
+   Using a string literal that can contain printf like formatting the
+   content of the string is filled.
+
+   If needed memory is allocated or the already allocated buffer grows so
+   the new content can be stored.
+
+   The variadic arguments must match the printf formatting placholders in the
+   format string literal
+
+   @param string a pointer to the string structure
+   @param fmt string literal that can contain printf formatting
+
+   @return
+   0 when the new content is set
+ */
 int amxc_string_setf(amxc_string_t* const string, const char* fmt, ...) \
     __attribute__ ((format(printf, 2, 3)));
 
+/**
+   @ingroup amxc_string
+   @brief
+   Appends a formatted string to a striung
+
+   Using a string literal that can contain printf like formatting a string is
+   added to the end of the string.
+
+   If needed memory is allocated or the already allocated buffer grows so
+   the new content can be added.
+
+   The variadic arguments must match the printf formatting placholders in the
+   format string literal
+
+   @param string a pointer to the string structure
+   @param fmt string literal that can contain printf formatting
+   @param ap a va_list, containig the values for the printf formatting
+
+   @return
+   0 when the new content is added
+ */
 int amxc_string_vappendf(amxc_string_t* const string,
                          const char* fmt,
                          va_list ap);
 
+/**
+   @ingroup amxc_string
+   @brief
+   Appends a formatted string to a striung
+
+   Using a string literal that can contain printf like formatting a string is
+   added to the end of the string.
+
+   If needed memory is allocated or the already allocated buffer grows so
+   the new content can be added.
+
+   The variadic arguments must match the printf formatting placholders in the
+   format string literal
+
+   @param string a pointer to the string structure
+   @param fmt string literal that can contain printf formatting
+
+   @return
+   0 when the new content is added
+ */
 int amxc_string_appendf(amxc_string_t* const string, const char* fmt, ...) \
     __attribute__ ((format(printf, 2, 3)));
 
+/**
+   @ingroup amxc_string
+   @brief
+   Prepends a formatted string to a striung
+
+   Using a string literal that can contain printf like formatting a string is
+   added to the beginning of the string.
+
+   If needed memory is allocated or the already allocated buffer grows so
+   the new content can be added.
+
+   The variadic arguments must match the printf formatting placholders in the
+   format string literal
+
+   @param string a pointer to the string structure
+   @param fmt string literal that can contain printf formatting
+   @param ap a va_list, containig the values for the printf formatting
+
+   @return
+   0 when the new content is added
+ */
 int amxc_string_vprependf(amxc_string_t* const string,
                           const char* fmt,
                           va_list ap);
 
+/**
+   @ingroup amxc_string
+   @brief
+   Prepends a formatted string to a striung
+
+   Using a string literal that can contain printf like formatting a string is
+   added to the beginning of the string.
+
+   If needed memory is allocated or the already allocated buffer grows so
+   the new content can be added.
+
+   The variadic arguments must match the printf formatting placholders in the
+   format string literal
+
+   @param string a pointer to the string structure
+   @param fmt string literal that can contain printf formatting
+
+   @return
+   0 when the new content is added
+ */
 int amxc_string_prependf(amxc_string_t* const string, const char* fmt, ...) \
     __attribute__ ((format(printf, 2, 3)));
 
+/**
+   @ingroup amxc_string
+   @brief
+   Checks if a string is fully numeric
+
+   If all characters in the string are numeric this function returns true.
+
+   @param string a pointer to the string structure
+
+   @return
+   true when all characters in the string are numeric.
+ */
 bool amxc_string_is_numeric(const amxc_string_t* const string);
 
+/**
+   @ingroup amxc_string
+   @brief
+   Searches a sub-string in a string
+
+   Searches a sub-string in a string starting from the start_pos.
+
+   When no occurrence is found the function returns -1, otherwise it returns
+   the position in the string where the sub-string starts.
+
+   @param string a pointer to the string structure
+   @param needle the sub-string to be searched
+   @param start_pos the search start position in the string
+
+   @return
+   -1 when the substring is not found, otherwise the position where the
+   sub-string starts.
+ */
+int amxc_string_search(const amxc_string_t* const string,
+                       const char* needle,
+                       uint32_t start_pos);
+
+/**
+   @ingroup amxc_string
+   @brief
+   Replaces a number of sub-string occurrences in a string
+
+   Searches a sub-string in a string starting from beginning and replaces
+   a certain number of the sub-string with another string.
+
+   When the newstr is empty all occurrences of the sub-string are removed
+   from the string.
+
+   When max is set to UINT32_MAX all occurrences of the sub-string are replaced.
+
+   @param string a pointer to the string structure
+   @param needle the sub-string to be searched
+   @param newstr the replacement string
+   @param max the maximum number of replacements, use UINT32_MAX for all
+
+   @return
+   the number of replacements done
+ */
+int amxc_string_replace(amxc_string_t* const string,
+                        const char* needle,
+                        const char* newstr,
+                        uint32_t max);
 /**
    @ingroup amxc_string
    @brief
@@ -615,7 +795,8 @@ size_t amxc_string_text_length(const amxc_string_t* const string) {
    @brief
    Checks if the string is empty.
 
-   A string is considered empty if the last used bytes is 0. TODO looks wrong!
+   A string is considered empty if the length of the string is 0 or when
+   the internal buffer pointer is NULL.
 
    @param string a pointer to the string structure
 
@@ -627,10 +808,25 @@ bool amxc_string_is_empty(const amxc_string_t* const string) {
     return string != NULL ? (string->last_used == 0) : true;
 }
 
+/**
+   @ingroup amxc_string
+   @brief
+   Inserts a string of the given length into a string at a certain position
+
+   Inserts text of a certain length at a given position in the string
+
+   @param string a pointer to the string structure
+   @param pos position in the string
+   @param text the text that needs to be inserted
+   @param length the length of the text
+
+   @return
+   0 when the text is inserted
+ */
 AMXC_INLINE
 int amxc_string_insert_at(amxc_string_t* const string,
                           const size_t pos,
-                          char* text,
+                          const char* text,
                           size_t length) {
     return amxc_string_set_at(string, pos, text, length, amxc_string_insert);
 }

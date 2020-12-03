@@ -329,8 +329,8 @@ Some examples:
     amxc_var_init(&my_var);
     amxc_var_set(cstring_t, &my_var, "1234");
 
-    int32_t number = amxc_var_constcast(uint32_t, &myvar); // number will be 0
-    int32_t number = amxc_var_dyncast(uint32_t, &myvar); // number will be 1234
+    int32_t number = amxc_var_constcast(uint32_t, &my_var); // number will be 0
+    int32_t number = amxc_var_dyncast(uint32_t, &my_var); // number will be 1234
     ```
 
 - The variant contains a boolean and a string is requested
@@ -340,8 +340,8 @@ Some examples:
     amxc_var_init(&my_var);
     amxc_var_set(bool, &my_var, true);
 
-    const char *txt = amxc_var_constcast(cstring_t, &myvar); // txt will be NULL
-    char *txt = amxc_var_dyncast(cstring_t, &myvar); // txt will be "true", txt must be freed when not needed anymore
+    const char *txt = amxc_var_constcast(cstring_t, &my_var); // txt will be NULL
+    char *txt = amxc_var_dyncast(cstring_t, &my_var); // txt will be "true", txt must be freed when not needed anymore
     ```
 
 #### Getting Composite Values
@@ -395,7 +395,7 @@ Getting the name of the second user in the composite variant can be achieved by:
 
 ```C
 amxc_var_t *var_name = amxc_var_get_path(&users, "1.name", AMXC_VAR_FLAG_DEFAULT);
-const char *str_name = amxc_var_constcast(cstring_t, &var_name);
+const char *str_name = amxc_var_constcast(cstring_t, var_name);
 ```
 
 A list can be accessed using an index, the first element in a list will have index 0. Key-value pairs can be accessed by key.
@@ -429,7 +429,7 @@ Example:
 ```C
 amxc_var_for_each(user, (&users)) {
     amxc_var_t *var_name = amxc_var_get_path(user, "name", AMXC_VAR_FLAG_DEFAULT);
-    const char *str_name = amxc_var_constcast(cstring_t, &var_name);
+    const char *str_name = amxc_var_constcast(cstring_t, var_name);
 }
 ```
 

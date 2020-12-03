@@ -493,6 +493,28 @@ bool amxc_htable_contains(const amxc_htable_t* const htable, const char* const k
 /**
    @ingroup amxc_htable
    @brief
+   Moves all items from one hash table to another hash table
+
+   After the move the source hash table will be empty.
+
+   If the destination hash table already contained items, the items of
+   the source hash table are added to the destination.
+
+   @note
+   if moving fails, the source is not changed and the destination will be an
+   ampty hash table
+
+   @param dest a pointer to the destiniation hash table structure
+   @param src a pointer to the source hash table structure
+
+   @return
+   0 on success any other return value indicates failure.
+ */
+int amxc_htable_move(amxc_htable_t* const dest, amxc_htable_t* const src);
+
+/**
+   @ingroup amxc_htable
+   @brief
    Initializes a hash table.iterator
 
    Initializes the hash table iterator structure. All pointers are reset to NULL.

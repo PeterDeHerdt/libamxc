@@ -152,18 +152,128 @@ extern "C"
 #define AMXC_VAR_FLAG_COPY      0x01             /**< Copy the variant & variant data */
 #define AMXC_VAR_FLAG_UPDATE    0x02             /**< Update if already exists */
 
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting variant out of a composite variant by key.
+
+   Macro expands to amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT)
+
+   @see @ref amxc_var_get_key
+ */
 #define GET_ARG(a, n) amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT)
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting a bool out of a composite variant by key.
+
+   Macro expands to amxc_var_constcast(bool, amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_key, @ref amxc_var_constcast
+ */
 #define GET_BOOL(a, n) amxc_var_constcast(bool, GET_ARG(a, n))
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting a char* out of a composite variant by key.
+
+   Macro expands to amxc_var_constcast(cstring_t, amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_key, @ref amxc_var_constcast
+ */
 #define GET_CHAR(a, n) amxc_var_constcast(cstring_t, GET_ARG(a, n))
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting a uint32_t out of a composite variant by key.
+
+   Macro expands to amxc_var_constcast(uint32_t, amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_key, @ref amxc_var_constcast
+ */
 #define GET_UINT32(a, n) amxc_var_constcast(uint32_t, GET_ARG(a, n))
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting a int32_t out of a composite variant by key.
+
+   Macro expands to amxc_var_constcast(int32_t, amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_key, @ref amxc_var_constcast
+ */
 #define GET_INT32(a, n) amxc_var_constcast(int32_t, GET_ARG(a, n))
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting variant out of a composite variant by index.
+
+   Macro expands to amxc_var_get_key(a, i, AMXC_VAR_FLAG_DEFAULT)
+
+   @see @ref amxc_var_get_index
+ */
+#define GETI_ARG(a, i) amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT)
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting a bool out of a composite variant by index.
+
+   Macro expands to amxc_var_constcast(int32_t, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_index, @ref amxc_var_constcast
+ */
+#define GETI_BOOL(a, i) amxc_var_constcast(bool, GETI_ARG(a, i))
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting a char* out of a composite variant by index.
+
+   Macro expands to amxc_var_constcast(cstring_t, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_index, @ref amxc_var_constcast
+ */
+#define GETI_CHAR(a, i) amxc_var_constcast(cstring_t, GETI_ARG(a, i))
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting a uint32_t out of a composite variant by index.
+
+   Macro expands to amxc_var_constcast(uint32_t, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_index, @ref amxc_var_constcast
+ */
+#define GETI_UINT32(a, i) amxc_var_constcast(uint32_t, GETI_ARG(a, i))
+/**
+   @ingroup amxc_variant
+   @brief
+   Convenience macro for getting a int32_t out of a composite variant by index.
+
+   Macro expands to amxc_var_constcast(int32_t, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_index, @ref amxc_var_constcast
+ */
+#define GETI_INT32(a, i) amxc_var_constcast(int32_t, GETI_ARG(a, i))
+
+#define GETP_ARG(a, p) amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT)
+#define GETP_BOOL(a, p) amxc_var_constcast(bool, GETP_ARG(a, p))
+#define GETP_CHAR(a, p) amxc_var_constcast(cstring_t, GETP_ARG(a, p))
+#define GETP_UINT32(a, p) amxc_var_constcast(uint32_t, GETP_ARG(a, p))
+#define GETP_INT32(a, p) amxc_var_constcast(int32_t, GETP_ARG(a, p))
 
 /**
    @brief
    Convenience macro
  */
 #define cstring_t char*
+/**
+   @brief
+   Convenience macro
+ */
 #define csv_string_t char*
+/**
+   @brief
+   Convenience macro
+ */
 #define ssv_string_t char*
 
 /**
@@ -204,10 +314,49 @@ extern "C"
    @brief
    Dynamic cast a variant to a certain type.
 
-   Conversion is applied and a copy is given.
-   If a pointer is returned, the allocated memory must be freed.
+   Conversion is applied and a copy is given. If a pointer is returned,
+   the allocated memory must be freed. If a value is returned,
+   there is no memory allocation.
 
-   Macro expands to amxc_var_get_<TYPE>(var)
+   When the requested type is not the same type as the type of the variant
+   the value in the variant is converted to the requested type. If the
+   conversion is not possible or fails, a default value is returned.
+
+   It is possible that memory is allocated to be able to store the requested type,
+   this is only the case when a pointer is returned. For primitive types like
+   uint32_t, bool, double, ... no memory is allocated, the value is returned.
+
+   When a pointer is returned it must be freed.
+
+   @note
+   This macro expands to amxc_var_get_<TYPE>(var)
+   The default variant type implementation provides these functions:
+   - @ref amxc_var_get_bool - returns a bool
+   - @ref amxc_var_get_int8_t - returns a int8_t
+   - @ref amxc_var_get_uint8_t - returns a uint8_t
+   - @ref amxc_var_get_int16_t - returns a int16_t
+   - @ref amxc_var_get_uint16_t - returns a uint16_t
+   - @ref amxc_var_get_int32_t - returns a int32_t
+   - @ref amxc_var_get_uint32_t - returns a uint32_t
+   - @ref amxc_var_get_int64_t - returns a int64_t
+   - @ref amxc_var_get_uint64_t - returns a uint64_t
+   - @ref amxc_var_get_double - returns a double
+   - @ref amxc_var_get_fd_t - returns a file descriptor
+   - @ref amxc_var_get_amxc_htable_t - returns a pointer to a hash table,
+                                  this must be freed when not needed anymore
+                                  use @ref amxc_htable_delete
+   - @ref amxc_var_get_amxc_llist_t - returns a pointer to a linked list
+                                 this must be freed when not needed anymore
+                                 use @ref amxc_llist_delete
+   - @ref amxc_var_get_cstring_t - returns a char*
+                                   this must be freed when not needed anymore
+                                   use free()
+   - @ref amxc_var_get_amxc_ts_t - returns a pointer to a timestamp
+                                   this must be freed when not needed anymore
+                                   use free()
+
+   Custom variant type implementations may implement a amxc_var_get_<CUSTOM_TYPE>
+   function, see the documentation of the custom types for more information.
  */
 #define amxc_var_dyncast(type, var) amxc_var_get_ ## type(var)
 
@@ -224,7 +373,80 @@ extern "C"
 
    Macro expands to amxc_var_get_const_<TYPE>(var)
  */
+/**
+   @ingroup amxc_variant
+   @brief
+   Takes the content from a variant.
+
+   If the given variant is not of the type specified, it will return a default
+   value, NULL for pointers, 0 for integers or double, false for boolean.
+   Only works on variants containing pointer types.
+
+   The type of the variant can be queried using @ref amxc_var_type_of
+
+   No conversions are done using this macro.
+
+   When pointers are returned, the pointers are refering to the data in the variant
+   and must not be freed.
+
+   @note
+   This macro expands to amxc_var_get_const_<TYPE>(var)
+   The default variant type implementation provides these functions:
+   - @ref amxc_var_get_const_bool - returns a bool
+   - @ref amxc_var_get_const_int8_t - returns a int8_t
+   - @ref amxc_var_get_const_uint8_t - returns a uint8_t
+   - @ref amxc_var_get_const_int16_t - returns a int16_t
+   - @ref amxc_var_get_const_uint16_t - returns a uint16_t
+   - @ref amxc_var_get_const_int32_t - returns a int32_t
+   - @ref amxc_var_get_const_uint32_t - returns a uint32_t
+   - @ref amxc_var_get_const_int64_t - returns a int64_t
+   - @ref amxc_var_get_const_uint64_t - returns a uint64_t
+   - @ref amxc_var_get_const_double - returns a double
+   - @ref amxc_var_get_const_fd_t - returns a file descriptor
+   - @ref amxc_var_get_const_amxc_htable_t - returns a const pointer to a hash table,
+   - @ref amxc_var_get_const_amxc_llist_t - returns a const pointer to a linked list
+   - @ref amxc_var_get_const_cstring_t - returns a const char*
+   - @ref amxc_var_get_const_amxc_ts_t - returns a const pointer to a timestamp
+
+   Custom variant type implementations may implement a amxc_var_get_const_<CUSTOM_TYPE>
+   function, see the documentation of the custom types for more information.
+ */
 #define amxc_var_constcast(type, var) amxc_var_get_const_ ## type(var)
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Takes the content from a variant.
+
+   If the given variant is not of the type specified, it will return NULL.
+   Only works on variants containing pointer types.
+
+   No conversions are applied, no copies are done. The pointer returned is
+   the pointer in the variant. The variant is reset to the "null" variant.
+
+   Ownership of the pointer is transferd to the caller. When not needed
+   anymore the memory must be freed.
+
+   @note
+   This macro expands to amxc_var_take_<TYPE>(var)
+   The default variant type implementation provides these functions:
+   - @ref amxc_var_take_cstring_t - returns char*
+                               this must be freed when not needed anymore
+                               use free()
+   - @ref amxc_var_take_amxc_string_t - returns amxc_string_t*
+                                   this must be freed when not needed anymore
+                                   use @ref amxc_string_delete
+   - @ref amxc_var_take_csv_string_t - returns char*
+                                  this must be freed when not needed anymore
+                                  use free()
+   - @ref amxc_var_take_ssv_string_t - returns char*
+                                  this must be freed when not needed anymore
+                                  use free()
+
+   Custom variant type implementations may implement a amxc_var_take_<CUSTOM_TYPE>
+   function, see the documentation of the custom types for more information.
+ */
+#define amxc_var_take(type, var) amxc_var_take_ ## type(var)
 
 /**
    @ingroup amxc_variant
@@ -241,8 +463,6 @@ extern "C"
 
    Macro expands to amxc_var_take_<TYPE>(var)
  */
-#define amxc_var_take(type, var) amxc_var_take_ ## type(var)
-
 #define amxc_var_push(type, var, val) amxc_var_push_ ## type(var, val)
 
 /**
@@ -261,8 +481,6 @@ extern "C"
    Get the variant pointer from an amxc linked list iterator.
 
    The linked list iterator given, must be a linked list iterator of a variant.
-
-   Gives the pointer to the variant.
  */
 #define amxc_var_from_llist_it(ll_it) \
     ((amxc_var_t*) (((char*) ll_it) - offsetof(amxc_var_t, lit)))
@@ -273,6 +491,13 @@ extern "C"
         var; \
         var = _next, \
         _next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)))
+
+#define amxc_var_for_each_reverse(var, var_list) \
+    for(amxc_var_t* var = amxc_var_from_llist_it(amxc_llist_get_last(&var_list->data.vl)), \
+        * _prev = amxc_var_from_llist_it(amxc_llist_it_get_previous(&var->lit)); \
+        var; \
+        var = _prev, \
+        _prev = amxc_var_from_llist_it(amxc_llist_it_get_previous(&var->lit)))
 
 
 typedef struct _amxc_var {
@@ -413,10 +638,32 @@ int amxc_var_copy(amxc_var_t* const dest, const amxc_var_t* const src);
 /**
    @ingroup amxc_variant
    @brief
+   Moves the type and data from one variant (source) in another variant (destination).
+
+   The destination variant is first set to the same type as the source variant using
+   @ref amxc_var_set_type and then the data is moved.
+
+   After the move the destination variant is identical to the source variant and
+   the source variant is reset to the null variant type.
+
+   The iterators (linked list and htable) of the soource variant are not moved.
+
+   @param dest pointer to variant struct, the destination
+   @param src pointer to variant struct, the source
+
+   @return
+   When the move fails, this functions returns a none 0 value and the destination
+   variant is reset to a null variant.
+ */
+int amxc_var_move(amxc_var_t* const dest, amxc_var_t* const src);
+
+/**
+   @ingroup amxc_variant
+   @brief
    Converts one variant (source) to another variant(destination) using the specified
    variant type id.
 
-   If no type is found with the geven type id, the converson fails.
+   If no type is found with the given type id, the conversion fails.
    If no conversion methods are available the conversion fails.
 
    If the source variant type has a convert to method, this is called first.
@@ -462,6 +709,23 @@ int amxc_var_convert(amxc_var_t* const dest,
 int amxc_var_compare(const amxc_var_t* const var1,
                      const amxc_var_t* const var2,
                      int* const result);
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Removes the variant for a llist and/or a htable
+
+   When the variant is stored in a linked list and/or a hash table, it is
+   removed from these. The variant itself is not deleted.
+
+   @param var pointer to a variant struct
+
+ */
+AMXC_INLINE
+void amxc_var_take_it(amxc_var_t* const var) {
+    amxc_llist_it_take(&var->lit);
+    amxc_htable_it_take(&var->hit);
+}
 
 /**
    @ingroup amxc_variant
@@ -519,6 +783,35 @@ int amxc_var_set_key(amxc_var_t* const var,
 /**
    @ingroup amxc_variant
    @brief
+   Get a reference to a part of composed variant using a key and removes it from
+   the composed variant
+
+   If the data contained in the variant is composed of different parts
+   and some or all parts can be identified with a key, a reference to such part
+   can be retrieved with this function.
+
+   The variant referenced by the key is removed from the composed variant.
+
+   The returned variant must be freed using @ref amxc_var_delete
+
+   @param var pointer to variant structure, containing the composed data
+   @param key string containing the key
+
+   @return
+   When no part is found with the given key a null pointer is returned.
+   The pointer returned is pointing to a real part.
+ */
+AMXC_INLINE
+amxc_var_t* amxc_var_take_key(amxc_var_t* const var,
+                              const char* const key) {
+    amxc_var_t* rv = amxc_var_get_key(var, key, AMXC_VAR_FLAG_DEFAULT);
+    amxc_var_take_it(rv);
+    return rv;
+}
+
+/**
+   @ingroup amxc_variant
+   @brief
    Get a reference to a part of composed variant using an index.
 
    If the data contained in the variant is composed of different parts
@@ -559,6 +852,35 @@ int amxc_var_set_index(amxc_var_t* const var,
                        const int64_t index,
                        amxc_var_t* data,
                        const int flags);
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Get a reference to a part of composed variant using an index and removes it from
+   the composed variant
+
+   If the data contained in the variant is composed of different parts
+   and some or all parts can be identified with an index, a reference to such part
+   can be retrieved with this function.
+
+   The variant referenced by the index is removed from the composed variant.
+
+   The returned variant must be freed using @ref amxc_var_delete
+
+   @param var pointer to variant structure, containing the composed data
+   @param index the index
+
+   @return
+   When no part is found with the given index a null pointer is returned.
+   The pointer returned is pointing to a real part.
+ */
+AMXC_INLINE
+amxc_var_t* amxc_var_take_index(amxc_var_t* const var,
+                                const int64_t index) {
+    amxc_var_t* rv = amxc_var_get_index(var, index, AMXC_VAR_FLAG_DEFAULT);
+    amxc_var_take_it(rv);
+    return rv;
+}
 
 /**
    @ingroup amxc_variant
@@ -724,29 +1046,270 @@ int amxc_var_set_amxc_ts_t(amxc_var_t* var, amxc_ts_t* val);
    data. If a pointer is returned, call the correct function to free the
    allocated memory if no longer needed.
  */
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `bool`
+
+   @param var pointer to a variant struct
+
+   @return
+   boolean value
+ */
 bool amxc_var_get_bool(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `int8_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   int8_t value
+ */
 int8_t amxc_var_get_int8_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `uint8_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   uint8_t value
+ */
 uint8_t amxc_var_get_uint8_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `int16_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   int16_t value
+ */
 int16_t amxc_var_get_int16_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `uint16_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   uint16_t value
+ */
 uint16_t amxc_var_get_uint16_t(const amxc_var_t* var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `int32_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   int32_t value
+ */
 int32_t amxc_var_get_int32_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `uint32_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   uint32_t value
+ */
 uint32_t amxc_var_get_uint32_t(const amxc_var_t* var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `int64_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   int64_t value
+ */
 int64_t amxc_var_get_int64_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `uint64_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   uint64_t value
+ */
 uint64_t amxc_var_get_uint64_t(const amxc_var_t* const var);
-cstring_t amxc_var_get_cstring_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `cstring_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value, must be freed when not needed anymore
+ */
+char* amxc_var_get_cstring_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `amxc_htable_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   amxc_htable_t* value, must be freed when not needed anymore
+ */
 amxc_htable_t* amxc_var_get_amxc_htable_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `amxc_llist_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   amxc_llist_t* value, must be freed when not needed anymore
+ */
 amxc_llist_t* amxc_var_get_amxc_llist_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `double`
+
+   @param var pointer to a variant struct
+
+   @return
+   double value
+ */
 double amxc_var_get_double(const amxc_var_t* var);
-fd_t amxc_var_get_fd_t(const amxc_var_t* var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `fd_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   int value
+ */
+int amxc_var_get_fd_t(const amxc_var_t* var);
+/**
+   @ingroup amxc_variant
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `amxc_ts_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   amxc_ts_t* value, must be freed when not needed anymore
+ */
 amxc_ts_t* amxc_var_get_amxc_ts_t(const amxc_var_t* var);
 
 AMXC_INLINE
-cstring_t amxc_var_get_csv_string_t(const amxc_var_t* const var) {
+char* amxc_var_get_csv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_cstring_t(var);
 }
 
 AMXC_INLINE
-cstring_t amxc_var_get_ssv_string_t(const amxc_var_t* const var) {
+char* amxc_var_get_ssv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_cstring_t(var);
 }
 

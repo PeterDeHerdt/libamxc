@@ -113,6 +113,7 @@ int main(void) {
         cmocka_unit_test(amxc_llist_swap_in_same_llist_check),
         cmocka_unit_test(amxc_llist_swap_in_different_llist_check),
         cmocka_unit_test(test_amxc_llist_sort),
+        cmocka_unit_test(test_amxc_llist_move),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

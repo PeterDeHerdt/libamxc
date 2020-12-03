@@ -334,6 +334,14 @@ exit:
     return retval;
 }
 
+static int variant_char_move(amxc_var_t* const dest,
+                             amxc_var_t* const src) {
+    dest->data.s = src->data.s;
+    src->data.s = NULL;
+
+    return 0;
+}
+
 static void variant_char_delete(amxc_var_t* const var) {
     free(var->data.s);
     var->data.s = NULL;
@@ -393,6 +401,7 @@ static amxc_var_type_t amxc_variant_char = {
     .init = NULL,
     .del = variant_char_delete,
     .copy = variant_char_copy,
+    .move = variant_char_move,
     .convert_from = NULL,
     .convert_to = variant_char_convert_to,
     .compare = variant_char_compare,
@@ -409,6 +418,7 @@ static amxc_var_type_t amxc_variant_csv_char = {
     .init = NULL,
     .del = variant_char_delete,
     .copy = variant_char_copy,
+    .move = variant_char_move,
     .convert_from = NULL,
     .convert_to = variant_char_convert_to,
     .compare = variant_char_compare,
@@ -425,6 +435,7 @@ static amxc_var_type_t amxc_variant_ssv_char = {
     .init = NULL,
     .del = variant_char_delete,
     .copy = variant_char_copy,
+    .move = variant_char_move,
     .convert_from = NULL,
     .convert_to = variant_char_convert_to,
     .compare = variant_char_compare,

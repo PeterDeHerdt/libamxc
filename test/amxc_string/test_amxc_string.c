@@ -474,14 +474,14 @@ void test_amxc_string_trim(UNUSED void** state) {
     assert_int_equal(string.last_used, 18);
     amxc_string_triml(&string, NULL);
     assert_int_equal(string.last_used, 14);
-    assert_string_equal(amxc_string_get(&string, 0), "hello world\t  ");
+    assert_string_equal(string.buffer, "hello world\t  ");
 
     amxc_string_trimr(&string, NULL);
     assert_int_equal(string.last_used, 11);
-    assert_string_equal(amxc_string_get(&string, 0), "hello world");
+    assert_string_equal(string.buffer, "hello world");
 
     amxc_string_trim(&string, NULL);
-    assert_string_equal(amxc_string_get(&string, 0), "hello world");
+    assert_string_equal(string.buffer, "hello world");
     amxc_string_reset(&string);
 
     assert_int_equal(amxc_string_set_at(&string,
@@ -508,7 +508,15 @@ void test_amxc_string_trim(UNUSED void** state) {
                                         18,
                                         amxc_string_no_flags), 0);
     amxc_string_trim(&string, NULL);
-    assert_string_equal(amxc_string_get(&string, 0), "hello world");
+    assert_string_equal(string.buffer, "hello world");
+
+    assert_int_equal(amxc_string_setf(&string, "%s", "     "), 0);
+    amxc_string_triml(&string, NULL);
+    assert_string_equal(string.buffer, "");
+
+    assert_int_equal(amxc_string_setf(&string, "%s", "     "), 0);
+    amxc_string_trimr(&string, NULL);
+    assert_string_equal(string.buffer, "");
 
     amxc_string_clean(&string);
 }
@@ -572,10 +580,10 @@ void test_amxc_string_appendf(UNUSED void** state) {
     assert_int_equal(amxc_string_appendf(&string, "Hello world"), 0);
     assert_int_equal(string.length, 12);
     assert_int_equal(string.last_used, 11);
-    assert_string_equal(amxc_string_get(&string, 0), "Hello world");
+    assert_string_equal(string.buffer, "Hello world");
 
     assert_int_equal(amxc_string_appendf(&string, "%s-%d", "acracadabra", 5), 0);
-    assert_string_equal(amxc_string_get(&string, 0), "Hello worldacracadabra-5");
+    assert_string_equal(string.buffer, "Hello worldacracadabra-5");
 
     amxc_string_reset(&string);
 
@@ -594,10 +602,10 @@ void test_amxc_string_prependf(UNUSED void** state) {
     assert_int_equal(amxc_string_prependf(&string, "Hello world"), 0);
     assert_int_equal(string.length, 12);
     assert_int_equal(string.last_used, 11);
-    assert_string_equal(amxc_string_get(&string, 0), "Hello world");
+    assert_string_equal(string.buffer, "Hello world");
 
     assert_int_equal(amxc_string_prependf(&string, "%s-%d", "acracadabra", 5), 0);
-    assert_string_equal(amxc_string_get(&string, 0), "acracadabra-5Hello world");
+    assert_string_equal(string.buffer, "acracadabra-5Hello world");
 
     amxc_string_reset(&string);
 
@@ -877,4 +885,98 @@ void test_amxc_llist_add_string(UNUSED void** state) {
     assert_ptr_equal(amxc_llist_add_string(NULL, "text4"), NULL);
 
     amxc_llist_clean(&list, amxc_string_list_it_free);
+}
+
+void test_amxc_string_search(UNUSED void** state) {
+    amxc_string_t string;
+    amxc_string_init(&string, 0);
+
+    assert_int_equal(amxc_string_search(&string, "text", 0), -1);
+    amxc_string_setf(&string, "This is some text");
+    assert_int_equal(amxc_string_search(&string, "text", 0), 13);
+    assert_int_equal(amxc_string_search(&string, "Too long needle, it can not be in the text", 0), -1);
+    amxc_string_appendf(&string, ", adding more text");
+    assert_int_equal(amxc_string_search(&string, "text", 0), 13);
+    assert_int_equal(amxc_string_search(&string, "text", 17), 31);
+    assert_int_equal(amxc_string_search(&string, "NOT IN THERE", 0), -1);
+
+    assert_int_equal(amxc_string_search(NULL, "text", 0), -1);
+    assert_int_equal(amxc_string_search(&string, "", 0), -1);
+    assert_int_equal(amxc_string_search(&string, NULL, 0), -1);
+    assert_int_equal(amxc_string_search(&string, "more", 1000), -1);
+
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_replace(UNUSED void** state) {
+    amxc_string_t string;
+    amxc_string_init(&string, 0);
+
+    assert_int_equal(amxc_string_replace(&string, "text", "dummy", 10), 0);
+    amxc_string_setf(&string, "This is text and some more text and more text text");
+    assert_int_equal(amxc_string_replace(&string, "text", "dummy", 1), 1);
+    assert_int_equal(amxc_string_replace(&string, "text", "foo", 2), 2);
+    assert_int_equal(amxc_string_replace(&string, "text", "dummy-foo extra text", UINT32_MAX), 1);
+    assert_int_equal(amxc_string_replace(&string, "text", "foo", UINT32_MAX), 1);
+    assert_int_equal(amxc_string_replace(&string, "text", "dummy", UINT32_MAX), 0);
+    assert_string_equal(string.buffer, "This is dummy and some more foo and more foo dummy-foo extra foo");
+
+    amxc_string_setf(&string, "This is text and some more text and more text text");
+    assert_int_equal(amxc_string_replace(&string, "text", "text", UINT32_MAX), 4);
+    assert_string_equal(string.buffer, "This is text and some more text and more text text");
+
+    assert_int_equal(amxc_string_replace(NULL, "text", "dummy", 10), 0);
+    assert_int_equal(amxc_string_replace(&string, "", "dummy", 10), 0);
+    assert_int_equal(amxc_string_replace(&string, "text", "", 10), 4);
+    assert_string_equal(string.buffer, "This is  and some more  and more  ");
+
+    amxc_string_setf(&string, "abbaabbaabbaabbaabbaabba");
+    assert_int_equal(amxc_string_replace(&string, "abba", "12", UINT32_MAX), 6);
+
+    amxc_string_reset(&string);
+    assert_int_equal(amxc_string_replace(&string, "", "", UINT32_MAX), 0);
+
+    assert_int_equal(amxc_string_replace(&string, NULL, "more", 10), 0);
+    assert_int_equal(amxc_string_replace(&string, "more", NULL, 10), 0);
+
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_copy(UNUSED void** state) {
+    amxc_string_t src;
+    amxc_string_t dst;
+
+    amxc_string_init(&src, 0);
+    amxc_string_init(&dst, 0);
+
+    amxc_string_setf(&src, "Hello world, I am so happy");
+    assert_int_equal(amxc_string_copy(&dst, &src), 0);
+
+    assert_int_equal(dst.length, src.length);
+    assert_int_equal(dst.last_used, src.last_used);
+    assert_string_equal(dst.buffer, src.buffer);
+
+    amxc_string_clean(&src);
+    assert_int_equal(amxc_string_copy(&dst, &src), 0);
+
+    assert_int_not_equal(dst.length, src.length);
+    assert_int_equal(dst.last_used, src.last_used);
+    assert_string_equal(dst.buffer, "");
+
+    amxc_string_clean(&src);
+    amxc_string_clean(&dst);
+
+    assert_int_not_equal(amxc_string_copy(&dst, NULL), 0);
+    assert_int_not_equal(amxc_string_copy(NULL, &src), 0);
+}
+
+void test_amxc_string_reset(UNUSED void** state) {
+    amxc_string_t string;
+    amxc_string_init(&string, 0);
+    amxc_string_setf(&string, "Hello world, I am so happy");
+
+    amxc_string_reset(&string);
+    assert_int_equal(string.last_used, 0);
+    assert_string_equal(string.buffer, "");
+    amxc_string_clean(&string);
 }

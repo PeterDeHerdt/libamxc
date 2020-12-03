@@ -147,6 +147,7 @@ static amxc_var_type_t amxc_variant_ts = {
     .init = variant_ts_init,
     .del = NULL,
     .copy = amxc_var_default_copy,
+    .move = amxc_var_default_move,
     .convert_from = NULL,
     .convert_to = variant_ts_convert_to,
     .compare = variant_ts_compare,

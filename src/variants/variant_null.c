@@ -64,6 +64,7 @@ static amxc_var_type_t amxc_variant_null = {
     .init = NULL,
     .del = NULL,
     .copy = amxc_var_default_copy,
+    .move = amxc_var_default_move,
     .convert_from = NULL,
     .convert_to = NULL,
     .compare = NULL,

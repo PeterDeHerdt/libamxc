@@ -63,31 +63,23 @@
 #include <stdarg.h>
 #include <cmocka.h>
 
-#include <amxc/amxc.h>
-#include "amxc_variant_priv.h"
-#include "test_amxc_variant.h"
-
-#include "test_amxc_variant.h"
+#include "test_variant_list.h"
 
 int main(void) {
-    amxc_array_t* types = amxc_variant_get_types_array();
-    for(int i = 0; i < AMXC_VAR_ID_CUSTOM_BASE + 1; i++) {
-        amxc_array_it_t* ait = amxc_array_get_at(types, i);
-        amxc_array_it_take_data(ait);
-    }
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_amxc_var_new_delete),
-        cmocka_unit_test(test_amxc_var_init_clean),
-        cmocka_unit_test(test_amxc_var_set_type),
-        cmocka_unit_test(test_amxc_var_copy),
-        cmocka_unit_test(test_amxc_var_convert),
-        cmocka_unit_test(test_amxc_var_compare),
-        cmocka_unit_test(test_amxc_var_type_of),
-        cmocka_unit_test(test_amxc_var_get_set_key),
-        cmocka_unit_test(test_amxc_var_add_new_key),
-        cmocka_unit_test(test_amxc_var_add_new),
-        cmocka_unit_test(test_amxc_var_get_path),
-        cmocka_unit_test(test_amxc_var_push_take_amxc_string),
+        cmocka_unit_test(test_variant_list_copy),
+        cmocka_unit_test(test_variant_list_move),
+        cmocka_unit_test(test_variant_list_convert_to_bool),
+        cmocka_unit_test(test_variant_list_convert_to_integer),
+        cmocka_unit_test(test_variant_list_convert_to_htable),
+        cmocka_unit_test(test_variant_list_convert_to_string),
+        cmocka_unit_test(test_variant_llist_set_get),
+        cmocka_unit_test(test_variant_llist_get_index),
+        cmocka_unit_test(test_variant_llist_set_index),
+        cmocka_unit_test(test_variant_llist_set_key),
+        cmocka_unit_test(test_variant_llist_add_new),
+        cmocka_unit_test(test_variant_llist_add_new_key),
+        cmocka_unit_test(test_variant_llist_get_path),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

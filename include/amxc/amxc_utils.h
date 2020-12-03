@@ -90,9 +90,6 @@ amxc_llist_it_t* amxc_llist_add_string(amxc_llist_t* const llist,
    This function can be passed to @ref amxc_llist_delete or amxc_llist_clean:
    --> amxc_llist_delete(ptr_to_llist_ptr, amxc_string_list_it_free);
 
-   Typically a linked list containing amxc_string_t structures is created using
-   @ref amxc_string_split_llist
-
    @note
    Only use this function when clean up a linked list containing only
    amxc_string_t structures.

@@ -1,3 +1,4 @@
+PKG_CONFIG_LIBDIR := /usr/lib/pkgconfig:/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:$(PKG_CONFIG_LIBDIR)
 MACHINE = $(shell $(CC) -dumpmachine)
 SUBDIRS := $(wildcard amxc_*) $(wildcard variant_*)
 OBJDIR = ../output/$(MACHINE)/coverage
@@ -8,9 +9,10 @@ run: $(OBJDIR)/
 	@rm -rf $(OBJDIR)/test_*
 	@rm -rf $(OBJDIR)/*_dummy_*
 
-clean: 
+clean:
 	rm -rf $(OBJDIR)
 	rm -rf $(OBJDIR)/$(COVERREPORT)
+	find .. -name "run_test" -delete
 
 coverage: $(OBJDIR)/$(COVERREPORT)/
 	@cd $(OBJDIR) && for i in $$(find . -name "*.o"); do gcov -c -b -f --long-file-names --preserve-paths $$i > /dev/null; done

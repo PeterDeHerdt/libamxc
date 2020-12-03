@@ -73,7 +73,7 @@
  */
 
 int amxc_string_join_llist(amxc_string_t* string,
-                           amxc_llist_t* list,
+                           const amxc_llist_t* list,
                            char separator) {
     int retval = -1;
 
@@ -102,9 +102,11 @@ exit:
     return retval;
 }
 
-int amxc_string_join_var(amxc_string_t* string,
-                         const amxc_var_t* const var,
-                         const char* separator) {
+int amxc_string_join_var_until(amxc_string_t* string,
+                               const amxc_var_t* const var,
+                               const char* separator,
+                               const char* end,
+                               bool remove) {
     int retval = -1;
     const amxc_llist_t* list = NULL;
     const char* sep = "";
@@ -127,11 +129,27 @@ int amxc_string_join_var(amxc_string_t* string,
                   ( amxc_var_type_of(part) == AMXC_VAR_ID_CSV_STRING) ||
                   ( amxc_var_type_of(part) == AMXC_VAR_ID_SSV_STRING)) {
             const char* txt = amxc_var_constcast(cstring_t, part);
+            if((end != NULL) && (strcmp(txt, end) == 0)) {
+                if(remove) {
+                    amxc_var_delete(&part);
+                }
+                break;
+            }
             amxc_string_appendf(string, "%s", txt);
         } else {
             char* txt = amxc_var_dyncast(cstring_t, part);
+            if((end != NULL) && (strcmp(txt, end) == 0)) {
+                if(remove) {
+                    amxc_var_delete(&part);
+                }
+                free(txt);
+                break;
+            }
             amxc_string_appendf(string, "%s", txt);
             free(txt);
+        }
+        if(remove) {
+            amxc_var_delete(&part);
         }
         sep = separator;
     }
@@ -140,6 +158,13 @@ int amxc_string_join_var(amxc_string_t* string,
 
 exit:
     return retval;
+
+}
+
+int amxc_string_join_var(amxc_string_t* string,
+                         const amxc_var_t* const var,
+                         const char* separator) {
+    return amxc_string_join_var_until(string, var, separator, NULL, false);
 }
 
 int amxc_string_csv_join_var(amxc_string_t* string,

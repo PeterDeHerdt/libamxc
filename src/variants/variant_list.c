@@ -106,6 +106,13 @@ static int variant_list_copy(amxc_var_t* const dest,
     return variant_list_copy_list(dest, list);
 }
 
+static int variant_list_move(amxc_var_t* const dest,
+                             amxc_var_t* const src) {
+    amxc_llist_t* src_list = &src->data.vl;
+    amxc_llist_t* dst_list = &dest->data.vl;
+    return amxc_llist_move(dst_list, src_list);
+}
+
 static int variant_list_to_csv_string(amxc_var_t* const dest,
                                       const amxc_var_t* const src) {
     int retval = -1;
@@ -334,6 +341,7 @@ static amxc_var_type_t amxc_variant_list = {
     .init = variant_list_init,
     .del = variant_list_delete,
     .copy = variant_list_copy,
+    .move = variant_list_move,
     .convert_from = NULL,
     .convert_to = variant_list_convert_to,
     .compare = NULL,

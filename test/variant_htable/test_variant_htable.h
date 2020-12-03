@@ -58,28 +58,23 @@
 **
 ****************************************************************************/
 
-#include <stdlib.h>
-#include <setjmp.h>
-#include <stdarg.h>
-#include <cmocka.h>
+#ifndef __TEST_VARIANT_HTABLE_H__
+#define __TEST_VARIANT_HTABLE_H__
 
-#include "test_variant_htable.h"
+void test_variant_htable_init(void** state);
+void test_variant_htable_copy(void** state);
+void test_variant_htable_move(void** state);
+void test_variant_htable_convert_to_bool(void** state);
+void test_variant_htable_convert_to_integer(void** state);
+void test_variant_htable_convert_to_list(void** state);
+void test_variant_htable_convert_to_string(void** state);
+void test_variant_htable_convert_to_string_should_not_segfault(void** state);
+void test_variant_htable_set_get(void** state);
 
-int main(void) {
-    const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_variant_htable_init),
-        cmocka_unit_test(test_variant_htable_copy),
-        cmocka_unit_test(test_variant_htable_convert_to_bool),
-        cmocka_unit_test(test_variant_htable_convert_to_integer),
-        cmocka_unit_test(test_variant_htable_convert_to_list),
-        cmocka_unit_test(test_variant_htable_convert_to_string),
-        cmocka_unit_test(test_variant_htable_convert_to_string_should_not_segfault),
-        cmocka_unit_test(test_variant_htable_set_get),
-        cmocka_unit_test(test_variant_htable_get_key),
-        cmocka_unit_test(test_variant_htable_set_key),
-        cmocka_unit_test(test_variant_htable_add_new),
-        cmocka_unit_test(test_variant_htable_add_new_key),
-        cmocka_unit_test(test_variant_htable_add_new_key_duplicate),
-    };
-    return cmocka_run_group_tests(tests, NULL, NULL);
-}
+void test_variant_htable_get_key(void** state);
+void test_variant_htable_set_key(void** state);
+void test_variant_htable_add_new(void** state);
+void test_variant_htable_add_new_key(void** state);
+void test_variant_htable_add_new_key_duplicate(void** state);
+
+#endif // __TEST_VARIANT_HTABLE_H__

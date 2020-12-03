@@ -73,7 +73,7 @@
 
 static unsigned int deletes = 0;
 static amxc_htable_t* htable = NULL;
-static amxc_htable_it_t it[30];
+static amxc_htable_it_t it[2000];
 
 static void amxc_htable_setup(void) {
     assert_int_equal(amxc_htable_new(&htable, 0), 0);
@@ -307,6 +307,24 @@ void amxc_htable_insert_grow_check(UNUSED void** state) {
     }
 
     assert_int_equal(amxc_htable_capacity(htable), 64);
+    amxc_htable_teardown();
+}
+
+void amxc_htable_insert_grow_big_check(UNUSED void** state) {
+    amxc_htable_setup();
+    amxc_htable_delete(&htable, NULL);
+
+    char key[10];
+    assert_int_equal(amxc_htable_new(&htable, 1025), 0);
+    for(int i = 0; i < 2000; i++) {
+        sprintf(key, "key%d", i);
+        assert_int_equal(amxc_htable_insert(htable, key, &it[i]), 0);
+        assert_ptr_not_equal(it[i].ait, NULL);
+        assert_string_equal(it[i].key, key);
+        assert_int_equal(htable->items, i + 1);
+    }
+
+    assert_int_equal(amxc_htable_capacity(htable), 1025 + 1024 + 1024);
     amxc_htable_teardown();
 }
 
@@ -769,5 +787,84 @@ void amxc_htable_it_clean_func_check(UNUSED void** state) {
     assert_string_equal(it[0].key, "SomeKey");
     amxc_htable_it_clean(&it[0], amxc_delete_it_func);
     assert_int_equal(deletes, 1);
+    amxc_htable_teardown();
+}
+
+void amxc_htable_get_sorted_keys_check(UNUSED void** state) {
+    amxc_htable_setup();
+    amxc_htable_delete(&htable, NULL);
+    amxc_array_t* array = NULL;
+
+    char key[10];
+    assert_int_equal(amxc_htable_new(&htable, 1025), 0);
+    for(int i = 0; i < 2000; i++) {
+        sprintf(key, "key%4d", i);
+        assert_int_equal(amxc_htable_insert(htable, key, &it[i]), 0);
+        assert_ptr_not_equal(it[i].ait, NULL);
+        assert_string_equal(it[i].key, key);
+        assert_int_equal(htable->items, i + 1);
+    }
+
+    assert_int_equal(amxc_htable_capacity(htable), 1025 + 1024 + 1024);
+    array = amxc_htable_get_sorted_keys(htable);
+    assert_non_null(array);
+    assert_int_equal(amxc_array_size(array), 2000);
+
+    for(int i = 0; i < 2000; i++) {
+        const char* ak = (const char*) amxc_array_get_data_at(array, i);
+        sprintf(key, "key%4d", i);
+        assert_string_equal(ak, key);
+    }
+
+    amxc_array_delete(&array, NULL);
+    amxc_htable_clean(htable, NULL);
+
+    array = amxc_htable_get_sorted_keys(htable);
+    assert_null(array);
+    array = amxc_htable_get_sorted_keys(NULL);
+    assert_null(array);
+
+    amxc_htable_teardown();
+}
+
+void amxc_htable_move_check(UNUSED void** state) {
+    amxc_htable_setup();
+    amxc_htable_delete(&htable, NULL);
+
+    amxc_htable_t dest;
+    amxc_htable_init(&dest, 0);
+
+    char key[10];
+    assert_int_equal(amxc_htable_new(&htable, 1025), 0);
+    for(int i = 0; i < 2000; i++) {
+        sprintf(key, "key%4d", i);
+        assert_int_equal(amxc_htable_insert(htable, key, &it[i]), 0);
+        assert_ptr_not_equal(it[i].ait, NULL);
+        assert_string_equal(it[i].key, key);
+        assert_int_equal(htable->items, i + 1);
+    }
+
+    for(int i = 0; i < 2000; i++) {
+        sprintf(key, "key%4d", i);
+        assert_true(amxc_htable_contains(htable, key));
+        assert_ptr_equal(amxc_htable_get(htable, key), &it[i]);
+    }
+
+    assert_int_equal(amxc_htable_move(&dest, htable), 0);
+    assert_int_equal(amxc_htable_size(&dest), 2000);
+    assert_true(amxc_htable_is_empty(htable));
+
+    for(int i = 0; i < 2000; i++) {
+        sprintf(key, "key%4d", i);
+        assert_true(amxc_htable_contains(&dest, key));
+        assert_ptr_equal(amxc_htable_get(&dest, key), &it[i]);
+    }
+
+    assert_int_equal(amxc_htable_move(htable, &dest), 0);
+
+    assert_int_not_equal(amxc_htable_move(NULL, htable), 0);
+    assert_int_not_equal(amxc_htable_move(&dest, NULL), 0);
+
+    amxc_htable_clean(&dest, NULL);
     amxc_htable_teardown();
 }

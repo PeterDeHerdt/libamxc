@@ -275,6 +275,7 @@ static amxc_var_type_t amxc_variant_uint16 = {
     .init = NULL,
     .del = NULL,
     .copy = amxc_var_default_copy,
+    .move = amxc_var_default_move,
     .convert_from = NULL,
     .convert_to = variant_uint16_convert_to,
     .compare = variant_uint16_compare,

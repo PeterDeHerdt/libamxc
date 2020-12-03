@@ -8,6 +8,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 1.0.1 - 2020-11-30(13:43:50 +0000)
+
+### Changes
+
+- Updates baf file - used for generating makefiles and build system files
+
+## Release 1.0.0 - 2020-11-29(15:10:50 +0000)
+
+### New
+
+- It must be possible to move the content of one variant into another variant
+
+### Changes
+
+- Merge branch 'dev-baf' into 'master'
+
+### Fixes
+
+- Set last char to 0 when trimming
+- Fixes amxc_string_copy and add tests
+- amxc_string_reset should set buffers first element to 0
+
+## Release 0.7.9 - 2020-11-25(18:51:37 +0000)
+
+### Fixes
+
+- Fix variant.md doc typo
+
+## Release 0.7.8 - 2020-11-25(08:16:09 +0000)
+
+### New
+
+- Add amxc_string_replace function
+- Add amxc_string_search function
+
+### Changes
+
+- Switch order in updating variant htable, first add and then remove
+
+
+## Release 0.7.7 - 2020-11-21(12:04:07 +0000)
+
+### Changes
+
+- Adds and updates doxygen documentation of variant APO
+- Allow amxc_string_join_llist with const llists
+- Update readme
+
+### New
+
+- `amxc_var_take_it` removes a variant from a htable and/or llist
+- `amxc_var_take_key` removes a variant from a htable and/or llist by key
+- `amxc_var_take_index` removes a variant from a htable and/or llist by index
+
+## Release 0.7.6 - 2020-11-16(09:04:58 +0000)
+
+### Changes
+
+- Adds doxygen documentation tags
+
+## Release 0.7.5 - 2020-11-08(19:19:27 +0000)
+
+### New
+
+- Adds amxc_string_join_var_until
+- Adds GETI_XXX macros
+
+### Fixes 
+
+- Fix typos in variant.md
+
 ## Release 0.7.4 - 2020-11-01(21:15:22 +0000)
 
 ### Fixes

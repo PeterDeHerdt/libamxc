@@ -773,3 +773,43 @@ void test_amxc_llist_sort(UNUSED void** state) {
     assert_int_not_equal(amxc_llist_sort(&llist, NULL), 0);
     assert_int_not_equal(amxc_llist_sort(NULL, test_cmp), 0);
 }
+
+
+void test_amxc_llist_move(UNUSED void** state) {
+    amxc_llist_t src;
+    amxc_llist_t dst;
+    const char data[16] = "KRATELEPUIMQCXOS";
+
+    amxc_llist_init(&src);
+    amxc_llist_init(&dst);
+    for(int i = 0; i < 16; i++) {
+        test_data_t* item = calloc(1, sizeof(test_data_t));
+        item->data = data[i];
+        amxc_llist_append(&src, &item->it);
+    }
+    assert_int_equal(amxc_llist_size(&src), 16);
+    assert_int_equal(amxc_llist_size(&dst), 0);
+
+    assert_int_equal(amxc_llist_move(&dst, &src), 0);
+    assert_int_equal(amxc_llist_size(&src), 0);
+    assert_int_equal(amxc_llist_size(&dst), 16);
+
+    for(int i = 0; i < 16; i++) {
+        test_data_t* item = calloc(1, sizeof(test_data_t));
+        item->data = data[i];
+        amxc_llist_append(&src, &item->it);
+    }
+
+    assert_int_equal(amxc_llist_size(&src), 16);
+    assert_int_equal(amxc_llist_size(&dst), 16);
+
+    assert_int_equal(amxc_llist_move(&dst, &src), 0);
+    assert_int_equal(amxc_llist_size(&src), 0);
+    assert_int_equal(amxc_llist_size(&dst), 32);
+
+    assert_int_not_equal(amxc_llist_move(&dst, NULL), 0);
+    assert_int_not_equal(amxc_llist_move(NULL, &src), 0);
+
+    amxc_llist_clean(&dst, test_del_data);
+    amxc_llist_clean(&src, test_del_data);
+}

@@ -1,3 +1,57 @@
+libamxc (1.0.1) unstable; urgency=medium
+
+  * Updates baf file - used for generating makefiles and build system files
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Mon, 30 Nov 2020 13:43:58 +0000
+
+libamxc (1.0.0) unstable; urgency=medium
+
+  * It must be possible to move the content of one variant into another variant
+  * Merge branch 'dev-baf' into 'master'
+  * Set last char to 0 when trimming
+  * Fixes amxc_string_copy and add tests
+  * amxc_string_reset should set buffers first element to 0
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Sun, 29 Nov 2020 15:10:55 +0000
+
+libamxc (0.7.9) unstable; urgency=medium
+
+  * Fix variant.md doc typo
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Wed, 25 Nov 2020 18:51:43 +0000
+
+libamxc (0.7.8) unstable; urgency=medium
+
+  * Add amxc_string_replace function
+  * Add amxc_string_search function
+  * Switch order in updating variant htable, first add and then remove
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Wed, 25 Nov 2020 08:16:14 +0000
+
+libamxc (0.7.7) unstable; urgency=medium
+
+  * Adds and updates doxygen documentation of variant APO
+  * Allow amxc_string_join_llist with const llists
+  * Update readme
+  * `amxc_var_take_it` removes a variant from a htable and/or llist
+  * `amxc_var_take_key` removes a variant from a htable and/or llist by key
+  * `amxc_var_take_index` removes a variant from a htable and/or llist by index
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Sat, 21 Nov 2020 12:08:04 +0000
+
+libamxc (0.7.6) unstable; urgency=medium
+
+  * Adds doxygen documentation tags
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Mon, 16 Nov 2020 09:05:04 +0000
+
+libamxc (0.7.5) unstable; urgency=medium
+
+  * Adds amxc_string_join_var_until
+  * Adds GETI_XXX macros
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Sun, 08 Nov 2020 19:19:33 +0000
+
 libamxc (0.7.4) unstable; urgency=medium
 
   * Complete timestamp API tests

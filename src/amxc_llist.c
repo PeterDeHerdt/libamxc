@@ -74,9 +74,9 @@ int amxc_llist_new(amxc_llist_t** llist) {
     when_null(llist, exit);
 
     *llist = (amxc_llist_t*) calloc(1, sizeof(amxc_llist_t));
-    if((*llist) != NULL) {
-        retval = 0;
-    }
+    when_null(*llist, exit);
+
+    retval = 0;
 
 exit:
     return retval;
@@ -114,6 +114,22 @@ void amxc_llist_clean(amxc_llist_t* const llist, amxc_llist_it_delete_t func) {
         }
         it = llist->head;
     }
+}
+
+int amxc_llist_move(amxc_llist_t* const dest, amxc_llist_t* const src) {
+    int retval = -1;
+
+    when_null(dest, exit);
+    when_null(src, exit);
+
+    amxc_llist_for_each(it, src) {
+        amxc_llist_append(dest, it);
+    }
+
+    retval = 0;
+
+exit:
+    return retval;
 }
 
 size_t amxc_llist_size(const amxc_llist_t* const llist) {

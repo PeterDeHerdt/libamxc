@@ -219,7 +219,7 @@ int amxc_ts_compare(const amxc_ts_t* tsp1, const amxc_ts_t* tsp2);
    @brief
    Checks if a timestamp is valid.
 
-   @param tsp1 a pointer to a timestamp structure
+   @param tsp a pointer to a timestamp structure
 
    @return
    true if the timestamp is valid

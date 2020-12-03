@@ -83,6 +83,22 @@ extern "C"
 #include <amxc/amxc_variant_type.h>
 #include <amxc/amxc_utils.h>
 
+/**
+   @mainpage
+   Libamxc is a library providing generic re-usable data containers and
+   data collections.
+
+   This library provides:
+   - Double Linked List - @ref amxc_llist
+   - Dynamic Array
+   - Hash Table
+   - Ring Buffer
+   - Dynamic String
+   - Queues
+   - Stacks
+   - Variant
+ */
+
 #ifdef __cplusplus
 }
 #endif

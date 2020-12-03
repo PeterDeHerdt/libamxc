@@ -107,6 +107,15 @@ static int variant_htable_copy(amxc_var_t* const dest,
     return variant_htable_copy_htable(dest, htable);
 }
 
+static int variant_htable_move(amxc_var_t* const dest,
+                               amxc_var_t* const src) {
+    int retval = 0;
+    amxc_htable_t* src_htable = &src->data.vm;
+    amxc_htable_t* dst_htable = &dest->data.vm;
+    retval = amxc_htable_move(dst_htable, src_htable);
+    return retval;
+}
+
 // TODO - refactor function to long
 static int variant_htable_to_string(amxc_var_t* const dest,
                                     const amxc_var_t* const src) {
@@ -300,10 +309,10 @@ static int variant_htable_set_key(amxc_var_t* const dest,
         when_failed(amxc_htable_insert(htable, key, &dest_var->hit), exit);
         when_failed(amxc_var_copy(dest_var, src), exit);
     } else {
+        when_failed(amxc_htable_insert(htable, key, &src->hit), exit);
         if(current_hit != NULL) {
             amxc_htable_it_clean(current_hit, variant_htable_it_free);
         }
-        when_failed(amxc_htable_insert(htable, key, &src->hit), exit);
     }
 
     retval = 0;
@@ -320,6 +329,7 @@ static amxc_var_type_t amxc_variant_htable = {
     .init = variant_htable_init,
     .del = variant_htable_delete,
     .copy = variant_htable_copy,
+    .move = variant_htable_move,
     .convert_from = NULL,
     .convert_to = variant_htable_convert_to,
     .compare = NULL,
