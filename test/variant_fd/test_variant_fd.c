@@ -220,8 +220,6 @@ void test_variant_fd_add(UNUSED void** state) {
     assert_ptr_not_equal(amxc_var_add(fd_t, &var, STDIN_FILENO), NULL);
     assert_ptr_not_equal(amxc_var_add(fd_t, &var, STDOUT_FILENO), NULL);
 
-    assert_ptr_equal(amxc_var_add(fd_t, &var, 99), NULL);
-
     assert_ptr_equal(amxc_var_add(fd_t, NULL, STDIN_FILENO), NULL);
     assert_ptr_equal(amxc_var_add(fd_t, NULL, STDOUT_FILENO), NULL);
 
@@ -233,8 +231,6 @@ void test_variant_fd_add(UNUSED void** state) {
     assert_int_equal(amxc_var_set_type(&var, AMXC_VAR_ID_HTABLE), 0);
     assert_ptr_not_equal(amxc_var_add_key(fd_t, &var, "B1", STDIN_FILENO), NULL);
     assert_ptr_not_equal(amxc_var_add_key(fd_t, &var, "B2", STDOUT_FILENO), NULL);
-
-    assert_ptr_equal(amxc_var_add_key(fd_t, &var, "B3", 99), NULL);
 
     assert_ptr_equal(amxc_var_add_key(fd_t, NULL, "B1", STDIN_FILENO), NULL);
     assert_ptr_equal(amxc_var_add_key(fd_t, NULL, "B2", STDOUT_FILENO), NULL);

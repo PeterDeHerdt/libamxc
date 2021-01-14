@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 1.0.3 - 2021-01-04(10:47:15 +0000)
+
+### Changes
+
+- Collect parts when split fails
+
+### Fixes
+
+- Variant logging
+- Variant dump indentation
+
+## Release 1.0.2 - 2020-12-04(08:15:16 +0000)
+
+### New
+
+- Automatic conversions of variants containing a string
+- Add a function to set a 0 terminating string into an amxc_string buffer
+
 ## Release 1.0.1 - 2020-11-30(13:43:50 +0000)
 
 ### Changes

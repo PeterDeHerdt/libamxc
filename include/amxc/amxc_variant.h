@@ -683,7 +683,31 @@ int amxc_var_move(amxc_var_t* const dest, amxc_var_t* const src);
  */
 int amxc_var_convert(amxc_var_t* const dest,
                      const amxc_var_t* src,
-                     int type_id);
+                     const uint32_t type_id);
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Casts  the variant to another variant type id.
+
+   The content of the variant is converted to the requested type.
+   If @ref AMXC_VAR_ID_ANY is given, automatic conversion is applied.
+   Not all types support automatic type conversion.
+
+   If no type is found with the given type id, the conversion fails.
+   If no conversion methods are available the conversion fails.
+
+   If type conversion fails or is not supported the variant is unchanged
+
+   @param var pointer to a variant struct
+   @param type_id the variant type id to which the variant must be converted
+
+   @return
+   When the conversion fails, this functions returns a none 0 value and
+   the variant is not changed.
+ */
+int amxc_var_cast(amxc_var_t* const var,
+                  const uint32_t type_id);
 /**
    @ingroup amxc_variant
    @brief

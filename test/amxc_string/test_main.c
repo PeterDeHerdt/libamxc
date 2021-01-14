@@ -99,6 +99,7 @@ int main(void) {
         cmocka_unit_test(test_amxc_string_replace),
         cmocka_unit_test(test_amxc_string_copy),
         cmocka_unit_test(test_amxc_string_reset),
+        cmocka_unit_test(test_amxc_string_set),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

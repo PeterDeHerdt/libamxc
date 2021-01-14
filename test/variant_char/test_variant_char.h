@@ -76,5 +76,7 @@ void test_variant_char_set_get(void** state);
 void test_variant_cstring_add(void** state);
 void test_variant_char_copy_null(void** state);
 void test_variant_char_take_push(void** state);
+void test_variant_char_move(void** state);
+void test_variant_char_cast(void** state);
 
 #endif // __TEST_VARIANT_CHAR_H__

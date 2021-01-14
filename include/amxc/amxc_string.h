@@ -831,6 +831,22 @@ int amxc_string_insert_at(amxc_string_t* const string,
     return amxc_string_set_at(string, pos, text, length, amxc_string_insert);
 }
 
+/**
+   @ingroup amxc_string
+   @brief
+   Sets a 0 terminated string in the string buffer.
+
+   The current content of amxc_string_t will be removed. The provided
+   0 terminated string is copied into the buffer.
+
+   @param string a pointer to the string structure
+   @param text the text that needs to be set
+
+   @return
+   number of bytes written in to the string buffer.
+ */
+size_t amxc_string_set(amxc_string_t* const string, const char* text);
+
 #ifdef __cplusplus
 }
 #endif

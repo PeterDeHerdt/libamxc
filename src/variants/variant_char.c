@@ -347,31 +347,101 @@ static void variant_char_delete(amxc_var_t* const var) {
     var->data.s = NULL;
 }
 
+static int variant_char_auto_convert(amxc_var_t* const dest,
+                                     const amxc_var_t* const src) {
+    const char* str_src = src->data.s;
+    int retval = -1;
+    int src_pos = 0;
+    int src_len = 0;
+    when_true(str_src == NULL, exit);
+
+    src_len = strlen(str_src);
+    if(src_len == 0) {
+        retval = 0;
+        dest->type_id = AMXC_VAR_ID_CSTRING;
+        goto exit;
+    }
+
+    for(int i = 0; i < src_len; i++) {
+        if(isspace(*(src->data.s + i)) == 0) {
+            break;
+        }
+        // skip white spaces
+        src_pos++;
+    }
+
+    switch(str_src[src_pos]) {
+    case 't':
+    case 'T':
+    case 'y':
+    case 'Y':
+    case 'f':
+    case 'F':
+    case 'n':
+    case 'N':
+        dest->type_id = AMXC_VAR_ID_BOOL;
+        retval = variant_char_to_bool(dest, src);
+        break;
+    case '+':
+    case '-':
+        dest->type_id = AMXC_VAR_ID_INT32;
+        retval = variant_char_to_signed_int(dest, src);
+        when_true(retval == 0, exit);
+        dest->type_id = AMXC_VAR_ID_INT64;
+        retval = variant_char_to_signed_int(dest, src);
+        when_true(retval == 0, exit);
+        dest->type_id = AMXC_VAR_ID_DOUBLE;
+        retval = variant_char_to_double(dest, src);
+        break;
+    default:
+        dest->type_id = AMXC_VAR_ID_UINT32;
+        retval = variant_char_to_unsigned_int(dest, src);
+        when_true(retval == 0, exit);
+        dest->type_id = AMXC_VAR_ID_UINT64;
+        retval = variant_char_to_unsigned_int(dest, src);
+        when_true(retval == 0, exit);
+        dest->type_id = AMXC_VAR_ID_DOUBLE;
+        retval = variant_char_to_double(dest, src);
+        when_true(retval == 0, exit);
+    }
+    when_true(retval == 0, exit);
+
+    dest->type_id = AMXC_VAR_ID_TIMESTAMP;
+    retval = variant_char_to_ts(dest, src);
+    when_true(retval == 0, exit);
+
+    dest->type_id = AMXC_VAR_ID_CSTRING;
+    retval = variant_char_copy(dest, src);
+
+exit:
+    return retval;
+}
+
 static int variant_char_convert_to(amxc_var_t* const dest,
                                    const amxc_var_t* const src) {
     int retval = -1;
 
     amxc_var_convert_fn_t convfn[AMXC_VAR_ID_CUSTOM_BASE] = {
-        amxc_var_default_convert_to_null,
-        variant_char_copy,
-        variant_char_to_signed_int,
-        variant_char_to_signed_int,
-        variant_char_to_signed_int,
-        variant_char_to_signed_int,
-        variant_char_to_unsigned_int,
-        variant_char_to_unsigned_int,
-        variant_char_to_unsigned_int,
-        variant_char_to_unsigned_int,
-        variant_char_to_float,
-        variant_char_to_double,
-        variant_char_to_bool,
-        variant_char_to_list,
-        variant_char_to_htable,
-        NULL,
-        variant_char_to_ts,
-        variant_char_copy,
-        variant_char_copy,
-        variant_char_copy,
+        amxc_var_default_convert_to_null,       // null
+        variant_char_copy,                      // c string
+        variant_char_to_signed_int,             // int8
+        variant_char_to_signed_int,             // int16
+        variant_char_to_signed_int,             // int32
+        variant_char_to_signed_int,             // int64
+        variant_char_to_unsigned_int,           // uint8
+        variant_char_to_unsigned_int,           // uint16
+        variant_char_to_unsigned_int,           // uint32
+        variant_char_to_unsigned_int,           // uint64
+        variant_char_to_float,                  // float
+        variant_char_to_double,                 // double
+        variant_char_to_bool,                   // bool
+        variant_char_to_list,                   // linked list
+        variant_char_to_htable,                 // hash table
+        NULL,                                   // file descriptor
+        variant_char_to_ts,                     // timestamp
+        variant_char_copy,                      // comma separated values string
+        variant_char_copy,                      // space separated values string
+        variant_char_auto_convert,              // any type (auto detect)
     };
 
     if(dest->type_id >= AMXC_VAR_ID_CUSTOM_BASE) {
@@ -379,9 +449,6 @@ static int variant_char_convert_to(amxc_var_t* const dest,
     }
 
     if(convfn[dest->type_id] != NULL) {
-        if(dest->type_id == AMXC_VAR_ID_ANY) {
-            amxc_var_set_type(dest, AMXC_VAR_ID_CSTRING);
-        }
         retval = convfn[dest->type_id](dest, src);
     }
 

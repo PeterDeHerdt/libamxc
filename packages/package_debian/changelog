@@ -1,3 +1,18 @@
+libamxc (1.0.3) unstable; urgency=medium
+
+  * Collect parts when split fails
+  * Fixes variant logging
+  * Fixes variant dump indentation
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Mon, 04 Jan 2021 10:47:28 +0000
+
+libamxc (1.0.2) unstable; urgency=medium
+
+  * Automatic conversions of variants containing a string
+  * Add a function to set a 0 terminating string into an amxc_string buffer
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Fri, 04 Dec 2020 08:15:24 +0000
+
 libamxc (1.0.1) unstable; urgency=medium
 
   * Updates baf file - used for generating makefiles and build system files

@@ -93,5 +93,6 @@ void test_amxc_string_search(void** state);
 void test_amxc_string_replace(void** state);
 void test_amxc_string_copy(void** state);
 void test_amxc_string_reset(void** state);
+void test_amxc_string_set(void** state);
 
 #endif // __TEST_AMXC_STRING_H__

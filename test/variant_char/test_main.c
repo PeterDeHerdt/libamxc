@@ -82,6 +82,8 @@ int main(void) {
         cmocka_unit_test(test_variant_cstring_add),
         cmocka_unit_test(test_variant_char_copy_null),
         cmocka_unit_test(test_variant_char_take_push),
+        cmocka_unit_test(test_variant_char_move),
+        cmocka_unit_test(test_variant_char_cast),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

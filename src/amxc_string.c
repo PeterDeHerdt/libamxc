@@ -678,5 +678,20 @@ int amxc_string_replace(amxc_string_t* const string,
 
 exit:
     return retval;
+}
 
+size_t amxc_string_set(amxc_string_t* const string, const char* data) {
+    size_t retval = 0;
+
+    when_null(string, exit);
+    amxc_string_reset(string);
+    when_null(data, exit);
+
+    retval = strlen(data);
+    if(amxc_string_insert_at(string, 0, data, retval) != 0) {
+        retval = 0;
+    }
+
+exit:
+    return retval;
 }

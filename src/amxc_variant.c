@@ -267,7 +267,7 @@ exit:
 
 int amxc_var_convert(amxc_var_t* const dest,
                      const amxc_var_t* const src,
-                     int type_id) {
+                     uint32_t type_id) {
     int retval = -1;
     amxc_var_type_t* src_type = NULL;
     amxc_var_type_t* dst_type = NULL;
@@ -301,6 +301,31 @@ exit:
     if(retval != 0) {
         amxc_var_clean(dest);
     }
+    return retval;
+}
+
+int amxc_var_cast(amxc_var_t* const var,
+                  const uint32_t type_id) {
+    int retval = -1;
+    amxc_var_t intermediate;
+
+    amxc_var_init(&intermediate);
+    when_null(var, exit);
+
+    if(var->type_id == type_id) {
+        retval = 0;
+        goto exit;
+    }
+
+    retval = amxc_var_convert(&intermediate, var, type_id);
+    when_failed(retval, exit);
+
+    if(var->type_id != intermediate.type_id) {
+        amxc_var_move(var, &intermediate);
+    }
+
+exit:
+    amxc_var_clean(&intermediate);
     return retval;
 }
 

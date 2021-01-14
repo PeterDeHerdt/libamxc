@@ -296,7 +296,6 @@ int amxc_var_set_fd_t(amxc_var_t* var, int val) {
     when_failed(getrlimit(RLIMIT_NOFILE, &nofile), exit);
 
     when_true(val < 0 || (rlim_t) llabs(val) > nofile.rlim_max, exit);
-    when_failed(fcntl((int) llabs(val), F_GETFD), exit);
     when_failed(amxc_var_set_type(var, AMXC_VAR_ID_FD), exit);
 
     var->data.fd = (int) llabs(val);

@@ -67,6 +67,7 @@
 #include <amxc/amxc_string.h>
 #include <amxc/amxc_variant_type.h>
 #include <amxc/amxc_rbuffer.h>
+#include <amxc/amxc_string_split.h>
 #include <amxc_variant_priv.h>
 #include <amxc_assert.h>
 
@@ -87,6 +88,11 @@ static int amxc_var_write(amxc_log_var_t* log,
         retval = write(log->fd, line, length);
     } else {
         retval = amxc_string_append(&log->message, line, length);
+        if(amxc_string_search(&log->message, "\n", 0) >= 0) {
+            syslog(LOG_DAEMON | LOG_DEBUG,
+                   "%s", amxc_string_get(&log->message, 0));
+            amxc_string_reset(&log->message);
+        }
     }
     return retval;
 }
@@ -96,10 +102,8 @@ static int amxc_var_dump_internal(const amxc_var_t* const var,
                                   amxc_log_var_t* log);
 
 static void write_indentation(int indent, amxc_log_var_t* log) {
-    if(log->fd != -1) {
-        for(int i = 0; i < indent; i++) {
-            when_true(amxc_var_write(log, " ", 1) == -1, exit);
-        }
+    for(int i = 0; i < indent; i++) {
+        when_true(amxc_var_write(log, " ", 1) == -1, exit);
     }
 
 exit:
@@ -187,7 +191,9 @@ static int variant_dump_list(const amxc_var_t* const var,
     indent += 4;
     amxc_llist_for_each(it, list) {
         amxc_var_t* lvar = amxc_var_from_llist_it(it);
-        write_indentation(indent, log);
+        if(amxc_var_type_of(lvar) == AMXC_VAR_ID_HTABLE) {
+            write_indentation(indent, log);
+        }
         amxc_var_dump_internal(lvar, indent, log);
         if(amxc_llist_it_get_next(it) != NULL) {
             when_true(amxc_var_write(log, ",\n", 2) == -1, exit);
@@ -314,16 +320,15 @@ exit:
 
 int amxc_var_log(const amxc_var_t* const var) {
     amxc_log_var_t log;
+    int retval = 0;
+
     log.fd = -1;
     amxc_string_init(&log.message, 1024);
-    int retval = amxc_var_dump_internal(var, 0, &log);
-    when_true(amxc_var_write(&log, "\n", 1) == -1, exit);
+    retval = amxc_var_dump_internal(var, 0, &log);
+    if(!amxc_string_is_empty(&log.message)) {
+        syslog(LOG_DAEMON | LOG_DEBUG, "%s", amxc_string_get(&log.message, 0));
+    }
 
-    syslog(LOG_DAEMON | LOG_DEBUG,
-           "%s",
-           amxc_string_get(&log.message, 0));
-
-exit:
     amxc_string_clean(&log.message);
     return retval;
 }

@@ -520,8 +520,11 @@ amxc_string_split(const amxc_string_t* const string,
     when_null(string, exit);
     when_null(var, exit);
 
-    retval = amxc_string_split_word(string, &all_parts, reason);
-    when_failed(retval, exit);
+    retval = amxc_string_split_words_internal(string,
+                                              &all_parts,
+                                              amxc_string_create_part,
+                                              amxc_need_to_add_delimiter,
+                                              reason);
 
     if(fn != NULL) {
         fn(&all_parts, var);

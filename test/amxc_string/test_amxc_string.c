@@ -980,3 +980,16 @@ void test_amxc_string_reset(UNUSED void** state) {
     assert_string_equal(string.buffer, "");
     amxc_string_clean(&string);
 }
+
+void test_amxc_string_set(UNUSED void** state) {
+    amxc_string_t string;
+    amxc_string_init(&string, 0);
+
+    assert_int_equal(amxc_string_set(&string, "Hello world, I am so happy"), 26);
+    assert_string_equal(amxc_string_get(&string, 0), "Hello world, I am so happy");
+    assert_int_equal(amxc_string_set(&string, NULL), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "");
+    assert_int_equal(amxc_string_set(NULL, "Test"), 0);
+
+    amxc_string_clean(&string);
+}

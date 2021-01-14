@@ -789,3 +789,136 @@ void test_variant_char_take_push(UNUSED void** state) {
 
     amxc_var_clean(&var1);
 }
+
+void test_variant_char_move(UNUSED void** state) {
+    amxc_var_t src;
+    amxc_var_t dst;
+
+    amxc_var_init(&src);
+    amxc_var_init(&dst);
+
+    amxc_var_set(cstring_t, &src, "This is a tekst - ... ");
+    assert_int_equal(amxc_var_move(&dst, &src), 0);
+
+    amxc_var_clean(&src);
+    amxc_var_clean(&dst);
+}
+
+void test_variant_char_cast(UNUSED void** state) {
+    amxc_var_t test_var;
+
+    amxc_var_init(&test_var);
+
+    amxc_var_set(cstring_t, &test_var, "true");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_BOOL);
+    assert_true(amxc_var_constcast(bool, &test_var));
+
+    amxc_var_set(cstring_t, &test_var, "TRUE");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_BOOL);
+    assert_true(amxc_var_constcast(bool, &test_var));
+
+    amxc_var_set(cstring_t, &test_var, "Yes");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_BOOL);
+    assert_true(amxc_var_constcast(bool, &test_var));
+
+    amxc_var_set(cstring_t, &test_var, "false");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_BOOL);
+    assert_false(amxc_var_constcast(bool, &test_var));
+
+    amxc_var_set(cstring_t, &test_var, "FaLsE");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_BOOL);
+    assert_false(amxc_var_constcast(bool, &test_var));
+
+    amxc_var_set(cstring_t, &test_var, "\n false");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_BOOL);
+    assert_false(amxc_var_constcast(bool, &test_var));
+
+    amxc_var_set(cstring_t, &test_var, "NO");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_BOOL);
+    assert_false(amxc_var_constcast(bool, &test_var));
+
+    amxc_var_set(cstring_t, &test_var, "1970-01-01T00:00:00Z");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_TIMESTAMP);
+    amxc_var_dump(&test_var, STDOUT_FILENO);
+
+    amxc_var_set(cstring_t, &test_var, "-3.141592654");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_DOUBLE);
+
+    amxc_var_set(cstring_t, &test_var, "3.141592654");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_DOUBLE);
+
+    amxc_var_set(cstring_t, &test_var, "+3.141592654");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_DOUBLE);
+
+    amxc_var_set(cstring_t, &test_var, "+1024");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_INT32);
+    assert_int_equal(test_var.data.i32, 1024);
+
+    amxc_var_set(cstring_t, &test_var, "-1024");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_INT32);
+    assert_int_equal(test_var.data.i32, -1024);
+
+    amxc_var_set(cstring_t, &test_var, "1024");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_UINT32);
+    assert_int_equal(test_var.data.ui32, 1024);
+
+    amxc_var_set(cstring_t, &test_var, "+2147483648");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_INT64);
+    assert_int_equal(test_var.data.i64, 2147483648);
+
+    amxc_var_set(cstring_t, &test_var, "-2147483649");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_INT64);
+    assert_int_equal(test_var.data.i64, -2147483649);
+
+    amxc_var_set(cstring_t, &test_var, "4294967296");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_UINT64);
+    assert_int_equal(test_var.data.ui64, 4294967296);
+
+    amxc_var_set(cstring_t, &test_var, " HELLO WORLD ");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_string_equal(test_var.data.s, " HELLO WORLD ");
+
+    amxc_var_set(cstring_t, &test_var, "");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_ANY), 0);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
+    assert_string_equal(test_var.data.s, "");
+
+    amxc_var_clean(&test_var);
+}

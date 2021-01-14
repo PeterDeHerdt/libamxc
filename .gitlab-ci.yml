@@ -1,7 +1,4 @@
 variables:
-  UTEST_TEST_DIR: tests
-  UTEST_TEST_CMD: "make run"
-  UTEST_TEST_COV_CMD: "make coverage"
   DOC_GEN_CMD: "make doc"
   BUILD_TARGET: libamxc
 
