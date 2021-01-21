@@ -45,7 +45,7 @@ $(TARGET_SO): $(OBJECTS)
 	$(CC) -Wl,-soname,$(COMPONENT).so.$(VMAJOR) -o $(@) $(OBJECTS) $(LDFLAGS)
 
 $(TARGET_A): $(OBJECTS)
-	$(AR) rcs $(@) $^
+	$(AR) rcs $(@) $(OBJECTS)
 
 -include $(OBJECTS:.o=.d)
 

@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 1.0.4 - 2021-01-18(14:16:53 +0000)
+
+### Fixes
+
+- Fixes indentation in var dump for array in array
+- Only include objects in static library
+
 ## Release 1.0.3 - 2021-01-04(10:47:15 +0000)
 
 ### Changes

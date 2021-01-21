@@ -191,7 +191,8 @@ static int variant_dump_list(const amxc_var_t* const var,
     indent += 4;
     amxc_llist_for_each(it, list) {
         amxc_var_t* lvar = amxc_var_from_llist_it(it);
-        if(amxc_var_type_of(lvar) == AMXC_VAR_ID_HTABLE) {
+        if((amxc_var_type_of(lvar) == AMXC_VAR_ID_HTABLE) ||
+           ( amxc_var_type_of(lvar) == AMXC_VAR_ID_LIST)) {
             write_indentation(indent, log);
         }
         amxc_var_dump_internal(lvar, indent, log);

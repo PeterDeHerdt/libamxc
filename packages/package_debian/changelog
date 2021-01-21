@@ -1,3 +1,10 @@
+libamxc (1.0.4) unstable; urgency=medium
+
+  * Fixes indentation in var dump for array in array
+  * Only include objects in static library
+
+ -- Peter De Herdt <peter.deherdt@softathome.com>  Mon, 18 Jan 2021 14:17:03 +0000
+
 libamxc (1.0.3) unstable; urgency=medium
 
   * Collect parts when split fails
