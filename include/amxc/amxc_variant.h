@@ -88,12 +88,21 @@ extern "C"
    or composite types.
 
    @section amxc_var_primitive Variant Primitive Types
-   - null
+   - null (void - no value)
    - cstring_t (char *)
+   - int8_t
+   - uint8_t
+   - int16_t
+   - uint16_t
+   - int32_t
+   - uint32_t
    - int64_t
    - uint64_t
+   - float
    - double
    - bool
+   - fd_t (file descriptor)
+   - ts_t (timestamp)
 
    @section amxc_var_composite Variant Composite Types
    - amxc_llist_t - contains a list of variants
@@ -102,58 +111,311 @@ extern "C"
 
  */
 
-#define AMXC_VAR_ID_INVALID      UINT32_MAX      /**< Invalid variant type identifier */
-#define AMXC_VAR_ID_NULL         0               /**< the null variant id */
-#define AMXC_VAR_ID_CSTRING      1               /**< the c-string variant id, null terminated string */
-#define AMXC_VAR_ID_INT8         2               /**< signed 8 bit integer variant id*/
-#define AMXC_VAR_ID_INT16        3               /**< signed 16 bit integer variant id*/
-#define AMXC_VAR_ID_INT32        4               /**< signed 32 bit integer variant id*/
-#define AMXC_VAR_ID_INT64        5               /**< signed 64 bit integer variant id*/
-#define AMXC_VAR_ID_UINT8        6               /**< unsigned 8 bit integer variant id*/
-#define AMXC_VAR_ID_UINT16       7               /**< unsigned 16 bit integer variant id*/
-#define AMXC_VAR_ID_UINT32       8               /**< unsigned 32 bit integer variant id*/
-#define AMXC_VAR_ID_UINT64       9               /**< unsigned 64 bit integer variant id*/
-#define AMXC_VAR_ID_FLOAT        10              /**< float variant id*/
-#define AMXC_VAR_ID_DOUBLE       11              /**< double variant id*/
-#define AMXC_VAR_ID_BOOL         12              /**< boolean variant id*/
-#define AMXC_VAR_ID_LIST         13              /**< amxc linked list variant id*/
-#define AMXC_VAR_ID_HTABLE       14              /**< amxc htable variant id*/
-#define AMXC_VAR_ID_FD           15              /**< file descriptor variant id*/
-#define AMXC_VAR_ID_TIMESTAMP    16              /**< timestamp variant id*/
-#define AMXC_VAR_ID_CSV_STRING   17              /**< comma separated values string id*/
-#define AMXC_VAR_ID_SSV_STRING   18              /**< space separated values string id*/
+/**
+   @ingroup amxc_variant
+   @defgroup amxc_variant_type_id variant type ids
 
-#define AMXC_VAR_ID_ANY          19              /**< Can be used in coversion function */
+   These are all default defined variant types.
+ */
 
-#define AMXC_VAR_ID_CUSTOM_BASE  20              /**< start id for custom variants, id is assigned when registering */
-#define AMXC_VAR_ID_MAX          UINT32_MAX      /**< Invalid variant type id */
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Invalid variant type id
+ */
+#define AMXC_VAR_ID_INVALID      UINT32_MAX
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Null variant type id (aka void)
+ */
+#define AMXC_VAR_ID_NULL         0
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   C-string variant id (aka char *), null terminated string
+ */
+#define AMXC_VAR_ID_CSTRING      1
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Signed 8 bit integer variant id
+ */
+#define AMXC_VAR_ID_INT8         2
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Signed 16 bit integer variant id
+ */
+#define AMXC_VAR_ID_INT16        3
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Signed 32 bit integer variant id
+ */
+#define AMXC_VAR_ID_INT32        4
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Signed 64 bit integer variant id
+ */
+#define AMXC_VAR_ID_INT64        5
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Unsigned 8 bit integer variant id
+ */
+#define AMXC_VAR_ID_UINT8        6
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Unsigned 16 bit integer variant id
+ */
+#define AMXC_VAR_ID_UINT16       7
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Unsigned 32 bit integer variant id
+ */
+#define AMXC_VAR_ID_UINT32       8
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Unsigned 64 bit integer variant id
+ */
+#define AMXC_VAR_ID_UINT64       9
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Float variant id
+ */
+#define AMXC_VAR_ID_FLOAT        10
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Double variant id
+ */
+#define AMXC_VAR_ID_DOUBLE       11
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Boolean variant id
+ */
+#define AMXC_VAR_ID_BOOL         12
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Ambiorix Linked List variant id
+ */
+#define AMXC_VAR_ID_LIST         13
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Ambiorix Hash Table variant id
+ */
+#define AMXC_VAR_ID_HTABLE       14
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   File descriptor variant id
+ */
+#define AMXC_VAR_ID_FD           15
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Ambiorix timestamp variant id
+ */
+#define AMXC_VAR_ID_TIMESTAMP    16
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Comma Separated Values string variant id
+ */
+#define AMXC_VAR_ID_CSV_STRING   17
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Space Separated Values string variant id
+ */
+#define AMXC_VAR_ID_SSV_STRING   18
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Special variant id, typically used in cast or conversion functions
 
-#define AMXC_VAR_NAME_NULL       "null"          /**< the null variant name */
-#define AMXC_VAR_NAME_CSTRING    "cstring_t"     /**< the c-string variant name*/
-#define AMXC_VAR_NAME_INT8       "int8_t"        /**< the int8_t variant name*/
-#define AMXC_VAR_NAME_INT16      "int16_t"       /**< the int16_t variant name*/
-#define AMXC_VAR_NAME_INT32      "int32_t"       /**< the int32_t variant name*/
-#define AMXC_VAR_NAME_INT64      "int64_t"       /**< the int64_t variant name*/
-#define AMXC_VAR_NAME_UINT8      "uint8_t"       /**< the uint8_t variant name*/
-#define AMXC_VAR_NAME_UINT16     "uint16_t"      /**< the uint16_t variant name*/
-#define AMXC_VAR_NAME_UINT32     "uint32_t"      /**< the uint32_t variant name*/
-#define AMXC_VAR_NAME_UINT64     "uint64_t"      /**< the uint64_t variant name*/
-#define AMXC_VAR_NAME_FLOAT      "float"         /**< the float variant name*/
-#define AMXC_VAR_NAME_DOUBLE     "double"        /**< the double variant name*/
+   This is a special variant id, and can be used often in conversion or cast
+   functions to auto-detect the best fitted type.
+
+   Typically used to auto convert a string variant to an integer variant.
+ */
+#define AMXC_VAR_ID_ANY          19
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Base variant id for custom variants.
+
+   It is possible to create and define custom variant types.
+   The id for such custom variant type will be this value or higher and is
+   assigned when registering the variant type using @ref amxc_var_register_type
+ */
+#define AMXC_VAR_ID_CUSTOM_BASE  20
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Same as @ref AMXC_VAR_ID_INVALID
+ */
+#define AMXC_VAR_ID_MAX          UINT32_MAX
+
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_NULL
+ */
+#define AMXC_VAR_NAME_NULL       "null"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_CSTRING
+ */
+#define AMXC_VAR_NAME_CSTRING    "cstring_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_INT8
+ */
+#define AMXC_VAR_NAME_INT8       "int8_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_INT16
+ */
+#define AMXC_VAR_NAME_INT16      "int16_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_INT32
+ */
+#define AMXC_VAR_NAME_INT32      "int32_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_INT64
+ */
+#define AMXC_VAR_NAME_INT64      "int64_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_UINT8
+ */
+#define AMXC_VAR_NAME_UINT8      "uint8_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_UINT16
+ */
+#define AMXC_VAR_NAME_UINT16     "uint16_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_UINT32
+ */
+#define AMXC_VAR_NAME_UINT32     "uint32_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_UINT64
+ */
+#define AMXC_VAR_NAME_UINT64     "uint64_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_FLOAT
+ */
+#define AMXC_VAR_NAME_FLOAT      "float"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_DOUBLE
+ */
+#define AMXC_VAR_NAME_DOUBLE     "double"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_BOOL
+ */
 #define AMXC_VAR_NAME_BOOL       "bool"          /**< the bool variant name*/
-#define AMXC_VAR_NAME_LIST       "amxc_llist_t"  /**< the amxc linked list variant name*/
-#define AMXC_VAR_NAME_HTABLE     "amxc_htable_t" /**< the amxc htable variant name*/
-#define AMXC_VAR_NAME_FD         "fd_t"          /**< the file descriptor variant name*/
-#define AMXC_VAR_NAME_TIMESTAMP  "amxc_ts_t"     /**< the time stamp variant name*/
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_LIST
+ */
+#define AMXC_VAR_NAME_LIST       "amxc_llist_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_HTABLE
+ */
+#define AMXC_VAR_NAME_HTABLE     "amxc_htable_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_FD
+ */
+#define AMXC_VAR_NAME_FD         "fd_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_TIMESTAMP
+ */
+#define AMXC_VAR_NAME_TIMESTAMP  "amxc_ts_t"
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_CSV_STRING
+ */
 #define AMXC_VAR_NAME_CSV_STRING "csv_string_t"  /**< the time stamp variant name*/
+/**
+   @ingroup amxc_variant_type_id
+   @brief
+   Provides a name for variant id @ref AMXC_VAR_ID_SSV_STRING
+ */
 #define AMXC_VAR_NAME_SSV_STRING "ssv_string_t"  /**< the time stamp variant name*/
-
-#define AMXC_VAR_FLAG_DEFAULT   0x00             /**< Default behaviour */
-#define AMXC_VAR_FLAG_COPY      0x01             /**< Copy the variant & variant data */
-#define AMXC_VAR_FLAG_UPDATE    0x02             /**< Update if already exists */
 
 /**
    @ingroup amxc_variant
+   @defgroup amxc_variant_flags variant flags
+
+   A list of flags which can be used in some of the variant functions
+ */
+
+/**
+   @ingroup amxc_variant_flags
+   @brief
+   The default flag, do not copy, use variant as is.
+ */
+#define AMXC_VAR_FLAG_DEFAULT   0x00
+/**
+   @ingroup amxc_variant_flags
+   @brief
+   Copy the variant, creates a new variant, leaves the source variant untouched
+ */
+#define AMXC_VAR_FLAG_COPY      0x01
+/**
+   @ingroup amxc_variant_flags
+   @brief
+   Replaces the value of the variant, leaves the source variant untouched
+ */
+#define AMXC_VAR_FLAG_UPDATE    0x02
+
+/**
+   @ingroup amxc_variant
+   @defgroup amxc_variant_utils variant utils
+
+   A list of utility functions and macro's that make common variant tasks easier.
+ */
+
+/**
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting variant out of a composite variant by key.
 
@@ -163,7 +425,7 @@ extern "C"
  */
 #define GET_ARG(a, n) amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT)
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a bool out of a composite variant by key.
 
@@ -173,7 +435,7 @@ extern "C"
  */
 #define GET_BOOL(a, n) amxc_var_constcast(bool, GET_ARG(a, n))
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a char* out of a composite variant by key.
 
@@ -183,7 +445,7 @@ extern "C"
  */
 #define GET_CHAR(a, n) amxc_var_constcast(cstring_t, GET_ARG(a, n))
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a uint32_t out of a composite variant by key.
 
@@ -193,7 +455,7 @@ extern "C"
  */
 #define GET_UINT32(a, n) amxc_var_constcast(uint32_t, GET_ARG(a, n))
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a int32_t out of a composite variant by key.
 
@@ -204,27 +466,27 @@ extern "C"
 #define GET_INT32(a, n) amxc_var_constcast(int32_t, GET_ARG(a, n))
 
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting variant out of a composite variant by index.
 
-   Macro expands to amxc_var_get_key(a, i, AMXC_VAR_FLAG_DEFAULT)
+   Macro expands to amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT)
 
    @see @ref amxc_var_get_index
  */
 #define GETI_ARG(a, i) amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT)
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a bool out of a composite variant by index.
 
-   Macro expands to amxc_var_constcast(int32_t, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_constcast(bool, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
 
    @see @ref amxc_var_get_index, @ref amxc_var_constcast
  */
 #define GETI_BOOL(a, i) amxc_var_constcast(bool, GETI_ARG(a, i))
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a char* out of a composite variant by index.
 
@@ -234,7 +496,7 @@ extern "C"
  */
 #define GETI_CHAR(a, i) amxc_var_constcast(cstring_t, GETI_ARG(a, i))
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a uint32_t out of a composite variant by index.
 
@@ -244,7 +506,7 @@ extern "C"
  */
 #define GETI_UINT32(a, i) amxc_var_constcast(uint32_t, GETI_ARG(a, i))
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a int32_t out of a composite variant by index.
 
@@ -254,10 +516,55 @@ extern "C"
  */
 #define GETI_INT32(a, i) amxc_var_constcast(int32_t, GETI_ARG(a, i))
 
+/**
+   @ingroup amxc_variant_utils
+   @brief
+   Convenience macro for getting variant out of a composite variant by path.
+
+   Macro expands to amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT)
+
+   @see @ref amxc_var_get_path
+ */
 #define GETP_ARG(a, p) amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT)
+/**
+   @ingroup amxc_variant_utils
+   @brief
+   Convenience macro for getting a bool out of a composite variant by path.
+
+   Macro expands to amxc_var_constcast(bool, amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_path, @ref amxc_var_constcast
+ */
 #define GETP_BOOL(a, p) amxc_var_constcast(bool, GETP_ARG(a, p))
+/**
+   @ingroup amxc_variant_utils
+   @brief
+   Convenience macro for getting a string out of a composite variant by path.
+
+   Macro expands to amxc_var_constcast(cstring_t, amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_path, @ref amxc_var_constcast
+ */
 #define GETP_CHAR(a, p) amxc_var_constcast(cstring_t, GETP_ARG(a, p))
+/**
+   @ingroup amxc_variant_utils
+   @brief
+   Convenience macro for getting a uint32 out of a composite variant by path.
+
+   Macro expands to amxc_var_constcast(uint32_t, amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_path, @ref amxc_var_constcast
+ */
 #define GETP_UINT32(a, p) amxc_var_constcast(uint32_t, GETP_ARG(a, p))
+/**
+   @ingroup amxc_variant_utils
+   @brief
+   Convenience macro for getting a int32 out of a composite variant by path.
+
+   Macro expands to amxc_var_constcast(int32_t, amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
+
+   @see @ref amxc_var_get_path, @ref amxc_var_constcast
+ */
 #define GETP_INT32(a, p) amxc_var_constcast(int32_t, GETP_ARG(a, p))
 
 /**
@@ -363,19 +670,6 @@ extern "C"
 /**
    @ingroup amxc_variant
    @brief
-   Const cast a variant to a certain type.
-
-   If the given variant is not of the type specified, it will return NULL.
-   Only works on variants containing pointer types.
-
-   No conversions are applied, no copies are done. The pointer returned is
-   the pointer in the variant.
-
-   Macro expands to amxc_var_get_const_<TYPE>(var)
- */
-/**
-   @ingroup amxc_variant
-   @brief
    Takes the content from a variant.
 
    If the given variant is not of the type specified, it will return a default
@@ -424,7 +718,7 @@ extern "C"
    No conversions are applied, no copies are done. The pointer returned is
    the pointer in the variant. The variant is reset to the "null" variant.
 
-   Ownership of the pointer is transferd to the caller. When not needed
+   Ownership of the pointer is transferred to the caller. When not needed
    anymore the memory must be freed.
 
    @note
@@ -451,17 +745,23 @@ extern "C"
 /**
    @ingroup amxc_variant
    @brief
-   Takes the content from a variant.
+   Pushes a value into the variant.
 
-   If the given variant is not of the type specified, it will return NULL.
    Only works on variants containing pointer types.
 
-   No conversions are applied, no copies are done. The pointer returned is
-   the pointer in the variant. The variant is reset to the "null" variant.
+   No conversions are applied, no copies are done. The ownership of the pointer
+   is transferred to the variant.
 
-   Ownership of the pointer is transferd to the caller.
+   @note
+   Macro expands to amxc_var_push_<TYPE>(var, val)
+   The default variant type implementation provides these functions:
+   - @ref amxc_var_push_cstring_t
+   - @ref amxc_var_push_amxc_string_t
+   - @ref amxc_var_take_csv_string_t
+   - @ref amxc_var_take_ssv_string_t
 
-   Macro expands to amxc_var_take_<TYPE>(var)
+   Custom variant type implementations may implement a amxc_var_push_<CUSTOM_TYPE>
+   function, see the documentation of the custom types for more information.
  */
 #define amxc_var_push(type, var, val) amxc_var_push_ ## type(var, val)
 
@@ -485,6 +785,15 @@ extern "C"
 #define amxc_var_from_llist_it(ll_it) \
     ((amxc_var_t*) (((char*) ll_it) - offsetof(amxc_var_t, lit)))
 
+/**
+   @ingroup amxc_variant
+   @brief
+   When the variant is a containing a list of variants iterates over the
+   variants in the list
+
+   @warning
+   Do not use this macro when the variant is not containing a list.
+ */
 #define amxc_var_for_each(var, var_list) \
     for(amxc_var_t* var = amxc_var_from_llist_it(amxc_llist_get_first(&var_list->data.vl)), \
         * _next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)); \
@@ -492,6 +801,15 @@ extern "C"
         var = _next, \
         _next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)))
 
+/**
+   @ingroup amxc_variant
+   @brief
+   When the variant is a containing a list of variants iterates over the
+   variants in the list in reverse order.
+
+   @warning
+   Do not use this macro when the variant is not containing a list.
+ */
 #define amxc_var_for_each_reverse(var, var_list) \
     for(amxc_var_t* var = amxc_var_from_llist_it(amxc_llist_get_last(&var_list->data.vl)), \
         * _prev = amxc_var_from_llist_it(amxc_llist_it_get_previous(&var->lit)); \
@@ -499,7 +817,16 @@ extern "C"
         var = _prev, \
         _prev = amxc_var_from_llist_it(amxc_llist_it_get_previous(&var->lit)))
 
+/**
+   @ingroup amxc_variant
+   @brief
+   The variant struct definition.
 
+   A variant is a tagged union, which can be added to a linked list or to a
+   hash table as value.
+
+   Which field of the union is valid is depending of the type id field in the struct.
+ */
 typedef struct _amxc_var {
     amxc_llist_it_t lit;        /**< Linked list iterator, can be used to store the variant in a linked list */
     amxc_htable_it_t hit;       /**< Hash table iterator, can be used to store the variant in a hash table */
@@ -862,6 +1189,12 @@ amxc_var_t* amxc_var_get_index(const amxc_var_t* const var,
    and some or all parts can be identified with an index, the data of such a
    part can be changed with this function.
 
+   As a convention, when using as the index -1, the data is added to the end.
+
+   Example:
+   if the variant is containing a list of variants, adding a new data variant
+   using index -1, will add it to the end of the list.
+
    @param var pointer to variant structure, containing the composed data
    @param index the index
    @param data a variant containing the data the will be set
@@ -916,7 +1249,7 @@ amxc_var_t* amxc_var_take_index(amxc_var_t* const var,
    A new variant object is added to the composite variant. The new variant is of
    the null-type.
 
-   @param var pointer to a variant struct to wich a new variant will be added.
+   @param var pointer to a variant struct to which a new variant will be added.
    @param key the new key that needs to be added
 
    @return
@@ -1036,43 +1369,353 @@ bool amxc_var_is_null(const amxc_var_t* const var) {
     return var == NULL ? true : (var->type_id == AMXC_VAR_ID_NULL);
 }
 
-void variant_list_it_free(amxc_llist_it_t* it);
-void variant_htable_it_free(const char* key, amxc_htable_it_t* it);
-int amxc_var_dump(const amxc_var_t* const var, int fd);
-int amxc_var_log(const amxc_var_t* const var);
-
-/*
-   Set of wrapper functions to easier access variants
- */
-
-/*
-   Use amxc_var_set(<type>, <var>, <value>) to call one of the following functions
- */
-int amxc_var_set_bool(amxc_var_t* const var, bool boolean);
-int amxc_var_set_int8_t(amxc_var_t* const var, int8_t val);
-int amxc_var_set_uint8_t(amxc_var_t* const var, uint8_t val);
-int amxc_var_set_int16_t(amxc_var_t* const var, int16_t val);
-int amxc_var_set_uint16_t(amxc_var_t* const var, uint16_t val);
-int amxc_var_set_int32_t(amxc_var_t* const var, int32_t val);
-int amxc_var_set_uint32_t(amxc_var_t* const var, uint32_t val);
-int amxc_var_set_int64_t(amxc_var_t* const var, int64_t val);
-int amxc_var_set_uint64_t(amxc_var_t* const var, uint64_t val);
-int amxc_var_set_cstring_t(amxc_var_t* const var, const char* const val);
-int amxc_var_set_csv_string_t(amxc_var_t* const var, const char* const val);
-int amxc_var_set_ssv_string_t(amxc_var_t* const var, const char* const val);
-int amxc_var_set_double(amxc_var_t* var, double val);
-int amxc_var_set_fd_t(amxc_var_t* var, int val);
-int amxc_var_set_amxc_ts_t(amxc_var_t* var, amxc_ts_t* val);
-
-/*
-   Use amxc_var_dyncast(<type>, <var>) to call one of the following functions.
-   These function will apply conversion if needed and provde a copy of the
-   data. If a pointer is returned, call the correct function to free the
-   allocated memory if no longer needed.
- */
-
 /**
    @ingroup amxc_variant
+   @defgroup amxc_variant_type_functions variant type helper functions
+
+   @brief
+   Variant type specific helper functions
+
+   These functions are normally not used directly. Either they are called using
+   a macro or used as a callback function.
+ */
+
+
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Helper functions, can be used as delete function for linked lists.
+
+   When deleting an ambiorix linked list and the linked list contains only
+   ambiorix variants, this function can be used as callback function to free
+   all variants in the linked list, see @ref amxc_llist_delete
+
+   @param it pointer to a variant linked list iterator
+ */
+void variant_list_it_free(amxc_llist_it_t* it);
+
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Helper functions, can be used as delete function for htable.
+
+   When deleting an ambiorix htable and the htable contains only
+   ambiorix variants, this function can be used as callback function to free
+   all variants in the htable, see @ref amxc_htable_delete.
+
+   @param key the key associated with the hash table iterator
+   @param it pointer to a variant htable iterator
+ */
+void variant_htable_it_free(const char* key, amxc_htable_it_t* it);
+
+/**
+   @ingroup amxc_variant_utils
+   @brief
+   Dumps the content of the variant in a human readable manner.
+
+   Writes the content of the variant in a human readable and structured manner
+   to the provided file descriptor.
+
+   This function is usefull for debugging purposes.
+
+   @param var pointer to a variant struct
+   @param fd the file descriptor
+
+   @return
+   0 when writing the content was successful.
+ */
+int amxc_var_dump(const amxc_var_t* const var, int fd);
+
+/**
+   @ingroup amxc_variant_utils
+   @brief
+   Logs the content of the variant in a human readable manner to syslog
+
+   Writes the content of the variant in a human readable and structured manner
+   to the syslog, providing the system log service was opened.
+
+   This function is usefull for debugging purposes.
+
+   @param var pointer to a variant struct
+
+   @return
+   0 when writing the content was successful.
+ */
+int amxc_var_log(const amxc_var_t* const var);
+
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `bool`
+
+   @param var pointer to a variant struct
+   @param boolean the bool value to set, either true or false
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_bool(amxc_var_t* const var, bool boolean);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `int8_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_int8_t(amxc_var_t* const var, int8_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `uint8_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_uint8_t(amxc_var_t* const var, uint8_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `int16_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_int16_t(amxc_var_t* const var, int16_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `uint16_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_uint16_t(amxc_var_t* const var, uint16_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `int32_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_int32_t(amxc_var_t* const var, int32_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `uint16_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_uint32_t(amxc_var_t* const var, uint32_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `int64_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_int64_t(amxc_var_t* const var, int64_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `uint64_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_uint64_t(amxc_var_t* const var, uint64_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `cstring_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_cstring_t(amxc_var_t* const var, const char* const val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `csv_string_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_csv_string_t(amxc_var_t* const var, const char* const val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `ssv_string_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_ssv_string_t(amxc_var_t* const var, const char* const val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `double`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_double(amxc_var_t* var, double val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `fd_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_fd_t(amxc_var_t* var, int val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Setter helper function
+
+   @see @ref amxc_var_set
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_set with the
+   type argument `amxc_ts_t`
+
+   @param var pointer to a variant struct
+   @param val the value to set
+
+   @return
+   0 when the value was set
+ */
+int amxc_var_set_amxc_ts_t(amxc_var_t* var, amxc_ts_t* val);
+
+/**
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1089,7 +1732,7 @@ int amxc_var_set_amxc_ts_t(amxc_var_t* var, amxc_ts_t* val);
  */
 bool amxc_var_get_bool(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1106,7 +1749,7 @@ bool amxc_var_get_bool(const amxc_var_t* const var);
  */
 int8_t amxc_var_get_int8_t(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1123,7 +1766,7 @@ int8_t amxc_var_get_int8_t(const amxc_var_t* const var);
  */
 uint8_t amxc_var_get_uint8_t(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1140,7 +1783,7 @@ uint8_t amxc_var_get_uint8_t(const amxc_var_t* const var);
  */
 int16_t amxc_var_get_int16_t(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1157,7 +1800,7 @@ int16_t amxc_var_get_int16_t(const amxc_var_t* const var);
  */
 uint16_t amxc_var_get_uint16_t(const amxc_var_t* var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1174,7 +1817,7 @@ uint16_t amxc_var_get_uint16_t(const amxc_var_t* var);
  */
 int32_t amxc_var_get_int32_t(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1191,7 +1834,7 @@ int32_t amxc_var_get_int32_t(const amxc_var_t* const var);
  */
 uint32_t amxc_var_get_uint32_t(const amxc_var_t* var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1208,7 +1851,7 @@ uint32_t amxc_var_get_uint32_t(const amxc_var_t* var);
  */
 int64_t amxc_var_get_int64_t(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1225,7 +1868,7 @@ int64_t amxc_var_get_int64_t(const amxc_var_t* const var);
  */
 uint64_t amxc_var_get_uint64_t(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1242,7 +1885,7 @@ uint64_t amxc_var_get_uint64_t(const amxc_var_t* const var);
  */
 char* amxc_var_get_cstring_t(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1259,7 +1902,7 @@ char* amxc_var_get_cstring_t(const amxc_var_t* const var);
  */
 amxc_htable_t* amxc_var_get_amxc_htable_t(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1276,7 +1919,7 @@ amxc_htable_t* amxc_var_get_amxc_htable_t(const amxc_var_t* const var);
  */
 amxc_llist_t* amxc_var_get_amxc_llist_t(const amxc_var_t* const var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1293,7 +1936,7 @@ amxc_llist_t* amxc_var_get_amxc_llist_t(const amxc_var_t* const var);
  */
 double amxc_var_get_double(const amxc_var_t* var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1310,7 +1953,7 @@ double amxc_var_get_double(const amxc_var_t* var);
  */
 int amxc_var_get_fd_t(const amxc_var_t* var);
 /**
-   @ingroup amxc_variant
+   @ingroup amxc_variant_type_functions
    @brief
    Conversion helper function
 
@@ -1327,120 +1970,1303 @@ int amxc_var_get_fd_t(const amxc_var_t* var);
  */
 amxc_ts_t* amxc_var_get_amxc_ts_t(const amxc_var_t* var);
 
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `csv_string_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value, must be freed when not needed anymore
+ */
 AMXC_INLINE
 char* amxc_var_get_csv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_cstring_t(var);
 }
 
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_dyncast
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_dyncast with the
+   type argument `ssv_string_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value, must be freed when not needed anymore
+ */
 AMXC_INLINE
 char* amxc_var_get_ssv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_cstring_t(var);
 }
 
-/*
-   Use amxc_var_constcast(<type>, <var>) to call one of the following functions
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return NULL if the variant is not of a string type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `cstring_t`
+
+   @note
+   do not free the returned pointer.
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value
  */
 const char* amxc_var_get_const_cstring_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return NULL if the variant is not of a table type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `amxc_htable_t`
+
+   @note
+   do not free the returned pointer.
+
+   @param var pointer to a variant struct
+
+   @return
+   amxc_htable_t* value
+ */
 const amxc_htable_t* amxc_var_get_const_amxc_htable_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return NULL if the variant is not of a list type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `amxc_llist_t`
+
+   @note
+   do not free the returned pointer.
+
+   @param var pointer to a variant struct
+
+   @return
+   amxc_llist_t* value
+ */
 const amxc_llist_t* amxc_var_get_const_amxc_llist_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return false if the variant is not of a bool type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `bool`
+
+   @note
+   do not free the returned pointer.
+
+   @param var pointer to a variant struct
+
+   @return
+   bool value
+ */
 bool amxc_var_get_const_bool(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a int8_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `int8_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   int8_t value
+ */
 int8_t amxc_var_get_const_int8_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a int16_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `int16_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   int16_t value
+ */
 int16_t amxc_var_get_const_int16_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a int32_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `int32_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   int32_t value
+ */
 int32_t amxc_var_get_const_int32_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a int64_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `int64_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   int64_t value
+ */
 int64_t amxc_var_get_const_int64_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a uint8_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `uint8_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   uint8_t value
+ */
 uint8_t amxc_var_get_const_uint8_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a uint16_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `uint16_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   uint16_t value
+ */
 uint16_t amxc_var_get_const_uint16_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a uint32_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `uint32_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   uint32_t value
+ */
 uint32_t amxc_var_get_const_uint32_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a uint64_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `uint64_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   uint64_t value
+ */
 uint64_t amxc_var_get_const_uint64_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a double type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `double`
+
+   @param var pointer to a variant struct
+
+   @return
+   double value
+ */
 double amxc_var_get_const_double(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return 0 if the variant is not of a fd type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `fd_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   file descriptor value
+ */
 fd_t amxc_var_get_const_fd_t(const amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return NULL if the variant is not of a timestamp type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `ts_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   amxc_ts_t* value
+ */
 const amxc_ts_t* amxc_var_get_const_amxc_ts_t(const amxc_var_t* const var);
 
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return NULL if the variant is not of a cstring_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `csv_string_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value
+ */
 AMXC_INLINE
 const char* amxc_var_get_const_csv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_const_cstring_t(var);
 }
 
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_constcast
+
+   Will return NULL if the variant is not of a cstring_t type
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_constcast with the
+   type argument `ssv_string_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value
+ */
 AMXC_INLINE
 const char* amxc_var_get_const_ssv_string_t(const amxc_var_t* const var) {
     return amxc_var_get_const_cstring_t(var);
 }
 
-/*
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
 
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `bool`
+
+   @param var pointer to a variant struct
+   @param boolean the value
+
+   @return
+   The new variant
  */
 amxc_var_t* amxc_var_add_new_bool(amxc_var_t* const var, bool boolean);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `int8_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_int8_t(amxc_var_t* const var, int8_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `uint8_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_uint8_t(amxc_var_t* const var, uint8_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `int16_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_int16_t(amxc_var_t* const var, int16_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `uint16_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_uint16_t(amxc_var_t* const var, uint16_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `int32_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_int32_t(amxc_var_t* const var, int32_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `uint32_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_uint32_t(amxc_var_t* const var, uint32_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `int64_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_int64_t(amxc_var_t* const var, int64_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `uint64_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_uint64_t(amxc_var_t* const var, uint64_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `cstring_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_cstring_t(amxc_var_t* const var, const char* const val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `csv_string_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_csv_string_t(amxc_var_t* const var, const char* const val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `ssv_string_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_ssv_string_t(amxc_var_t* const var, const char* const val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `double`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_double(amxc_var_t* const var, double val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `fd_t`
+
+   @param var pointer to a variant struct
+   @param val the value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_fd_t(amxc_var_t* const var, int val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `amxc_ts_t`
+
+   @param var pointer to a variant struct
+   @param ts the timestamp value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_amxc_ts_t(amxc_var_t* const var, amxc_ts_t* ts);
 
-/* when list is NULL, empty list is added */
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   If the provided list pointer is NULL, an empty list is added.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `amxc_llist_t`
+
+   @note
+   The list must be a list of variants
+
+   @param var pointer to a variant struct
+   @param list the new list value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_amxc_llist_t(amxc_var_t* const var,
                                           const amxc_llist_t* list);
 
-/* when htable is NULL, empty htable is added */
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add
+
+   Creates a new variant and adds it to a composite variant that supports
+   index addressing.
+
+   If the provided htable pointer is NULL, an empty htable is added.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add with the
+   type argument `amxc_htable_t`
+
+   @note
+   The htable must be a htable where the values are variants
+
+   @param var pointer to a variant struct
+   @param htable the new htable value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_amxc_htable_t(amxc_var_t* const var,
                                            const amxc_htable_t* htable);
 
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `bool`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param boolean the new boolean value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_bool(amxc_var_t* const var, const char* key, bool boolean);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `int8_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_int8_t(amxc_var_t* const var, const char* key, int8_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `uint8_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_uint8_t(amxc_var_t* const var, const char* key, uint8_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `int16_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_int16_t(amxc_var_t* const var, const char* key, int16_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `uint16_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_uint16_t(amxc_var_t* const var, const char* key, uint16_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `int32_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_int32_t(amxc_var_t* const var, const char* key, int32_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `uint32_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_uint32_t(amxc_var_t* const var, const char* key, uint32_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `int64_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_int64_t(amxc_var_t* const var, const char* key, int64_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `uint64_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_uint64_t(amxc_var_t* const var, const char* key, uint64_t val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `cstring_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_cstring_t(amxc_var_t* const var, const char* key, const char* const val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `csv_string_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_csv_string_t(amxc_var_t* const var, const char* key, const char* const val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `ssv_string_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_ssv_string_t(amxc_var_t* const var, const char* key, const char* const val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `double`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_double(amxc_var_t* const var, const char* key, double val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `fd_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param val the new value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_fd_t(amxc_var_t* const var, const char* key, int val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `ts_t`
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param ts the timestamp value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_amxc_ts_t(amxc_var_t* const var, const char* key, amxc_ts_t* ts);
 
-/* when list is NULL, empty list is added */
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   If the provided htable pointer is NULL, an empty htable is added.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `amxc_llist_t`
+
+   @note
+   The linked list must be a list where the values are variants
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param list the new list value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_amxc_llist_t(amxc_var_t* const var,
                                               const char* key,
                                               const amxc_llist_t* list);
 
-/* when htable is NULL, empty htable is added */
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Conversion helper function
+
+   @see @ref amxc_var_add_key
+
+   Creates a new variant and adds it to a composite variant that supports
+   key addressing.
+
+   If the provided htable pointer is NULL, an empty htable is added.
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_add_key with the
+   type argument `amxc_htable_t`
+
+   @note
+   The linked list must be a list where the values are variants
+
+   @param var pointer to a variant struct
+   @param key the key
+   @param htable the new htable value
+
+   @return
+   The new variant
+ */
 amxc_var_t* amxc_var_add_new_key_amxc_htable_t(amxc_var_t* const var,
                                                const char* key,
                                                const amxc_htable_t* htable);
 
-/*
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Takes a value from a variant
 
+   @see @ref amxc_var_take
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_take with the
+   type argument `cstring_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value
  */
 cstring_t amxc_var_take_cstring_t(amxc_var_t* const var);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Takes a value from a variant
+
+   @see @ref amxc_var_take
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_take with the
+   type argument `amxc_string_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value
+ */
 amxc_string_t* amxc_var_take_amxc_string_t(amxc_var_t* const var);
 
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Takes a value from a variant
+
+   @see @ref amxc_var_take
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_take with the
+   type argument `csv_string_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value
+ */
 AMXC_INLINE
 cstring_t amxc_var_take_csv_string_t(amxc_var_t* const var) {
     return amxc_var_take_cstring_t(var);
 }
 
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Takes a value from a variant
+
+   @see @ref amxc_var_take
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_take with the
+   type argument `ssv_string_t`
+
+   @param var pointer to a variant struct
+
+   @return
+   char* value
+ */
 AMXC_INLINE
 cstring_t amxc_var_take_ssv_string_t(amxc_var_t* const var) {
     return amxc_var_take_cstring_t(var);
 }
 
-/*
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Pushes a value in a variant
 
+   @see @ref amxc_var_push
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_push with the
+   type argument `cstring_t`
+
+   @param var pointer to a variant struct
+   @param val the value that is psuhed into the variant
+
+   @return
+   0 when succesful
  */
 int amxc_var_push_cstring_t(amxc_var_t* const var, char* val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Pushes a value in a variant
+
+   @see @ref amxc_var_push
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_push with the
+   type argument `csv_string_t`
+
+   @param var pointer to a variant struct
+   @param val the value that is psuhed into the variant
+
+   @return
+   0 when succesful
+ */
 int amxc_var_push_csv_string_t(amxc_var_t* const var, char* val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Pushes a value in a variant
+
+   @see @ref amxc_var_push
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_push with the
+   type argument `ssv_string_t`
+
+   @param var pointer to a variant struct
+   @param val the value that is psuhed into the variant
+
+   @return
+   0 when succesful
+ */
 int amxc_var_push_ssv_string_t(amxc_var_t* const var, char* val);
+/**
+   @ingroup amxc_variant_type_functions
+   @brief
+   Pushes a value in a variant
+
+   @see @ref amxc_var_push
+
+   @note
+   Do not call this function directly, use macro @ref amxc_var_push with the
+   type argument `amxc_string_t`
+
+   @param var pointer to a variant struct
+   @param val the value that is psuhed into the variant
+
+   @return
+   0 when succesful
+ */
 int amxc_var_push_amxc_string_t(amxc_var_t* const var, amxc_string_t* val);
 
 #ifdef __cplusplus

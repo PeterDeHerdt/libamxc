@@ -89,6 +89,7 @@ extern "C"
  */
 
 /**
+   @ingroup amxc_string
    @brief
    Get the pointer to a string structure from an amxc linked list iterator.
 
@@ -98,7 +99,7 @@ extern "C"
    Gives the pointer to the string structure.
  */
 #define amxc_string_from_llist_it(ll_it) \
-    ((amxc_string_t*) (((char*) ll_it) - offsetof(amxc_string_t, it)))
+    amxc_container_of(ll_it, amxc_string_t, it)
 
 /**
    @ingroup amxc_string
@@ -114,12 +115,39 @@ typedef struct _amxc_string {
                                         string to linked list */
 } amxc_string_t;
 
+/**
+   @ingroup amxc_string
+   @brief
+   @ref amxc_string_set_at possible flags
+
+   One of these flags can be passed to the @ref amxc_string_set_at function
+   as the flags argument.
+ */
 typedef enum _amxc_string_flags {
-    amxc_string_no_flags  = 0x00,
-    amxc_string_insert = 0x00,
-    amxc_string_overwrite = 0x01
+    amxc_string_no_flags  = 0x00,   /**< Use default behavior (insert) */
+    amxc_string_insert = 0x00,      /**< Insert the string */
+    amxc_string_overwrite = 0x01    /**< Overwrite the existing string with the given string */
 } amxc_string_flags_t;
 
+/**
+   @ingroup amxc_string
+   @brief
+   Definition of the signature of the "is char" callback function
+
+   Some of the string functions needs to know if certain character matches a
+   criterea. You can provide your own matching function or use any of the
+   standard c library functions for this, like is_space, ...
+
+   The functions using such a callback function are:
+   - @ref amxc_string_triml
+   - @ref amxc_string_trimr
+   - @ref amxc_string_trim
+
+   @param c the character
+
+   @return
+   Callback functions must return non zero when the given character matches
+ */
 typedef int (* amxc_string_is_char_fn_t) (int c);
 
 /**
@@ -451,7 +479,7 @@ void amxc_string_triml(amxc_string_t* const string, amxc_string_is_char_fn_t fn)
    Removes trailing characters from the string. The characters that will be
    removed are defined by the provided character classification function.
 
-   If no character classifictaion function is provided the "isspace" function
+   If no character classification function is provided the "isspace" function
    is used by default.
 
    You can provide any character classification function or create your own.
@@ -472,7 +500,7 @@ void amxc_string_trimr(amxc_string_t* const string, amxc_string_is_char_fn_t fn)
    that will be removed are defined by the provided character
    classification function.
 
-   If no character classification fuinction is provided the "isspace" function
+   If no character classification function is provided the "isspace" function
    is used by default.
 
    You can provide any character classification function or create your own.
@@ -497,7 +525,7 @@ void amxc_string_trim(amxc_string_t* const string, amxc_string_is_char_fn_t fn);
 
    @param string a pointer to the string structure
    @param fmt string literal that can contain printf formatting
-   @param ap a va_list, containig the values for the printf formatting
+   @param ap a va_list, containing the values for the printf formatting
 
    @return
    0 when the new content is set
@@ -516,7 +544,7 @@ int amxc_string_vsetf(amxc_string_t* const string, const char* fmt, va_list ap);
    If needed memory is allocated or the already allocated buffer grows so
    the new content can be stored.
 
-   The variadic arguments must match the printf formatting placholders in the
+   The variadic arguments must match the printf formatting placeholders in the
    format string literal
 
    @param string a pointer to the string structure
@@ -531,7 +559,7 @@ int amxc_string_setf(amxc_string_t* const string, const char* fmt, ...) \
 /**
    @ingroup amxc_string
    @brief
-   Appends a formatted string to a striung
+   Appends a formatted string to a string
 
    Using a string literal that can contain printf like formatting a string is
    added to the end of the string.
@@ -539,12 +567,12 @@ int amxc_string_setf(amxc_string_t* const string, const char* fmt, ...) \
    If needed memory is allocated or the already allocated buffer grows so
    the new content can be added.
 
-   The variadic arguments must match the printf formatting placholders in the
+   The variadic arguments must match the printf formatting placeholders in the
    format string literal
 
    @param string a pointer to the string structure
    @param fmt string literal that can contain printf formatting
-   @param ap a va_list, containig the values for the printf formatting
+   @param ap a va_list, containing the values for the printf formatting
 
    @return
    0 when the new content is added
@@ -556,7 +584,7 @@ int amxc_string_vappendf(amxc_string_t* const string,
 /**
    @ingroup amxc_string
    @brief
-   Appends a formatted string to a striung
+   Appends a formatted string to a string
 
    Using a string literal that can contain printf like formatting a string is
    added to the end of the string.
@@ -564,7 +592,7 @@ int amxc_string_vappendf(amxc_string_t* const string,
    If needed memory is allocated or the already allocated buffer grows so
    the new content can be added.
 
-   The variadic arguments must match the printf formatting placholders in the
+   The variadic arguments must match the printf formatting placeholders in the
    format string literal
 
    @param string a pointer to the string structure
@@ -579,7 +607,7 @@ int amxc_string_appendf(amxc_string_t* const string, const char* fmt, ...) \
 /**
    @ingroup amxc_string
    @brief
-   Prepends a formatted string to a striung
+   Prepends a formatted string to a string
 
    Using a string literal that can contain printf like formatting a string is
    added to the beginning of the string.
@@ -587,12 +615,12 @@ int amxc_string_appendf(amxc_string_t* const string, const char* fmt, ...) \
    If needed memory is allocated or the already allocated buffer grows so
    the new content can be added.
 
-   The variadic arguments must match the printf formatting placholders in the
+   The variadic arguments must match the printf formatting placeholders in the
    format string literal
 
    @param string a pointer to the string structure
    @param fmt string literal that can contain printf formatting
-   @param ap a va_list, containig the values for the printf formatting
+   @param ap a va_list, containing the values for the printf formatting
 
    @return
    0 when the new content is added
@@ -604,7 +632,7 @@ int amxc_string_vprependf(amxc_string_t* const string,
 /**
    @ingroup amxc_string
    @brief
-   Prepends a formatted string to a striung
+   Prepends a formatted string to a string
 
    Using a string literal that can contain printf like formatting a string is
    added to the beginning of the string.
@@ -612,7 +640,7 @@ int amxc_string_vprependf(amxc_string_t* const string,
    If needed memory is allocated or the already allocated buffer grows so
    the new content can be added.
 
-   The variadic arguments must match the printf formatting placholders in the
+   The variadic arguments must match the printf formatting placeholders in the
    format string literal
 
    @param string a pointer to the string structure

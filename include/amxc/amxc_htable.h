@@ -199,7 +199,7 @@ typedef struct _amxc_htable {
    @param reserve Number of items that needs to be reserved
 
    @return
-   -1 if an error occured. 0 on success
+   -1 if an error occurred. 0 on success
  */
 int amxc_htable_new(amxc_htable_t** htable, const size_t reserve);
 

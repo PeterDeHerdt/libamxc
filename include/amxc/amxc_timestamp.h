@@ -128,7 +128,7 @@ typedef struct _timestamp {
    @param tsp a pointer to the timestamp structure
 
    @return
-   -1 if an error occured. 0 on success.
+   -1 if an error occurred. 0 on success.
  */
 int amxc_ts_now(amxc_ts_t* tsp);
 
@@ -145,7 +145,7 @@ int amxc_ts_now(amxc_ts_t* tsp);
    @param len length of the string
 
    @return
-   -1 if an error occured. 0 on success.
+   -1 if an error occurred. 0 on success.
  */
 int amxc_ts_parse(amxc_ts_t* tsp, const char* str, size_t len);
 
@@ -154,9 +154,9 @@ int amxc_ts_parse(amxc_ts_t* tsp, const char* str, size_t len);
    @brief
    Transforms unix epoch time to a string.
 
-   Transforms unix epocht time to string in RFC3399 compatible format.
+   Transforms unix epoch time to string in RFC3399 compatible format.
 
-   Use @ref amxc_ts_format_precision to specify the percision.
+   Use @ref amxc_ts_format_precision to specify the precision.
 
    @note
    The length of the provided string buffer must be at least 21 bytes.
@@ -178,7 +178,7 @@ size_t amxc_ts_format(const amxc_ts_t* tsp, char* dst, size_t len);
    @brief
    Transforms unix epoch time to a string.
 
-   Transforms unix epocht time to string in RFC3399 compatible format.
+   Transforms unix epoch time to string in RFC3399 compatible format.
 
    @note
    The length of the provided string buffer must be at least 21 bytes.
@@ -208,7 +208,7 @@ size_t amxc_ts_format_precision(const amxc_ts_t* tsp,
    @param tsp2 a pointer to a timestamp structure
 
    @return
-   0 if input is invallid
+   0 if input is invalid
    1 if tsp1 comes after tsp2
    -1 if tsp2 comes after tsp1
  */

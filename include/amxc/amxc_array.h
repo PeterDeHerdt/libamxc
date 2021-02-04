@@ -81,6 +81,63 @@ extern "C"
 /**
    @ingroup amxc_containers
    @defgroup amxc_array Array
+
+   @brief
+   The Ambiorix Dynamic Bucket Array.
+
+   A bucket is basically a pointer to a memory block (like a structure).
+   This array implementation provides an array of pointers (aka buckets), the
+   allocated memory for the buckets is a sequential memory block.
+
+   A bucket is considered empty when the pointer is NULL.
+
+   The array will grow dynamically when items are added to the end.
+
+   The items (or buckets) are defined using @ref amxc_array_it_t structure.
+   This structure contains the pointer to the data and the pointer to the
+   beginning of the array.
+
+   @par Creating A Bucket Array
+   A bucket array can be declared on the stack or allocated in the heap. When
+   declaring a bucket array on the stack it must be correctly initialized.
+
+   - @ref amxc_array_init - initializes a bucket array declared on the stack
+   - @ref amxc_array_new - allocates a bucket array in the heap.
+
+   @par Adding items
+   Items can be added:
+   - at a specific index - @ref amxc_array_set_data_at
+   - after the last used - @ref amxc_array_append_data
+   - before the first used - @ref amxc_array_prepend_data
+
+   @par Convert An Array Bucket Iterator To Data Struct
+   The @ref amxc_array_it_t contains a pointer (void *) to the data. This
+   pointer can be fetched using @ref amxc_array_it_get_data and cast to
+   the correct type.
+
+   @par Looping Over A Bucket Array
+   Using a simple for loop it is possible to iterate over all buckets available.
+   To get the full size, including the empty buckets, use
+   @ref amxc_array_capacity. Using an index all buckets can be addressed using
+   @ref amxc_array_get_at
+
+   To get the number of used buckets in the array use @ref amxc_array_size.
+
+   If you only want to loop over the used buckets (with a non NULL data pointer),
+   use the functions @ref amxc_array_get_first, @ref amxc_array_it_get_next
+
+   @par Removing Data From The Bucket Array
+   Removing a pointer from a bucket is basically resetting the data pointer to
+   NULL. The function @ref amxc_array_it_take_data will reset the pointer of
+   the bucket to NULL and will return the pointer.
+
+   @par Finding Empty Buckets
+   It is possible to find the empty buckets:
+   - @ref amxc_array_get_first_free - returns the first empty bucket
+   - @ref amxc_array_get_last_free - returns the last empty bucket
+   - @ref amxc_array_it_get_next_free - returns the next empty bucket starting from a bucket
+   - @ref amxc_array_it_get_previous_free - returns the previous empty bucket starting from a bucket
+
  */
 
 
@@ -138,6 +195,23 @@ typedef struct _amxc_array_it {
  */
 typedef void (* amxc_array_it_delete_t) (amxc_array_it_t* it);
 
+/** @ingroup amxc_array
+    @brief
+    Type definition of an array iterator compare callback function.
+
+    When sorting an array, the items in the array (iterators) must be
+    compared. When calling @ref amxc_array_sort a compare function
+    must be provided using this signature.
+
+    @param it1 the first array iterator
+    @param it2 the second array iterator
+
+    @return
+    The callback function must return
+    - 0 when the values are equal
+    - < 0 when it1 is smaller then it2
+    - > 0 when it1 is bigger then it2
+ */
 typedef int (* amxc_array_it_cmp_t) (amxc_array_it_t* it1,
                                      amxc_array_it_t* it2);
 
@@ -165,7 +239,7 @@ typedef int (* amxc_array_it_cmp_t) (amxc_array_it_t* it1,
    @param items the size of the array in number of items
 
    @return
-   -1 if an error occured. 0 on success
+   -1 if an error occurred. 0 on success
  */
 int8_t amxc_array_new(amxc_array_t** array, const size_t items);
 

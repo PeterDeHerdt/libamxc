@@ -237,7 +237,7 @@ typedef struct _amxc_llist {
    Gets the data pointer from a linked list iterator.
  */
 #define amxc_llist_it_get_data(it, type, member) \
-    ((type*) (((char*) it) - offsetof(type, member)))
+    amxc_container_of(it, type, member)
 
 /**
    @ingroup amxc_llist
@@ -317,6 +317,23 @@ typedef struct _amxc_llist {
  */
 typedef void (* amxc_llist_it_delete_t) (amxc_llist_it_t* it);
 
+/** @ingroup amxc_llist
+    @brief
+    Type definition of a linked list iterator compare callback function.
+
+    When sorting a linked list, the items in the list (iterators) must be
+    compared. When calling @ref amxc_llist_sort a compare function
+    must be provided using this signature.
+
+    @param it1 the first linked list iterator
+    @param it2 the second linked list iterator
+
+    @return
+    The callback function must return
+    - 0 when the values are equal
+    - < 0 when it1 is smaller then it2
+    - > 0 when it1 is bigger then it2
+ */
 typedef int (* amxc_llist_it_cmp_t) (amxc_llist_it_t* it1,
                                      amxc_llist_it_t* it2);
 
@@ -645,9 +662,38 @@ int amxc_llist_it_insert_after(amxc_llist_it_t* const reference,
  */
 unsigned int amxc_llist_it_index_of(const amxc_llist_it_t* const it);
 
+/**
+   @ingroup amxc_llist
+   @brief
+   Swaps two linked list iterators.
+
+   The iterators being swapped can be in the same linked list or in different
+   linked lists.
+
+   @param it1 a pointer to the linked list iterator
+   @param it2 a pointer to the linked list iterator
+
+   @return
+   0 when swapping the iterators was successful, when failed a non zero value
+   is returned.
+ */
 int amxc_llist_it_swap(amxc_llist_it_t* it1,
                        amxc_llist_it_t* it2);
 
+/**
+   @ingroup amxc_llist
+   @brief
+   Sorts a linked list.
+
+   Using a callback compare function, the items in the linked list are sorted.
+   The callback function must match @ref amxc_llist_it_cmp_t signature.
+
+   @param llist a pointer to the linked list
+   @param cmp the sort compare callback function
+
+   @return
+   0 when sort is done successful, any other value when sorting fails.
+ */
 int amxc_llist_sort(amxc_llist_t* const llist, amxc_llist_it_cmp_t cmp);
 
 /**

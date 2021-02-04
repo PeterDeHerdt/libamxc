@@ -69,6 +69,28 @@
    Ambiorix linked list API implementation
  */
 
+static int amxc_llist_sort_internal(amxc_llist_t* const llist,
+                                    amxc_llist_it_cmp_t cmp) {
+    int retval = 0;
+    bool swapped = false;
+
+    do {
+        amxc_llist_it_t* it = amxc_llist_get_first(llist);
+        swapped = false;
+
+        while(it->next != NULL) {
+            if(cmp(it, it->next) > 0) {
+                amxc_llist_it_swap(it, it->next);
+                swapped = true;
+            } else {
+                it = it->next;
+            }
+        }
+    } while(swapped);
+
+    return retval;
+}
+
 int amxc_llist_new(amxc_llist_t** llist) {
     int retval = -1;
     when_null(llist, exit);
@@ -240,27 +262,6 @@ int amxc_llist_set_at(amxc_llist_t* const llist,
     } else {
         retval = amxc_llist_it_insert_before(reference, it);
     }
-    return retval;
-}
-
-static int amxc_llist_sort_internal(amxc_llist_t* const llist,
-                                    amxc_llist_it_cmp_t cmp) {
-    int retval = 0;
-    bool swapped = false;
-
-    do {
-        amxc_llist_it_t* it = amxc_llist_get_first(llist);
-        swapped = false;
-        while(it->next != NULL) {
-            if(cmp(it, it->next) > 0) {
-                amxc_llist_it_swap(it, it->next);
-                swapped = true;
-            } else {
-                it = it->next;
-            }
-        }
-    } while(swapped);
-
     return retval;
 }
 

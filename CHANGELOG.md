@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 1.0.5 - 2021-01-27(14:04:12 +0000)
+
+### Changes
+
+- Add doxygen documentation tags to all public APIs
+
 ## Release 1.0.4 - 2021-01-18(14:16:53 +0000)
 
 ### Fixes

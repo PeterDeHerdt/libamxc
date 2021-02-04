@@ -66,32 +66,146 @@ extern "C"
 {
 #endif
 
-// string utilities
+/**
+   @ingroup amxc_string
+   @defgroup amxc_string_utils string utility functions
+
+   A list of utility functions and macro's that make common string manupilation easier.
+ */
+
+/**
+   @ingroup amxc_string_utils
+   @brief
+   Resolves environment variables
+
+   Replaces the environment variable with its value. The name of the environment
+   variable must be put between $( and ). This function will get the value
+   of the environment variable and replaces the $(&lt;NAME&gt;) with the value.
+
+   If the environment variable does not exist, it will be replaced with an empty
+   string. If no environment variables are available in the string, the string is
+   not changed.
+
+   @param string an amxc_string_t pointer.
+
+   @return
+   the number of replacements that have been done.
+ */
 int amxc_string_resolve_env(amxc_string_t* const string);
+
+/**
+   @ingroup amxc_string_utils
+   @brief
+   Resolves variant path variables
+
+   Replaces the variant path with its value. The variant path must be put
+   between ${ and }. This function will get the value of that path
+   and replaces the ${&lt;PATH&gt;} with the value.
+
+   If the path does not exist, it will be replaced with an empty string.
+   If no variant paths are available in the string, the string is not
+   changed.
+
+   @param string an amxc_string_t pointer.
+   @param data a variant containing data, preferable a htable or list.
+
+   @return
+   the number of replacements that have been done.
+ */
 int amxc_string_resolve_var(amxc_string_t* const string,
                             const amxc_var_t* const data);
+
+/**
+   @ingroup amxc_string_utils
+   @brief
+   Resolves variant paths and environment variables
+
+   This functions calls @ref amxc_string_resolve_var and @ref amxc_string_resolve_env
+   to resolve all environment variables and variant paths mentioned in the string.
+
+   @param string an amxc_string_t pointer.
+   @param data a variant containing data, preferable a htable or list.
+
+   @return
+   the number of replacements that have been done.
+ */
 int amxc_string_resolve(amxc_string_t* const string,
                         const amxc_var_t* const data);
+
+
+/**
+   @ingroup amxc_string_utils
+   @brief
+   Sets the resolved string
+
+   This function will always clear the content of the provided amxc_string_t
+   structure (resets it to an empty string).
+
+   If the provided text contains environment variable references or variant
+   path references, the resolved text is put in the string.
+
+   @param string an amxc_string_t pointer.
+   @param text the text
+   @param data a variant containing data, preferable a htable or list.
+
+   @return
+   the number of replacements that have been done.
+ */
 int amxc_string_set_resolved(amxc_string_t* string,
                              const char* text,
                              const amxc_var_t* const data);
+
+/**
+   @ingroup amxc_string_utils
+   @brief
+   Sets the resolved string
+
+   This function will allocate a new amxc_string_t structure on the heap.
+
+   If the provided text contains environment variable references or variant
+   path references, the resolved text is put in the string.
+
+   @param string an amxc_string_t pointer.
+   @param text the text
+   @param data a variant containing data, preferable a htable or list.
+
+   @return
+   the number of replacements that have been done.
+ */
 int amxc_string_new_resolved(amxc_string_t** string,
                              const char* text,
                              const amxc_var_t* const data);
 
-// llist/string utilities
+/**
+   @ingroup amxc_string_utils
+   @brief
+   Adds a string (char*) to a linked list of amxc_string_t structures
+
+   This function will allocate a new @ref amxc_string_t structure and copies
+   the provide string (char*) into the @ref amxc_string_t structure.
+
+   The new allocated structure is appended to the provided linked list using
+   @ref amxc_llist_append
+
+   @param llist a pointer to a linked list iterator
+   @param text the string
+
+   @return
+   The linked list iterator of the new allocated @ref amxc_string_t when
+   successful, NULL otherwise
+ */
 amxc_llist_it_t* amxc_llist_add_string(amxc_llist_t* const llist,
                                        const char* text);
 /**
-   @ingroup amxc_string
+   @ingroup amxc_string_utils
    @brief
    Helper function to delete an item in a linked list.
 
-   This function can be passed to @ref amxc_llist_delete or amxc_llist_clean:
-   --> amxc_llist_delete(ptr_to_llist_ptr, amxc_string_list_it_free);
+   This function can be passed to @ref amxc_llist_delete or amxc_llist_clean if
+   the linked list only contains @ref amxc_string_t structures.
 
    @note
-   Only use this function when clean up a linked list containing only
+   Only use this function when cleaning up a linked list containing only
    amxc_string_t structures.
 
    @param it a pointer to a linked list iterator

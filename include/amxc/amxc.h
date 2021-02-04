@@ -90,13 +90,13 @@ extern "C"
 
    This library provides:
    - Double Linked List - @ref amxc_llist
-   - Dynamic Array
-   - Hash Table
-   - Ring Buffer
-   - Dynamic String
-   - Queues
-   - Stacks
-   - Variant
+   - Dynamic Array - @ref amxc_array
+   - Hash Table - @ref amxc_htable
+   - Ring Buffer - @ref amxc_rbuffer
+   - Dynamic String - @ref amxc_string
+   - Queues - @ref amxc_aqueue, @ref amxc_lqueue
+   - Stacks - @ref amxc_astack, @ref amxc_lstack
+   - Variant - @ref amxc_variant
  */
 
 #ifdef __cplusplus

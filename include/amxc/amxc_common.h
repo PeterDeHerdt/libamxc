@@ -76,6 +76,16 @@ extern "C"
 #define AMXC_INLINE
 #endif
 
+/**
+   @ingroup amxc_containers
+   @defgroup amxc_common Common
+ */
+
+/**
+   @ingroup amxc_common
+   @brief
+   Calculates the address of the containing structure.
+ */
 #define amxc_container_of(addr, type, member) \
     ((type*) (((char*) addr) - offsetof(type, member)))
 

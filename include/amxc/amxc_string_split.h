@@ -66,23 +66,60 @@ extern "C"
 {
 #endif
 
-#include <amxc/amxc_variant.h>
-
-typedef enum _amxc_string_split_status {
-    AMXC_STRING_SPLIT_OK,
-    AMXC_ERROR_STRING_SPLIT_INVALID_INPUT,
-    AMXC_ERROR_STRING_MISSING_DQUOTE,
-    AMXC_ERROR_STRING_MISSING_SQUOTE,
-    AMXC_ERROR_STRING_MISSING_RBRACKET,
-    AMXC_ERROR_STRING_MISSING_SBRACKET,
-    AMXC_ERROR_STRING_MISSING_CBRACKET,
-} amxc_string_split_status_t;
-
-typedef amxc_string_split_status_t (* amxc_string_split_builder_t) (amxc_llist_t* all,
-                                                                    amxc_var_t* csv_list);
-
 /**
    @ingroup amxc_string
+   @defgroup amxc_string_split Split a string into a composite type
+
+   Often string parsing is needed. Either parsing a string is simple, like
+   splitting it on each occurrence of separator, or more complex, like taking
+   into account quotes and brackets.
+
+   Using these functions may help in parsing a string.
+ */
+
+
+#include <amxc/amxc_variant.h>
+
+/**
+   @ingroup amxc_string_split
+   @brief
+   The possible string split errors
+ */
+typedef enum _amxc_string_split_status {
+    AMXC_STRING_SPLIT_OK,                   /**< No error, all ok */
+    AMXC_ERROR_STRING_SPLIT_INVALID_INPUT,  /**< Invalid input */
+    AMXC_ERROR_STRING_MISSING_DQUOTE,       /**< Missing double quote */
+    AMXC_ERROR_STRING_MISSING_SQUOTE,       /**< Missing single quote */
+    AMXC_ERROR_STRING_MISSING_RBRACKET,     /**< Missing round bracket */
+    AMXC_ERROR_STRING_MISSING_SBRACKET,     /**< Missing square bracket */
+    AMXC_ERROR_STRING_MISSING_CBRACKET,     /**< Missing curly bracket */
+} amxc_string_split_status_t;
+
+/**
+   @ingroup amxc_string_split
+   @brief
+   Callback function definition.
+
+   When using @ref amxc_string_split to split a string, a filter/builder
+   callback function can be provided.
+
+   The string is splitted into parts as describe in @ref amxc_string_split_word,
+   where each part is added to a linked list.
+
+   The filter/builder callback function can then combine parts or filter them
+   out before adding them the variant which contains a linked list of variants.
+
+   @param all linked list containig all string parts
+   @param var var the result variant.
+
+   @return
+   One of the @ref amxc_string_split_status_t status ids.
+ */
+typedef amxc_string_split_status_t (* amxc_string_split_builder_t) (amxc_llist_t* all,
+                                                                    amxc_var_t* var);
+
+/**
+   @ingroup amxc_string_split
    @brief
    Helper function to be used with amxc_string_split_llist.
 
@@ -104,7 +141,7 @@ amxc_string_t* amxc_string_get_from_llist(const amxc_llist_t* const llist,
                                           const unsigned int index);
 
 /**
-   @ingroup amxc_string
+   @ingroup amxc_string_split
    @brief
    Helper function to be used with amxc_string_split_llist.
 
@@ -125,27 +162,140 @@ amxc_string_t* amxc_string_get_from_llist(const amxc_llist_t* const llist,
 const char* amxc_string_get_text_from_llist(const amxc_llist_t* const llist,
                                             const unsigned int index);
 
+/**
+   @ingroup amxc_string_split
+   @brief
+   Split a string in individual words or punctuation signs.
+
+   This function splits a string in individual words or punctuation signs and
+   puts each individual part in a list. Each part in the list will be a
+   @ref amxc_string_t
+
+   A sequence of characters the only consists out of alfa numeric symbols
+   [0-9a-zA-Z] is considered as one single word.
+
+   When multiple space characters are encountered after each other only one
+   single space is added to the list.
+
+   All space characters are always converted to ' '. So when a tab or new-line
+   character is encountered it will be added to the list as a single ' '.
+
+   Brackets and quotes are taken into account, parsing fails when there are
+   missing quotes or brackets.
+
+   @param string The string that needs to be splitted
+   @param list the linked list that gets filled
+   @param reason when provided and parsing fails,
+                 will get filled with a human readable error string
+
+   @return
+   one of the @ref amxc_string_split_status_t statuses
+ */
 amxc_string_split_status_t
 amxc_string_split_word(const amxc_string_t* const string,
                        amxc_llist_t* list,
                        const char** reason);
 
+/**
+   @ingroup amxc_string_split
+   @brief
+   Split a string in individual words or punctuation signs.
+
+   This functions behaves exactly the same as @ref amxc_string_split_word, with
+   following differences:
+   - instead of building a linked list of strings it builds a variant containing
+     a linked list of variants where each item is a variant containing a string.
+   - Provides the possibility to provide a callback function that can filter out
+     or modify the items that are put in the list. See @ref amxc_string_split_builder_t
+
+   @param string The string that needs to be splitted
+   @param var the top level variant, will be initiated to a variant containing a
+              linked list of variants.
+   @param fn a filter/build callback function or NULL
+   @param reason when provided and parsing fails,
+                 will get filled with a human readable error string
+
+   @return
+   one of the @ref amxc_string_split_status_t statuses
+ */
 amxc_string_split_status_t
 amxc_string_split(const amxc_string_t* const string,
                   amxc_var_t* var,
                   amxc_string_split_builder_t fn,
                   const char** reason);
 
+/**
+   @ingroup amxc_string_split
+   @brief
+   Split a string in individual parts assuming that the string contains comma separated values.
+
+   Calls @ref amxc_string_split.
+
+   This function takes into account square brackets (for lists in lists),
+   double and single quotes. When a ',' is between double or single quotes
+   it is considered as part of the string and not as a separator.
+
+   The provided variant will be initialized to a variant containing a linked list
+   of variants where each item in the list is a variant containing a string.
+
+   @param string The string that needs to be splitted
+   @param var the top level variant, will be initiated to a variant containing a
+              linked list of variants.
+   @param reason when provided and parsing fails,
+                 will get filled with a human readable error string
+
+   @return
+   one of the @ref amxc_string_split_status_t statuses
+ */
 amxc_string_split_status_t
 amxc_string_csv_to_var(const amxc_string_t* const string,
                        amxc_var_t* var,
                        const char** reason);
 
+/**
+   @ingroup amxc_string_split
+   @brief
+   Split a string in individual parts assuming that the string contains space separated values.
+
+   Calls @ref amxc_string_split.
+
+   This function takes into account square brackets (for lists in lists),
+   double and single quotes. When a ' ' is between double or single quotes
+   it is considered as part of the string and not as a separator.
+
+   The provided variant will be initialized to a variant containing a linked list
+   of variants where each item in the list is a variant containing a string.
+
+   @param string The string that needs to be splitted
+   @param var the top level variant, will be initiated to a variant containing a
+              linked list of variants.
+   @param reason when provided and parsing fails,
+                 will get filled with a human readable error string
+
+   @return
+   one of the @ref amxc_string_split_status_t statuses
+ */
 amxc_string_split_status_t
 amxc_string_ssv_to_var(const amxc_string_t* const string,
                        amxc_var_t* var,
                        const char** reason);
 
+/**
+   @ingroup amxc_string_split
+   @brief
+   Simple split function using a single character separator.
+
+   Splits a string into parts using a single character separator. A separator
+   must be a punctuation sign except '[' or ']'. Alphanumeric characters are
+   not allowed as a separator.
+
+   @param string The string that needs to be splitted
+   @param list the result list
+   @param separator the single character separator sign
+
+   @return
+   one of the @ref amxc_string_split_status_t statuses
+ */
 amxc_string_split_status_t
 amxc_string_split_to_llist(const amxc_string_t* const string,
                            amxc_llist_t* list,

@@ -308,6 +308,19 @@ const char* amxc_var_get_type_name_from_id(const uint32_t type_id);
  */
 uint32_t amxc_var_get_type_id_from_name(const char* const name);
 
+/**
+   @ingroup amxc_variant_type
+   @brief
+   Get the type definition structure.
+
+   Get the type definition structure.
+
+   @param type_id the type id
+
+   @return
+   returns the type definition structure for the type id or NULL if the
+   type id does not exist
+ */
 amxc_var_type_t* amxc_var_get_type(unsigned int type_id);
 
 

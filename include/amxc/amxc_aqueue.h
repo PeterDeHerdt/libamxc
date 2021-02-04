@@ -78,6 +78,21 @@ extern "C"
 /**
    @ingroup amxc_containers
    @defgroup amxc_aqueue Array Queue
+
+   @brief
+   A queue implementation based on @ref amxc_array
+
+   The basic operators on a queue are add and remove.
+
+   Using the @ref amxc_array a queue can be created which has a initial
+   size and can grow when needed.
+
+   When adding data to the queue, the data will be put in the first empty bucket,
+   if no empty bucket is available, the queue (bucket array) will grow.
+
+   When removing data, the first non empty bucket is returned and all items
+   are shifted left.
+
  */
 
 /**
@@ -227,7 +242,9 @@ amxc_aqueue_it_t* amxc_aqueue_add(amxc_aqueue_t* const aqueue, void* data) {
  */
 AMXC_INLINE
 void* amxc_aqueue_remove(amxc_aqueue_t* const aqueue) {
-    return amxc_array_take_first_data(aqueue);
+    void* rv = amxc_array_take_first_data(aqueue);
+    amxc_array_shift_left(aqueue, 1, NULL);
+    return rv;
 }
 
 /**

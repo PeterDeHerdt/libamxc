@@ -78,6 +78,22 @@ extern "C"
 /**
    @ingroup amxc_containers
    @defgroup amxc_astack Array stack
+
+   @brief
+   A stack implementation based on @ref amxc_array
+
+   The basic operators on a stack are push and pop.
+
+   Using the @ref amxc_array a stack can be created which has a initial
+   size and can grow when needed.
+
+   It is possible to peek at the top of the stack, without removing the element,
+   using @ref amxc_astack_peek
+
+   When pushing data on the stack, the data will be put in the first empty bucket,
+   if no empty bucket is available, the stack (bucket array) will grow.
+
+   When popping data, the last non empty bucket is returned.
  */
 
 /**
