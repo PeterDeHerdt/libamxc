@@ -237,7 +237,7 @@ bool amxc_ts_is_valid(const amxc_ts_t* tsp);
 
    @return
    -1 if an error occurs
-   1 if the action succeeded
+   0 if the action succeeded
  */
 int amxc_ts_to_tm_utc(const amxc_ts_t* tsp, struct tm* tmp);
 
@@ -251,7 +251,7 @@ int amxc_ts_to_tm_utc(const amxc_ts_t* tsp, struct tm* tmp);
 
    @return
    -1 if an error occurs
-   1 if the action succeeded
+   0 if the action succeeded
  */
 int amxc_ts_to_tm_local(const amxc_ts_t* tsp, struct tm* tmp);
 
