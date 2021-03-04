@@ -82,6 +82,11 @@ extern "C"
 
 /**
    @ingroup amxc_htable
+   @defgroup amxc_htable_it Hash Table Iterator
+ */
+
+/**
+   @ingroup amxc_htable_it
    @brief
    Gets the data pointer from an hash table iterator
  */
@@ -132,7 +137,7 @@ extern "C"
 typedef struct _amxc_htable_it amxc_htable_it_t;
 
 /**
-   @ingroup amxc_htable
+   @ingroup amxc_htable_it
    @brief
    The hash table iterator structure.
  */
@@ -513,7 +518,7 @@ bool amxc_htable_contains(const amxc_htable_t* const htable, const char* const k
 int amxc_htable_move(amxc_htable_t* const dest, amxc_htable_t* const src);
 
 /**
-   @ingroup amxc_htable
+   @ingroup amxc_htable_it
    @brief
    Initializes a hash table.iterator
 
@@ -534,7 +539,7 @@ int amxc_htable_move(amxc_htable_t* const dest, amxc_htable_t* const src);
 int amxc_htable_it_init(amxc_htable_it_t* const it);
 
 /**
-   @ingroup amxc_htable
+   @ingroup amxc_htable_it
    @brief
    Removes the iterator from the htable and frees allocated memory
 
@@ -551,7 +556,7 @@ int amxc_htable_it_init(amxc_htable_it_t* const it);
 void amxc_htable_it_clean(amxc_htable_it_t* const it, amxc_htable_it_delete_t func);
 
 /**
-   @ingroup amxc_htable
+   @ingroup amxc_htable_it
    @brief
    Gets the next iterator in the hash table
 
@@ -569,7 +574,7 @@ void amxc_htable_it_clean(amxc_htable_it_t* const it, amxc_htable_it_delete_t fu
 amxc_htable_it_t* amxc_htable_it_get_next(const amxc_htable_it_t* const reference);
 
 /**
-   @ingroup amxc_htable
+   @ingroup amxc_htable_it
    @brief
    Gets the next iterator in the hash table with the same key
 
@@ -586,7 +591,7 @@ amxc_htable_it_t* amxc_htable_it_get_next(const amxc_htable_it_t* const referenc
 amxc_htable_it_t* amxc_htable_it_get_next_key(const amxc_htable_it_t* const reference);
 
 /**
-   @ingroup amxc_htable
+   @ingroup amxc_htable_it
    @brief
    Removes the iterator from the hash table
 
@@ -598,7 +603,7 @@ amxc_htable_it_t* amxc_htable_it_get_next_key(const amxc_htable_it_t* const refe
 void amxc_htable_it_take(amxc_htable_it_t* const it);
 
 /**
-   @ingroup amxc_htable
+   @ingroup amxc_htable_it
    @brief
    Gets the key from the iterator
 

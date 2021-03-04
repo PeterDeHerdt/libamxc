@@ -1,3 +1,11 @@
+libamxc (1.0.7) unstable; urgency=medium
+
+  * API documentation mentions AMXC_VAR_FLAG_XXXX instead of full names
+  * API Documentation iterator APIs should be put in a sub-group
+  * Migrate to new licenses format (baf)
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 25 Feb 2021 12:43:15 +0000
+
 libamxc (1.0.6) unstable; urgency=medium
 
   * Documentation is not matching implementation

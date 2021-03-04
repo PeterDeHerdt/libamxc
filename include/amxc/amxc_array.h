@@ -140,6 +140,10 @@ extern "C"
 
  */
 
+/**
+   @ingroup amxc_array
+   @defgroup amxc_array_it Array iterators
+ */
 
 /**
    @ingroup amxc_array
@@ -169,7 +173,7 @@ typedef struct _amxc_array {
 } amxc_array_t;
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    The array iterator structure.
  */
@@ -195,7 +199,7 @@ typedef struct _amxc_array_it {
  */
 typedef void (* amxc_array_it_delete_t) (amxc_array_it_t* it);
 
-/** @ingroup amxc_array
+/** @ingroup amxc_array_it
     @brief
     Type definition of an array iterator compare callback function.
 
@@ -596,7 +600,7 @@ void* amxc_array_take_first_data(amxc_array_t* const array);
 void* amxc_array_take_last_data(amxc_array_t* const array);
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    Gets the next used item in the array,
    starting from the provided array iterator.
@@ -614,7 +618,7 @@ void* amxc_array_take_last_data(amxc_array_t* const array);
 amxc_array_it_t* amxc_array_it_get_next(const amxc_array_it_t* const reference);
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    Gets the next free item in the array,
    starting from the provided array iterator.
@@ -632,7 +636,7 @@ amxc_array_it_t* amxc_array_it_get_next(const amxc_array_it_t* const reference);
 amxc_array_it_t* amxc_array_it_get_next_free(const amxc_array_it_t* const reference);
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    Gets the previous used item in the array,
    starting from the provided array iterator.
@@ -650,7 +654,7 @@ amxc_array_it_t* amxc_array_it_get_next_free(const amxc_array_it_t* const refere
 amxc_array_it_t* amxc_array_it_get_previous(const amxc_array_it_t* const reference);
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    Gets the previous free item in the array,
    starting from the provided array iterator.
@@ -668,7 +672,7 @@ amxc_array_it_t* amxc_array_it_get_previous(const amxc_array_it_t* const referen
 amxc_array_it_t* amxc_array_it_get_previous_free(const amxc_array_it_t* const reference);
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    Gets the index of the iterator in the array
 
@@ -717,7 +721,7 @@ void* amxc_array_get_data_at(const amxc_array_t* const array,
 }
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    Gets the data pointer of array iterator.
 
@@ -733,7 +737,7 @@ void* amxc_array_it_get_data(const amxc_array_it_t* const it) {
 }
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    Sets the data pointer of an array iterator.
 
@@ -751,7 +755,7 @@ void* amxc_array_it_get_data(const amxc_array_it_t* const it) {
 int amxc_array_it_set_data(amxc_array_it_t* const it, void* data);
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    Gets and removes a data pointer from the iterator.
 
@@ -765,7 +769,7 @@ int amxc_array_it_set_data(amxc_array_it_t* const it, void* data);
 void* amxc_array_it_take_data(amxc_array_it_t* const it);
 
 /**
-   @ingroup amxc_array
+   @ingroup amxc_array_it
    @brief
    Swaps the content of the two array iterators.
 

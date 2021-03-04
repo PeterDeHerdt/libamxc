@@ -210,6 +210,11 @@ extern "C"
 
 /**
    @ingroup amxc_llist
+   @defgroup amxc_llist_it Linked List Iterator
+ */
+
+/**
+   @ingroup amxc_llist_it
    @brief
    The linked list iterator structure.
  */
@@ -232,7 +237,7 @@ typedef struct _amxc_llist {
 } amxc_llist_t;
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Gets the data pointer from a linked list iterator.
  */
@@ -317,7 +322,7 @@ typedef struct _amxc_llist {
  */
 typedef void (* amxc_llist_it_delete_t) (amxc_llist_it_t* it);
 
-/** @ingroup amxc_llist
+/** @ingroup amxc_llist_it
     @brief
     Type definition of a linked list iterator compare callback function.
 
@@ -564,7 +569,7 @@ int amxc_llist_set_at(amxc_llist_t* llist,
                       amxc_llist_it_t* const it);
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Initializes a linked list iterator.
 
@@ -585,7 +590,7 @@ int amxc_llist_set_at(amxc_llist_t* llist,
 int amxc_llist_it_init(amxc_llist_it_t* const it);
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Removes the iterator from the list and frees allocated memory.
 
@@ -602,7 +607,7 @@ int amxc_llist_it_init(amxc_llist_it_t* const it);
 void amxc_llist_it_clean(amxc_llist_it_t* const it, amxc_llist_it_delete_t func);
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Removes the iterator from the list.
 
@@ -611,7 +616,7 @@ void amxc_llist_it_clean(amxc_llist_it_t* const it, amxc_llist_it_delete_t func)
 void amxc_llist_it_take(amxc_llist_it_t* const it);
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Inserts an iterator before a reference interator in the list.
 
@@ -630,7 +635,7 @@ int amxc_llist_it_insert_before(amxc_llist_it_t* const reference,
                                 amxc_llist_it_t* const it);
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Inserts an iterator after another reference interator in the list.
 
@@ -650,7 +655,7 @@ int amxc_llist_it_insert_after(amxc_llist_it_t* const reference,
                                amxc_llist_it_t* const it);
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Gets the index of an iterator in the list.
 
@@ -663,7 +668,7 @@ int amxc_llist_it_insert_after(amxc_llist_it_t* const reference,
 unsigned int amxc_llist_it_index_of(const amxc_llist_it_t* const it);
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Swaps two linked list iterators.
 
@@ -809,7 +814,7 @@ amxc_llist_it_t* amxc_llist_take_at(const amxc_llist_t* llist,
 }
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Gets the next iterator in the list.
 
@@ -827,7 +832,7 @@ amxc_llist_it_t* amxc_llist_it_get_next(const amxc_llist_it_t* const reference) 
 }
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Gets the previous iterator in the list.
 
@@ -845,7 +850,7 @@ amxc_llist_it_t* amxc_llist_it_get_previous(const amxc_llist_it_t* const referen
 }
 
 /**
-   @ingroup amxc_llist
+   @ingroup amxc_llist_it
    @brief
    Checks that an iterator is in a list.
 

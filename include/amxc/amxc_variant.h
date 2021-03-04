@@ -1089,7 +1089,7 @@ void amxc_var_take_it(amxc_var_t* const var) {
 
    @param var pointer to variant structure, containing the composed data
    @param key string containing the key
-   @param flags bitmap field. Bitwise ORed of the AMXC_VAR_FLAG_XXXX
+   @param flags can be one of AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY
 
    @return
    When no part is found with the given key a null pointer is returned.
@@ -1171,7 +1171,7 @@ amxc_var_t* amxc_var_take_key(amxc_var_t* const var,
 
    @param var pointer to variant structure, containing the composed data
    @param index the index
-   @param flags bitmap field. Bitwise ORed of the AMXC_VAR_FLAG_XXXX
+   @param flags can be one of AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY
 
    @return
    When no part is found with the given key a null pointer is returned.
