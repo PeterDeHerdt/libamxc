@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 1.0.8 - 2021-03-10(10:26:52 +0000)
+
+### Changes
+
+- Extend string variant conversion to bool
+
 ## Release 1.0.7 - 2021-02-25(12:43:10 +0000)
 
 ### Changes

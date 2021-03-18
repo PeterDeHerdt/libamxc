@@ -140,6 +140,14 @@ void test_variant_char_convert_to_bool(UNUSED void** state) {
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_BOOL), 0);
     assert_false(copy_var.data.b);
 
+    var.data.s = "ON";
+    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_BOOL), 0);
+    assert_true(copy_var.data.b);
+
+    var.data.s = "Off";
+    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_BOOL), 0);
+    assert_false(copy_var.data.b);
+
     var.data.s = "   \n\t   true";
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_BOOL), 0);
     assert_true(copy_var.data.b);

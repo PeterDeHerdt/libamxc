@@ -1,3 +1,9 @@
+libamxc (1.0.8) unstable; urgency=medium
+
+  * Extend string variant conversion to bool
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Wed, 10 Mar 2021 10:27:01 +0000
+
 libamxc (1.0.7) unstable; urgency=medium
 
   * API documentation mentions AMXC_VAR_FLAG_XXXX instead of full names

@@ -199,8 +199,8 @@ static int variant_char_to_bool(amxc_var_t* const dest,
     char* lower_src = NULL;
     int src_len = 0;
     int src_pos = 0;
-    const char true_values[3][5] = { "true", "yes", "1" };
-    const char false_values[3][6] = { "false", "no", "0" };
+    const char true_values[4][10] = { "true", "yes", "1", "on" };
+    const char false_values[4][10] = { "false", "no", "0", "off" };
 
     when_true((src->data.s == NULL) || (*(src->data.s) == 0), exit);
 
@@ -217,7 +217,7 @@ static int variant_char_to_bool(amxc_var_t* const dest,
         src_pos++;
     }
 
-    for(int index = 0; index < 3; index++) {
+    for(int index = 0; index < 4; index++) {
         if(strcmp(lower_src, true_values[index]) == 0) {
             dest->data.b = true;
             retval = 0;
@@ -379,6 +379,8 @@ static int variant_char_auto_convert(amxc_var_t* const dest,
     case 'F':
     case 'n':
     case 'N':
+    case 'o':
+    case 'O':
         dest->type_id = AMXC_VAR_ID_BOOL;
         retval = variant_char_to_bool(dest, src);
         break;
@@ -402,7 +404,6 @@ static int variant_char_auto_convert(amxc_var_t* const dest,
         when_true(retval == 0, exit);
         dest->type_id = AMXC_VAR_ID_DOUBLE;
         retval = variant_char_to_double(dest, src);
-        when_true(retval == 0, exit);
     }
     when_true(retval == 0, exit);
 
