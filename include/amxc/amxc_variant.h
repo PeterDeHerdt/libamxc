@@ -678,8 +678,12 @@ extern "C"
 
    The type of the variant can be queried using @ref amxc_var_type_of
 
-   No conversions are done using this macro.
+   @warning
+   No conversions are done using this macro. If the returned value is not what
+   you expect, you can try @ref amxc_var_dyncast. If this works, the original
+   variant type is different from your requested type in amxc_var_constcast.
 
+   @note
    When pointers are returned, the pointers are refering to the data in the variant
    and must not be freed.
 
@@ -1289,6 +1293,8 @@ amxc_var_t* amxc_var_add_new(amxc_var_t* const var);
    The path consists of a sequence of keys and/or indexes seprated by a '.'.
    If the path exists, the pointer to the variant at that position is returned.
 
+   When a key contains a '.' the key should be put between quotes (single or double)
+
    @param var pointer to a variant struct, the variant type should be a composite type
    @param path path to a variant in the composite variant structure, a path is
                a sequence of indexes and/or keys seperated by a '.'
@@ -1311,6 +1317,8 @@ amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
    deep down in the composite variant structure.
    The path consists of a sequence of keys and/or indexes seprated by a '.'.
    If the path exists, the pointer to the variant at that position is returned.
+
+   When a key contains a '.' the key should be put between quotes (single or double)
 
    @param var pointer to a variant struct, the variant type should be a composite type
    @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY,

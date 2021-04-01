@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 1.0.9 - 2021-03-24(10:40:09 +0000)
+
+### Fixes
+
+- amxc_var_get_path is not usable when keys contain dots
+
 ## Release 1.0.8 - 2021-03-10(10:26:52 +0000)
 
 ### Changes

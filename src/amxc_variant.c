@@ -64,8 +64,10 @@
 #include <stdio.h>
 
 #include <amxc/amxc_string.h>
+#include <amxc/amxc_string_split.h>
 #include <amxc/amxc_variant_type.h>
 #include <amxc_variant_priv.h>
+#include <amxc/amxc_utils.h>
 #include <amxc_assert.h>
 
 int AMXC_PRIVATE amxc_var_default_copy(amxc_var_t* const dest,
@@ -509,32 +511,41 @@ amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
                               const char* const path,
                               const int flags) {
     const amxc_var_t* retval = NULL;
-    char* dup_path = NULL;
-    char* token = NULL;
-    int length = 0;
-    when_null(var, exit);
-    when_null(path, exit);
+    amxc_string_t str_path;
+    amxc_llist_t parts;
+
+    amxc_string_init(&str_path, 0);
+    amxc_llist_init(&parts);
+
+    amxc_string_set(&str_path, path);
+    amxc_string_split_to_llist(&str_path, &parts, '.');
+    amxc_string_clean(&str_path);
 
     retval = var;
-    length = strlen(path);
-    dup_path = (char*) calloc(1, length + 1);
-    memcpy(dup_path, path, length);
-    token = strtok(dup_path, ".");
 
-    while(token && retval) {
-        amxc_var_t* temp = amxc_var_get_key(retval, token, AMXC_VAR_FLAG_DEFAULT);
+    amxc_llist_for_each(it, &parts) {
+        amxc_string_t* key = amxc_container_of(it, amxc_string_t, it);
+        size_t len = amxc_string_text_length(key);
+        uint32_t offset = 0;
+        char* token = amxc_string_take_buffer(key);
+        amxc_var_t* temp = NULL;
+
+        if((token[0] == '\'') || (token[0] == '"')) {
+            token[len - 1] = 0;
+            offset = 1;
+        }
+        temp = amxc_var_get_key(retval, token + offset, AMXC_VAR_FLAG_DEFAULT);
         if(temp == NULL) {
             char* endptr = NULL;
-            int index = strtol(token, &endptr, 0);
+            int index = strtol(token + offset, &endptr, 0);
             if(*endptr == 0) {
                 temp = amxc_var_get_index(retval, index, AMXC_VAR_FLAG_DEFAULT);
             }
         }
         retval = temp;
-        token = strtok(NULL, ".");
+        free(token);
+        amxc_string_delete(&key);
     }
-
-    free(dup_path);
 
     when_null(retval, exit);
 
@@ -553,6 +564,8 @@ amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
     }
 
 exit:
+    amxc_string_clean(&str_path);
+    amxc_llist_clean(&parts, amxc_string_list_it_free);
     return (amxc_var_t*) retval;
 }
 
