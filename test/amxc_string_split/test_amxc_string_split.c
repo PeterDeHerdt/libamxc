@@ -82,9 +82,10 @@ typedef struct _test_cases {
 
 void test_can_split_string_using_separator(UNUSED void** state) {
     test_cases_t cases[] = {
+        { 3, ',', "a,[b,c],d" },
+        { 2, ',', "Phonebook.Contact.[FirstName=='ward'].PhoneNumber.*,Phonebook.Contact." },
         { 4, ',', "a , b , c , d" },
         { 8, ',', "a,,b,,c,,d," },
-        { 3, ',', "a,[b,c],d" },
         { 4, ',', "ab,cd,ef,gh" },
         { 3, ',', "a,\"b,c\",d" },
         { 5, ',', " , ab cd , ef gh , ij kl, " },
@@ -157,11 +158,10 @@ void test_check_parts_are_correct(UNUSED void** state) {
     txt = "a[b\t c]d";
     amxc_string_push_buffer(&string, txt, strlen(txt) + 1);
     assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ','), 0);
-    assert_int_equal(amxc_llist_size(&string_list), 3);
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "a");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 1), "[b c]");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 2), "d");
+    assert_int_equal(amxc_llist_size(&string_list), 1);
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "a[b c]d");
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
+
     assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ' '), 0);
     assert_int_equal(amxc_llist_size(&string_list), 3);
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "a");
@@ -232,6 +232,16 @@ void test_can_split_csv_string_to_variant(UNUSED void** state) {
     assert_int_equal(amxc_var_type_of(part), AMXC_VAR_ID_CSTRING);
     assert_ptr_not_equal(amxc_var_constcast(cstring_t, part), NULL);
     assert_string_equal(amxc_var_constcast(cstring_t, part), "part3");
+
+    assert_int_equal(amxc_string_setf(&string, "Phonebook.Contact.[FirstName=='ward'].PhoneNumber.*,Phonebook.Contact."), 0);
+    assert_int_equal(amxc_string_csv_to_var(&string, &variant, NULL), 0);
+    assert_int_equal(amxc_var_type_of(&variant), AMXC_VAR_ID_LIST);
+    amxc_var_dump(&variant, 1);
+    string_list = amxc_var_constcast(amxc_llist_t, &variant);
+    assert_ptr_not_equal(string_list, NULL);
+    assert_int_equal(amxc_llist_size(string_list), 2);
+    assert_string_equal(GETI_CHAR(&variant, 0), "Phonebook.Contact.[FirstName=='ward'].PhoneNumber.*");
+    assert_string_equal(GETI_CHAR(&variant, 1), "Phonebook.Contact.");
 
     assert_int_not_equal(amxc_string_csv_to_var(NULL, NULL, NULL), 0);
     assert_int_not_equal(amxc_string_csv_to_var(&string, NULL, NULL), 0);

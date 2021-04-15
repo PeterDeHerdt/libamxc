@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release 1.0.11 - 2021-04-08(19:57:33 +0000)
+
+### Fixes
+
+- csv strings are not always correctly parsed
+
+## Release 1.0.10 - 2021-04-07(19:00:18 +0000)
+
+### Fixes
+
+
+
+
+### Changes
+
+
+
 ## Release 1.0.9 - 2021-03-24(10:40:09 +0000)
 
 ### Fixes
@@ -26,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - API documentation mentions AMXC_VAR_FLAG_XXXX instead of full names
 - API Documentation iterator APIs should be put in a sub-group
-- Migrate to new licenses format (baf)
+
 
 ## Release 1.0.6 - 2021-02-14(07:40:29 +0000)
 
@@ -69,7 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- Updates baf file - used for generating makefiles and build system files
+
 
 ## Release 1.0.0 - 2020-11-29(15:10:50 +0000)
 
@@ -79,7 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- Merge branch 'dev-baf' into 'master'
+
 
 ### Fixes
 
@@ -319,7 +336,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### New 
 
 - Variant type `csv_string` and `ssv_string`
-- Copybara file
+
 
 ### Changes
 

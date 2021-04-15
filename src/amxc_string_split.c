@@ -374,18 +374,26 @@ amxc_build_csv_var_list(amxc_llist_t* all, amxc_var_t* csv_list) {
                 quotes = !quotes;
                 break;
             case '[':
-                csv_list = amxc_var_add(amxc_llist_t, csv_list, NULL);
-                sqbrackets = !sqbrackets;
+                if(amxc_string_is_empty(&csv_part)) {
+                    csv_list = amxc_var_add(amxc_llist_t, csv_list, NULL);
+                    sqbrackets = !sqbrackets;
+                } else {
+                    amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
+                }
                 break;
             case ']':
-                if(amxc_string_text_length(&csv_part) > 0) {
-                    amxc_string_trim(&csv_part, NULL);
-                    amxc_var_add(cstring_t, csv_list, amxc_string_get(&csv_part, 0));
-                    amxc_string_reset(&csv_part);
+                if(sqbrackets) {
+                    if(amxc_string_text_length(&csv_part) > 0) {
+                        amxc_string_trim(&csv_part, NULL);
+                        amxc_var_add(cstring_t, csv_list, amxc_string_get(&csv_part, 0));
+                        amxc_string_reset(&csv_part);
+                    }
+                    csv_list = amxc_container_of(csv_list->lit.llist, amxc_var_t, data);
+                    sqbrackets = !sqbrackets;
+                    add_empty = false;
+                } else {
+                    amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
                 }
-                csv_list = amxc_container_of(csv_list->lit.llist, amxc_var_t, data);
-                sqbrackets = !sqbrackets;
-                add_empty = false;
                 break;
             case ',':
                 if(quotes) {
@@ -592,16 +600,20 @@ amxc_string_split_to_llist(const amxc_string_t* const string,
                 continue;
             }
             if(txt_part[0] == '[') {
-                if(amxc_string_text_length(current) > 0) {
-                    current = part;
-                } else {
+                if((amxc_string_text_length(current) > 0) && (isspace(separator) == 0)) {
                     amxc_string_append(current, txt_part, amxc_string_text_length(part));
                     amxc_string_delete(&part);
+                    continue;
+                } else {
+                    if(amxc_string_is_empty(current)) {
+                        amxc_string_delete(&current);
+                    }
+                    current = part;
+                    in_sbrackets = !in_sbrackets;
+                    continue;
                 }
-                in_sbrackets = !in_sbrackets;
-                continue;
             }
-            if(txt_part[0] == ']') {
+            if((txt_part[0] == ']') && in_sbrackets) {
                 amxc_string_append(current, txt_part, amxc_string_text_length(part));
                 amxc_string_delete(&part);
                 in_sbrackets = !in_sbrackets;

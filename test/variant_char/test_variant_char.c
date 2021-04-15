@@ -928,5 +928,31 @@ void test_variant_char_cast(UNUSED void** state) {
     assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSTRING);
     assert_string_equal(test_var.data.s, "");
 
+    amxc_var_set(csv_string_t, &test_var, "Phonebook.Contact.[FirstName=='ward'].PhoneNumber.*,Phonebook.Contact.");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSV_STRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_LIST), 0);
+    amxc_var_dump(&test_var, STDOUT_FILENO);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_LIST);
+    assert_string_equal(GETI_CHAR(&test_var, 0), "Phonebook.Contact.[FirstName=='ward'].PhoneNumber.*");
+    assert_string_equal(GETI_CHAR(&test_var, 1), "Phonebook.Contact.");
+
+    amxc_var_set(csv_string_t, &test_var, "Phonebook.Contact.[FirstName=='ward'].PhoneNumber.*");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSV_STRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_LIST), 0);
+    amxc_var_dump(&test_var, STDOUT_FILENO);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_LIST);
+    assert_string_equal(GETI_CHAR(&test_var, 0), "Phonebook.Contact.[FirstName=='ward'].PhoneNumber.*");
+
+    amxc_var_set(csv_string_t, &test_var, "a,[b,c],d");
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_CSV_STRING);
+    assert_int_equal(amxc_var_cast(&test_var, AMXC_VAR_ID_LIST), 0);
+    amxc_var_dump(&test_var, STDOUT_FILENO);
+    assert_int_equal(amxc_var_type_of(&test_var), AMXC_VAR_ID_LIST);
+    assert_string_equal(GETI_CHAR(&test_var, 0), "a");
+    assert_int_equal(amxc_var_type_of(GETI_ARG(&test_var, 1)), AMXC_VAR_ID_LIST);
+    assert_string_equal(GETP_CHAR(&test_var, "1.0"), "b");
+    assert_string_equal(GETP_CHAR(&test_var, "1.1"), "c");
+    assert_string_equal(GETI_CHAR(&test_var, 2), "d");
+
     amxc_var_clean(&test_var);
 }
