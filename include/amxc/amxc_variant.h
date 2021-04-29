@@ -1078,8 +1078,10 @@ int amxc_var_compare(const amxc_var_t* const var1,
  */
 AMXC_INLINE
 void amxc_var_take_it(amxc_var_t* const var) {
-    amxc_llist_it_take(&var->lit);
-    amxc_htable_it_take(&var->hit);
+    if(var != NULL) {
+        amxc_llist_it_take(&var->lit);
+        amxc_htable_it_take(&var->hit);
+    }
 }
 
 /**

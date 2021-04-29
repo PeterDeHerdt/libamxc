@@ -89,6 +89,7 @@ int main(void) {
         cmocka_unit_test(test_amxc_var_get_path),
         cmocka_unit_test(test_amxc_var_push_take_amxc_string),
         cmocka_unit_test(test_amxc_var_move),
+        cmocka_unit_test(test_amxc_var_take_it),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

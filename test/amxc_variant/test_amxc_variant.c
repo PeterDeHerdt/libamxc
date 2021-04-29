@@ -748,3 +748,7 @@ void test_amxc_var_move(UNUSED void** state) {
     amxc_var_remove_type(&dummy2);
     amxc_var_remove_type(&dummy3);
 }
+
+void test_amxc_var_take_it(UNUSED void** state) {
+    amxc_var_take_it(NULL);
+}

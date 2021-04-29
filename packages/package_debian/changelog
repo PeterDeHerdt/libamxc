@@ -1,3 +1,9 @@
+libamxc (1.0.13) unstable; urgency=medium
+
+  * using function amxc_var_take_it to remove a variant from a list or table segfaults when passing NULL pointer
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Fri, 23 Apr 2021 18:14:05 +0000
+
 libamxc (1.0.12) unstable; urgency=medium
 
 

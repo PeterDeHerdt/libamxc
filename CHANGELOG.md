@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.0.13 - 2021-04-23(18:14:04 +0000)
+
+### Fixes
+
+- using function amxc_var_take_it to remove a variant from a list or table segfaults when passing NULL pointer
+
 ## Release 1.0.12 - 2021-04-15(19:42:29 +0000)
 
 ## Release 1.0.11 - 2021-04-08(19:57:33 +0000)
