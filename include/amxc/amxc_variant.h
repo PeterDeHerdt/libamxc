@@ -429,41 +429,41 @@ extern "C"
    @brief
    Convenience macro for getting a bool out of a composite variant by key.
 
-   Macro expands to amxc_var_constcast(bool, amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_dyncast(bool, n == NULL?a:amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
 
-   @see @ref amxc_var_get_key, @ref amxc_var_constcast
+   @see @ref amxc_var_get_key, @ref amxc_var_dyncast
  */
-#define GET_BOOL(a, n) amxc_var_constcast(bool, GET_ARG(a, n))
+#define GET_BOOL(a, n) amxc_var_dyncast(bool, n == NULL ? a : GET_ARG(a, n))
 /**
    @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a char* out of a composite variant by key.
 
-   Macro expands to amxc_var_constcast(cstring_t, amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_constcast(cstring_t, n == NULL?a:amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
 
    @see @ref amxc_var_get_key, @ref amxc_var_constcast
  */
-#define GET_CHAR(a, n) amxc_var_constcast(cstring_t, GET_ARG(a, n))
+#define GET_CHAR(a, n) amxc_var_constcast(cstring_t, n == NULL ? a : GET_ARG(a, n))
 /**
    @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a uint32_t out of a composite variant by key.
 
-   Macro expands to amxc_var_constcast(uint32_t, amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_dyncast(uint32_t, n == NULL?a:amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
 
-   @see @ref amxc_var_get_key, @ref amxc_var_constcast
+   @see @ref amxc_var_get_key, @ref amxc_var_dyncast
  */
-#define GET_UINT32(a, n) amxc_var_constcast(uint32_t, GET_ARG(a, n))
+#define GET_UINT32(a, n) amxc_var_dyncast(uint32_t, n == NULL ? a : GET_ARG(a, n))
 /**
    @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a int32_t out of a composite variant by key.
 
-   Macro expands to amxc_var_constcast(int32_t, amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_dyncast(int32_t, n == NULL?a:amxc_var_get_key(a, n, AMXC_VAR_FLAG_DEFAULT))
 
-   @see @ref amxc_var_get_key, @ref amxc_var_constcast
+   @see @ref amxc_var_get_key, @ref amxc_var_dyncast
  */
-#define GET_INT32(a, n) amxc_var_constcast(int32_t, GET_ARG(a, n))
+#define GET_INT32(a, n) amxc_var_dyncast(int32_t, n == NULL ? a : GET_ARG(a, n))
 
 /**
    @ingroup amxc_variant_utils
@@ -480,11 +480,11 @@ extern "C"
    @brief
    Convenience macro for getting a bool out of a composite variant by index.
 
-   Macro expands to amxc_var_constcast(bool, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_dyncast(bool, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
 
-   @see @ref amxc_var_get_index, @ref amxc_var_constcast
+   @see @ref amxc_var_get_index, @ref amxc_var_dyncast
  */
-#define GETI_BOOL(a, i) amxc_var_constcast(bool, GETI_ARG(a, i))
+#define GETI_BOOL(a, i) amxc_var_dyncast(bool, GETI_ARG(a, i))
 /**
    @ingroup amxc_variant_utils
    @brief
@@ -500,21 +500,21 @@ extern "C"
    @brief
    Convenience macro for getting a uint32_t out of a composite variant by index.
 
-   Macro expands to amxc_var_constcast(uint32_t, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_dyncast(uint32_t, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
 
-   @see @ref amxc_var_get_index, @ref amxc_var_constcast
+   @see @ref amxc_var_get_index, @ref amxc_var_dyncast
  */
-#define GETI_UINT32(a, i) amxc_var_constcast(uint32_t, GETI_ARG(a, i))
+#define GETI_UINT32(a, i) amxc_var_dyncast(uint32_t, GETI_ARG(a, i))
 /**
    @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a int32_t out of a composite variant by index.
 
-   Macro expands to amxc_var_constcast(int32_t, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_dyncast(int32_t, amxc_var_get_index(a, i, AMXC_VAR_FLAG_DEFAULT))
 
-   @see @ref amxc_var_get_index, @ref amxc_var_constcast
+   @see @ref amxc_var_get_index, @ref amxc_var_dyncast
  */
-#define GETI_INT32(a, i) amxc_var_constcast(int32_t, GETI_ARG(a, i))
+#define GETI_INT32(a, i) amxc_var_dyncast(int32_t, GETI_ARG(a, i))
 
 /**
    @ingroup amxc_variant_utils
@@ -531,41 +531,41 @@ extern "C"
    @brief
    Convenience macro for getting a bool out of a composite variant by path.
 
-   Macro expands to amxc_var_constcast(bool, amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_dyncast(bool, p == NULL?a:amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
 
-   @see @ref amxc_var_get_path, @ref amxc_var_constcast
+   @see @ref amxc_var_get_path, @ref amxc_var_dyncast
  */
-#define GETP_BOOL(a, p) amxc_var_constcast(bool, GETP_ARG(a, p))
+#define GETP_BOOL(a, p) amxc_var_dyncast(bool, p == NULL ? a : GETP_ARG(a, p))
 /**
    @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a string out of a composite variant by path.
 
-   Macro expands to amxc_var_constcast(cstring_t, amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_constcast(cstring_t, p == NULL?a:amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
 
    @see @ref amxc_var_get_path, @ref amxc_var_constcast
  */
-#define GETP_CHAR(a, p) amxc_var_constcast(cstring_t, GETP_ARG(a, p))
+#define GETP_CHAR(a, p) amxc_var_constcast(cstring_t, p == NULL ? a : GETP_ARG(a, p))
 /**
    @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a uint32 out of a composite variant by path.
 
-   Macro expands to amxc_var_constcast(uint32_t, amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_dyncast(uint32_t, p == NULL?a:amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
 
-   @see @ref amxc_var_get_path, @ref amxc_var_constcast
+   @see @ref amxc_var_get_path, @ref amxc_var_dyncast
  */
-#define GETP_UINT32(a, p) amxc_var_constcast(uint32_t, GETP_ARG(a, p))
+#define GETP_UINT32(a, p) amxc_var_dyncast(uint32_t, p == NULL ? a : GETP_ARG(a, p))
 /**
    @ingroup amxc_variant_utils
    @brief
    Convenience macro for getting a int32 out of a composite variant by path.
 
-   Macro expands to amxc_var_constcast(int32_t, amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
+   Macro expands to amxc_var_dyncast(int32_t, p == NULL?a:amxc_var_get_path(a, p, AMXC_VAR_FLAG_DEFAULT))
 
-   @see @ref amxc_var_get_path, @ref amxc_var_constcast
+   @see @ref amxc_var_get_path, @ref amxc_var_dyncast
  */
-#define GETP_INT32(a, p) amxc_var_constcast(int32_t, GETP_ARG(a, p))
+#define GETP_INT32(a, p) amxc_var_dyncast(int32_t, p == NULL ? a : GETP_ARG(a, p))
 
 /**
    @brief
