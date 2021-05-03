@@ -1,3 +1,11 @@
+libamxc (1.0.14) unstable; urgency=medium
+
+  * Provide public header file for common macros
+  * Update variant GET macros
+  * Enable auto opensourcing
+
+ -- SAH bot <sahbot@softathome.com>  Mon, 03 May 2021 11:30:15 +0000
+
 libamxc (1.0.13) unstable; urgency=medium
 
   * using function amxc_var_take_it to remove a variant from a list or table segfaults when passing NULL pointer

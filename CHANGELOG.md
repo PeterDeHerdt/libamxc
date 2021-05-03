@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.0.14 - 2021-05-03(11:30:15 +0000)
+
+### Changes
+
+- Provide public header file for common macros
+- Update variant GET macros
+
+### Other
+
+- Enable auto opensourcing
+
 ## Release v1.0.13 - 2021-04-23(18:14:04 +0000)
 
 ### Fixes
