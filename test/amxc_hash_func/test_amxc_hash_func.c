@@ -67,8 +67,7 @@
 
 #include "test_amxc_hash_func.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 static void generate_string(char* str, size_t length) {
     const char* base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     size_t len = strlen(base);

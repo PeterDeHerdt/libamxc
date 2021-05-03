@@ -78,8 +78,7 @@ typedef struct _test_cases {
     char* text;
 } test_cases_t;
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 void test_can_split_string_using_separator(UNUSED void** state) {
     test_cases_t cases[] = {
         { 3, ',', "a,[b,c],d" },

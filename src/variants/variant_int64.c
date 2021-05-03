@@ -298,11 +298,11 @@ static amxc_var_type_t amxc_variant_int64 = {
     .name = AMXC_VAR_NAME_INT64
 };
 
-AMXC_CONSTRUCTOR static void amxc_var_int64_init(void) {
+CONSTRUCTOR static void amxc_var_int64_init(void) {
     amxc_var_add_type(&amxc_variant_int64, AMXC_VAR_ID_INT64);
 }
 
-AMXC_DESTRUCTOR static void amxc_var_int64_cleanup(void) {
+DESTRUCTOR static void amxc_var_int64_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_int64);
 }
 

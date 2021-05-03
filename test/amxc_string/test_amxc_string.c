@@ -73,8 +73,7 @@
 
 #include "test_amxc_string.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 char data[] = "abcdefghij";
 
 void test_amxc_string_new_delete_null(UNUSED void** state) {

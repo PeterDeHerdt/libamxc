@@ -297,11 +297,11 @@ static amxc_var_type_t amxc_variant_uint32 = {
     .name = AMXC_VAR_NAME_UINT32
 };
 
-AMXC_CONSTRUCTOR static void amxc_var_uint32_init(void) {
+CONSTRUCTOR static void amxc_var_uint32_init(void) {
     amxc_var_add_type(&amxc_variant_uint32, AMXC_VAR_ID_UINT32);
 }
 
-AMXC_DESTRUCTOR static void amxc_var_uint32_cleanup(void) {
+DESTRUCTOR static void amxc_var_uint32_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_uint32);
 }
 

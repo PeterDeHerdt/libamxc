@@ -71,8 +71,7 @@
 
 #include "test_amxc_variant_api.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 void test_amxc_var_get_path_with_dots_in_keys(UNUSED void** state) {
     amxc_var_t var1;
     amxc_var_t* var2 = NULL;

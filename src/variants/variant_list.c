@@ -354,11 +354,11 @@ static amxc_var_type_t amxc_variant_list = {
     .name = AMXC_VAR_NAME_LIST
 };
 
-AMXC_CONSTRUCTOR static void amxc_var_list_init(void) {
+CONSTRUCTOR static void amxc_var_list_init(void) {
     amxc_var_add_type(&amxc_variant_list, AMXC_VAR_ID_LIST);
 }
 
-AMXC_DESTRUCTOR static void amxc_var_list_cleanup(void) {
+DESTRUCTOR static void amxc_var_list_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_list);
 }
 

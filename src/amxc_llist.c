@@ -61,7 +61,7 @@
 #include <stdlib.h>
 
 #include <amxc/amxc_llist.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
 /**
    @file

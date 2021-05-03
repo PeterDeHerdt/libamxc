@@ -69,7 +69,7 @@ static int variant_htable_init(amxc_var_t* const var) {
     return amxc_htable_init(&var->data.vm, 10);
 }
 
-void variant_htable_it_free(AMXC_UNUSED const char* key, amxc_htable_it_t* it) {
+void variant_htable_it_free(UNUSED const char* key, amxc_htable_it_t* it) {
     amxc_var_t* var = amxc_var_from_htable_it(it);
     amxc_var_delete(&var);
 }
@@ -342,11 +342,11 @@ static amxc_var_type_t amxc_variant_htable = {
     .name = AMXC_VAR_NAME_HTABLE
 };
 
-AMXC_CONSTRUCTOR static void amxc_var_htable_init(void) {
+CONSTRUCTOR static void amxc_var_htable_init(void) {
     amxc_var_add_type(&amxc_variant_htable, AMXC_VAR_ID_HTABLE);
 }
 
-AMXC_DESTRUCTOR static void amxc_var_htable_cleanup(void) {
+DESTRUCTOR static void amxc_var_htable_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_htable);
 }
 

@@ -62,7 +62,7 @@
 #include <string.h>
 
 #include <amxc/amxc_array.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
 #define AMXC_ARRAY_AUTO_GROW_ITEMS 3
 #define AMXC_ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))

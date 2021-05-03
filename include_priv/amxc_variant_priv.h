@@ -69,24 +69,23 @@ extern "C"
 #include <amxc/amxc_llist.h>
 #include <amxc/amxc_variant.h>
 #include <amxc/amxc_variant_type.h>
-#include <amxc_priv.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
-uint32_t AMXC_PRIVATE amxc_var_add_type(amxc_var_type_t* const type,
-                                        const uint32_t index);
-int AMXC_PRIVATE amxc_var_remove_type(amxc_var_type_t* const type);
-amxc_array_t AMXC_PRIVATE* amxc_variant_get_types_array(void);
+uint32_t PRIVATE amxc_var_add_type(amxc_var_type_t* const type,
+                                   const uint32_t index);
+int PRIVATE amxc_var_remove_type(amxc_var_type_t* const type);
+amxc_array_t PRIVATE* amxc_variant_get_types_array(void);
 
-int AMXC_PRIVATE amxc_var_default_copy(amxc_var_t* const dest,
-                                       const amxc_var_t* const src);
-int AMXC_PRIVATE amxc_var_default_move(amxc_var_t* const dest,
-                                       amxc_var_t* const src);
-int AMXC_PRIVATE amxc_var_default_convert_to_null(amxc_var_t* const dest,
-                                                  const amxc_var_t* const src);
-int AMXC_PRIVATE amxc_var_default_convert_to_list(amxc_var_t* const dest,
-                                                  const amxc_var_t* const src);
-int AMXC_PRIVATE amxc_var_default_convert_to_htable(amxc_var_t* const dest,
-                                                    const amxc_var_t* const src);
+int PRIVATE amxc_var_default_copy(amxc_var_t* const dest,
+                                  const amxc_var_t* const src);
+int PRIVATE amxc_var_default_move(amxc_var_t* const dest,
+                                  amxc_var_t* const src);
+int PRIVATE amxc_var_default_convert_to_null(amxc_var_t* const dest,
+                                             const amxc_var_t* const src);
+int PRIVATE amxc_var_default_convert_to_list(amxc_var_t* const dest,
+                                             const amxc_var_t* const src);
+int PRIVATE amxc_var_default_convert_to_htable(amxc_var_t* const dest,
+                                               const amxc_var_t* const src);
 
 #ifdef __cplusplus
 }

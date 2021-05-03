@@ -70,8 +70,7 @@
 
 #include "test_amxc_timestamp.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 void test_amxc_ts_now(UNUSED void** state) {
     amxc_ts_t ts1, ts2;
 

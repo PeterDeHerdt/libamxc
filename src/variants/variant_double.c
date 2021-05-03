@@ -295,11 +295,11 @@ static amxc_var_type_t amxc_variant_double = {
     .name = AMXC_VAR_NAME_DOUBLE
 };
 
-AMXC_CONSTRUCTOR static void amxc_var_double_init(void) {
+CONSTRUCTOR static void amxc_var_double_init(void) {
     amxc_var_add_type(&amxc_variant_double, AMXC_VAR_ID_DOUBLE);
 }
 
-AMXC_DESTRUCTOR static void amxc_var_double_cleanup(void) {
+DESTRUCTOR static void amxc_var_double_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_double);
 }
 

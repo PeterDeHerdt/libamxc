@@ -57,21 +57,103 @@
 ** POSSIBILITY OF SUCH DAMAGE.
 **
 ****************************************************************************/
-#if !defined(__AMXC_ASSERT_H__)
-#define __AMXC_ASSERT_H__
+
+#if !defined(__AMXC_MACROS_H__)
+#define __AMXC_MACROS_H__
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-#define when_null(x, l) if(x == NULL) { goto l; }
-#define when_not_null(x, l) if(x != NULL) { goto l; }
-#define when_true(x, l) if(x) { goto l; }
-#define when_failed(x, l) if(x != 0) { goto l; }
+#if !defined(USE_DOXYGEN)
+
+#ifndef PRIVATE
+#define PRIVATE __attribute__ ((visibility("hidden")))
+#endif
+
+#ifndef UNUSED
+#define UNUSED __attribute__((unused))
+#endif
+
+#ifndef WARN_UNUSED_RETURN
+#define WARN_UNUSED_RETURN __attribute__ ((warn_unused_result))
+#endif
+
+#ifndef CONSTRUCTOR_LVL
+#define CONSTRUCTOR_LVL(x) __attribute__((constructor(x)))
+#endif
+
+#ifndef DESTRUCTOR_LVL
+#define DESTRUCTOR_LVL(x) __attribute__((destructor(x)))
+#endif
+
+#ifndef CONSTRUCTOR
+#define CONSTRUCTOR __attribute__((constructor))
+#endif
+
+#ifndef DESTRUCTOR
+#define DESTRUCTOR __attribute__((destructor))
+#endif
+
+#else // !defined(USE_DOXYGEN)
+
+#ifndef PRIVATE
+#define PRIVATE
+#endif
+
+#ifndef UNUSED
+#define UNUSED
+#endif
+
+#ifndef WARN_UNUSED_RETURN
+#define WARN_UNUSED_RETURN
+#endif
+
+#ifndef CONSTRUCTOR_LVL
+#define CONSTRUCTOR_LVL(x)
+#endif
+
+#ifndef DESTRUCTOR_LVL
+#define DESTRUCTOR_LVL(x)
+#endif
+
+#ifndef CONSTRUCTOR
+#define CONSTRUCTOR
+#endif
+
+#ifndef DESTRUCTOR
+#define DESTRUCTOR
+#endif
+
+#endif // !defined(USE_DOXYGEN)
+
+#ifndef when_null
+#define when_null(x, l) if(x == NULL) {  goto l; }
+#endif
+
+#ifndef when_not_null
+#define when_not_null(x, l) if(x != NULL) {  goto l; }
+#endif
+
+#ifndef when_true
+#define when_true(x, l) if(x) {  goto l; }
+#endif
+
+#ifndef when_false
+#define when_false(x, l) if(!(x)) {  goto l; }
+#endif
+
+#ifndef when_failed
+#define when_failed(x, l) if(x != 0) {  goto l; }
+#endif
+
+#ifndef when_str_empty
+#define when_str_empty(x, l) if(x == NULL || *x == 0) {  goto l; }
+#endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // __AMXC_ASSERT_H__
+#endif // __AMXC_MACROS_H__

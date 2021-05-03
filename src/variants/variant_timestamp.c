@@ -160,11 +160,11 @@ static amxc_var_type_t amxc_variant_ts = {
     .name = AMXC_VAR_NAME_TIMESTAMP
 };
 
-AMXC_CONSTRUCTOR static void amxc_var_ts_init(void) {
+CONSTRUCTOR static void amxc_var_ts_init(void) {
     amxc_var_add_type(&amxc_variant_ts, AMXC_VAR_ID_TIMESTAMP);
 }
 
-AMXC_DESTRUCTOR static void amxc_var_ts_cleanup(void) {
+DESTRUCTOR static void amxc_var_ts_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_ts);
 }
 

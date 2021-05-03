@@ -68,8 +68,7 @@
 
 #include "test_amxc_array.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 static int counter = 0;
 
 static amxc_array_t* array1 = NULL;

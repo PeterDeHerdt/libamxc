@@ -174,11 +174,11 @@ static amxc_var_type_t amxc_variant_bool = {
     .name = AMXC_VAR_NAME_BOOL
 };
 
-AMXC_CONSTRUCTOR static void amxc_var_bool_init(void) {
+CONSTRUCTOR static void amxc_var_bool_init(void) {
     amxc_var_add_type(&amxc_variant_bool, AMXC_VAR_ID_BOOL);
 }
 
-AMXC_DESTRUCTOR static void amxc_var_bool_cleanup(void) {
+DESTRUCTOR static void amxc_var_bool_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_bool);
 }
 

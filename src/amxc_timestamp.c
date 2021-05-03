@@ -96,8 +96,7 @@
 #include <time.h>
 
 #include <amxc/amxc_timestamp.h>
-
-#include "amxc_assert.h"
+#include <amxc/amxc_macros.h>
 
 #define EPOCH INT64_C(62135683200)      /* 1970-01-01T00:00:00 */
 #define MIN_SEC INT64_C(-62135596800)   /* 0001-01-01T00:00:00 */

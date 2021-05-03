@@ -69,8 +69,7 @@
 
 #include "test_amxc_htable.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 static unsigned int deletes = 0;
 static amxc_htable_t* htable = NULL;
 static amxc_htable_it_t it[2000];

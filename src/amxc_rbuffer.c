@@ -63,7 +63,7 @@
 #include <unistd.h>
 
 #include <amxc/amxc_rbuffer.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
 static char* amxc_rbuffer_alloc(amxc_rbuffer_t* const rb, const size_t size) {
     char* buffer = NULL;

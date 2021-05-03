@@ -193,7 +193,7 @@ static amxc_var_type_t* dummies[AMXC_VAR_ID_CUSTOM_BASE + 1] = {
     &dummy_fd_t
 };
 
-AMXC_CONSTRUCTOR static void test_add_dummy_types() {
+CONSTRUCTOR static void test_add_dummy_types() {
     for(uint32_t i = 0; i < AMXC_VAR_ID_CUSTOM_BASE; i++) {
         if(dummies[i] != NULL) {
             amxc_var_add_type(dummies[i], i);
@@ -203,7 +203,7 @@ AMXC_CONSTRUCTOR static void test_add_dummy_types() {
     amxc_var_register_type(&dummy_custom_t);
 }
 
-AMXC_DESTRUCTOR static void test_remove_dummy_types() {
+DESTRUCTOR static void test_remove_dummy_types() {
     for(uint32_t i = 0; i < AMXC_VAR_ID_CUSTOM_BASE; i++) {
         if(dummies[i] != NULL) {
             amxc_var_remove_type(dummies[i]);

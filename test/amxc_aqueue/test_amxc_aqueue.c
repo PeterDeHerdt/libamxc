@@ -66,8 +66,7 @@
 
 #include "test_amxc_aqueue.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 void amxc_aqueue_new_delete_null_check(UNUSED void** state) {
     // passing NULL pointers should not lead to segfault
     assert_int_equal(amxc_aqueue_new(NULL), -1);

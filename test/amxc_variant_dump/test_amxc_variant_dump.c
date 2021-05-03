@@ -73,8 +73,7 @@
 
 #include "test_amxc_variant_dump.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 static amxc_var_type_t my_dummy_type =
 {
     .init = NULL,

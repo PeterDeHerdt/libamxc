@@ -70,8 +70,7 @@
 
 #include "test_amxc_variant_type.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 static amxc_var_type_t dummy1 =
 {
     .copy = NULL,

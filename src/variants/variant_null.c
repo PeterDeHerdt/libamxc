@@ -77,10 +77,10 @@ static amxc_var_type_t amxc_variant_null = {
     .name = AMXC_VAR_NAME_NULL
 };
 
-AMXC_CONSTRUCTOR static void amx_var_null_init(void) {
+CONSTRUCTOR static void amx_var_null_init(void) {
     amxc_var_add_type(&amxc_variant_null, AMXC_VAR_ID_NULL);
 }
 
-AMXC_DESTRUCTOR static void amx_var_null_cleanup(void) {
+DESTRUCTOR static void amx_var_null_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_null);
 }

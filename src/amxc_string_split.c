@@ -70,8 +70,7 @@
 #include <amxc/amxc_variant.h>
 #include <amxc/amxc_string_split.h>
 #include <amxc/amxc_utils.h>
-
-#include "amxc_assert.h"
+#include <amxc/amxc_macros.h>
 
 /**
    @file

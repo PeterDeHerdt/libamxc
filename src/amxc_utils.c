@@ -67,8 +67,7 @@
 #include <amxc/amxc_variant.h>
 #include <amxc/amxc_string.h>
 #include <amxc/amxc_utils.h>
-#include "amxc_assert.h"
-#include "amxc_priv.h"
+#include <amxc/amxc_macros.h>
 
 typedef void (* amxc_string_replace_cb_t) (amxc_string_t* const string,
                                            size_t pos,
@@ -80,7 +79,7 @@ static void amxc_string_resolve_replace_env(amxc_string_t* const string,
                                             size_t pos,
                                             size_t length,
                                             const char* txt,
-                                            AMXC_UNUSED const void* priv) {
+                                            UNUSED const void* priv) {
     char* value = getenv(txt);
     amxc_string_remove_at(string, pos, length);
     if(value) {

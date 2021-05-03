@@ -65,7 +65,7 @@
 
 #include <amxc/amxc_variant_type.h>
 #include <amxc_variant_priv.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
 static amxc_htable_t amxc_variant_types;
 static amxc_array_t amxc_array_types;
@@ -122,8 +122,8 @@ exit:
     return ait;
 }
 
-uint32_t AMXC_PRIVATE amxc_var_add_type(amxc_var_type_t* const type,
-                                        const uint32_t index) {
+uint32_t PRIVATE amxc_var_add_type(amxc_var_type_t* const type,
+                                   const uint32_t index) {
     uint32_t type_id = -1;
     amxc_array_it_t* ait = NULL;
     amxc_htable_it_t* hit = NULL;
@@ -160,7 +160,7 @@ exit:
     return type_id;
 }
 
-int AMXC_PRIVATE amxc_var_remove_type(amxc_var_type_t* const type) {
+int PRIVATE amxc_var_remove_type(amxc_var_type_t* const type) {
     int retval = -1;
     amxc_array_it_t* it = NULL;
     amxc_htable_it_t* hit = amxc_htable_get(&amxc_variant_types, type->name);

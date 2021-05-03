@@ -63,7 +63,7 @@
 
 #include <amxc/amxc_hash.h>
 #include <amxc/amxc_htable.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
 /**
    @file

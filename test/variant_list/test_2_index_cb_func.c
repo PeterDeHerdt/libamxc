@@ -78,8 +78,7 @@
 
 #include "test_variant_list.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 void test_variant_llist_get_index(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t string;

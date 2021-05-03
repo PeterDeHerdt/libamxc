@@ -61,7 +61,7 @@
 #include <stdlib.h>
 
 #include <amxc/amxc_llist.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
 static bool amxc_llist_it_are_adjacent(amxc_llist_it_t* const it1,
                                        amxc_llist_it_t* const it2) {

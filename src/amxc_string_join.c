@@ -64,7 +64,7 @@
 
 #include <amxc/amxc_variant.h>
 #include <amxc/amxc_string_join.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
 /**
    @file

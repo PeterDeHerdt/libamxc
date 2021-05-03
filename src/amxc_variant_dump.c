@@ -69,7 +69,7 @@
 #include <amxc/amxc_rbuffer.h>
 #include <amxc/amxc_string_split.h>
 #include <amxc_variant_priv.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
 typedef struct _amxc_log_var {
     int fd;
@@ -136,7 +136,7 @@ exit:
     return 0;
 }
 
-static int variant_dump_null(AMXC_UNUSED const amxc_var_t* const var,
+static int variant_dump_null(UNUSED const amxc_var_t* const var,
                              int indent,
                              amxc_log_var_t* log) {
     write_indentation(indent, log);

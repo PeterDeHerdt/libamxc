@@ -68,29 +68,29 @@
 #include <amxc/amxc_variant_type.h>
 #include <amxc_variant_priv.h>
 #include <amxc/amxc_utils.h>
-#include <amxc_assert.h>
+#include <amxc/amxc_macros.h>
 
-int AMXC_PRIVATE amxc_var_default_copy(amxc_var_t* const dest,
-                                       const amxc_var_t* const src) {
+int PRIVATE amxc_var_default_copy(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
     dest->data = src->data;
     return 0;
 }
 
-int AMXC_PRIVATE amxc_var_default_move(amxc_var_t* const dest,
-                                       amxc_var_t* const src) {
+int PRIVATE amxc_var_default_move(amxc_var_t* const dest,
+                                  amxc_var_t* const src) {
     dest->data = src->data;
     src->data.data = NULL;
     return 0;
 }
 
-int AMXC_PRIVATE amxc_var_default_convert_to_null(amxc_var_t* const dest,
-                                                  AMXC_UNUSED const amxc_var_t* const src) {
+int PRIVATE amxc_var_default_convert_to_null(amxc_var_t* const dest,
+                                             UNUSED const amxc_var_t* const src) {
     dest->data.data = NULL;
     return 0;
 }
 
-int AMXC_PRIVATE amxc_var_default_convert_to_list(amxc_var_t* const dest,
-                                                  const amxc_var_t* const src) {
+int PRIVATE amxc_var_default_convert_to_list(amxc_var_t* const dest,
+                                             const amxc_var_t* const src) {
     int retval = -1;
     amxc_var_t* var = NULL;
 
@@ -108,8 +108,8 @@ exit:
     return retval;
 }
 
-int AMXC_PRIVATE amxc_var_default_convert_to_htable(amxc_var_t* const dest,
-                                                    const amxc_var_t* const src) {
+int PRIVATE amxc_var_default_convert_to_htable(amxc_var_t* const dest,
+                                               const amxc_var_t* const src) {
     int retval = -1;
     amxc_var_t* var = NULL;
 

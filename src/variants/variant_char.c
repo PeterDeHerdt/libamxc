@@ -516,13 +516,13 @@ static amxc_var_type_t amxc_variant_ssv_char = {
     .name = AMXC_VAR_NAME_SSV_STRING
 };
 
-AMXC_CONSTRUCTOR static void amxc_var_char_init(void) {
+CONSTRUCTOR static void amxc_var_char_init(void) {
     amxc_var_add_type(&amxc_variant_char, AMXC_VAR_ID_CSTRING);
     amxc_var_add_type(&amxc_variant_csv_char, AMXC_VAR_ID_CSV_STRING);
     amxc_var_add_type(&amxc_variant_ssv_char, AMXC_VAR_ID_SSV_STRING);
 }
 
-AMXC_DESTRUCTOR static void amxc_var_char_cleanup(void) {
+DESTRUCTOR static void amxc_var_char_cleanup(void) {
     amxc_var_remove_type(&amxc_variant_char);
     amxc_var_remove_type(&amxc_variant_csv_char);
     amxc_var_remove_type(&amxc_variant_ssv_char);

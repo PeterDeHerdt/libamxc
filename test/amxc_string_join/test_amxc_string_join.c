@@ -73,8 +73,7 @@
 
 #include "test_amxc_string_join.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 void test_can_join_variant_list_to_string(UNUSED void** state) {
     amxc_var_t var;
     amxc_string_t string;

@@ -71,8 +71,7 @@
 
 #include "test_amxc_variant.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 int amxc_var_init_success(amxc_var_t* const var);
 int amxc_var_init_fail(amxc_var_t* const var);
 void amxc_var_del(amxc_var_t* const var);

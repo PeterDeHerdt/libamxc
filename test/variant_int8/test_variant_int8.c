@@ -77,8 +77,7 @@
 
 #include "test_variant_int8.h"
 
-#define UNUSED __attribute__((unused))
-
+#include <amxc/amxc_macros.h>
 void test_variant_int8_copy(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t copy_var;
