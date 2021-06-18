@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.1.0 - 2021-06-18(14:52:28 +0000)
+
+### New
+
+- Abstract data type set must be provided
+
+### Changes
+
+- Make it possible to access htable variants by index
+
 ## Release v1.0.15 - 2021-06-08(07:51:37 +0000)
 
 ### Fixes
