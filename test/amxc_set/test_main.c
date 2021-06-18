@@ -58,50 +58,28 @@
 **
 ****************************************************************************/
 
-#if !defined(__AMXC_H__)
-#define __AMXC_H__
+#include <stdlib.h>
+#include <setjmp.h>
+#include <stdarg.h>
+#include <cmocka.h>
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#include "test_amxc_set.h"
 
-#include <amxc/amxc_common.h>
-#include <amxc/amxc_aqueue.h>
-#include <amxc/amxc_array.h>
-#include <amxc/amxc_astack.h>
-#include <amxc/amxc_hash.h>
-#include <amxc/amxc_htable.h>
-#include <amxc/amxc_llist.h>
-#include <amxc/amxc_lqueue.h>
-#include <amxc/amxc_lstack.h>
-#include <amxc/amxc_rbuffer.h>
-#include <amxc/amxc_variant.h>
-#include <amxc/amxc_string.h>
-#include <amxc/amxc_string_split.h>
-#include <amxc/amxc_string_join.h>
-#include <amxc/amxc_variant_type.h>
-#include <amxc/amxc_utils.h>
-#include <amxc/amxc_set.h>
-
-/**
-   @mainpage
-   Libamxc is a library providing generic re-usable data containers and
-   data collections.
-
-   This library provides:
-   - Double Linked List - @ref amxc_llist
-   - Dynamic Array - @ref amxc_array
-   - Hash Table - @ref amxc_htable
-   - Ring Buffer - @ref amxc_rbuffer
-   - Dynamic String - @ref amxc_string
-   - Queues - @ref amxc_aqueue, @ref amxc_lqueue
-   - Stacks - @ref amxc_astack, @ref amxc_lstack
-   - Variant - @ref amxc_variant
- */
-
-#ifdef __cplusplus
+int main(void) {
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(test_amxc_set_new_delete_null),
+        cmocka_unit_test(test_amxc_set_init_reset_clean_null),
+        cmocka_unit_test(test_amxc_set_new_delete),
+        cmocka_unit_test(test_amxc_set_init_reset_clean),
+        cmocka_unit_test(test_amxc_can_add_remove_flags),
+        cmocka_unit_test(test_amxc_can_add_remove_counted_flags),
+        cmocka_unit_test(test_amxc_can_subtract_set),
+        cmocka_unit_test(test_amxc_can_check_sets_are_equal),
+        cmocka_unit_test(test_amxc_set_parse),
+        cmocka_unit_test(test_amxc_set_parse_with_count),
+        cmocka_unit_test(test_amxc_set_parse_invalid_input),
+        cmocka_unit_test(test_amxc_set_to_string_counted),
+        cmocka_unit_test(test_amxc_set_to_string),
+    };
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
-#endif
-
-#endif // __AMXC_H__
