@@ -324,6 +324,37 @@ exit:
     return retval;
 }
 
+static amxc_var_t* variant_htable_get_index(const amxc_var_t* const src,
+                                            const int64_t index,
+                                            int flags) {
+    amxc_var_t* retval = NULL;
+    const amxc_htable_t* htable = &src->data.vm;
+    amxc_htable_it_t* found_hit = NULL;
+    amxc_var_t* src_var = NULL;
+    int64_t pos = 0;
+
+    when_true(index < 0, exit);
+    when_true(index > (int64_t) amxc_htable_size(htable), exit);
+    amxc_htable_iterate(hit, htable) {
+        if(pos == index) {
+            found_hit = hit;
+            break;
+        }
+        pos++;
+    }
+    when_null(found_hit, exit);
+
+    src_var = amxc_var_from_htable_it(found_hit);
+    if((flags & AMXC_VAR_FLAG_COPY) == AMXC_VAR_FLAG_COPY) {
+        when_failed(amxc_var_new(&retval), exit);
+        when_failed(amxc_var_copy(retval, src_var), exit);
+    } else {
+        retval = src_var;
+    }
+
+exit:
+    return retval;
+}
 
 static amxc_var_type_t amxc_variant_htable = {
     .init = variant_htable_init,
@@ -335,7 +366,7 @@ static amxc_var_type_t amxc_variant_htable = {
     .compare = NULL,
     .get_key = variant_htable_get_key,
     .set_key = variant_htable_set_key,
-    .get_index = NULL,
+    .get_index = variant_htable_get_index,
     .set_index = NULL,
     .type_id = 0,
     .hit = { .ait = NULL, .key = NULL, .next = NULL },

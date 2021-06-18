@@ -308,6 +308,7 @@ void test_variant_htable_convert_to_string_should_not_segfault(UNUSED void** sta
 
 void test_variant_htable_set_get(UNUSED void** state) {
     amxc_var_t var;
+    amxc_var_t* item = NULL;
     amxc_var_t string;
     amxc_htable_t* htable = NULL;
     const amxc_htable_t* consthtable = NULL;
@@ -333,6 +334,14 @@ void test_variant_htable_set_get(UNUSED void** state) {
     amxc_htable_delete(&htable, variant_htable_it_free);
     consthtable = amxc_var_constcast(amxc_htable_t, &var);
     assert_ptr_not_equal(consthtable, NULL);
+
+    item = amxc_var_get_index(&var, 0, AMXC_VAR_FLAG_DEFAULT);
+    assert_non_null(item);
+    item = amxc_var_get_index(&var, 7, AMXC_VAR_FLAG_DEFAULT);
+    assert_non_null(item);
+    item = amxc_var_get_index(&var, 8, AMXC_VAR_FLAG_DEFAULT);
+    assert_null(item);
+    assert_ptr_not_equal(amxc_var_get_index(&var, 0, AMXC_VAR_FLAG_DEFAULT), amxc_var_get_index(&var, 7, AMXC_VAR_FLAG_DEFAULT));
 
     amxc_var_clean(&var);
 }
