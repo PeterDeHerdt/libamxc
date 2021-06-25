@@ -824,22 +824,6 @@ extern "C"
 /**
    @ingroup amxc_variant
    @brief
-   When the variant is a containing a htable of variants, iterates over the
-   variants in the htable
-
-   @warning
-   Do not use this macro when the variant is not containing a htable.
- */
-#define amxc_var_hfor_each(var, var_htable) \
-    for(amxc_var_t* var = amxc_var_from_htable_it(amxc_htable_get_first(&var_list->data.vm)), \
-        * _next = amxc_var_from_htable_it(amxc_htable_it_get_next(&var->hit)); \
-        var; \
-        var = _next, \
-        _next = amxc_var_from_htable_it(amxc_htable_it_get_next(&var->hit)))
-
-/**
-   @ingroup amxc_variant
-   @brief
    The variant struct definition.
 
    A variant is a tagged union, which can be added to a linked list or to a
