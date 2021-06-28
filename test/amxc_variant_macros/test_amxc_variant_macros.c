@@ -122,3 +122,110 @@ void test_amxc_var_get_macros(UNUSED void** state) {
 
     amxc_var_clean(&var);
 }
+
+void test_amxc_var_for_each_htable(UNUSED void** state) {
+    amxc_var_t var;
+    uint32_t count = 0;
+    amxc_var_init(&var);
+
+    amxc_var_set_type(&var, AMXC_VAR_ID_HTABLE);
+    amxc_var_add_key(uint32_t, &var, "key1", 100);
+    amxc_var_add_key(uint32_t, &var, "key2", 200);
+    amxc_var_add_key(bool, &var, "key3", true);
+    amxc_var_add_key(cstring_t, &var, "key4", "text");
+
+    amxc_var_for_each(data, &var) {
+        const char* key = amxc_var_key(data);
+        assert_non_null(key);
+        printf("%s = ", key);
+        fflush(stdout);
+        amxc_var_dump(data, 1);
+        assert_ptr_equal(amxc_var_get_parent(data), &var);
+        count++;
+    }
+    assert_int_equal(count, 4);
+
+    printf("\n");
+
+    count = 0;
+    amxc_var_for_each_reverse(data, &var) {
+        const char* key = amxc_var_key(data);
+        assert_non_null(key);
+        printf("%s = ", key);
+        fflush(stdout);
+        amxc_var_dump(data, 1);
+        assert_ptr_equal(amxc_var_get_parent(data), &var);
+        count++;
+    }
+    assert_int_equal(count, 4);
+
+    amxc_var_clean(&var);
+}
+
+void test_amxc_var_for_each_list(UNUSED void** state) {
+    amxc_var_t var;
+    uint32_t count = 0;
+    amxc_var_init(&var);
+
+    amxc_var_set_type(&var, AMXC_VAR_ID_LIST);
+    amxc_var_add(uint32_t, &var, 100);
+    amxc_var_add(uint32_t, &var, 200);
+    amxc_var_add(bool, &var, true);
+    amxc_var_add(cstring_t, &var, "text");
+
+    amxc_var_for_each(data, &var) {
+        const char* key = amxc_var_key(data);
+        assert_null(key);
+        fflush(stdout);
+        amxc_var_dump(data, 1);
+        assert_ptr_equal(amxc_var_get_parent(data), &var);
+        count++;
+    }
+    assert_int_equal(count, 4);
+
+    printf("\n");
+
+    count = 0;
+    amxc_var_for_each_reverse(data, &var) {
+        const char* key = amxc_var_key(data);
+        assert_null(key);
+        fflush(stdout);
+        amxc_var_dump(data, 1);
+        assert_ptr_equal(amxc_var_get_parent(data), &var);
+        count++;
+    }
+    assert_int_equal(count, 4);
+
+    amxc_var_clean(&var);
+}
+
+void test_amxc_var_for_each_non_composite(UNUSED void** state) {
+    amxc_var_t var;
+    uint32_t count = 0;
+    amxc_var_init(&var);
+
+    amxc_var_set_type(&var, AMXC_VAR_ID_CSTRING);
+
+    amxc_var_for_each(data, &var) {
+        fflush(stdout);
+        amxc_var_dump(data, 1);
+        assert_ptr_equal(amxc_var_get_parent(data), &var);
+        count++;
+    }
+    assert_int_equal(count, 0);
+
+    amxc_var_for_each_reverse(data, &var) {
+        const char* key = amxc_var_key(data);
+        assert_non_null(key);
+        printf("%s = ", key);
+        fflush(stdout);
+        amxc_var_dump(data, 1);
+        assert_ptr_equal(amxc_var_get_parent(data), &var);
+        count++;
+    }
+    assert_int_equal(count, 0);
+
+    assert_null(amxc_var_get_parent(&var));
+
+    amxc_var_clean(&var);
+}

@@ -327,6 +327,19 @@ exit:
     return it;
 }
 
+amxc_htable_it_t* amxc_htable_get_last(const amxc_htable_t* const htable) {
+    amxc_htable_it_t* it = NULL;
+    amxc_array_it_t* ait = NULL;
+    when_null(htable, exit);
+
+    ait = amxc_array_get_last(&htable->table);
+    when_null(ait, exit);
+    it = (amxc_htable_it_t*) ait->data;
+
+exit:
+    return it;
+}
+
 amxc_array_t* amxc_htable_get_sorted_keys(const amxc_htable_t* const htable) {
     amxc_array_t* keys = NULL;
     uint32_t size = 0;

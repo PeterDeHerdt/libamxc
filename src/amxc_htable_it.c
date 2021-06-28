@@ -120,6 +120,23 @@ exit:
     return it;
 }
 
+amxc_htable_it_t* amxc_htable_it_get_previous(const amxc_htable_it_t* const reference) {
+    amxc_htable_it_t* it = NULL;
+    when_null(reference, exit);
+    when_null(reference->ait, exit);
+
+    if(reference->next != NULL) {
+        it = reference->next;
+    } else {
+        amxc_array_it_t* ait = amxc_array_it_get_previous(reference->ait);
+        when_null(ait, exit);
+        it = (amxc_htable_it_t*) ait->data;
+    }
+
+exit:
+    return it;
+}
+
 amxc_htable_it_t* amxc_htable_it_get_next_key(const amxc_htable_it_t* const reference) {
     amxc_htable_it_t* it = NULL;
     when_null(reference, exit);
@@ -132,6 +149,10 @@ amxc_htable_it_t* amxc_htable_it_get_next_key(const amxc_htable_it_t* const refe
 
 exit:
     return it;
+}
+
+amxc_htable_it_t* amxc_htable_it_get_previous_key(const amxc_htable_it_t* const reference) {
+    return amxc_htable_it_get_next_key(reference);
 }
 
 void amxc_htable_it_take(amxc_htable_it_t* const it) {

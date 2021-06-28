@@ -62,5 +62,8 @@
 #define __TEST_AMXC_VARIANT_MACRO_H__
 
 void test_amxc_var_get_macros(UNUSED void** state);
+void test_amxc_var_for_each_htable(UNUSED void** state);
+void test_amxc_var_for_each_list(UNUSED void** state);
+void test_amxc_var_for_each_non_composite(void** state);
 
 #endif // __TEST_AMXC_VARIANT_MACRO_H__

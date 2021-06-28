@@ -636,3 +636,125 @@ int amxc_var_push_amxc_string_t(amxc_var_t* const var, amxc_string_t* val) {
 exit:
     return retval;
 }
+
+amxc_var_t* amxc_var_get_first(const amxc_var_t* const var) {
+    amxc_var_t* first = NULL;
+
+    when_null(var, exit);
+
+    switch(amxc_var_type_of(var)) {
+    case AMXC_VAR_ID_HTABLE: {
+        amxc_htable_it_t* it = amxc_htable_get_first(&var->data.vm);
+        when_null(it, exit);
+        first = amxc_var_from_htable_it(it);
+    }
+    break;
+    case AMXC_VAR_ID_LIST: {
+        amxc_llist_it_t* it = amxc_llist_get_first(&var->data.vl);
+        when_null(it, exit);
+        first = amxc_var_from_llist_it(it);
+    }
+    break;
+    default:
+        break;
+    }
+
+exit:
+    return first;
+}
+
+amxc_var_t* amxc_var_get_last(const amxc_var_t* const var) {
+    amxc_var_t* last = NULL;
+
+    when_null(var, exit);
+
+    switch(amxc_var_type_of(var)) {
+    case AMXC_VAR_ID_HTABLE: {
+        amxc_htable_it_t* it = amxc_htable_get_last(&var->data.vm);
+        when_null(it, exit);
+        last = amxc_var_from_htable_it(it);
+    }
+    break;
+    case AMXC_VAR_ID_LIST: {
+        amxc_llist_it_t* it = amxc_llist_get_last(&var->data.vl);
+        when_null(it, exit);
+        last = amxc_var_from_llist_it(it);
+    }
+    break;
+    default:
+        break;
+    }
+
+exit:
+    return last;
+}
+
+amxc_var_t* amxc_var_get_next(const amxc_var_t* const var) {
+    amxc_var_t* next = NULL;
+
+    when_null(var, exit);
+
+    if(var->hit.ait != NULL) {
+        amxc_htable_it_t* it = amxc_htable_it_get_next(&var->hit);
+        when_null(it, exit);
+        next = amxc_var_from_htable_it(it);
+    } else if(var->lit.llist != NULL) {
+        amxc_llist_it_t* it = amxc_llist_it_get_next(&var->lit);
+        when_null(it, exit);
+        next = amxc_var_from_llist_it(it);
+    }
+
+exit:
+    return next;
+}
+
+amxc_var_t* amxc_var_get_previous(const amxc_var_t* const var) {
+    amxc_var_t* prev = NULL;
+
+    when_null(var, exit);
+
+    if(var->hit.ait != NULL) {
+        amxc_htable_it_t* it = amxc_htable_it_get_previous(&var->hit);
+        when_null(it, exit);
+        prev = amxc_var_from_htable_it(it);
+    } else if(var->lit.llist != NULL) {
+        amxc_llist_it_t* it = amxc_llist_it_get_previous(&var->lit);
+        when_null(it, exit);
+        prev = amxc_var_from_llist_it(it);
+    }
+
+exit:
+    return prev;
+}
+
+amxc_var_t* amxc_var_get_parent(const amxc_var_t* const var) {
+    amxc_var_t* parent = NULL;
+
+    when_null(var, exit);
+
+    if(var->hit.ait != NULL) {
+        if(var->hit.ait->array != NULL) {
+            amxc_htable_t* ptable = amxc_container_of(var->hit.ait->array, amxc_htable_t, table);
+            parent = amxc_container_of(ptable, amxc_var_t, data);
+        }
+    } else if(var->lit.llist != NULL) {
+        amxc_llist_t* plist = var->lit.llist;
+        parent = amxc_container_of(plist, amxc_var_t, data);
+    }
+
+exit:
+    return parent;
+}
+
+const char* amxc_var_key(const amxc_var_t* const var) {
+    const char* key = NULL;
+
+    when_null(var, exit);
+
+    if(var->hit.ait != NULL) {
+        key = amxc_htable_it_get_key(&var->hit);
+    }
+
+exit:
+    return key;
+}

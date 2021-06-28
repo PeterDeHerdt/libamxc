@@ -792,34 +792,37 @@ extern "C"
 /**
    @ingroup amxc_variant
    @brief
-   When the variant is a containing a list of variants iterates over the
-   variants in the list
+   When the variant is a htable or list variant, iterates over the
+   variants in the htable or list
 
-   @warning
-   Do not use this macro when the variant is not containing a list.
+   When the variant is not of a htable or list type, this macro will do nothing
+
+   It is save to delete the current variant in the loop.
  */
 #define amxc_var_for_each(var, var_list) \
-    for(amxc_var_t* var = amxc_var_from_llist_it(amxc_llist_get_first(&var_list->data.vl)), \
-        * _next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)); \
+    for(amxc_var_t* var = amxc_var_get_first(var_list), \
+        * _next = amxc_var_get_next(var); \
         var; \
         var = _next, \
-        _next = amxc_var_from_llist_it(amxc_llist_it_get_next(&var->lit)))
+        _next = amxc_var_get_next(var))
 
 /**
    @ingroup amxc_variant
    @brief
-   When the variant is a containing a list of variants iterates over the
-   variants in the list in reverse order.
+   When the variant is a htable or list variant, iterates over the variants
+   in reverse order
 
-   @warning
-   Do not use this macro when the variant is not containing a list.
+   When the variant is not of a htable or list type, this macro will do nothing
+
+   It is save to delete the current variant in the loop.
  */
 #define amxc_var_for_each_reverse(var, var_list) \
-    for(amxc_var_t* var = amxc_var_from_llist_it(amxc_llist_get_last(&var_list->data.vl)), \
-        * _prev = amxc_var_from_llist_it(amxc_llist_it_get_previous(&var->lit)); \
+    for(amxc_var_t* var = amxc_var_get_last(var_list), \
+        * _prev = amxc_var_get_previous(var); \
         var; \
         var = _prev, \
-        _prev = amxc_var_from_llist_it(amxc_llist_it_get_previous(&var->lit)))
+        _prev = amxc_var_get_previous(var))
+
 
 /**
    @ingroup amxc_variant
@@ -1337,6 +1340,122 @@ amxc_var_t* amxc_var_get_pathf(const amxc_var_t* const var,
                                const char* const fmt,
                                ...
                                ) __attribute__ ((format(printf, 3, 4)));
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Gets the first variant in a htable or list variant.
+
+   Returns the first variant contained in composite htable or list variant.
+
+   If the provided variant pointer is not of a htable or list type, this
+   function will return NULL.
+
+   If the provided htable or list variant is empty a NULL pointer is returned.
+
+   @param var pointer to a variant struct
+
+   @return
+   The first variant in the htable or list variant or NULL.
+ */
+amxc_var_t* amxc_var_get_first(const amxc_var_t* const var);
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Gets the last variant in a htable or list variant.
+
+   Returns the last variant contained in composite htable or list variant.
+
+   If the provided variant pointer is not of a htable or list type, this
+   function will return NULL.
+
+   If the provided htable or list variant is empty a NULL pointer is returned.
+
+   @param var pointer to a variant struct
+
+   @return
+   The first variant in the htable or list variant or NULL.
+ */
+amxc_var_t* amxc_var_get_last(const amxc_var_t* const var);
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Gets the next variant.
+
+   If the variant is contained in a htable or list variant fetches the pointer
+   to the next variant.
+
+   If the provided variant pointer is not in a htable or list variant, this
+   function will return NULL.
+
+   If the provided variant is the last in the htable or list a NULL pointer
+   is returned.
+
+   @param var pointer to a variant struct
+
+   @return
+   The next variant in the htable or list variant or NULL
+ */
+amxc_var_t* amxc_var_get_next(const amxc_var_t* const var);
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Gets the previous variant.
+
+   If the variant is contained in a htable or list variant fetches the pointer
+   to the previous variant.
+
+   If the provided variant pointer is not in a htable or list variant, this
+   function will return NULL.
+
+   If the provided variant is the first in the htable or list a NULL pointer
+   is returned.
+
+   @param var pointer to a variant struct
+
+   @return
+   The previous variant in the htable or list variant or NULL
+ */
+amxc_var_t* amxc_var_get_previous(const amxc_var_t* const var);
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Gets the containing variant
+
+   If the variant is contained in a htable or list variant fetches the pointer
+   to the container variant.
+
+   If the provided variant pointer is not in a htable or list variant, this
+   function will return NULL.
+
+   @param var pointer to a variant struct
+
+   @return
+   The pointer to the containing variant or NULL
+ */
+amxc_var_t* amxc_var_get_parent(const amxc_var_t* const var);
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Gets the key, with which the variant is stored in a htable variant
+
+   If the variant is contained in a htable variant fetches the key with which
+   the variant is stored in the htable
+
+   If the provided variant pointer is not in a htable, this function will
+   return NULL.
+
+   @param var pointer to a variant struct
+
+   @return
+   The key or NULL
+ */
+const char* amxc_var_key(const amxc_var_t* const var);
 
 /**
    @ingroup amxc_variant

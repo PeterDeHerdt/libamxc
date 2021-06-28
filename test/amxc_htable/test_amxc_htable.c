@@ -470,6 +470,28 @@ void amxc_htable_get_first_check(UNUSED void** state) {
     amxc_htable_teardown();
 }
 
+void amxc_htable_get_last_null_check(UNUSED void** state) {
+    amxc_htable_setup();
+    assert_ptr_equal(amxc_htable_get_last(NULL), NULL);
+
+    assert_ptr_equal(amxc_htable_get_last(htable), NULL);
+    amxc_htable_teardown();
+}
+
+void amxc_htable_get_last_check(UNUSED void** state) {
+    amxc_htable_setup();
+    amxc_htable_insert(htable, "Key1", &it[0]);
+
+    assert_ptr_equal(amxc_htable_get_last(htable), &it[0]);
+    assert_string_equal(it[0].key, "Key1");
+    assert_ptr_not_equal(it[0].ait, NULL);
+
+    // clean the table
+    amxc_htable_clean(htable, NULL);
+    assert_ptr_equal(amxc_htable_get_last(htable), NULL);
+    amxc_htable_teardown();
+}
+
 void amxc_htable_take_null_check(UNUSED void** state) {
     amxc_htable_setup();
     assert_ptr_equal(amxc_htable_take(NULL, NULL), NULL);
@@ -682,6 +704,108 @@ void amxc_htable_it_get_next_key_check(UNUSED void** state) {
     iter = amxc_htable_get(htable, "Key4");
     while(iter) {
         iter = amxc_htable_it_get_next_key(iter);
+        count++;
+    }
+
+    assert_int_equal(count, 1);
+    amxc_htable_teardown();
+}
+
+void amxc_htable_it_get_previous_null_check(UNUSED void** state) {
+    amxc_htable_setup();
+    assert_ptr_equal(amxc_htable_it_get_previous(NULL), NULL);
+    assert_ptr_equal(amxc_htable_it_get_previous(&it[0]), NULL);
+    amxc_htable_teardown();
+}
+
+void amxc_htable_it_get_previous_check(UNUSED void** state) {
+    amxc_htable_setup();
+    amxc_htable_insert(htable, "Key1", &it[0]);
+    amxc_htable_insert(htable, "Key2", &it[1]);
+    amxc_htable_insert(htable, "Key3", &it[2]);
+    amxc_htable_insert(htable, "Key4", &it[3]);
+    amxc_htable_insert(htable, "Key5", &it[4]);
+
+    unsigned int count = 0;
+    amxc_htable_it_t* it = amxc_htable_get_last(htable);
+    while(it) {
+        it = amxc_htable_it_get_previous(it);
+        count++;
+    }
+
+    assert_int_equal(count, 5);
+    amxc_htable_teardown();
+}
+
+void amxc_htable_it_get_previous_chained_check(UNUSED void** state) {
+    amxc_htable_setup();
+    amxc_htable_insert(htable, "Key", &it[0]);
+    amxc_htable_insert(htable, "Key", &it[1]);
+    amxc_htable_insert(htable, "Key", &it[2]);
+    amxc_htable_insert(htable, "Key", &it[3]);
+    amxc_htable_insert(htable, "Key", &it[4]);
+
+    amxc_array_it_t* ait = it[0].ait;
+    unsigned int count = 0;
+    amxc_htable_it_t* it = amxc_htable_get_last(htable);
+    while(it) {
+        assert_ptr_equal(it->ait, ait);
+        it = amxc_htable_it_get_previous(it);
+        count++;
+    }
+
+    assert_int_equal(count, 5);
+    amxc_htable_teardown();
+}
+
+void amxc_htable_it_get_previous_key_null_check(UNUSED void** state) {
+    amxc_htable_setup();
+    assert_ptr_equal(amxc_htable_it_get_previous(NULL), NULL);
+    assert_ptr_equal(amxc_htable_it_get_previous(&it[0]), NULL);
+    amxc_htable_teardown();
+}
+
+void amxc_htable_it_get_previous_key_check(UNUSED void** state) {
+    amxc_htable_setup();
+    amxc_htable_insert(htable, "Key1", &it[0]);
+    amxc_htable_insert(htable, "Key2", &it[1]);
+    amxc_htable_insert(htable, "Key3", &it[2]);
+    amxc_htable_insert(htable, "Key4", &it[3]);
+    amxc_htable_insert(htable, "Key5", &it[4]);
+    amxc_htable_insert(htable, "Key610", &it[11]);
+    amxc_htable_insert(htable, "Key1", &it[5]);
+    amxc_htable_insert(htable, "Key2", &it[6]);
+    amxc_htable_insert(htable, "Key3", &it[7]);
+    amxc_htable_insert(htable, "Key1", &it[8]);
+    amxc_htable_insert(htable, "Key2", &it[9]);
+    amxc_htable_insert(htable, "Key3", &it[10]);
+
+    unsigned int count = 0;
+    amxc_array_it_t* ait = it[0].ait;
+    amxc_htable_it_t* iter = amxc_htable_get(htable, "Key1");
+    while(iter) {
+        assert_ptr_equal(iter->ait, ait);
+        iter = amxc_htable_it_get_previous_key(iter);
+        count++;
+    }
+
+    assert_int_equal(count, 3);
+
+    count = 0;
+    ait = it[2].ait;
+    iter = amxc_htable_get(htable, "Key3");
+    while(iter) {
+        assert_ptr_equal(iter->ait, ait);
+        iter = amxc_htable_it_get_previous_key(iter);
+        count++;
+    }
+
+    assert_int_equal(count, 3);
+
+    count = 0;
+    iter = amxc_htable_get(htable, "Key4");
+    while(iter) {
+        iter = amxc_htable_it_get_previous_key(iter);
         count++;
     }
 

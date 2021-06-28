@@ -70,6 +70,9 @@
 int main(void) {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_amxc_var_get_macros),
+        cmocka_unit_test(test_amxc_var_for_each_htable),
+        cmocka_unit_test(test_amxc_var_for_each_list),
+        cmocka_unit_test(test_amxc_var_for_each_non_composite),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

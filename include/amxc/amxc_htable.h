@@ -455,6 +455,27 @@ amxc_htable_it_t* amxc_htable_get_first(const amxc_htable_t* const htable);
 /**
    @ingroup amxc_htable
    @brief
+   Gets the last item stored in the table.
+
+   This function iterates the table from the end and returns the last
+   item encounter.
+
+   @note
+   The order of the items in the table is not the same as the order they were
+   inserted in the table. So the last item found can be different then the
+   last item inserted.
+
+   @param htable a pointer to the hash table structure
+
+   @return
+   Pointer to the hash table iterator
+   or NULL if no items were stored in the hash table.
+ */
+amxc_htable_it_t* amxc_htable_get_last(const amxc_htable_t* const htable);
+
+/**
+   @ingroup amxc_htable
+   @brief
    Creates an array containing all keys of the hash table
 
    The array will be sorted in ascending order. If the hash table contains
@@ -576,6 +597,24 @@ amxc_htable_it_t* amxc_htable_it_get_next(const amxc_htable_it_t* const referenc
 /**
    @ingroup amxc_htable_it
    @brief
+   Gets the previous iterator in the hash table
+
+   Searches the previous hash table iterator in the hash table, using the provided
+   iterator as a reference. The iterator returned can have another key as the
+   reference provided. If it must have the same key, you should use
+   @ref amxc_htable_it_get_previous_key
+
+   @param reference a pointer to the hash table iterator structure
+
+   @return
+   The previous iterator in the hash table, starting from the reference
+   or NULL if the reference was the first in the table.
+ */
+amxc_htable_it_t* amxc_htable_it_get_previous(const amxc_htable_it_t* const reference);
+
+/**
+   @ingroup amxc_htable_it
+   @brief
    Gets the next iterator in the hash table with the same key
 
    Searches the next hash table iterator in the hash table, using the provided
@@ -589,6 +628,23 @@ amxc_htable_it_t* amxc_htable_it_get_next(const amxc_htable_it_t* const referenc
    reference or NULL if the reference was the last in the table with that key.
  */
 amxc_htable_it_t* amxc_htable_it_get_next_key(const amxc_htable_it_t* const reference);
+
+/**
+   @ingroup amxc_htable_it
+   @brief
+   Gets the previous iterator in the hash table with the same key
+
+   Searches the previous hash table iterator in the hash table, using the provided
+   iterator as a reference. The iterator returned has the same key as the
+   reference provided.
+
+   @param reference a pointer to the hash table iterator structure
+
+   @return
+   The previous iterator in the hash table with the same key, starting from the
+   reference or NULL if the reference was the first in the table with that key.
+ */
+amxc_htable_it_t* amxc_htable_it_get_previous_key(const amxc_htable_it_t* const reference);
 
 /**
    @ingroup amxc_htable_it
