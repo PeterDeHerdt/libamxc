@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.1.1 - 2021-06-28(11:58:27 +0000)
+
+### Fixes
+
+- Removes amxc_var_hfor_each
+
+### Changes
+
+- Make it easier to iterate over htable and list variants
+
 ## Release v1.1.0 - 2021-06-18(14:52:28 +0000)
 
 ### New
