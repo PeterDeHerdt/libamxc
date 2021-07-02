@@ -94,5 +94,11 @@ void test_amxc_string_replace(void** state);
 void test_amxc_string_copy(void** state);
 void test_amxc_string_reset(void** state);
 void test_amxc_string_set(void** state);
+void test_amxc_string_build_hex_binary(void** state);
+void test_amxc_string_build_byte_array(void** state);
+void test_amxc_string_build_hex_binary_using_separator(void** state);
+void test_amxc_string_build_byte_array_with_separator(void** state);
+void test_amxc_string_build_byte_array_with_invalid_string(void** state);
+void test_amxc_string_build_byte_array_from_incomplete_string(void** state);
 
 #endif // __TEST_AMXC_STRING_H__

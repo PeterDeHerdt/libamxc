@@ -695,3 +695,107 @@ size_t amxc_string_set(amxc_string_t* const string, const char* data) {
 exit:
     return retval;
 }
+
+int amxc_string_bytes_2_hex_binary(amxc_string_t* const string,
+                                   const char bytes[],
+                                   const uint32_t len,
+                                   const char* sep) {
+    int retval = -1;
+    const char* s = "";
+
+    when_null(string, exit);
+
+    amxc_string_reset(string);
+
+    when_null(bytes, exit);
+    when_true(len == 0, exit);
+
+    for(uint32_t i = 0; i < len; i++) {
+        retval = amxc_string_appendf(string, "%s%2.2X", s, (unsigned char) bytes[i]);
+        if(retval != 0) {
+            amxc_string_reset(string);
+            goto exit;
+        }
+        if(sep != NULL) {
+            s = sep;
+        }
+    }
+
+    retval = 0;
+
+exit:
+    return retval;
+}
+
+int amxc_string_hex_binary_2_bytes(const amxc_string_t* const string,
+                                   char** bytes,
+                                   uint32_t* len,
+                                   const char* sep) {
+    int retval = -1;
+    uint32_t str_len = 0;
+    uint32_t pos = 0;
+    uint32_t sep_count = 0;
+    const char* hex_binary = NULL;
+    uint32_t sep_len = sep == NULL ? 0 : strlen(sep);
+    char* buffer = NULL;
+
+    when_true(amxc_string_is_empty(string), exit);
+    when_null(bytes, exit);
+    when_null(len, exit);
+
+    str_len = amxc_string_text_length(string);
+    *len = (str_len + 1) >> 1;
+    buffer = (char*) calloc(1, *len);
+
+    when_null(buffer, exit);
+    hex_binary = amxc_string_get(string, 0);
+
+    for(uint32_t i = 0; i < str_len; i++) {
+        int shift = 0;
+        if((sep != NULL) && (sep_len != 0) &&
+           ( strncmp(hex_binary + i, sep, sep_len) == 0)) {
+            sep_count++;
+            continue;
+        }
+        if(((i - sep_count) % 2 == 0) && ((i + 1) != str_len)) {
+            shift = 4;
+        }
+        if((hex_binary[i] >= '0') && (hex_binary[i] <= '9')) {
+            buffer[pos] |= (hex_binary[i] - '0') << shift;
+        } else if((hex_binary[i] >= 'A') && (hex_binary[i] <= 'F')) {
+            buffer[pos] |= (hex_binary[i] - 'A' + 10) << shift;
+        } else if((hex_binary[i] >= 'a') && (hex_binary[i] <= 'f')) {
+            buffer[pos] |= (hex_binary[i] - 'a' + 10) << shift;
+        } else {
+            // invalid character
+            goto exit;
+        }
+        if((i - sep_count) % 2 != 0) {
+            pos++;
+        }
+    }
+
+    if(sep_count != 0) {
+        *len -= (((sep_len * sep_count) + 1) >> 1);
+        *bytes = (char*) realloc(buffer, *len);
+        if(*bytes == NULL) {
+            *bytes = buffer;
+        }
+    } else {
+        *bytes = buffer;
+    }
+    retval = 0;
+
+exit:
+    if(retval != 0) {
+        free(buffer);
+        if(bytes != NULL) {
+            *bytes = NULL;
+        }
+        if(len != NULL) {
+            *len = 0;
+        }
+    }
+    return retval;
+}
+

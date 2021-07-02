@@ -875,6 +875,53 @@ int amxc_string_insert_at(amxc_string_t* const string,
  */
 size_t amxc_string_set(amxc_string_t* const string, const char* text);
 
+/**
+   @ingroup amxc_string
+   @brief
+   Creates a hexbinary string from an array of bytes
+
+   A hexbinary string is a hexadecimal representation of the bytes in the byte
+   array. Each byte will be represented by 2 hexadecimal characters.
+
+   @param string a pointer to the string structure
+   @param bytes the array of bytes
+   @param len length of the byte array
+   @param sep an optional separator string that is put between the bytes, can be NULL
+
+   @return
+   Non zero value when building of the hexbinary string failed
+ */
+int amxc_string_bytes_2_hex_binary(amxc_string_t* const string,
+                                   const char bytes[],
+                                   const uint32_t len,
+                                   const char* sep);
+
+/**
+   @ingroup amxc_string
+   @brief
+   Creates an array of bytes from a hex binary string
+
+   A hexbinary string is a hexadecimal representation of bytes.
+   Each byte will be represented by 2 hexadecimal characters.
+
+   This function will allocate a buffer and converts the string
+   to an array of bytes.
+
+   The function will fail if the string contains invalid characters.
+   Valid characters are [0-9], [a-f], [A-F].
+
+   @param string a pointer to the string structure
+   @param bytes the allocated of bytes
+   @param len length of the byte array
+   @param sep the separator between the bytes or NULL when no separator is used
+
+   @return
+   Non zero value when building of the byte array fails.
+ */
+int amxc_string_hex_binary_2_bytes(const amxc_string_t* const string,
+                                   char** bytes,
+                                   uint32_t* len,
+                                   const char* sep);
 #ifdef __cplusplus
 }
 #endif

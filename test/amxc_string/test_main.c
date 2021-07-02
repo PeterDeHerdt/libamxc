@@ -100,6 +100,12 @@ int main(void) {
         cmocka_unit_test(test_amxc_string_copy),
         cmocka_unit_test(test_amxc_string_reset),
         cmocka_unit_test(test_amxc_string_set),
+        cmocka_unit_test(test_amxc_string_build_hex_binary),
+        cmocka_unit_test(test_amxc_string_build_byte_array),
+        cmocka_unit_test(test_amxc_string_build_hex_binary_using_separator),
+        cmocka_unit_test(test_amxc_string_build_byte_array_with_separator),
+        cmocka_unit_test(test_amxc_string_build_byte_array_with_invalid_string),
+        cmocka_unit_test(test_amxc_string_build_byte_array_from_incomplete_string),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

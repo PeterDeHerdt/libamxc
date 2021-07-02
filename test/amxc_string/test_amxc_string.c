@@ -992,3 +992,148 @@ void test_amxc_string_set(UNUSED void** state) {
 
     amxc_string_clean(&string);
 }
+
+void test_amxc_string_build_hex_binary(UNUSED void** state) {
+    amxc_string_t string;
+    amxc_ts_t time;
+    char data[11] = { 0xA0, 0x1B, 0xC2, 0x3D, 0xE4, 0x00, 0xA5, 0x6B, 0xC7, 0x8D, 0xE9 };
+
+    memset(&time, 0, sizeof(amxc_ts_t));
+    amxc_ts_parse(&time, "2020-02-29T16:16:16.123456-01:15", strlen("2020-02-29T16:16:16.123456-01:15"));
+
+    amxc_string_init(&string, 0);
+    assert_int_equal(amxc_string_bytes_2_hex_binary(&string, data, 11, NULL), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "A01BC23DE400A56BC78DE9");
+    assert_int_equal(amxc_string_text_length(&string), 11 * 2);
+
+    assert_int_equal(amxc_string_bytes_2_hex_binary(&string, (char*) &time, sizeof(amxc_ts_t), NULL), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "E49F5A5E0000000000CA5B07B5FF0000");
+    assert_int_equal(amxc_string_text_length(&string), sizeof(amxc_ts_t) * 2);
+
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_build_byte_array(UNUSED void** state) {
+    amxc_string_t string;
+    amxc_ts_t* time = NULL;
+    char time_str[40];
+    char* data = NULL;
+    uint32_t len = 0;
+    char verify[11] = { 0xA0, 0x1B, 0xC2, 0x3D, 0xE4, 0x00, 0xA5, 0x6B, 0xC7, 0x8D, 0xE9 };
+
+    amxc_string_init(&string, 0);
+
+    amxc_string_setf(&string, "A01BC23DE400A56BC78DE9");
+    assert_int_equal(amxc_string_hex_binary_2_bytes(&string, &data, &len, NULL), 0);
+    assert_non_null(data);
+    assert_int_equal(len, 11);
+    for(int i = 0; i < 11; i++) {
+        assert_int_equal(data[i], verify[i]);
+    }
+    free(data);
+
+    amxc_string_setf(&string, "a01bc23de400a56bc78de9");
+    assert_int_equal(amxc_string_hex_binary_2_bytes(&string, &data, &len, NULL), 0);
+    assert_non_null(data);
+    assert_int_equal(len, 11);
+    for(int i = 0; i < 11; i++) {
+        assert_int_equal(data[i], verify[i]);
+    }
+    free(data);
+
+    amxc_string_setf(&string, "E49F5A5E0000000000CA5B07B5FF0000");
+    assert_int_equal(amxc_string_hex_binary_2_bytes(&string, (char**) &time, &len, NULL), 0);
+    assert_non_null(time);
+    assert_int_equal(len, sizeof(amxc_ts_t));
+    amxc_ts_format(time, time_str, 40);
+    assert_string_equal(time_str, "2020-02-29T16:16:16.123456-01:15");
+    free(time);
+
+    amxc_string_setf(&string, "e49f5a5e0000000000ca5b07b5ff0000");
+    assert_int_equal(amxc_string_hex_binary_2_bytes(&string, (char**) &time, &len, NULL), 0);
+    assert_non_null(time);
+    assert_int_equal(len, sizeof(amxc_ts_t));
+    amxc_ts_format(time, time_str, 40);
+    assert_string_equal(time_str, "2020-02-29T16:16:16.123456-01:15");
+    free(time);
+
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_build_hex_binary_using_separator(UNUSED void** state) {
+    amxc_string_t string;
+    char mac_addr[6] = { 0x02, 0x42, 0xac, 0x11, 0x00, 0x02 };
+
+    amxc_string_init(&string, 0);
+    assert_int_equal(amxc_string_bytes_2_hex_binary(&string, mac_addr, 6, ":"), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "02:42:AC:11:00:02");
+    assert_int_equal(amxc_string_text_length(&string), 6 * 2 + 5);
+
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_build_byte_array_with_separator(UNUSED void** state) {
+    amxc_string_t string;
+    char* data = NULL;
+    uint32_t len = 0;
+    char verify[6] = { 0x02, 0x42, 0xac, 0x11, 0x00, 0x02 };
+
+    amxc_string_init(&string, 0);
+
+    amxc_string_setf(&string, "02:42:ac:11:00:02");
+    assert_int_equal(amxc_string_hex_binary_2_bytes(&string, &data, &len, ":"), 0);
+    assert_non_null(data);
+    assert_int_equal(len, 6);
+    for(int i = 0; i < 6; i++) {
+        assert_int_equal(data[i], verify[i]);
+    }
+    free(data);
+
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_build_byte_array_with_invalid_string(UNUSED void** state) {
+    amxc_string_t string;
+    char* data = NULL;
+    uint32_t len = 0;
+
+    amxc_string_init(&string, 0);
+
+    amxc_string_setf(&string, "A01BC23QQ400A56BC78DE9");
+    assert_int_not_equal(amxc_string_hex_binary_2_bytes(&string, &data, &len, NULL), 0);
+    assert_null(data);
+    assert_int_equal(len, 0);
+
+    amxc_string_setf(&string, "A01BC23400A56BC78DE9");
+    assert_int_not_equal(amxc_string_hex_binary_2_bytes(NULL, &data, &len, NULL), 0);
+    assert_null(data);
+    assert_int_equal(len, 0);
+
+    assert_int_not_equal(amxc_string_hex_binary_2_bytes(&string, NULL, &len, NULL), 0);
+    assert_null(data);
+    assert_int_equal(len, 0);
+
+    assert_int_not_equal(amxc_string_hex_binary_2_bytes(&string, &data, NULL, NULL), 0);
+    assert_null(data);
+    assert_int_equal(len, 0);
+
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_build_byte_array_from_incomplete_string(UNUSED void** state) {
+    amxc_string_t string;
+    char* data = NULL;
+    uint32_t len = 0;
+
+    amxc_string_init(&string, 0);
+
+    amxc_string_setf(&string, "A");
+    assert_int_equal(amxc_string_hex_binary_2_bytes(&string, &data, &len, NULL), 0);
+    assert_non_null(data);
+    assert_int_equal(len, 1);
+
+    assert_int_equal(data[0], 10);
+
+    free(data);
+    amxc_string_clean(&string);
+}

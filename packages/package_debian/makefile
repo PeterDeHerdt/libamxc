@@ -12,7 +12,7 @@ ARCHITECTURE = $(shell dpkg-architecture | grep DEB_TARGET_ARCH= | cut -d'=' -f2
 
 PACKAGE_DEB = $(COMPONENT)_$(VERSION)_$(ARCHITECTURE).deb
 
-AFLAGS = -d -k --fixperms --test --description="Generic C-implemnentation of data containers" \
+AFLAGS = -d -k --fixperms --test --description="Generic C-implementation of data containers" \
          --version="$(VERSION)" --target="$(ARCHITECTURE)" -g -v
 
 # helper functions - used in multiple targets
