@@ -45,7 +45,7 @@ There are existing implementations, all different, all with different focus and 
 - [ccl](https://code.google.com/archive/p/ccl/source)
 - and maybe more ...
 
-None of C libraries found fulfill all requirements and do not always comply with the coding guidelines of the project (see [Coding Guidelines](https://gitlab.com/soft.at.home/ambiorix/ambiorix/-/blob/master/doc/CODING_GUIDELINES.md))
+None of C libraries found fulfill all requirements and do not always comply with the coding guidelines of the project (see [Coding Guidelines](https://gitlab.com/soft.at.home/ambiorix/ambiorix/-/blob/main/doc/CODING_GUIDELINES.md))
 
 So either:
 

@@ -632,6 +632,12 @@ void test_variant_char_set_get(UNUSED void** state) {
     const char* consttext = NULL;
 
     assert_int_equal(amxc_var_init(&var1), 0);
+    amxc_var_set_type(&var1, AMXC_VAR_ID_CSTRING);
+    assert_string_equal(amxc_var_constcast(cstring_t, &var1), "");
+    text = amxc_var_dyncast(cstring_t, &var1);
+    assert_string_equal(text, "");
+    free(text);
+
     assert_int_equal(amxc_var_set_cstring_t(&var1, "Hello world"), 0);
     assert_int_equal(var1.type_id, AMXC_VAR_ID_CSTRING);
     assert_string_equal(var1.data.s, "Hello world");
