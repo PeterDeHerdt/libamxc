@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.2.1 - 2021-07-09(06:48:28 +0000)
+
+### Fixes
+
+- Inconsistency in behavior of constcast and dyncast on string variants
+
 ## Release v1.2.0 - 2021-07-02(18:11:41 +0000)
 
 ### New
