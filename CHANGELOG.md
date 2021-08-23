@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.2.2 - 2021-08-23(09:48:30 +0000)
+
+### Changes
+
+- no more Shadow warning if nesting of ...for_each... macros is used
+
 ## Release v1.2.1 - 2021-07-09(06:48:28 +0000)
 
 ### Fixes
