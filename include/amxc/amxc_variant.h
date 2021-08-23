@@ -801,10 +801,10 @@ extern "C"
  */
 #define amxc_var_for_each(var, var_list) \
     for(amxc_var_t* var = amxc_var_get_first(var_list), \
-        * _next = amxc_var_get_next(var); \
+        * var ## _next = amxc_var_get_next(var); \
         var; \
-        var = _next, \
-        _next = amxc_var_get_next(var))
+        var = var ## _next, \
+        var ## _next = amxc_var_get_next(var))
 
 /**
    @ingroup amxc_variant
@@ -818,10 +818,10 @@ extern "C"
  */
 #define amxc_var_for_each_reverse(var, var_list) \
     for(amxc_var_t* var = amxc_var_get_last(var_list), \
-        * _prev = amxc_var_get_previous(var); \
+        * var ## _prev = amxc_var_get_previous(var); \
         var; \
-        var = _prev, \
-        _prev = amxc_var_get_previous(var))
+        var = var ## _prev, \
+        var ## _prev = amxc_var_get_previous(var))
 
 
 /**

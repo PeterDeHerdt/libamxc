@@ -102,15 +102,15 @@ extern "C"
 
    @warning
    Do not modify the hash table itself while using this macro.
-   It is not possible to nest this macro
+   It is possible to nest this macro
    It is allowed to delete or remove the current iterator from the hash table.
  */
 #define amxc_htable_for_each(it, htable) \
     for(amxc_htable_it_t* it = amxc_htable_get_first(htable), \
-        * _next = amxc_htable_it_get_next(it); \
+        * it ## _next = amxc_htable_it_get_next(it); \
         it; \
-        it = _next, \
-        _next = amxc_htable_it_get_next(it))
+        it = it ## _next, \
+        it ## _next = amxc_htable_it_get_next(it))
 
 /**
    @ingroup amxc_htable

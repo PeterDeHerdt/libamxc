@@ -253,15 +253,15 @@ typedef struct _amxc_llist {
 
    @warning
    Do not modify the list itself while using this macro.
-   It is not possible to nest this macro
+   It is possible to nest this macro
    It is allowed to delete or remove the current iterator from the list.
  */
 #define amxc_llist_for_each(it, list) \
     for(amxc_llist_it_t* it = amxc_llist_get_first(list), \
-        * _next = amxc_llist_it_get_next(it); \
+        * it ## _next = amxc_llist_it_get_next(it); \
         it; \
-        it = _next, \
-        _next = amxc_llist_it_get_next(it))
+        it = it ## _next, \
+        it ## _next = amxc_llist_it_get_next(it))
 
 /**
    @ingroup amxc_llist
@@ -287,15 +287,15 @@ typedef struct _amxc_llist {
 
    @warning
    Do not modify the list itself while using this macro.
-   It is not possible to nest this macro
+   It is possible to nest this macro
    It is allowed to delete or remove the current iterator from the list.
  */
 #define amxc_llist_for_each_reverse(it, list) \
     for(amxc_llist_it_t* it = amxc_llist_get_last(list), \
-        * _prev = amxc_llist_it_get_previous(it); \
+        * it ## _prev = amxc_llist_it_get_previous(it); \
         it; \
-        it = _prev, \
-        _prev = amxc_llist_it_get_previous(it))
+        it = it ## _prev, \
+        it ## _prev = amxc_llist_it_get_previous(it))
 
 /**
    @ingroup amxc_llist
