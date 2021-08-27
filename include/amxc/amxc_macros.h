@@ -152,6 +152,26 @@ extern "C"
 #define when_str_empty(x, l) if(x == NULL || *x == 0) {  goto l; }
 #endif
 
+#ifndef when_null_status
+#define when_null_status(x, l, c) if((x) == NULL) { c; goto l; }
+#endif
+
+#ifndef when_not_null_status
+#define when_not_null_status(x, l, c) if((x) != NULL) { c; goto l; }
+#endif
+
+#ifndef when_true_status
+#define when_true_status(x, l, c) if(x) { c; goto l; }
+#endif
+
+#ifndef when_false_status
+#define when_false_status(x, l, c) if(!(x)) { c; goto l; }
+#endif
+
+#ifndef when_str_empty_status
+#define when_str_empty_status(x, l, c) if((x) == NULL || (x)[0] == '\0') { c; goto l; }
+#endif
+
 #ifdef __cplusplus
 }
 #endif
