@@ -100,5 +100,7 @@ void test_amxc_string_build_hex_binary_using_separator(void** state);
 void test_amxc_string_build_byte_array_with_separator(void** state);
 void test_amxc_string_build_byte_array_with_invalid_string(void** state);
 void test_amxc_string_build_byte_array_from_incomplete_string(void** state);
+void test_amxc_string_toupper(void** state);
+void test_amxc_string_tolower(void** state);
 
 #endif // __TEST_AMXC_STRING_H__

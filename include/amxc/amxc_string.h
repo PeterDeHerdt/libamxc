@@ -713,6 +713,37 @@ int amxc_string_replace(amxc_string_t* const string,
                         const char* needle,
                         const char* newstr,
                         uint32_t max);
+
+/**
+   @ingroup amxc_string
+   @brief
+   Converts all lower case characters to upper case
+
+   Only lower case text characters are modified, all other characters are not
+   changed.
+
+   @param string a pointer to the string structure
+
+   @return
+   0 on success, any other value indicates failure.
+ */
+int amxc_string_to_upper(amxc_string_t* const string);
+
+/**
+   @ingroup amxc_string
+   @brief
+   Converts all upper case characters to lower case
+
+   Only upper case text characters are modified, all other characters are not
+   changed.
+
+   @param string a pointer to the string structure
+
+   @return
+   0 on success, any other value indicates failure.
+ */
+int amxc_string_to_lower(amxc_string_t* const string);
+
 /**
    @ingroup amxc_string
    @brief

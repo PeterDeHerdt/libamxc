@@ -696,6 +696,34 @@ exit:
     return retval;
 }
 
+int amxc_string_to_upper(amxc_string_t* const string) {
+    int retval = -1;
+
+    when_null(string, exit);
+
+    for(uint32_t i = 0; i <= string->last_used; i++) {
+        string->buffer[i] = toupper(string->buffer[i]);
+    }
+    retval = 0;
+
+exit:
+    return retval;
+}
+
+int amxc_string_to_lower(amxc_string_t* const string) {
+    int retval = -1;
+
+    when_null(string, exit);
+
+    for(uint32_t i = 0; i <= string->last_used; i++) {
+        string->buffer[i] = tolower(string->buffer[i]);
+    }
+    retval = 0;
+
+exit:
+    return retval;
+}
+
 int amxc_string_bytes_2_hex_binary(amxc_string_t* const string,
                                    const char bytes[],
                                    const uint32_t len,

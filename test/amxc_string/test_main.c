@@ -106,6 +106,8 @@ int main(void) {
         cmocka_unit_test(test_amxc_string_build_byte_array_with_separator),
         cmocka_unit_test(test_amxc_string_build_byte_array_with_invalid_string),
         cmocka_unit_test(test_amxc_string_build_byte_array_from_incomplete_string),
+        cmocka_unit_test(test_amxc_string_toupper),
+        cmocka_unit_test(test_amxc_string_tolower),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

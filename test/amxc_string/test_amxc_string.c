@@ -1137,3 +1137,31 @@ void test_amxc_string_build_byte_array_from_incomplete_string(UNUSED void** stat
     free(data);
     amxc_string_clean(&string);
 }
+
+void test_amxc_string_toupper(UNUSED void** state) {
+    amxc_string_t string;
+
+    amxc_string_init(&string, 0);
+    amxc_string_setf(&string, "This is some text with symbols ;=) and uppercase ABC");
+
+    assert_int_equal(amxc_string_to_upper(&string), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "THIS IS SOME TEXT WITH SYMBOLS ;=) AND UPPERCASE ABC");
+
+    assert_int_not_equal(amxc_string_to_upper(NULL), 0);
+
+    amxc_string_clean(&string);
+}
+
+void test_amxc_string_tolower(UNUSED void** state) {
+    amxc_string_t string;
+
+    amxc_string_init(&string, 0);
+    amxc_string_setf(&string, "THIS IS SOME TEXT WITH SYMBOLS ;=) AND LOWERCASE abc");
+
+    assert_int_equal(amxc_string_to_lower(&string), 0);
+    assert_string_equal(amxc_string_get(&string, 0), "this is some text with symbols ;=) and lowercase abc");
+
+    assert_int_not_equal(amxc_string_to_lower(NULL), 0);
+
+    amxc_string_clean(&string);
+}
