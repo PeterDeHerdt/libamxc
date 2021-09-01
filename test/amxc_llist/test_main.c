@@ -115,5 +115,5 @@ int main(void) {
         cmocka_unit_test(test_amxc_llist_sort),
         cmocka_unit_test(test_amxc_llist_move),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-linked-list", tests, NULL, NULL);
 }

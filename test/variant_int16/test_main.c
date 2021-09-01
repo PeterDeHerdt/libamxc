@@ -73,5 +73,5 @@ int main(void) {
         cmocka_unit_test(test_variant_int16_set_get),
         cmocka_unit_test(test_variant_int16_add),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant-int16", tests, NULL, NULL);
 }

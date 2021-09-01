@@ -81,5 +81,5 @@ int main(void) {
         cmocka_unit_test(amxc_hash_distibution_AP_check),
         cmocka_unit_test(amxc_hash_BKDR_hashes_check)
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-hash-func", tests, NULL, NULL);
 }

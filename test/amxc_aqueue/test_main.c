@@ -74,5 +74,5 @@ int main(void) {
         cmocka_unit_test(amxc_aqueue_add_check),
         cmocka_unit_test(amxc_aqueue_remove_check),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-aqueue", tests, NULL, NULL);
 }

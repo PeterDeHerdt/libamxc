@@ -73,5 +73,5 @@ int main(void) {
         cmocka_unit_test(test_variant_int8_set_get),
         cmocka_unit_test(test_variant_int8_add),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant-int8", tests, NULL, NULL);
 }

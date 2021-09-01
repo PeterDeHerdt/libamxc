@@ -74,5 +74,5 @@ int main(void) {
         cmocka_unit_test(test_amxc_var_for_each_list),
         cmocka_unit_test(test_amxc_var_for_each_non_composite),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant-macros", tests, NULL, NULL);
 }

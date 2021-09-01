@@ -74,5 +74,5 @@ int main(void) {
         cmocka_unit_test(amxc_astack_push_check),
         cmocka_unit_test(amxc_astack_pop_check)
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-astack", tests, NULL, NULL);
 }

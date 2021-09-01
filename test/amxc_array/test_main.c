@@ -128,5 +128,5 @@ int main(void) {
         cmocka_unit_test(test_amxc_array_is_empty),
         cmocka_unit_test(test_amxc_array_sort),
     };
-    return cmocka_run_group_tests(tests, test_amxc_array_setup, test_amxc_array_teardown);
+    return cmocka_run_group_tests_name("amxc-array", tests, test_amxc_array_setup, test_amxc_array_teardown);
 }

@@ -72,5 +72,5 @@ int main(void) {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_amxc_var_get_path_with_dots_in_keys),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant-api", tests, NULL, NULL);
 }

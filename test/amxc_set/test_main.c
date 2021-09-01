@@ -81,5 +81,5 @@ int main(void) {
         cmocka_unit_test(test_amxc_set_to_string_counted),
         cmocka_unit_test(test_amxc_set_to_string),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-set", tests, NULL, NULL);
 }

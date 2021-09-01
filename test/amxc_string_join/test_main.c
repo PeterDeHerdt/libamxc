@@ -74,5 +74,5 @@ int main(void) {
         cmocka_unit_test(test_join_fails_with_invalid_separators),
         cmocka_unit_test(test_join_does_input_argument_validation),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-string-join", tests, NULL, NULL);
 }

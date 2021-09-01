@@ -109,5 +109,5 @@ int main(void) {
         cmocka_unit_test(test_amxc_string_toupper),
         cmocka_unit_test(test_amxc_string_tolower),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-string", tests, NULL, NULL);
 }

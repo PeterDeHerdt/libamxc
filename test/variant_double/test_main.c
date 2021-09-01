@@ -77,5 +77,5 @@ int main(void) {
         cmocka_unit_test(test_variant_double_compare),
         cmocka_unit_test(test_variant_double_add),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant-fd", tests, NULL, NULL);
 }

@@ -82,5 +82,5 @@ int main(void) {
         cmocka_unit_test(test_amxc_var_get_type_name_from_id),
         cmocka_unit_test(test_amxc_var_get_type_id_from_name),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant-types", tests, NULL, NULL);
 }

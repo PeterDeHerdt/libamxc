@@ -91,5 +91,5 @@ int main(void) {
         cmocka_unit_test(test_amxc_var_move),
         cmocka_unit_test(test_amxc_var_take_it),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant", tests, NULL, NULL);
 }

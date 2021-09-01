@@ -77,5 +77,5 @@ int main(void) {
         cmocka_unit_test(test_variant_ts_get),
         cmocka_unit_test(test_variant_ts_add_to_composite_types),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant-timestamp", tests, NULL, NULL);
 }

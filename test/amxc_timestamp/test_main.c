@@ -77,5 +77,5 @@ int main(void) {
         cmocka_unit_test(test_amxc_ts_compare),
         cmocka_unit_test(test_amxc_ts_to_tm),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-timestamp", tests, NULL, NULL);
 }

@@ -73,5 +73,5 @@ int main(void) {
         cmocka_unit_test(test_variant_uint32_set_get),
         cmocka_unit_test(test_variant_uint32_add),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant-uint32", tests, NULL, NULL);
 }

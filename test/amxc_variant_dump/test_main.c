@@ -70,5 +70,5 @@ int main(void) {
         cmocka_unit_test(test_amxc_variant_dump),
         cmocka_unit_test(test_amxc_variant_log),
     };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests_name("amxc-variant-dump", tests, NULL, NULL);
 }
