@@ -1,3 +1,8 @@
+libamxc (1.3.1) unstable; urgency=medium
+
+
+ -- SAH bot <sahbot@softathome.com>  Fri, 03 Sep 2021 18:00:23 +0000
+
 libamxc (1.3.0) unstable; urgency=medium
 
   * Add functions to convert a string to capital/lower case.
