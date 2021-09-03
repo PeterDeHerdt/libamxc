@@ -1,4 +1,4 @@
-libamxc (.3.0) unstable; urgency=medium
+libamxc (1.3.0) unstable; urgency=medium
 
   * Add functions to convert a string to capital/lower case.
   * [status macros] Add when_null_status macros in amxc
