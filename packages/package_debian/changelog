@@ -1,3 +1,12 @@
+libamxc (.3.0) unstable; urgency=medium
+
+  * Add functions to convert a string to capital/lower case.
+  * [status macros] Add when_null_status macros in amxc
+  * Generate junit xml files with unit-tests
+  * Issue: ambiorix/libraries/libamxc#56 Generate junit xml files with unit-tests
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Fri, 03 Sep 2021 12:24:57 +0000
+
 libamxc (1.2.2) unstable; urgency=medium
 
   * no more Shadow warning if nesting of ...for_each... macros is used

@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.3.0 - 2021-09-03(12:24:56 +0000)
+
+### New
+
+- Add functions to convert a string to capital/lower case.
+- [status macros] Add when_null_status macros in amxc
+
+### Other
+
+- Generate junit xml files with unit-tests
+- Issue: ambiorix/libraries/libamxc#56 Generate junit xml files with unit-tests
+
 ## Release v1.2.2 - 2021-08-23(09:48:30 +0000)
 
 ### Changes
