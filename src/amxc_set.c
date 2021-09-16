@@ -190,6 +190,18 @@ exit:
     return;
 }
 
+amxc_set_t* amxc_set_copy(const amxc_set_t* const set) {
+    amxc_set_t* copy = NULL;
+
+    when_null(set, exit);
+    when_failed(amxc_set_new(&copy, set->counted), exit);
+
+    amxc_set_union(copy, set);
+
+exit:
+    return copy;
+}
+
 void amxc_set_reset(amxc_set_t* set) {
     when_null(set, exit);
 
@@ -444,6 +456,25 @@ void amxc_set_alert_cb(amxc_set_t* set, amxc_set_alert_t handler, void* priv) {
     set->alert_handler = handler;
     set->priv = priv;
 
+exit:
+    return;
+}
+
+void amxc_set_symmetric_difference(amxc_set_t* const set,
+                                   const amxc_set_t* const operand) {
+    amxc_set_t* tmp = NULL;
+
+    when_null(set, exit);
+    when_null(operand, exit);
+
+    tmp = amxc_set_copy(operand);
+    when_null(tmp, exit);
+
+    amxc_set_subtract(tmp, set);
+    amxc_set_subtract(set, operand);
+    amxc_set_union(set, tmp);
+
+    amxc_set_delete(&tmp);
 exit:
     return;
 }

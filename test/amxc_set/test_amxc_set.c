@@ -411,3 +411,105 @@ void test_amxc_set_to_string(UNUSED void** state) {
     free(set_str);
     amxc_set_clean(&set);
 }
+
+void test_amxc_set_copy(UNUSED void** state) {
+    amxc_set_t* set = NULL;
+    amxc_set_t* copy = NULL;
+
+    assert_null(amxc_set_copy(NULL));
+
+    assert_int_equal(amxc_set_new(&set, false), 0);
+    assert_non_null(set);
+
+    copy = amxc_set_copy(set);
+    assert_non_null(copy);
+    assert_true(amxc_set_is_equal(set, copy));
+    assert_null(copy->alert_handler);
+    assert_null(copy->priv);
+    amxc_set_delete(&copy);
+    assert_null(copy);
+
+    assert_int_equal(amxc_set_parse(set, "flag1 flag2 flag3"), 0);
+
+    copy = amxc_set_copy(set);
+    assert_non_null(copy);
+    assert_true(amxc_set_is_equal(set, copy));
+    assert_null(copy->alert_handler);
+    assert_null(copy->priv);
+    amxc_set_delete(&copy);
+    assert_null(copy);
+
+    amxc_set_delete(&set);
+    assert_null(set);
+
+    assert_int_equal(amxc_set_new(&set, true), 0);
+    assert_non_null(set);
+
+    copy = amxc_set_copy(set);
+    assert_non_null(copy);
+    assert_true(amxc_set_is_equal(set, copy));
+    assert_null(copy->alert_handler);
+    assert_null(copy->priv);
+    amxc_set_delete(&copy);
+    assert_null(copy);
+
+    assert_int_equal(amxc_set_parse(set, "flag1:3 flag2:5 flag3:23"), 0);
+
+    copy = amxc_set_copy(set);
+    assert_non_null(copy);
+    assert_true(amxc_set_is_equal(set, copy));
+    assert_null(copy->alert_handler);
+    assert_null(copy->priv);
+    amxc_set_delete(&copy);
+    assert_null(copy);
+
+    amxc_set_delete(&set);
+    assert_null(set);
+}
+
+void test_amxc_set_symmetric_difference(UNUSED void** state) {
+    amxc_set_t set1;
+    amxc_set_t set2;
+    amxc_set_t cmp;
+
+    assert_int_equal(amxc_set_init(&set1, false), 0);
+    assert_int_equal(amxc_set_init(&set2, false), 0);
+    assert_int_equal(amxc_set_init(&cmp, false), 0);
+
+    amxc_set_symmetric_difference(NULL, NULL);
+
+    assert_int_equal(amxc_set_parse(&set1, "flag1 flag2 flag3"), 0);
+    assert_int_equal(amxc_set_parse(&set2, "flag1 flag4 flag5"), 0);
+    assert_int_equal(amxc_set_parse(&cmp, "flag1 flag2 flag3"), 0);
+
+    amxc_set_symmetric_difference(&set1, NULL);
+    assert_true(amxc_set_is_equal(&set1, &cmp));
+
+    amxc_set_reset(&cmp);
+    assert_int_equal(amxc_set_parse(&cmp, "flag2 flag3 flag4 flag5"), 0);
+    amxc_set_symmetric_difference(&set1, &set2);
+    assert_true(amxc_set_is_equal(&set1, &cmp));
+
+    amxc_set_clean(&set1);
+    amxc_set_clean(&set2);
+    amxc_set_clean(&cmp);
+    assert_int_equal(amxc_set_init(&set1, true), 0);
+    assert_int_equal(amxc_set_init(&set2, true), 0);
+    assert_int_equal(amxc_set_init(&cmp, true), 0);
+
+    assert_int_equal(amxc_set_parse(&set1, "flag1:3 flag2:2 flag3:6"), 0);
+    assert_int_equal(amxc_set_parse(&set2, "flag1:2 flag4:8 flag5:9"), 0);
+    assert_int_equal(amxc_set_parse(&cmp, "flag1:3 flag2:2 flag3:6"), 0);
+
+    amxc_set_symmetric_difference(&set1, NULL);
+    assert_true(amxc_set_is_equal(&set1, &cmp));
+
+    amxc_set_reset(&cmp);
+    assert_int_equal(amxc_set_parse(&cmp, "flag1:1 flag2:2 flag3:6 flag4:8 flag5:9"), 0);
+    amxc_set_symmetric_difference(&set1, &set2);
+    assert_true(amxc_set_is_equal(&set1, &cmp));
+
+    amxc_set_clean(&set1);
+    amxc_set_clean(&set2);
+    amxc_set_clean(&cmp);
+}

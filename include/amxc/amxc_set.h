@@ -217,6 +217,23 @@ void amxc_set_clean(amxc_set_t* const set);
 /**
    @ingroup amxc_set
    @brief
+   Copies a set.
+
+   Allocates a new set and copies the flags of the given set into this new set.
+   The set alert handler and private data are not copied.
+
+   @note
+   The allocated memory must be freed when not used anymore,
+   use @ref amxc_set_delete to free the memory.
+
+   @param set a pointer to an amxc_set_t structure
+   @return A pointer to the newly allocated amxc_set_t structure if the copy succeeded, NULL otherwise.
+ */
+amxc_set_t* amxc_set_copy(const amxc_set_t* const set);
+
+/**
+   @ingroup amxc_set
+   @brief
    Reset or empty a set, i.e. clear all flags.
 
    @param set The set to reset.
@@ -402,6 +419,19 @@ bool amxc_set_is_equal(const amxc_set_t* const set1,
    @param priv A void pointer to be passed to the callback function.
  */
 void amxc_set_alert_cb(amxc_set_t* set, amxc_set_alert_t handler, void* priv);
+
+/**
+   @ingroup amxc_set
+   @brief
+   Calculates the symmetric difference of two sets.
+
+   The symmetric difference of two sets is the set of elements which are in either of the sets,
+   but not in both. E.g. the symmetric difference of the sets {1,2,3} and {3,4} is {1,2,4}.
+
+   @param set Left hand operand of the operator, as well as the target to store the result into.
+   @param operand Right hand operand of the operator. NULL is considered to be the empty flag set.
+ */
+void amxc_set_symmetric_difference(amxc_set_t* const set, const amxc_set_t* const operand);
 
 #ifdef __cplusplus
 }

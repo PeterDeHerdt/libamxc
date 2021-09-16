@@ -80,6 +80,8 @@ int main(void) {
         cmocka_unit_test(test_amxc_set_parse_invalid_input),
         cmocka_unit_test(test_amxc_set_to_string_counted),
         cmocka_unit_test(test_amxc_set_to_string),
+        cmocka_unit_test(test_amxc_set_copy),
+        cmocka_unit_test(test_amxc_set_symmetric_difference),
     };
     return cmocka_run_group_tests_name("amxc-set", tests, NULL, NULL);
 }
