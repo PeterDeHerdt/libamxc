@@ -1,3 +1,9 @@
+libamxc (1.3.2) unstable; urgency=medium
+
+  * Unexpected behavior of amxc_var_get_path
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 23 Sep 2021 08:18:13 +0000
+
 libamxc (1.3.1) unstable; urgency=medium
 
 

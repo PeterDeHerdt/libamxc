@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.3.2 - 2021-09-23(08:18:12 +0000)
+
+### Fixes
+
+- Unexpected behavior of amxc_var_get_path
+
 ## Release v1.3.1 - 2021-09-03(18:00:23 +0000)
 
 ## Release v1.3.0 - 2021-09-03(12:24:56 +0000)
