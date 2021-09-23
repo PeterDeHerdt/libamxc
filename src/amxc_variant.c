@@ -530,6 +530,12 @@ amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
         char* token = amxc_string_take_buffer(key);
         amxc_var_t* temp = NULL;
 
+        // skip empty parts
+        if((token == NULL) || (*token == 0)) {
+            free(token);
+            continue;
+        }
+
         if((token[0] == '\'') || (token[0] == '"')) {
             token[len - 1] = 0;
             offset = 1;
