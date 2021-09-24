@@ -541,7 +541,7 @@ amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
             offset = 1;
         }
         temp = amxc_var_get_key(retval, token + offset, AMXC_VAR_FLAG_DEFAULT);
-        if(temp == NULL) {
+        if((temp == NULL) && ((flags & AMXC_VAR_FLAG_NO_INDEX) == 0)) {
             char* endptr = NULL;
             int index = strtol(token + offset, &endptr, 0);
             if(*endptr == 0) {

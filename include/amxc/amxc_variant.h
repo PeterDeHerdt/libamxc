@@ -406,6 +406,13 @@ extern "C"
    Replaces the value of the variant, leaves the source variant untouched
  */
 #define AMXC_VAR_FLAG_UPDATE    0x02
+/**
+   @ingroup amxc_variant_flags
+   @brief
+   Only search by key and not by index. This flag can be used with
+   @ref amxc_var_get_path function.
+ */
+#define AMXC_VAR_FLAG_NO_INDEX    0x04
 
 /**
    @ingroup amxc_variant
@@ -1303,7 +1310,7 @@ amxc_var_t* amxc_var_add_new(amxc_var_t* const var);
    @param var pointer to a variant struct, the variant type should be a composite type
    @param path path to a variant in the composite variant structure, a path is
                a sequence of indexes and/or keys seperated by a '.'
-   @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY
+   @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY, AMXC_VAR_FLAG_NO_INDEX
 
    @return
    Pointer to the variant at the given path or NULL if the path does not exist.
