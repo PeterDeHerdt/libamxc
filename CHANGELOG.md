@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.3.3 - 2021-09-24(12:27:59 +0000)
+
+### Fixes
+
+- It must be possible to indicate that amxc_var_get_path must not search positional if key is not found
+
 ## Release v1.3.2 - 2021-09-23(08:18:12 +0000)
 
 ### Fixes
