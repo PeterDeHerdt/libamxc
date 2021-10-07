@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.4.0 - 2021-10-07(12:09:56 +0000)
+
+### New
+
+- Make it possible to get the local time timestamp
+
 ## Release v1.3.3 - 2021-09-24(12:27:59 +0000)
 
 ### Fixes

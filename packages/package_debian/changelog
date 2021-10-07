@@ -1,3 +1,9 @@
+libamxc (1.4.0) unstable; urgency=medium
+
+  * Make it possible to get the local time timestamp
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 07 Oct 2021 12:09:56 +0000
+
 libamxc (1.3.3) unstable; urgency=medium
 
   * It must be possible to indicate that amxc_var_get_path must not search positional if key is not found
