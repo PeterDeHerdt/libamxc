@@ -70,5 +70,6 @@ void test_amxc_ts_format_precision_valid(void** state);
 void test_amxc_ts_is_valid(void** state);
 void test_amxc_ts_compare(void** state);
 void test_amxc_ts_to_tm(void** state);
+void test_amxc_ts_to_local(void** state);
 
 #endif  // __TEST_AMXC_TIMESTAMP_H__

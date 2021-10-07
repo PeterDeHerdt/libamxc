@@ -555,3 +555,20 @@ int amxc_ts_to_tm_utc(const amxc_ts_t* tsp, struct tm* tmp) {
 int amxc_ts_to_tm_local(const amxc_ts_t* tsp, struct tm* tmp) {
     return timestamp_to_tm(tsp, tmp, true);
 }
+
+int amxc_ts_to_local(amxc_ts_t* tsp) {
+    int retval = -1;
+    time_t rawtime = time(NULL);
+    struct tm* ptm = gmtime(&rawtime);
+    time_t gmt = mktime(ptm);
+
+    ptm = localtime(&rawtime);
+
+    when_null(tsp, exit);
+
+    tsp->offset = (rawtime - gmt + (ptm->tm_isdst ? 3600 : 0)) / 60;
+    retval = 0;
+
+exit:
+    return retval;
+}

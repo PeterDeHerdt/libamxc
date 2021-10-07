@@ -40,7 +40,7 @@ git clone git@gitlab.com:<USER>/libamxc.git
 Add `upstream` as a remote called `upstream`:
 
 ```bash
-git remote add upstream git@gitlab.com:soft.at.home/ambiorix/libraries/libamxc.git
+git remote add upstream git@gitlab.com:prpl-foundation/components/ambiorix/libraries/libamxc.git
 ```
 
 ## For Each Contribution

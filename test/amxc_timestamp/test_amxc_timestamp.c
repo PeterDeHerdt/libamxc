@@ -326,3 +326,25 @@ void test_amxc_ts_to_tm(UNUSED void** state) {
     ts.offset = 1440;
     assert_int_not_equal(amxc_ts_to_tm_utc(&ts, &tm), 0);
 }
+
+void test_amxc_ts_to_local(UNUSED void** state) {
+    amxc_ts_t ts;
+    char* current_tz = getenv("TZ");
+    char str_ts[40];
+
+    setenv("TZ", "Europe/Brussels", true);
+    assert_int_equal(amxc_ts_parse(&ts, "2020-06-17T15:35:22Z", strlen("2020-06-17T15:35:22Z")), 0);
+    assert_int_equal(ts.offset, 0);
+    assert_int_equal(amxc_ts_to_local(&ts), 0);
+    assert_int_equal(ts.offset, 120);
+    assert_int_equal(amxc_ts_format(&ts, str_ts, 40), strlen("2020-06-17T17:35:22+02:00"));
+    assert_string_equal(str_ts, "2020-06-17T17:35:22+02:00");
+
+    assert_int_not_equal(amxc_ts_to_local(NULL), 0);
+
+    if(current_tz != NULL) {
+        setenv("TZ", current_tz, true);
+    } else {
+        unsetenv("TZ");
+    }
+}

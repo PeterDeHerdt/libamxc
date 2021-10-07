@@ -255,6 +255,19 @@ int amxc_ts_to_tm_utc(const amxc_ts_t* tsp, struct tm* tmp);
  */
 int amxc_ts_to_tm_local(const amxc_ts_t* tsp, struct tm* tmp);
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Adds the local time offset to the timestamp structure.
+
+   @param tsp a pointer to a timestamp structure
+
+   @return
+   -1 if an error occurs
+   0 if the action succeeded
+ */
+int amxc_ts_to_local(amxc_ts_t* tsp);
+
 #ifdef __cplusplus
 }
 #endif
