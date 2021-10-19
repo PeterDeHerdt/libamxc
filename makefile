@@ -49,7 +49,9 @@ changelog:
 	$(call create_changelog)
 
 doc:
-	$(MAKE) -C doc doc
+	mkdir -p output/doc
+	VERSION=$(VERSION) doxygen doc/libamxc.doxy
+
 
 test:
 	$(MAKE) -C test run
