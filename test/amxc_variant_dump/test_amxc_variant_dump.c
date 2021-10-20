@@ -149,3 +149,11 @@ void test_amxc_variant_log(UNUSED void** state) {
     amxc_var_clean(&myvar);
     closelog();
 }
+
+void test_amxc_variant_dump_null(UNUSED void** state) {
+    amxc_var_dump(NULL, STDOUT_FILENO);
+}
+
+void test_amxc_variant_log_null(UNUSED void** state) {
+    amxc_var_log(NULL);
+}

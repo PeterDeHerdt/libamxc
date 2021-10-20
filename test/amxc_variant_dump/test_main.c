@@ -69,6 +69,8 @@ int main(void) {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_amxc_variant_dump),
         cmocka_unit_test(test_amxc_variant_log),
+        cmocka_unit_test(test_amxc_variant_dump_null),
+        cmocka_unit_test(test_amxc_variant_log_null),
     };
     return cmocka_run_group_tests_name("amxc-variant-dump", tests, NULL, NULL);
 }

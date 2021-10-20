@@ -308,10 +308,18 @@ static int amxc_var_dump_internal(const amxc_var_t* const var,
 }
 
 int amxc_var_dump(const amxc_var_t* const var, int fd) {
+    int retval = 0;
     amxc_log_var_t log;
+
     log.fd = fd;
     amxc_string_init(&log.message, 0);
-    int retval = amxc_var_dump_internal(var, 0, &log);
+
+    if(var == NULL) {
+        amxc_var_write(&log, "NULL\n", 5);
+        goto exit;
+    }
+
+    retval = amxc_var_dump_internal(var, 0, &log);
     when_true(amxc_var_write(&log, "\n", 1) == -1, exit);
 
 exit:
@@ -325,11 +333,18 @@ int amxc_var_log(const amxc_var_t* const var) {
 
     log.fd = -1;
     amxc_string_init(&log.message, 1024);
+
+    if(var == NULL) {
+        syslog(LOG_DAEMON | LOG_DEBUG, "NULL");
+        goto exit;
+    }
+
     retval = amxc_var_dump_internal(var, 0, &log);
     if(!amxc_string_is_empty(&log.message)) {
         syslog(LOG_DAEMON | LOG_DEBUG, "%s", amxc_string_get(&log.message, 0));
     }
 
+exit:
     amxc_string_clean(&log.message);
     return retval;
 }

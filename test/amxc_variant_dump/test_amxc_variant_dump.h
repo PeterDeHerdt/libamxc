@@ -63,5 +63,7 @@
 
 void test_amxc_variant_dump(void** state);
 void test_amxc_variant_log(void** state);
+void test_amxc_variant_dump_null(void** state);
+void test_amxc_variant_log_null(void** state);
 
 #endif // __TEST_AMXC_VARIANT_DUMP_H__
