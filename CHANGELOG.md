@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.4.1 - 2021-10-20(18:03:37 +0000)
+
+### Fixes
+
+- Segmentation fault occurs when NULL pointer passed to amxc_var_dump or amxc_var_log
+
 ## Release v1.4.0 - 2021-10-07(12:09:56 +0000)
 
 ### New
