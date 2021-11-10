@@ -1,8 +1,3 @@
-libamxc (1.4.2) unstable; urgency=medium
-
-
- -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 28 Oct 2021 21:31:47 +0000
-
 libamxc (1.4.1) unstable; urgency=medium
 
   * Segmentation fault occurs when NULL pointer passed to amxc_var_dump or amxc_var_log

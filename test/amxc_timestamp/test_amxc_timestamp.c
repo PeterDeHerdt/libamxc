@@ -331,14 +331,25 @@ void test_amxc_ts_to_local(UNUSED void** state) {
     amxc_ts_t ts;
     char* current_tz = getenv("TZ");
     char str_ts[40];
+    time_t rawtime;
+    struct tm* timeinfo;  // get date and time info
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
 
     setenv("TZ", "Europe/Brussels", true);
     assert_int_equal(amxc_ts_parse(&ts, "2020-06-17T15:35:22Z", strlen("2020-06-17T15:35:22Z")), 0);
     assert_int_equal(ts.offset, 0);
     assert_int_equal(amxc_ts_to_local(&ts), 0);
-    assert_int_equal(ts.offset, 120);
-    assert_int_equal(amxc_ts_format(&ts, str_ts, 40), strlen("2020-06-17T17:35:22+02:00"));
-    assert_string_equal(str_ts, "2020-06-17T17:35:22+02:00");
+    if(timeinfo->tm_isdst == 0) {
+        assert_int_equal(ts.offset, 60);
+        assert_int_equal(amxc_ts_format(&ts, str_ts, 40), strlen("2020-06-17T16:35:22+01:00"));
+        assert_string_equal(str_ts, "2020-06-17T16:35:22+01:00");
+    } else {
+        assert_int_equal(ts.offset, 120);
+        assert_int_equal(amxc_ts_format(&ts, str_ts, 40), strlen("2020-06-17T17:35:22+02:00"));
+        assert_string_equal(str_ts, "2020-06-17T17:35:22+02:00");
+    }
 
     assert_int_not_equal(amxc_ts_to_local(NULL), 0);
 
