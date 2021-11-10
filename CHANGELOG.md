@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.4.3 - 2021-11-10(11:57:45 +0000)
+
+### Fixes
+
+- Fixes test when daylight saving is off
+
 ## Release v1.4.2 - 2021-10-28(21:31:46 +0000)
 
 ## Release v1.4.1 - 2021-10-20(18:03:37 +0000)

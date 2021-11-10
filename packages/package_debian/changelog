@@ -1,3 +1,9 @@
+libamxc (1.4.3) unstable; urgency=medium
+
+  * Fixes test when daylight saving is off
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Wed, 10 Nov 2021 11:57:46 +0000
+
 libamxc (1.4.2) unstable; urgency=medium
 
 
