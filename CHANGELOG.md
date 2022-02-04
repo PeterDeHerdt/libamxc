@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.4.4 - 2022-02-04(14:12:51 +0000)
+
+### Fixes
+
+- Variant conversions to integer values is going wrong on mips target
+
 ## Release v1.4.3 - 2021-11-10(11:57:45 +0000)
 
 ### Fixes

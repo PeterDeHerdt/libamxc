@@ -1,3 +1,9 @@
+libamxc (1.4.4) unstable; urgency=medium
+
+  * Variant conversions to integer values is going wrong on mips target
+
+ -- SAH bot <sahbot@softathome.com>  Fri, 04 Feb 2022 14:12:51 +0000
+
 libamxc (1.4.3) unstable; urgency=medium
 
   * Fixes test when daylight saving is off
