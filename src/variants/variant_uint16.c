@@ -142,7 +142,7 @@ static int variant_uint16_to_uint8(amxc_var_t* const dest,
 
     when_true(src->data.ui16 > UINT8_MAX, exit);
 
-    dest->data.i8 = (uint8_t) src->data.ui16;
+    dest->data.ui8 = (uint8_t) src->data.ui16;
     retval = 0;
 
 exit:
@@ -163,7 +163,7 @@ static int variant_uint16_to_uint64(amxc_var_t* const dest,
                                     const amxc_var_t* const src) {
     int retval = -1;
 
-    dest->data.i64 = (uint64_t) src->data.ui16;
+    dest->data.ui64 = (uint64_t) src->data.ui16;
     retval = 0;
 
     return retval;

@@ -84,9 +84,51 @@ exit:
     return retval;
 }
 
-static int variant_bool_to_int(amxc_var_t* const dest,
-                               const amxc_var_t* const src) {
+static int variant_bool_to_int8(amxc_var_t* const dest,
+                                const amxc_var_t* const src) {
+    dest->data.i8 = src->data.b ? 1 : 0;
+    return 0;
+}
+
+static int variant_bool_to_int16(amxc_var_t* const dest,
+                                 const amxc_var_t* const src) {
+    dest->data.i16 = src->data.b ? 1 : 0;
+    return 0;
+}
+
+static int variant_bool_to_int32(amxc_var_t* const dest,
+                                 const amxc_var_t* const src) {
+    dest->data.i32 = src->data.b ? 1 : 0;
+    return 0;
+}
+
+static int variant_bool_to_int64(amxc_var_t* const dest,
+                                 const amxc_var_t* const src) {
     dest->data.i64 = src->data.b ? 1 : 0;
+    return 0;
+}
+
+static int variant_bool_to_uint8(amxc_var_t* const dest,
+                                 const amxc_var_t* const src) {
+    dest->data.ui8 = src->data.b ? 1 : 0;
+    return 0;
+}
+
+static int variant_bool_to_uint16(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
+    dest->data.ui16 = src->data.b ? 1 : 0;
+    return 0;
+}
+
+static int variant_bool_to_uint32(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
+    dest->data.ui32 = src->data.b ? 1 : 0;
+    return 0;
+}
+
+static int variant_bool_to_uint64(amxc_var_t* const dest,
+                                  const amxc_var_t* const src) {
+    dest->data.ui64 = src->data.b ? 1 : 0;
     return 0;
 }
 
@@ -109,14 +151,14 @@ static int variant_bool_convert_to(amxc_var_t* const dest,
     amxc_var_convert_fn_t convfn[AMXC_VAR_ID_CUSTOM_BASE] = {
         amxc_var_default_convert_to_null,
         variant_bool_to_string,
-        variant_bool_to_int,
-        variant_bool_to_int,
-        variant_bool_to_int,
-        variant_bool_to_int,
-        variant_bool_to_int,
-        variant_bool_to_int,
-        variant_bool_to_int,
-        variant_bool_to_int,
+        variant_bool_to_int8,
+        variant_bool_to_int16,
+        variant_bool_to_int32,
+        variant_bool_to_int64,
+        variant_bool_to_uint8,
+        variant_bool_to_uint16,
+        variant_bool_to_uint32,
+        variant_bool_to_uint64,
         variant_bool_to_float,
         variant_bool_to_double,
         amxc_var_default_copy,

@@ -133,7 +133,7 @@ static int variant_int32_to_uint8(amxc_var_t* const dest,
     /* verify overflow or underflow */
     when_true(src->data.i32 == INT32_MIN || llabs(src->data.i32) > UINT8_MAX, exit);
 
-    dest->data.i8 = (uint8_t) llabs(src->data.i32);
+    dest->data.ui8 = (uint8_t) llabs(src->data.i32);
     retval = 0;
 
 exit:
@@ -147,7 +147,7 @@ static int variant_int32_to_uint16(amxc_var_t* const dest,
     /* verify overflow or underflow */
     when_true(src->data.i32 == INT32_MIN || llabs(src->data.i32) > UINT16_MAX, exit);
 
-    dest->data.i16 = (uint16_t) llabs(src->data.i32);
+    dest->data.ui16 = (uint16_t) llabs(src->data.i32);
     retval = 0;
 
 exit:
@@ -159,7 +159,7 @@ static int variant_int32_to_uint32(amxc_var_t* const dest,
     int retval = -1;
 
     /* verify overflow or underflow */
-    dest->data.i32 = (uint32_t) llabs(src->data.i32);
+    dest->data.ui32 = (uint32_t) llabs(src->data.i32);
     retval = 0;
 
     return retval;

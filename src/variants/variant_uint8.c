@@ -136,7 +136,7 @@ static int variant_uint8_to_uint16(amxc_var_t* const dest,
                                    const amxc_var_t* const src) {
     int retval = -1;
 
-    dest->data.i16 = (uint16_t) src->data.ui8;
+    dest->data.ui16 = (uint16_t) src->data.ui8;
     retval = 0;
 
     return retval;
@@ -156,7 +156,7 @@ static int variant_uint8_to_uint64(amxc_var_t* const dest,
                                    const amxc_var_t* const src) {
     int retval = -1;
 
-    dest->data.i64 = (uint64_t) src->data.ui8;
+    dest->data.ui64 = (uint64_t) src->data.ui8;
     retval = 0;
 
     return retval;

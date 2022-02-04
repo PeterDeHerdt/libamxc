@@ -147,7 +147,7 @@ static int variant_uint32_to_uint8(amxc_var_t* const dest,
     /* verify overflow or underflow */
     when_true(src->data.ui32 > UINT8_MAX, exit);
 
-    dest->data.i8 = (uint8_t) src->data.ui32;
+    dest->data.ui8 = (uint8_t) src->data.ui32;
     retval = 0;
 
 exit:
@@ -161,7 +161,7 @@ static int variant_uint32_to_uint16(amxc_var_t* const dest,
     /* verify overflow or underflow */
     when_true(src->data.ui32 > UINT16_MAX, exit);
 
-    dest->data.i16 = (uint16_t) src->data.ui32;
+    dest->data.ui16 = (uint16_t) src->data.ui32;
     retval = 0;
 
 exit:
@@ -172,7 +172,7 @@ static int variant_uint32_to_uint64(amxc_var_t* const dest,
                                     const amxc_var_t* const src) {
     int retval = -1;
 
-    dest->data.i64 = (uint64_t) src->data.ui32;
+    dest->data.ui64 = (uint64_t) src->data.ui32;
     retval = 0;
 
     return retval;
