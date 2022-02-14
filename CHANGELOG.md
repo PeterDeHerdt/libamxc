@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.5.0 - 2022-02-14(22:25:55 +0000)
+
+### New
+
+- Add implementation of amxc_var_set_path and amxc_var_set_pathf
+
 ## Release v1.4.4 - 2022-02-04(14:12:51 +0000)
 
 ### Fixes
