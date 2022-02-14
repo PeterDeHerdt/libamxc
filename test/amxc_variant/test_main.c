@@ -87,6 +87,7 @@ int main(void) {
         cmocka_unit_test(test_amxc_var_add_new_key),
         cmocka_unit_test(test_amxc_var_add_new),
         cmocka_unit_test(test_amxc_var_get_path),
+        cmocka_unit_test(test_amxc_var_set_path),
         cmocka_unit_test(test_amxc_var_push_take_amxc_string),
         cmocka_unit_test(test_amxc_var_move),
         cmocka_unit_test(test_amxc_var_take_it),

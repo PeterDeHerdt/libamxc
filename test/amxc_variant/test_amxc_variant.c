@@ -680,6 +680,23 @@ void test_amxc_var_get_path(UNUSED void** state) {
     amxc_var_remove_type(&dummy1);
 }
 
+void test_amxc_var_set_path(UNUSED void** state) {
+    amxc_var_t var1;
+    amxc_var_t var2;
+
+    assert_int_equal(amxc_var_add_type(&dummy3, -1), AMXC_VAR_ID_CUSTOM_BASE);
+    assert_int_equal(amxc_var_add_type(&dummy1, -1), AMXC_VAR_ID_CUSTOM_BASE + 1);
+    assert_int_equal(amxc_var_init(&var1), 0);
+    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_CUSTOM_BASE), 0);
+    assert_int_equal(amxc_var_init(&var2), 0);
+    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_CUSTOM_BASE + 1), 0);
+
+    assert_int_equal(amxc_var_set_path(&var1, "valid.1.valid.2.valid.3", &var2, AMXC_VAR_FLAG_DEFAULT | AMXC_VAR_FLAG_AUTO_ADD), 0);
+
+    amxc_var_remove_type(&dummy3);
+    amxc_var_remove_type(&dummy1);
+}
+
 void test_amxc_var_push_take_amxc_string(UNUSED void** state) {
     amxc_var_t var1;
     amxc_string_t source;

@@ -413,6 +413,13 @@ extern "C"
    @ref amxc_var_get_path function.
  */
 #define AMXC_VAR_FLAG_NO_INDEX    0x04
+/**
+   @ingroup amxc_variant_flags
+   @brief
+   Add none existing variants to composite variants. This flag can be used with
+   @ref amxc_var_set_path and @ref amxc_var_set_pathf functions.
+ */
+#define AMXC_VAR_FLAG_AUTO_ADD    0x08
 
 /**
    @ingroup amxc_variant
@@ -1293,7 +1300,6 @@ amxc_var_t* amxc_var_add_new_key(amxc_var_t* const var,
  */
 amxc_var_t* amxc_var_add_new(amxc_var_t* const var);
 
-
 /**
    @ingroup amxc_variant
    @brief
@@ -1347,6 +1353,71 @@ amxc_var_t* amxc_var_get_pathf(const amxc_var_t* const var,
                                const char* const fmt,
                                ...
                                ) __attribute__ ((format(printf, 3, 4)));
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Sets the variant at the given path of a composite variant.
+
+   The type of the given variant is a composite type and some of the parts are
+   composite variants as well, this function makes it easy to set a variant
+   deep down in the composite variant structure.
+   The path consists of a sequence of keys and/or indexes separated by a '.'.
+
+   If the path exists, the value of the variant at that position is changed.
+
+   If the path doesn't exist and the flag AMXC_VAR_FLAG_AUTO_ADD is set the
+   variants on that path are added.
+
+   When a key contains a '.' the key should be put between quotes (single or double)
+
+   @param var pointer to a variant struct, the variant type should be a composite type
+   @param path path to a variant in the composite variant structure, a path is
+               a sequence of indexes and/or keys seperated by a '.'
+   @param data the new value
+   @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY, AMXC_VAR_FLAG_NO_INDEX, AMXC_VAR_FLAG_AUTO_ADD
+
+   @return
+   0 when the value was set, any other value indicates an error.
+ */
+int amxc_var_set_path(amxc_var_t* const var,
+                      const char* const path,
+                      amxc_var_t* data,
+                      const int flags);
+
+/**
+   @ingroup amxc_variant
+   @brief
+   Sets the variant at the given path of a composite variant.
+
+   The type of the given variant is a composite type and some of the parts are
+   composite variants as well, this function makes it easy to set a variant
+   deep down in the composite variant structure.
+   The path consists of a sequence of keys and/or indexes separated by a '.'.
+
+   If the path exists, the value of the variant at that position is changed.
+
+   If the path doesn't exist and the flag AMXC_VAR_FLAG_AUTO_ADD is set the
+   variants on that path are added.
+
+   When a key contains a '.' the key should be put between quotes (single or double)
+
+   @param var pointer to a variant struct, the variant type should be a composite type
+   @param data the new value
+   @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY, AMXC_VAR_FLAG_NO_INDEX, AMXC_VAR_FLAG_AUTO_ADD
+   @param fmt path to a variant in the composite variant structure, a path is
+              a sequence of indexes and/or keys seperated by a '.'. Does support
+              printf format.
+
+   @return
+   0 when the value was set, any other value indicates an error.
+ */
+int amxc_var_set_pathf(amxc_var_t* const var,
+                       amxc_var_t* data,
+                       const int flags,
+                       const char* const fmt,
+                       ...
+                       ) __attribute__ ((format(printf, 4, 5)));
 
 /**
    @ingroup amxc_variant

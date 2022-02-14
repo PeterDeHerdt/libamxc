@@ -72,6 +72,7 @@ void test_amxc_var_get_set_key(void** state);
 void test_amxc_var_add_new_key(void** state);
 void test_amxc_var_add_new(void** state);
 void test_amxc_var_get_path(void** state);
+void test_amxc_var_set_path(void** state);
 void test_amxc_var_push_take_amxc_string(void** state);
 void test_amxc_var_move(void** state);
 void test_amxc_var_take_it(void** state);

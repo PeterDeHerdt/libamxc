@@ -70,6 +70,75 @@
 #include <amxc/amxc_utils.h>
 #include <amxc/amxc_macros.h>
 
+static amxc_var_t* amxc_var_find(amxc_var_t* const var,
+                                 const char* const path,
+                                 const int flags) {
+    amxc_var_t* retval = NULL;
+    amxc_string_t str_path;
+    amxc_llist_t parts;
+
+    amxc_string_init(&str_path, 0);
+    amxc_llist_init(&parts);
+
+    amxc_string_set(&str_path, path);
+    amxc_string_split_to_llist(&str_path, &parts, '.');
+    amxc_string_clean(&str_path);
+
+    retval = var;
+
+    amxc_llist_for_each(it, &parts) {
+        amxc_string_t* key = amxc_container_of(it, amxc_string_t, it);
+        size_t len = amxc_string_text_length(key);
+        uint32_t offset = 0;
+        char* token = amxc_string_take_buffer(key);
+        amxc_var_t* temp = NULL;
+
+        // skip empty parts
+        if((token == NULL) || (*token == 0)) {
+            free(token);
+            continue;
+        }
+
+        if((token[0] == '\'') || (token[0] == '"')) {
+            token[len - 1] = 0;
+            offset = 1;
+        }
+
+        temp = amxc_var_get_key(retval, token + offset, AMXC_VAR_FLAG_DEFAULT);
+        if((temp == NULL) && ((flags & AMXC_VAR_FLAG_NO_INDEX) == 0)) {
+            char* endptr = NULL;
+            int index = strtol(token + offset, &endptr, 0);
+            if(*endptr == 0) {
+                temp = amxc_var_get_index(retval, index, AMXC_VAR_FLAG_DEFAULT);
+            }
+        }
+
+        if((temp == NULL) && ((flags & AMXC_VAR_FLAG_AUTO_ADD) != 0)) {
+            if(amxc_var_type_of(retval) == AMXC_VAR_ID_LIST) {
+                temp = amxc_var_add_new(retval);
+            } else if(amxc_var_type_of(retval) == AMXC_VAR_ID_HTABLE) {
+                temp = amxc_var_add_new_key(retval, token + offset);
+            } else if(amxc_var_type_of(retval) == AMXC_VAR_ID_NULL) {
+                amxc_var_set_type(retval, AMXC_VAR_ID_HTABLE);
+                temp = amxc_var_add_new_key(retval, token + offset);
+            }
+        }
+
+        retval = temp;
+        free(token);
+        amxc_string_delete(&key);
+
+        if(temp == NULL) {
+            break;
+        }
+    }
+
+    amxc_string_clean(&str_path);
+    amxc_llist_clean(&parts, amxc_string_list_it_free);
+
+    return (amxc_var_t*) retval;
+}
+
 int PRIVATE amxc_var_default_copy(amxc_var_t* const dest,
                                   const amxc_var_t* const src) {
     dest->data = src->data;
@@ -510,49 +579,9 @@ exit:
 amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
                               const char* const path,
                               const int flags) {
-    const amxc_var_t* retval = NULL;
-    amxc_string_t str_path;
-    amxc_llist_t parts;
+    amxc_var_t* retval = NULL;
 
-    amxc_string_init(&str_path, 0);
-    amxc_llist_init(&parts);
-
-    amxc_string_set(&str_path, path);
-    amxc_string_split_to_llist(&str_path, &parts, '.');
-    amxc_string_clean(&str_path);
-
-    retval = var;
-
-    amxc_llist_for_each(it, &parts) {
-        amxc_string_t* key = amxc_container_of(it, amxc_string_t, it);
-        size_t len = amxc_string_text_length(key);
-        uint32_t offset = 0;
-        char* token = amxc_string_take_buffer(key);
-        amxc_var_t* temp = NULL;
-
-        // skip empty parts
-        if((token == NULL) || (*token == 0)) {
-            free(token);
-            continue;
-        }
-
-        if((token[0] == '\'') || (token[0] == '"')) {
-            token[len - 1] = 0;
-            offset = 1;
-        }
-        temp = amxc_var_get_key(retval, token + offset, AMXC_VAR_FLAG_DEFAULT);
-        if((temp == NULL) && ((flags & AMXC_VAR_FLAG_NO_INDEX) == 0)) {
-            char* endptr = NULL;
-            int index = strtol(token + offset, &endptr, 0);
-            if(*endptr == 0) {
-                temp = amxc_var_get_index(retval, index, AMXC_VAR_FLAG_DEFAULT);
-            }
-        }
-        retval = temp;
-        free(token);
-        amxc_string_delete(&key);
-    }
-
+    retval = amxc_var_find((amxc_var_t*) var, path, flags & ~AMXC_VAR_FLAG_AUTO_ADD);
     when_null(retval, exit);
 
     if((flags & AMXC_VAR_FLAG_COPY) == AMXC_VAR_FLAG_COPY) {
@@ -570,9 +599,7 @@ amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
     }
 
 exit:
-    amxc_string_clean(&str_path);
-    amxc_llist_clean(&parts, amxc_string_list_it_free);
-    return (amxc_var_t*) retval;
+    return retval;
 }
 
 amxc_var_t* amxc_var_get_pathf(const amxc_var_t* const var,
@@ -593,6 +620,51 @@ amxc_var_t* amxc_var_get_pathf(const amxc_var_t* const var,
     va_end(args);
 
     retval = amxc_var_get_path(var, amxc_string_get(&path, 0), flags);
+
+exit:
+    amxc_string_clean(&path);
+    return retval;
+}
+
+int amxc_var_set_path(amxc_var_t* const var,
+                      const char* const path,
+                      amxc_var_t* data,
+                      const int flags) {
+    amxc_var_t* variant = NULL;
+    int retval = -1;
+
+    variant = amxc_var_find(var, path, flags);
+    when_null(variant, exit);
+
+    if((flags & AMXC_VAR_FLAG_COPY) == AMXC_VAR_FLAG_COPY) {
+        retval = amxc_var_copy(variant, data);
+    } else {
+        retval = amxc_var_move(variant, data);
+    }
+
+exit:
+    return retval;
+}
+
+int amxc_var_set_pathf(amxc_var_t* const var,
+                       amxc_var_t* data,
+                       const int flags,
+                       const char* const fmt,
+                       ...
+                       ) {
+    int retval = -1;
+    amxc_string_t path;
+    va_list args;
+
+    amxc_string_init(&path, 0);
+    when_null(var, exit);
+    when_null(fmt, exit);
+
+    va_start(args, fmt);
+    amxc_string_vappendf(&path, fmt, args);
+    va_end(args);
+
+    retval = amxc_var_set_path(var, amxc_string_get(&path, 0), data, flags);
 
 exit:
     amxc_string_clean(&path);
