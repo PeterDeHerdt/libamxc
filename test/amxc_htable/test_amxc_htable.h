@@ -115,5 +115,6 @@ void amxc_htable_it_clean_null_check(void** state);
 void amxc_htable_it_clean_func_check(void** state);
 void amxc_htable_get_sorted_keys_check(void** state);
 void amxc_htable_move_check(void** state);
+void amxc_htable_check_null_ptr(void** state);
 
 #endif //__TEST_AMXC_HTABLE_H__

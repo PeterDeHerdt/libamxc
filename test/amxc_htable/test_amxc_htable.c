@@ -991,3 +991,12 @@ void amxc_htable_move_check(UNUSED void** state) {
     amxc_htable_clean(&dest, NULL);
     amxc_htable_teardown();
 }
+
+void amxc_htable_check_null_ptr(UNUSED void** state) {
+    htable = (amxc_htable_t*) calloc(1, sizeof(amxc_htable_t));
+    assert_non_null(htable);
+    assert_int_not_equal(amxc_htable_insert(htable, "Key", &it[0]), 0);
+    assert_int_equal(amxc_htable_init(htable, 10), 0);
+    assert_int_equal(amxc_htable_insert(htable, "Key", &it[0]), 0);
+    amxc_htable_delete(&htable, NULL);
+}

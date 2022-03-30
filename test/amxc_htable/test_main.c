@@ -121,6 +121,7 @@ int main(void) {
         cmocka_unit_test(amxc_htable_it_clean_func_check),
         cmocka_unit_test(amxc_htable_get_sorted_keys_check),
         cmocka_unit_test(amxc_htable_move_check),
+        cmocka_unit_test(amxc_htable_check_null_ptr),
     };
     return cmocka_run_group_tests_name("amxc-hash-table", tests, NULL, NULL);
 }

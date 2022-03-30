@@ -80,7 +80,7 @@ static void amxc_htable_insert_it(amxc_htable_t* const htable,
     index = amxc_htable_key2index(htable, it->key);
     ait = amxc_array_get_at(&htable->table, index);
     // insert item
-    if(ait->data != NULL) {
+    if((ait != NULL) && (ait->data != NULL)) {
         it->next = (amxc_htable_it_t*) ait->data;
     }
     amxc_array_it_set_data(ait, it);
@@ -100,6 +100,8 @@ static int amxc_htable_grow(amxc_htable_t* const htable, size_t hint) {
     htable->table.last_used = 0;
     htable->table.items = 0;
     htable->items = 0;
+
+    when_null(temp, exit);
 
     if(hint != 0) {
         retval = amxc_array_grow(&htable->table, capacity + hint);
