@@ -1,3 +1,8 @@
+libamxc (1.5.1) unstable; urgency=medium
+
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Wed, 06 Apr 2022 08:23:18 +0000
+
 libamxc (1.5.0) unstable; urgency=medium
 
   * Add implementation of amxc_var_set_path and amxc_var_set_pathf
