@@ -359,3 +359,15 @@ void test_amxc_ts_to_local(UNUSED void** state) {
         unsetenv("TZ");
     }
 }
+
+void test_amxc_ts_from_tm(UNUSED void** state) {
+    amxc_ts_t ts;
+    time_t rawtime;
+    struct tm* timeinfo = NULL;  // get date and time info
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    assert_int_equal(amxc_ts_from_tm(&ts, timeinfo), 0);
+    assert_int_equal(rawtime, ts.sec);
+}

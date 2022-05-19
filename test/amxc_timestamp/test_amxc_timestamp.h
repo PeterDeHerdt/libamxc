@@ -71,5 +71,6 @@ void test_amxc_ts_is_valid(void** state);
 void test_amxc_ts_compare(void** state);
 void test_amxc_ts_to_tm(void** state);
 void test_amxc_ts_to_local(void** state);
+void test_amxc_ts_from_tm(void** state);
 
 #endif  // __TEST_AMXC_TIMESTAMP_H__

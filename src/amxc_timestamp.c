@@ -572,3 +572,23 @@ int amxc_ts_to_local(amxc_ts_t* tsp) {
 exit:
     return retval;
 }
+
+int amxc_ts_from_tm(amxc_ts_t* const tsp, struct tm* tmp) {
+    int rv = -1;
+    time_t epoch = 0;
+
+    when_null(tsp, exit);
+    when_null(tmp, exit);
+
+    epoch = mktime(tmp);
+    when_true(epoch == -1, exit);
+
+    tsp->sec = epoch;
+    tsp->nsec = 0;
+    tsp->offset = 0;
+
+    rv = 0;
+
+exit:
+    return rv;
+}

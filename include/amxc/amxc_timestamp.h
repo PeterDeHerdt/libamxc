@@ -268,6 +268,26 @@ int amxc_ts_to_tm_local(const amxc_ts_t* tsp, struct tm* tmp);
  */
 int amxc_ts_to_local(amxc_ts_t* tsp);
 
+/**
+   @ingroup amxc_timestamp
+   @brief
+   Converts a broken down time in a struct tm to a timestamp structure.
+
+   Using this function a timestamp structure is initialized using a struct tm
+   as input.
+
+   @note
+   As struct tm doesn't contain timezone information, the offset will be set to 0.
+
+   @param tsp a pointer to a timestamp structure
+   @param tmp pointer to struct tm, containing the broken down time.
+
+   @return
+   -1 if an error occurs
+   0 if the action succeeded
+ */
+int amxc_ts_from_tm(amxc_ts_t* const tsp, struct tm* tmp);
+
 #ifdef __cplusplus
 }
 #endif
