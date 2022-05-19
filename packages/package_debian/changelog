@@ -1,3 +1,9 @@
+libamxc (1.6.0) unstable; urgency=medium
+
+  * Make it possible to initialize a timestamp structure using struct tm
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 19 May 2022 14:34:00 +0000
+
 libamxc (1.5.1) unstable; urgency=medium
 
 
