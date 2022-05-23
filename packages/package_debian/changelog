@@ -1,3 +1,9 @@
+libamxc (1.6.1) unstable; urgency=medium
+
+  * [Gitlab CI][Unit tests][valgrind] Pipeline doesn't stop when memory leaks are detected
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Mon, 23 May 2022 10:12:20 +0000
+
 libamxc (1.6.0) unstable; urgency=medium
 
   * Make it possible to initialize a timestamp structure using struct tm
