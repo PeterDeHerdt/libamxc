@@ -421,6 +421,9 @@ amxc_htable_it_t* amxc_htable_get(const amxc_htable_t* const htable,
    To fetch the next item in the hash table with the same key, call this
    function again.
 
+   @note
+   Use @ref amxc_htable_it_clean to clean up the iterator.
+
    @param htable a pointer to the hash table structure
    @param key the item key
 
