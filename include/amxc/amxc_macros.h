@@ -168,6 +168,11 @@ extern "C"
 #define when_false_status(x, l, c) if(!(x)) { c; goto l; }
 #endif
 
+#ifndef when_failed_status
+#define when_failed_status(x, l, c) if((x) != 0) { c; goto l; }
+#endif
+
+
 #ifndef when_str_empty_status
 #define when_str_empty_status(x, l, c) if((x) == NULL || (x)[0] == '\0') { c; goto l; }
 #endif
