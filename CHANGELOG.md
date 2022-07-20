@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.7.0 - 2022-07-20(08:30:57 +0000)
+
+### Other
+
+- Improve documentation
+- Add when_failed_status macro
+
 ## Release v1.6.1 - 2022-05-23(10:12:19 +0000)
 
 ### Fixes
