@@ -90,6 +90,7 @@ void test_split_word_checks_round_brackets(void** state);
 void test_amxc_string_split_word(void** state);
 void test_amxc_string_split_word_quotes2(void** state);
 void test_amxc_string_split_word_can_start_with_punctuation(void** state);
+void test_split_string_on_new_line(void** state);
 
 void test_functions_validates_input_arguments(void** state);
 

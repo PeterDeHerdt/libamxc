@@ -96,6 +96,7 @@ int main(void) {
         cmocka_unit_test(test_amxc_string_split_word),
         cmocka_unit_test(test_amxc_string_split_word_quotes2),
         cmocka_unit_test(test_amxc_string_split_word_can_start_with_punctuation),
+        cmocka_unit_test(test_split_string_on_new_line),
 
         cmocka_unit_test(test_functions_validates_input_arguments),
     };

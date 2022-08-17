@@ -142,7 +142,7 @@ static int amxc_string_create_part(const amxc_string_t* const string,
     when_null(buffer, exit);
     when_failed(amxc_string_new(&part, 0), exit);
     if((length == 1) && isspace(buffer[0])) {
-        amxc_string_set_at(part, 0, " ", 1, amxc_string_no_flags);
+        amxc_string_set_at(part, 0, buffer, 1, amxc_string_no_flags);
         free(buffer);
     } else {
         when_failed(amxc_string_push_buffer(part, buffer, length + 1), exit);
@@ -275,7 +275,7 @@ static bool amxc_need_to_add_delimiter(amxc_llist_t* list,
 
     if(amxc_string_text_length(str_part) == 1) {
         if(isspace(part[0]) != 0) {
-            if(isspace(delimiter) != 0) {
+            if((isspace(delimiter) != 0) && (delimiter != '\n')) {
                 retval = false;
             }
         }
@@ -587,11 +587,7 @@ amxc_string_split_to_llist(const amxc_string_t* const string,
         const char* txt_part = amxc_string_get(part, 0);
         amxc_llist_append(list, &part->it);
         if(amxc_string_text_length(part) == 1) {
-            bool isspace_matches = (isspace(separator) != 0 &&
-                                    isspace(txt_part[0]) != 0);
-            if((isspace_matches ||
-                (separator == txt_part[0])) &&
-               !in_sbrackets) {
+            if((separator == txt_part[0]) && !in_sbrackets) {
                 amxc_string_reset(part);
                 if(amxc_llist_it_get_previous(it) != NULL) {
                     current = part;

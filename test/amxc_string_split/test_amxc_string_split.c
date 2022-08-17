@@ -81,19 +81,19 @@ typedef struct _test_cases {
 #include <amxc/amxc_macros.h>
 void test_can_split_string_using_separator(UNUSED void** state) {
     test_cases_t cases[] = {
-        { 3, ',', "a,[b,c],d" },
-        { 2, ',', "Phonebook.Contact.[FirstName=='ward'].PhoneNumber.*,Phonebook.Contact." },
-        { 4, ',', "a , b , c , d" },
-        { 8, ',', "a,,b,,c,,d," },
-        { 4, ',', "ab,cd,ef,gh" },
-        { 3, ',', "a,\"b,c\",d" },
-        { 5, ',', " , ab cd , ef gh , ij kl, " },
-        { 5, ',', " , ab cd , 'ef gh, ef gh' , ij kl, " },
-        { 5, ',', "[text1 , , , text2,text3]" },
-        { 3, ',', "[text1 , ,] , text2,text3" },
-        { 4, ',', "text1 , , , [text2,text3]" },
-        { 3, ',', "text1 , [ , , text2], text3" },
-        { 0, 0, NULL}
+        {3, ',', "a,[b,c],d"},
+        {2, ',', "Phonebook.Contact.[FirstName=='ward'].PhoneNumber.*,Phonebook.Contact."},
+        {4, ',', "a , b , c , d"},
+        {8, ',', "a,,b,,c,,d,"},
+        {4, ',', "ab,cd,ef,gh"},
+        {3, ',', "a,\"b,c\",d"},
+        {5, ',', " , ab cd , ef gh , ij kl, "},
+        {5, ',', " , ab cd , 'ef gh, ef gh' , ij kl, "},
+        {5, ',', "[text1 , , , text2,text3]"},
+        {3, ',', "[text1 , ,] , text2,text3"},
+        {4, ',', "text1 , , , [text2,text3]"},
+        {3, ',', "text1 , [ , , text2], text3"},
+        {0, 0, NULL}
     };
     amxc_string_t string;
     amxc_llist_t string_list;
@@ -113,14 +113,14 @@ void test_can_split_string_using_separator(UNUSED void** state) {
 
 void test_can_split_string_using_space_separators(UNUSED void** state) {
     test_cases_t cases[] = {
-        { 4, '\t', "a b c d" },
-        { 4, ' ', "a  b  c  d" },
-        { 3, '\t', "a [b\t c] d" },
-        { 4, '\n', "ab cd\nef\tgh" },
-        { 3, ' ', "a \"b c\" d" },
-        { 3, ' ', "[text1 text2 text3]" },
-        { 3, ' ', "  [text1 text2 text3]  " },
-        { 0, 0, NULL}
+        {1, '\t', "a b c d"},
+        {4, ' ', "a  b  c  d"},
+        {3, '\t', "a [b\t c] d"},
+        {2, '\n', "ab cd\nef\tgh"},
+        {3, ' ', "a \"b c\" d"},
+        {3, ' ', "[text1 text2 text3]"},
+        {3, ' ', "  [text1 text2 text3]  "},
+        {0, 0, NULL}
     };
     amxc_string_t string;
     amxc_llist_t string_list;
@@ -158,13 +158,13 @@ void test_check_parts_are_correct(UNUSED void** state) {
     amxc_string_push_buffer(&string, txt, strlen(txt) + 1);
     assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ','), 0);
     assert_int_equal(amxc_llist_size(&string_list), 1);
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "a[b c]d");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "a[b\tc]d");
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
 
     assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ' '), 0);
     assert_int_equal(amxc_llist_size(&string_list), 3);
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "a");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 1), "[b c]");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 1), "[b\tc]");
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 2), "d");
     amxc_string_take_buffer(&string);
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
@@ -174,7 +174,7 @@ void test_check_parts_are_correct(UNUSED void** state) {
     assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ' '), 0);
     assert_int_equal(amxc_llist_size(&string_list), 3);
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "a");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 1), "[b c]");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 1), "[b\tc]");
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 2), "d");
     amxc_string_take_buffer(&string);
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
@@ -182,14 +182,13 @@ void test_check_parts_are_correct(UNUSED void** state) {
     txt = "[a b\tc d text more text]";
     amxc_string_push_buffer(&string, txt, strlen(txt) + 1);
     assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ' '), 0);
-    assert_int_equal(amxc_llist_size(&string_list), 7);
+    assert_int_equal(amxc_llist_size(&string_list), 6);
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "a");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 1), "b");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 2), "c");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 3), "d");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 4), "text");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 5), "more");
-    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 6), "text");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 1), "b\tc");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 2), "d");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 3), "text");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 4), "more");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 5), "text");
     amxc_string_take_buffer(&string);
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
 }
@@ -905,7 +904,7 @@ void test_amxc_string_split_word(UNUSED void** state) {
     amxc_string_t string;
     amxc_llist_t string_list;
     const char* parts[] = {
-        "This", " ", "is", " ", "a", " ", "text", " ", "with", " ", "space", " ", "characters", " ", "and",
+        "This", " ", "is", " ", "a", " ", "text", "\t", "with", " ", "space", " ", "characters", " ", "and",
         " ", "\"", "quoted text with \\\" escapes", "\"", " ", "and", " ", ",", " ", "some", " ", "(",
         "punctuation", ")", ".", " ", "A", " ", "=", " ", "The", " ", "end", " ", NULL
     };
@@ -950,14 +949,30 @@ void test_amxc_string_split_word_quotes2(UNUSED void** state) {
         assert_ptr_not_equal(p, NULL);
 
         switch(counter) {
-        case 0: assert_string_equal(p, "!"); break;
-        case 1: assert_string_equal(p, "History"); break;
-        case 2: assert_string_equal(p, "."); break;
-        case 3: assert_string_equal(p, "save"); break;
-        case 4: assert_string_equal(p, " "); break;
-        case 5: assert_string_equal(p, "\""); break;
-        case 6: assert_string_equal(p, "/tmp/test.txt"); break;
-        case 7: assert_string_equal(p, "\""); break;
+        case 0:
+            assert_string_equal(p, "!");
+            break;
+        case 1:
+            assert_string_equal(p, "History");
+            break;
+        case 2:
+            assert_string_equal(p, ".");
+            break;
+        case 3:
+            assert_string_equal(p, "save");
+            break;
+        case 4:
+            assert_string_equal(p, " ");
+            break;
+        case 5:
+            assert_string_equal(p, "\"");
+            break;
+        case 6:
+            assert_string_equal(p, "/tmp/test.txt");
+            break;
+        case 7:
+            assert_string_equal(p, "\"");
+            break;
         }
 
         printf("[%s]\n", p);
@@ -1010,6 +1025,40 @@ void test_functions_validates_input_arguments(UNUSED void** state) {
 
     assert_ptr_equal(amxc_string_get_text_from_llist(&string_list, 100), NULL);
     assert_ptr_equal(amxc_string_get_text_from_llist(NULL, 100), NULL);
+
+    amxc_string_clean(&string);
+    amxc_llist_clean(&string_list, amxc_string_list_it_free);
+}
+
+void test_split_string_on_new_line(UNUSED void** state) {
+    amxc_string_t string;
+    amxc_llist_t string_list;
+
+    amxc_llist_init(&string_list);
+    amxc_string_init(&string, 0);
+    amxc_string_setf(&string, "This is the first line\nThis is the second line");
+
+    assert_int_equal(amxc_string_split_to_llist(&string, &string_list, '\n'), 0);
+    assert_int_equal(amxc_llist_size(&string_list), 2);
+
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "This is the first line");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 1), "This is the second line");
+
+    amxc_string_clean(&string);
+    amxc_llist_clean(&string_list, amxc_string_list_it_free);
+
+    amxc_string_setf(&string, "This is the first line \n This is the second line");
+
+    assert_int_equal(amxc_string_split_to_llist(&string, &string_list, '\n'), 0);
+    assert_int_equal(amxc_llist_size(&string_list), 2);
+
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 0), "This is the first line ");
+    assert_string_equal(amxc_string_get_text_from_llist(&string_list, 1), "This is the second line");
+
+    amxc_llist_clean(&string_list, amxc_string_list_it_free);
+
+    assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ' '), 0);
+    assert_int_equal(amxc_llist_size(&string_list), 10);
 
     amxc_string_clean(&string);
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
