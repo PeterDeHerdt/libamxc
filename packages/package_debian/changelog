@@ -1,3 +1,9 @@
+libamxc (1.7.1) unstable; urgency=medium
+
+  * amxc_string_split_to_llist not splitting text with newline sperator.
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Wed, 17 Aug 2022 08:04:40 +0000
+
 libamxc (1.7.0) unstable; urgency=medium
 
   * Improve documentation

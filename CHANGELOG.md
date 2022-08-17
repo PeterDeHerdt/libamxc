@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.7.1 - 2022-08-17(08:04:40 +0000)
+
+### Changes
+
+- amxc_string_split_to_llist not splitting text with newline sperator.
+
 ## Release v1.7.0 - 2022-07-20(08:30:57 +0000)
 
 ### Other
