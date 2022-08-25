@@ -387,7 +387,7 @@ void test_amxc_string_get(UNUSED void** state) {
     amxc_string_t string;
 
     assert_int_equal(amxc_string_init(&string, 0), 0);
-    assert_ptr_equal(amxc_string_get(&string, 0), NULL);
+    assert_string_equal(amxc_string_get(&string, 0), "");
     amxc_string_clean(&string);
 
     assert_int_equal(amxc_string_init(&string, 10), 0);

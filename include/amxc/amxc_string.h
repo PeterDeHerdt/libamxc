@@ -364,6 +364,8 @@ int amxc_string_remove_at(amxc_string_t* const string,
 
    The offset can not be higher then the value return by @ref amxc_string_text_length.
 
+   If no buffer is allocated this function will return an empty string.
+
    @param string a pointer to the string structure
    @param offset the offset
 

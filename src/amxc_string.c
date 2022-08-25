@@ -325,11 +325,14 @@ const char* amxc_string_get(const amxc_string_t* const string,
                             const size_t offset) {
     const char* text = NULL;
     when_null(string, exit);
-    when_null(string->buffer, exit);
-    when_true(offset > string->last_used, exit);
+    when_true(string->buffer != NULL && offset > string->last_used, exit);
 
-    string->buffer[string->last_used] = 0;
-    text = string->buffer + offset;
+    if(string->buffer == NULL) {
+        text = "";
+    } else {
+        string->buffer[string->last_used] = 0;
+        text = string->buffer + offset;
+    }
 
 exit:
     return text;
