@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.7.2 - 2022-08-26(05:51:43 +0000)
+
+### Fixes
+
+- amxc_string_t does not handle empty strings properly
+
 ## Release v1.7.1 - 2022-08-17(08:04:40 +0000)
 
 ### Changes

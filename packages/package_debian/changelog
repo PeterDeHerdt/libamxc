@@ -1,3 +1,9 @@
+libamxc (1.7.2) unstable; urgency=medium
+
+  * amxc_string_t does not handle empty strings properly
+
+ -- SAH bot <sahbot@softathome.com>  Fri, 26 Aug 2022 05:51:43 +0000
+
 libamxc (1.7.1) unstable; urgency=medium
 
   * amxc_string_split_to_llist not splitting text with newline sperator.
