@@ -129,15 +129,15 @@ extern "C"
 #endif // !defined(USE_DOXYGEN)
 
 #ifndef when_null
-#define when_null(x, l) if(x == NULL) {  goto l; }
+#define when_null(x, l) if((x) == NULL) {  goto l; }
 #endif
 
 #ifndef when_not_null
-#define when_not_null(x, l) if(x != NULL) {  goto l; }
+#define when_not_null(x, l) if((x) != NULL) {  goto l; }
 #endif
 
 #ifndef when_true
-#define when_true(x, l) if(x) {  goto l; }
+#define when_true(x, l) if((x)) {  goto l; }
 #endif
 
 #ifndef when_false
@@ -145,11 +145,11 @@ extern "C"
 #endif
 
 #ifndef when_failed
-#define when_failed(x, l) if(x != 0) {  goto l; }
+#define when_failed(x, l) if((x) != 0) {  goto l; }
 #endif
 
 #ifndef when_str_empty
-#define when_str_empty(x, l) if(x == NULL || *x == 0) {  goto l; }
+#define when_str_empty(x, l) if((x) == NULL || *(x) == 0) {  goto l; }
 #endif
 
 #ifndef when_null_status
@@ -161,7 +161,7 @@ extern "C"
 #endif
 
 #ifndef when_true_status
-#define when_true_status(x, l, c) if(x) { c; goto l; }
+#define when_true_status(x, l, c) if((x)) { c; goto l; }
 #endif
 
 #ifndef when_false_status
