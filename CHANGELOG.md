@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.7.3 - 2022-09-12(12:08:29 +0000)
+
+### Other
+
+- Integrate Devolo Interference Mitigation (integration)
+
 ## Release v1.7.2 - 2022-08-26(05:51:43 +0000)
 
 ### Fixes

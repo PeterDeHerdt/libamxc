@@ -1,3 +1,9 @@
+libamxc (1.7.3) unstable; urgency=medium
+
+  * Integrate Devolo Interference Mitigation (integration)
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Mon, 12 Sep 2022 12:08:29 +0000
+
 libamxc (1.7.2) unstable; urgency=medium
 
   * amxc_string_t does not handle empty strings properly
