@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.0 - 2022-10-05(11:38:09 +0000)
+
+### New
+
+- Add comparison implementation for htable variants
+-  Add comparison implementation for linked list variants
+
 ## Release v1.7.3 - 2022-09-12(12:08:29 +0000)
 
 ### Other
