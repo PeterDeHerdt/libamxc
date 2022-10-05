@@ -337,6 +337,31 @@ static int variant_list_set_key(amxc_var_t* const dest,
     }
 }
 
+static int variant_list_compare(const amxc_var_t* const lval,
+                                const amxc_var_t* const rval,
+                                int* const result) {
+    int ret = 0;
+    amxc_llist_it_t* r_it = amxc_llist_get_first(amxc_var_constcast(amxc_llist_t, rval));
+
+    amxc_llist_iterate(l_it, amxc_var_constcast(amxc_llist_t, lval)) {
+        when_null_status(r_it, exit, *result = 1);
+
+        ret = amxc_var_compare(amxc_llist_it_get_data(l_it, amxc_var_t, lit),
+                               amxc_llist_it_get_data(r_it, amxc_var_t, lit),
+                               result);
+        when_false((ret == 0) && (*result == 0), exit);
+
+        r_it = amxc_llist_it_get_next(r_it);
+    }
+
+    if(r_it != NULL) {
+        *result = -1;
+    }
+
+exit:
+    return ret;
+}
+
 static amxc_var_type_t amxc_variant_list = {
     .init = variant_list_init,
     .del = variant_list_delete,
@@ -344,7 +369,7 @@ static amxc_var_type_t amxc_variant_list = {
     .move = variant_list_move,
     .convert_from = NULL,
     .convert_to = variant_list_convert_to,
-    .compare = NULL,
+    .compare = variant_list_compare,
     .get_key = variant_list_get_key,
     .set_key = variant_list_set_key,
     .get_index = variant_list_get_index,

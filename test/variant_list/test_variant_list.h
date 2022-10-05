@@ -68,6 +68,7 @@ void test_variant_list_convert_to_integer(void** state);
 void test_variant_list_convert_to_htable(void** state);
 void test_variant_list_convert_to_string(void** state);
 void test_variant_llist_set_get(void** state);
+void test_variant_llist_compare(void** state);
 
 void test_variant_llist_get_index(void** state);
 void test_variant_llist_set_index(void** state);

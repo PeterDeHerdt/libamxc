@@ -301,6 +301,77 @@ void test_variant_llist_set_get(UNUSED void** state) {
     amxc_var_clean(&var);
 }
 
+void test_variant_llist_compare(UNUSED void** state) {
+    amxc_var_t var1;
+    amxc_var_t var2;
+    amxc_var_t* list1;
+    amxc_var_t* list2;
+    int result = 0;
+
+    assert_int_equal(amxc_var_init(&var1), 0);
+    assert_int_equal(amxc_var_init(&var2), 0);
+    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(var1.type_id, AMXC_VAR_ID_LIST);
+    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(var2.type_id, AMXC_VAR_ID_LIST);
+
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    assert_non_null(amxc_var_add(cstring_t, &var1, "my_value"));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result > 0);
+    assert_int_equal(amxc_var_compare(&var2, &var1, &result), 0);
+    assert_true(result < 0);
+
+    assert_non_null(amxc_var_add(cstring_t, &var2, "my_value"));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    assert_non_null(amxc_var_add(uint32_t, &var1, 1));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result > 0);
+
+    assert_non_null(amxc_var_add(uint32_t, &var2, 2));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result < 0);
+
+    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    assert_non_null(amxc_var_add(cstring_t, &var1, "my_value"));
+    assert_non_null(amxc_var_add(uint32_t, &var1, 1));
+    assert_non_null(amxc_var_add(uint32_t, &var2, 1));
+    assert_non_null(amxc_var_add(cstring_t, &var2, "my_value"));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result != 0);
+
+    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    list1 = amxc_var_add(amxc_llist_t, &var1, NULL);
+    assert_non_null(list1);
+    list2 = amxc_var_add(amxc_llist_t, &var2, NULL);
+    assert_non_null(list2);
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    assert_non_null(amxc_var_add(cstring_t, list1, "my_value"));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result > 0);
+
+    assert_non_null(amxc_var_add(cstring_t, list2, "my_value"));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    amxc_var_clean(&var1);
+    amxc_var_clean(&var2);
+}
+
 void test_variant_llist_add_new(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t* item = NULL;

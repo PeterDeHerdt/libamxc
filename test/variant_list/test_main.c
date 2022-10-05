@@ -74,6 +74,7 @@ int main(void) {
         cmocka_unit_test(test_variant_list_convert_to_htable),
         cmocka_unit_test(test_variant_list_convert_to_string),
         cmocka_unit_test(test_variant_llist_set_get),
+        cmocka_unit_test(test_variant_llist_compare),
         cmocka_unit_test(test_variant_llist_get_index),
         cmocka_unit_test(test_variant_llist_set_index),
         cmocka_unit_test(test_variant_llist_set_key),
