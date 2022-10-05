@@ -356,6 +356,42 @@ exit:
     return retval;
 }
 
+static int variant_htable_compare(const amxc_var_t* const lval,
+                                  const amxc_var_t* const rval,
+                                  int* const result) {
+    int ret = 0;
+    amxc_array_t* keys_l = amxc_htable_get_sorted_keys(amxc_var_constcast(amxc_htable_t, lval));
+    amxc_array_t* keys_r = amxc_htable_get_sorted_keys(amxc_var_constcast(amxc_htable_t, rval));
+    size_t size_l = amxc_array_size(keys_l);
+    size_t size_r = amxc_array_size(keys_r);
+
+    if(size_l > size_r) {
+        *result = 1;
+        goto exit;
+    } else if(size_l < size_r) {
+        *result = -1;
+        goto exit;
+    }
+
+    for(size_t i = 0; i < size_l; i++) {
+        const char* key_l = (const char*) amxc_array_get_data_at(keys_l, i);
+        const char* key_r = (const char*) amxc_array_get_data_at(keys_r, i);
+
+        *result = strcmp(key_l, key_r);
+        when_false(*result == 0, exit);
+
+        ret = amxc_var_compare(amxc_var_get_key(lval, key_l, AMXC_VAR_FLAG_DEFAULT),
+                               amxc_var_get_key(rval, key_r, AMXC_VAR_FLAG_DEFAULT),
+                               result);
+        when_false((ret == 0) && (*result == 0), exit);
+    }
+
+exit:
+    amxc_array_delete(&keys_l, NULL);
+    amxc_array_delete(&keys_r, NULL);
+    return ret;
+}
+
 static amxc_var_type_t amxc_variant_htable = {
     .init = variant_htable_init,
     .del = variant_htable_delete,
@@ -363,7 +399,7 @@ static amxc_var_type_t amxc_variant_htable = {
     .move = variant_htable_move,
     .convert_from = NULL,
     .convert_to = variant_htable_convert_to,
-    .compare = NULL,
+    .compare = variant_htable_compare,
     .get_key = variant_htable_get_key,
     .set_key = variant_htable_set_key,
     .get_index = variant_htable_get_index,

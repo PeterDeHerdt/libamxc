@@ -346,6 +346,72 @@ void test_variant_htable_set_get(UNUSED void** state) {
     amxc_var_clean(&var);
 }
 
+void test_variant_htable_compare(UNUSED void** state) {
+    amxc_var_t var1;
+    amxc_var_t var2;
+    amxc_var_t data;
+    int result = 0;
+
+    assert_int_equal(amxc_var_init(&var1), 0);
+    assert_int_equal(amxc_var_init(&var2), 0);
+    assert_int_equal(amxc_var_init(&data), 0);
+    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(var1.type_id, AMXC_VAR_ID_HTABLE);
+    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(var2.type_id, AMXC_VAR_ID_HTABLE);
+
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    assert_non_null(amxc_var_add_key(cstring_t, &var1, "cstring_key", "my_value"));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result > 0);
+    assert_int_equal(amxc_var_compare(&var2, &var1, &result), 0);
+    assert_true(result < 0);
+
+    assert_non_null(amxc_var_add_key(cstring_t, &var2, "cstring_key", "my_value"));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    assert_non_null(amxc_var_add_key(uint32_t, &var1, "uint32_key", 1));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result > 0);
+
+    assert_non_null(amxc_var_add_key(uint32_t, &var2, "uint32_key", 2));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result < 0);
+
+    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    assert_int_equal(amxc_var_set(cstring_t, &data, "value"), 0);
+    assert_int_equal(amxc_var_set_path(&var1, "table_1.2.table_2.my_string", &data,
+                                       AMXC_VAR_FLAG_AUTO_ADD | AMXC_VAR_FLAG_COPY), 0);
+    assert_int_equal(amxc_var_set_path(&var2, "table_1.2.table_2.my_string", &data,
+                                       AMXC_VAR_FLAG_AUTO_ADD | AMXC_VAR_FLAG_COPY), 0);
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    assert_int_equal(amxc_var_set_type(&var1, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_set_type(&var2, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result == 0);
+
+    assert_non_null(amxc_var_add_key(cstring_t, &var1, "key", "my_value"));
+    assert_non_null(amxc_var_add_key(uint32_t, &var2, "key", 2));
+    assert_int_equal(amxc_var_compare(&var1, &var2, &result), 0);
+    assert_true(result != 0);
+
+    assert_int_equal(amxc_var_compare(&var1, &data, &result), 0);
+    assert_true(result != 0);
+
+    amxc_var_clean(&var1);
+    amxc_var_clean(&var2);
+    amxc_var_clean(&data);
+}
+
 void test_variant_htable_add_new(UNUSED void** state) {
     amxc_var_t var;
     amxc_var_t* item = NULL;
