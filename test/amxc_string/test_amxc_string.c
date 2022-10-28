@@ -326,13 +326,19 @@ void test_amxc_string_set_at(UNUSED void** state) {
     assert_string_equal(string.buffer, "hello Europe");
 
     assert_int_equal(amxc_string_set_at(&string,
+                                        12,
+                                        "and the rest of the world",
+                                        25,
+                                        amxc_string_overwrite), 0);
+
+    assert_int_equal(amxc_string_set_at(&string,
                                         6,
                                         "Asia",
                                         4,
                                         amxc_string_overwrite), 0);
-    assert_int_equal(string.length, 12);
-    assert_int_equal(string.last_used, 12);
-    assert_string_equal(string.buffer, "hello Asiape");
+    assert_int_equal(string.length, 37);
+    assert_int_equal(string.last_used, 37);
+    assert_string_equal(string.buffer, "hello Asiapeand the rest of the world");
 
     amxc_string_clean(&string);
 }

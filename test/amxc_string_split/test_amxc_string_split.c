@@ -101,12 +101,15 @@ void test_can_split_string_using_separator(UNUSED void** state) {
     amxc_llist_init(&string_list);
     amxc_string_init(&string, 0);
     for(int i = 0; cases[i].text != NULL; i++) {
+        char* data = NULL;
         printf("Split string : %s\n", cases[i].text);
         fflush(stdout);
-        amxc_string_push_buffer(&string, cases[i].text, strlen(cases[i].text) + 1);
+        data = strdup(cases[i].text);
+        amxc_string_push_buffer(&string, data, strlen(cases[i].text) + 1);
         assert_int_equal(amxc_string_split_to_llist(&string, &string_list, cases[i].separator), 0);
         assert_int_equal(amxc_llist_size(&string_list), cases[i].parts);
         amxc_string_take_buffer(&string);
+        free(data);
         amxc_llist_clean(&string_list, amxc_string_list_it_free);
     }
 }
@@ -128,18 +131,21 @@ void test_can_split_string_using_space_separators(UNUSED void** state) {
     amxc_llist_init(&string_list);
     amxc_string_init(&string, 0);
     for(int i = 0; cases[i].text != NULL; i++) {
+        char* data = NULL;
         printf("Split string : %s\n", cases[i].text);
-        amxc_string_push_buffer(&string, cases[i].text, strlen(cases[i].text) + 1);
+        data = strdup(cases[i].text);
+        amxc_string_push_buffer(&string, data, strlen(cases[i].text) + 1);
         assert_int_equal(amxc_string_split_to_llist(&string, &string_list, cases[i].separator), 0);
         assert_int_equal(amxc_llist_size(&string_list), cases[i].parts);
         amxc_string_take_buffer(&string);
+        free(data);
         amxc_llist_clean(&string_list, amxc_string_list_it_free);
     }
 }
 
 void test_check_parts_are_correct(UNUSED void** state) {
     amxc_string_t string;
-    char* txt = "a,[b,c],d";
+    char* txt = strdup("a,[b,c],d");
     amxc_llist_t string_list;
 
     amxc_llist_init(&string_list);
@@ -153,8 +159,9 @@ void test_check_parts_are_correct(UNUSED void** state) {
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 2), "d");
     amxc_string_take_buffer(&string);
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
+    free(txt);
 
-    txt = "a[b\t c]d";
+    txt = strdup("a[b\t c]d");
     amxc_string_push_buffer(&string, txt, strlen(txt) + 1);
     assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ','), 0);
     assert_int_equal(amxc_llist_size(&string_list), 1);
@@ -168,8 +175,9 @@ void test_check_parts_are_correct(UNUSED void** state) {
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 2), "d");
     amxc_string_take_buffer(&string);
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
+    free(txt);
 
-    txt = "a [b\t c] d";
+    txt = strdup("a [b\t c] d");
     amxc_string_push_buffer(&string, txt, strlen(txt) + 1);
     assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ' '), 0);
     assert_int_equal(amxc_llist_size(&string_list), 3);
@@ -178,8 +186,9 @@ void test_check_parts_are_correct(UNUSED void** state) {
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 2), "d");
     amxc_string_take_buffer(&string);
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
+    free(txt);
 
-    txt = "[a b\tc d text more text]";
+    txt = strdup("[a b\tc d text more text]");
     amxc_string_push_buffer(&string, txt, strlen(txt) + 1);
     assert_int_equal(amxc_string_split_to_llist(&string, &string_list, ' '), 0);
     assert_int_equal(amxc_llist_size(&string_list), 6);
@@ -191,6 +200,7 @@ void test_check_parts_are_correct(UNUSED void** state) {
     assert_string_equal(amxc_string_get_text_from_llist(&string_list, 5), "text");
     amxc_string_take_buffer(&string);
     amxc_llist_clean(&string_list, amxc_string_list_it_free);
+    free(txt);
 }
 
 void test_can_split_csv_string_to_variant(UNUSED void** state) {

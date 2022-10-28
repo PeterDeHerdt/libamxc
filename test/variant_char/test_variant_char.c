@@ -71,6 +71,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <cmocka.h>
+#include <string.h>
 
 #include <amxc/amxc_variant.h>
 #include <amxc_variant_priv.h>
@@ -253,19 +254,21 @@ void test_variant_char_convert_to_list(UNUSED void** state) {
 
     var.data.s = NULL;
     assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
-    var.data.s = "";
+    var.data.s = strdup("");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 0);
+    free(var.data.s);
 
-    var.data.s = "NULL";
+    var.data.s = strdup("NULL");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 1);
     it = amxc_llist_get_first(&copy_var.data.vl);
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "NULL");
     amxc_llist_clean(&copy_var.data.vl, variant_list_it_free);
+    free(var.data.s);
 
-    var.data.s = "a,b,c,d,e";
+    var.data.s = strdup("a,b,c,d,e");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 5);
     it = amxc_llist_get_first(&copy_var.data.vl);
@@ -288,8 +291,9 @@ void test_variant_char_convert_to_list(UNUSED void** state) {
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "e");
     amxc_llist_clean(&copy_var.data.vl, variant_list_it_free);
+    free(var.data.s);
 
-    var.data.s = "a , b , c ,   d ,    \t \n         e";
+    var.data.s = strdup("a , b , c ,   d ,    \t \n         e");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 5);
     it = amxc_llist_get_first(&copy_var.data.vl);
@@ -312,8 +316,9 @@ void test_variant_char_convert_to_list(UNUSED void** state) {
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "e");
     amxc_llist_clean(&copy_var.data.vl, variant_list_it_free);
+    free(var.data.s);
 
-    var.data.s = "a,,b,,c,,d, ,e";
+    var.data.s = strdup("a,,b,,c,,d, ,e");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 9);
     it = amxc_llist_get_first(&copy_var.data.vl);
@@ -351,6 +356,7 @@ void test_variant_char_convert_to_list(UNUSED void** state) {
     it = amxc_llist_it_get_next(it);
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "e");
+    free(var.data.s);
 
     amxc_llist_clean(&copy_var.data.vl, variant_list_it_free);
 
@@ -370,19 +376,21 @@ void test_variant_ssv_char_convert_to_list(UNUSED void** state) {
 
     var.data.s = NULL;
     assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
-    var.data.s = "";
+    var.data.s = strdup("");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 0);
+    free(var.data.s);
 
-    var.data.s = "NULL";
+    var.data.s = strdup("NULL");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 1);
     it = amxc_llist_get_first(&copy_var.data.vl);
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "NULL");
     amxc_llist_clean(&copy_var.data.vl, variant_list_it_free);
+    free(var.data.s);
 
-    var.data.s = "a b c d e";
+    var.data.s = strdup("a b c d e");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 5);
     it = amxc_llist_get_first(&copy_var.data.vl);
@@ -405,8 +413,9 @@ void test_variant_ssv_char_convert_to_list(UNUSED void** state) {
     assert_ptr_not_equal(amxc_var_from_llist_it(it), NULL);
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "e");
     amxc_llist_clean(&copy_var.data.vl, variant_list_it_free);
+    free(var.data.s);
 
-    var.data.s = "a  b  c  d  e";
+    var.data.s = strdup("a  b  c  d  e");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 5);
     it = amxc_llist_get_first(&copy_var.data.vl);
@@ -430,6 +439,7 @@ void test_variant_ssv_char_convert_to_list(UNUSED void** state) {
     assert_string_equal(amxc_var_from_llist_it(it)->data.s, "e");
 
     amxc_llist_clean(&copy_var.data.vl, variant_list_it_free);
+    free(var.data.s);
 
     amxc_var_clean(&copy_var);
 }

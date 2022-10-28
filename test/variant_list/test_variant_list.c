@@ -90,18 +90,20 @@ void test_variant_list_copy(UNUSED void** state) {
     assert_int_equal(amxc_var_init(&copy_var), 0);
     assert_int_equal(var.type_id, AMXC_VAR_ID_NULL);
     assert_int_equal(amxc_var_set_type(&string, AMXC_VAR_ID_CSTRING), 0);
-    string.data.s = "";
+    string.data.s = strdup("");
 
     assert_int_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&var.data.vl), 0);
+    free(string.data.s);
 
     assert_int_equal(string.type_id, AMXC_VAR_ID_CSTRING);
-    string.data.s = "Hello,world,and,anyone,else,in,the,universe";
+    string.data.s = strdup("Hello,world,and,anyone,else,in,the,universe");
     assert_int_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&var.data.vl), 8);
 
     assert_int_equal(amxc_var_copy(&copy_var, &var), 0);
     assert_int_equal(amxc_llist_size(&var.data.vl), 8);
+    free(string.data.s);
 
     list = &copy_var.data.vl;
     amxc_llist_for_each(it, list) {
@@ -155,13 +157,14 @@ void test_variant_list_convert_to_bool(UNUSED void** state) {
 
     assert_int_equal(amxc_var_set_type(&string, AMXC_VAR_ID_CSTRING), 0);
     assert_int_equal(string.type_id, AMXC_VAR_ID_CSTRING);
-    string.data.s = "Hello,world,and,anyone,else,in,the,universe";
+    string.data.s = strdup("Hello,world,and,anyone,else,in,the,universe");
 
     assert_int_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&var.data.vl), 8);
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_BOOL), 0);
     assert_true(copy_var.data.b);
 
+    free(string.data.s);
     amxc_var_clean(&var);
     amxc_var_clean(&copy_var);
 }
@@ -184,13 +187,14 @@ void test_variant_list_convert_to_integer(UNUSED void** state) {
 
     assert_int_equal(amxc_var_set_type(&string, AMXC_VAR_ID_CSTRING), 0);
     assert_int_equal(string.type_id, AMXC_VAR_ID_CSTRING);
-    string.data.s = "Hello,world,and,anyone,else,in,the,universe";
+    string.data.s = strdup("Hello,world,and,anyone,else,in,the,universe");
 
     assert_int_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(amxc_llist_size(&var.data.vl), 8);
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_UINT64), 0);
     assert_int_equal(copy_var.data.ui64, 8);
 
+    free(string.data.s);
     amxc_var_clean(&var);
     amxc_var_clean(&copy_var);
 }
@@ -214,7 +218,7 @@ void test_variant_list_convert_to_htable(UNUSED void** state) {
 
     assert_int_equal(amxc_var_set_type(&string, AMXC_VAR_ID_CSTRING), 0);
     assert_int_equal(string.type_id, AMXC_VAR_ID_CSTRING);
-    string.data.s = "Hello,world,and,anyone,else,in,the,universe";
+    string.data.s = strdup("Hello,world,and,anyone,else,in,the,universe");
 
     assert_int_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(var.type_id, AMXC_VAR_ID_LIST);
@@ -223,6 +227,7 @@ void test_variant_list_convert_to_htable(UNUSED void** state) {
     assert_int_equal(copy_var.type_id, AMXC_VAR_ID_HTABLE);
     assert_false(amxc_htable_is_empty(&copy_var.data.vm));
 
+    free(string.data.s);
     amxc_var_clean(&var);
     amxc_var_clean(&copy_var);
 }
@@ -245,7 +250,7 @@ void test_variant_list_convert_to_string(UNUSED void** state) {
 
     assert_int_equal(amxc_var_set_type(&string, AMXC_VAR_ID_CSTRING), 0);
     assert_int_equal(string.type_id, AMXC_VAR_ID_CSTRING);
-    string.data.s = "Hello,world,and,anyone,else,in,the,universe";
+    string.data.s = strdup("Hello,world,and,anyone,else,in,the,universe");
 
     assert_int_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_LIST), 0);
     assert_int_equal(var.type_id, AMXC_VAR_ID_LIST);
@@ -265,7 +270,7 @@ void test_variant_list_convert_to_string(UNUSED void** state) {
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_SSV_STRING), 0);
     assert_string_equal(copy_var.data.s, "Hello world and anyone else in the universe");
 
-
+    free(string.data.s);
     amxc_var_clean(&var);
     amxc_var_clean(&copy_var);
 }
@@ -289,7 +294,7 @@ void test_variant_llist_set_get(UNUSED void** state) {
     assert_ptr_equal(constlist, NULL);
 
     assert_int_equal(amxc_var_set_type(&string, AMXC_VAR_ID_CSTRING), 0);
-    string.data.s = "Hello,world,and,anyone,else,in,the,universe";
+    string.data.s = strdup("Hello,world,and,anyone,else,in,the,universe");
     assert_int_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_LIST), 0);
 
     list = amxc_var_dyncast(amxc_llist_t, &var);
@@ -298,6 +303,7 @@ void test_variant_llist_set_get(UNUSED void** state) {
     constlist = amxc_var_constcast(amxc_llist_t, &var);
     assert_ptr_not_equal(constlist, NULL);
 
+    free(string.data.s);
     amxc_var_clean(&var);
 }
 

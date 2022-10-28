@@ -120,15 +120,15 @@ int amxc_string_new(amxc_string_t** string, const size_t length) {
 
     /* allocate the buffer */
     amxc_string_realloc(*string, length);
-    if((*string)->buffer == NULL) {
-        free(*string);
-        *string = NULL;
-        goto exit;
-    }
+    when_null(*string, exit);
 
     retval = 0;
 
 exit:
+    if((retval != 0) && (string != NULL)) {
+        free(*string);
+        *string = NULL;
+    }
     return retval;
 }
 
@@ -343,9 +343,7 @@ char* amxc_string_take_buffer(amxc_string_t* const string) {
     when_null(string, exit);
 
     if(string->buffer != NULL) {
-        if(string->buffer[string->last_used] != 0) {
-            string->buffer[string->last_used] = 0;
-        }
+        string->buffer[string->last_used] = 0;
     }
     buffer = string->buffer;
     string->buffer = NULL;
@@ -463,26 +461,12 @@ int amxc_string_vsetf(amxc_string_t* const string,
                       const char* fmt,
                       va_list args) {
     int retval = -1;
-    size_t size_needed = 0;
-    va_list copy;
 
     when_null(string, exit);
     when_null(fmt, exit);
 
-    va_copy(copy, args);
-    size_needed = vsnprintf(NULL, 0, fmt, args);
-
-    if(string->length < size_needed + 1) {
-        when_failed(amxc_string_grow(string,
-                                     (size_needed - string->length) + 1), exit);
-    }
-
-    size_needed = vsnprintf(string->buffer, string->length, fmt, copy);
-    string->buffer[string->length - 1] = 0;
-
-    string->last_used = size_needed;
-
-    retval = 0;
+    amxc_string_reset(string);
+    retval = amxc_string_vappendf(string, fmt, args);
 
 exit:
     return retval;
