@@ -182,7 +182,7 @@ unsigned int amxc_FNV_hash(const char* str, const unsigned int len) {
 
     for(i = 0; i < len; str++, i++) {
         hash *= fnv_prime;
-        hash ^= (*str);
+        hash ^= (int) (*str);
     }
 
     return hash;

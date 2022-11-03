@@ -74,6 +74,10 @@
    Ambiorix string API implementation
  */
 
+
+static const char* const s_supported_format_placeholders[] = { "%s", "%d", "%lld", "%ld", "%i",
+    "%lli", "%li", "%u", "%llu", "%lu", "%x", "%llx", "%lx", "%%", "%c", "%f", "%F", "%X"};
+
 static int amxc_string_realloc(amxc_string_t* string, const size_t length) {
     char* new_buffer = NULL;
     int retval = -1;
@@ -99,6 +103,23 @@ static int amxc_string_realloc(amxc_string_t* string, const size_t length) {
     return retval;
 }
 
+/**
+ * If input starts with a placeholder (e.g. "%ihi"), return null-terminated placeholder (e.g. "%i").
+ * Otherwise return NULL.
+ */
+static const char* s_get_format_placeholder(const char* input) {
+    size_t nb_supported = 0;
+    when_null(input, error);
+    nb_supported = sizeof(s_supported_format_placeholders) / sizeof(s_supported_format_placeholders[0]);
+    for(size_t i = 0; i < nb_supported; i++) {
+        const char* const candidate = s_supported_format_placeholders[i];
+        if(0 == strncmp(candidate, input, strlen(candidate))) {
+            return candidate;
+        }
+    }
+error:
+    return NULL;
+}
 
 int amxc_string_new(amxc_string_t** string, const size_t length) {
     int retval = -1;
@@ -397,6 +418,7 @@ char* amxc_string_dup(const amxc_string_t* const string,
     }
 
     text = (char*) calloc(length + 1, sizeof(char));
+    when_null(text, exit);
     memcpy(text, string->buffer + start, length);
     text[length] = 0;
 
@@ -486,6 +508,38 @@ exit:
     return retval;
 }
 
+int amxc_string_vsetf_checked(amxc_string_t* const string,
+                              amxc_string_is_safe_cb_t is_safe_cb,
+                              const char* fmt,
+                              va_list args) {
+    int retval = -1;
+
+    when_null(string, exit);
+    when_null(fmt, exit);
+
+    amxc_string_reset(string);
+    retval = amxc_string_vappendf_checked(string, is_safe_cb, fmt, args);
+
+exit:
+    return retval;
+}
+
+int amxc_string_setf_checked(amxc_string_t* target_string,
+                             amxc_string_is_safe_cb_t is_safe_cb,
+                             const char* fmt, ...) {
+    va_list args;
+    int retval = -1;
+    when_null(target_string, exit);
+    when_null(fmt, exit);
+
+    va_start(args, fmt);
+    retval = amxc_string_vsetf_checked(target_string, is_safe_cb, fmt, args);
+    va_end(args);
+
+exit:
+    return retval;
+}
+
 int amxc_string_vappendf(amxc_string_t* const string,
                          const char* fmt,
                          va_list args) {
@@ -527,6 +581,71 @@ int amxc_string_appendf(amxc_string_t* const string, const char* fmt, ...) {
 
     va_start(args, fmt);
     retval = amxc_string_vappendf(string, fmt, args);
+    va_end(args);
+
+exit:
+    return retval;
+}
+
+int amxc_string_vappendf_checked(amxc_string_t* string, amxc_string_is_safe_cb_t is_safe_cb,
+                                 const char* fmt, va_list args) {
+
+    const char* pos = fmt;
+    int status = -1;
+    when_null(string, error);
+    when_null(fmt, error);
+    while(*pos != '\0') {
+        size_t len_pos_old = 0;
+        size_t len_new_fixed = 0;
+        const char* placeholder = NULL;
+        const char* placeholder_in_pos = strchr(pos, '%');
+
+        // If no "%" left, add all the rest:
+        if(placeholder_in_pos == NULL) {
+            status = amxc_string_append(string, pos, strlen(pos));
+            when_failed(status, error);
+            return 0;
+        }
+
+        // Add the fixed part, i.e. until "%":
+        len_new_fixed = placeholder_in_pos - pos;
+        if(len_new_fixed != 0) {
+            status = amxc_string_append(string, pos, len_new_fixed);
+            when_failed(status, error);
+        }
+
+        // Replace placeholder (e.g. "%i"):
+        placeholder = s_get_format_placeholder(placeholder_in_pos);
+        if(placeholder == NULL) {
+            goto error; // unsupported placeholder.
+        }
+        len_pos_old = amxc_string_text_length(string);
+        status = amxc_string_vappendf(string, placeholder, args);
+        when_failed(status, error);
+
+        // Check if added string safe:
+        if((is_safe_cb != NULL) && !is_safe_cb(amxc_string_get(string, len_pos_old))) {
+            goto error;
+        }
+
+        pos += len_new_fixed + strlen(placeholder);
+    }
+    return 0;
+
+error:
+    amxc_string_clean(string);
+    return -1;
+}
+
+int amxc_string_appendf_checked(amxc_string_t* target_string, amxc_string_is_safe_cb_t is_safe_cb,
+                                const char* fmt, ...) {
+    va_list args;
+    int retval = -1;
+    when_null(target_string, exit);
+    when_null(fmt, exit);
+
+    va_start(args, fmt);
+    retval = amxc_string_vappendf_checked(target_string, is_safe_cb, fmt, args);
     va_end(args);
 
 exit:

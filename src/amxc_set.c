@@ -253,9 +253,10 @@ int amxc_set_parse(amxc_set_t* set, const char* str) {
         amxc_llist_iterate(it, &set->list) {
             amxc_flag_t* flag = amxc_container_of(it, amxc_flag_t, it);
             amxc_flag_t* new_flag = amxc_set_flag_find(&newset, flag->flag);
-
-            flag->count = new_flag->count;
-            set->count += flag->count;
+            if((flag != NULL) && (new_flag != NULL)) {
+                flag->count = new_flag->count;
+                set->count += flag->count;
+            }
         }
     }
     retval = 0;

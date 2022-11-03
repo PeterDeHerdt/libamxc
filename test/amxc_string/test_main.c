@@ -108,6 +108,9 @@ int main(void) {
         cmocka_unit_test(test_amxc_string_build_byte_array_from_incomplete_string),
         cmocka_unit_test(test_amxc_string_toupper),
         cmocka_unit_test(test_amxc_string_tolower),
+        cmocka_unit_test(test_amxc_string_vappendf_checked),
+        cmocka_unit_test(test_amxc_string_appendf_checked__normalcase),
+        cmocka_unit_test(test_amxc_string_appendf_checked__rejected),
     };
     return cmocka_run_group_tests_name("amxc-string", tests, NULL, NULL);
 }

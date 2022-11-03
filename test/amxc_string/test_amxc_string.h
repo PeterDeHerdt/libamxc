@@ -102,5 +102,8 @@ void test_amxc_string_build_byte_array_with_invalid_string(void** state);
 void test_amxc_string_build_byte_array_from_incomplete_string(void** state);
 void test_amxc_string_toupper(void** state);
 void test_amxc_string_tolower(void** state);
+void test_amxc_string_vappendf_checked(void** state);
+void test_amxc_string_appendf_checked__normalcase(void** state);
+void test_amxc_string_appendf_checked__rejected(void** state);
 
 #endif // __TEST_AMXC_STRING_H__

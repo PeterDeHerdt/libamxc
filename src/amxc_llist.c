@@ -78,7 +78,7 @@ static int amxc_llist_sort_internal(amxc_llist_t* const llist,
         amxc_llist_it_t* it = amxc_llist_get_first(llist);
         swapped = false;
 
-        while(it->next != NULL) {
+        while(it != NULL && it->next != NULL) {
             if(cmp(it, it->next) > 0) {
                 amxc_llist_it_swap(it, it->next);
                 swapped = true;

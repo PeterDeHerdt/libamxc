@@ -153,6 +153,19 @@ typedef int (* amxc_string_is_char_fn_t) (int c);
 /**
    @ingroup amxc_string
    @brief
+   Checks if given replacement is safe to be included in a bigger string in a particular language.
+
+   See @ref amxc_string_appendf_checked for the background on this.
+
+   @return
+   true if and only if the given replacement is considered safe in the language that this callback
+   is for.
+ */
+typedef bool (* amxc_string_is_safe_cb_t) (const char* replacement);
+
+/**
+   @ingroup amxc_string
+   @brief
    Allocates a string.
 
    Allocates and initializes memory to store a string.
@@ -561,6 +574,76 @@ int amxc_string_setf(amxc_string_t* const string, const char* fmt, ...) \
 /**
    @ingroup amxc_string
    @brief
+   va_list version of @ref amxc_string_setf_checked
+
+   @see amxc_string_setf_checked
+ */
+int amxc_string_vsetf_checked(amxc_string_t* const string,
+                              amxc_string_is_safe_cb_t is_safe_cb,
+                              const char* fmt,
+                              va_list args);
+
+/**
+   @ingroup amxc_string
+   @brief
+   Sets the content of a string using printf like formatting while performing safety checks on the replacements.
+
+   The specifications from @ref amxc_string_setf apply here, but an additional safety check is
+   performed. If this check fail, non 0 is returned and the given string is cleared.
+
+   The safety check consists of calling the given `is_safe_cb` callback on each replacement.
+   The safety check is considered failed if `is_safe_cb` fails on at least one replacement.
+   For example:
+   @code
+   amxc_string_t str;
+   amxc_string_init(&str);
+   amxc_string_appendf_checked(&str, html_is_safe_replacement, "<html><body>Hello %s!", username);
+   @endcode
+   Here, if the replacement, i.e. username, is `Bob`, then the string becomes
+   @code
+   <html><body>Hello Bob!
+   @endcode
+
+   If the replacement is `Bob<script>transfer_money("Alice", "Bob", 1000000);</script>` then without
+   safety checks the string would become
+   @code
+   <html><body>Hello Bob<script>transfer_money("Alice", "Bob", 1000000);</script>!
+   @endcode
+   This is undesired, so `html_is_safe_replacement` is supposed to return false
+   on `Bob<script>transfer_money("Alice", "Bob", 1000000);</script>`, and then
+   @ref amxc_string_appendf_checked will return non 0 and make the string empty.
+
+   Note that there is no universal `is_safe_cb` since it depends on the language (HTML, SQL,
+   amx expression, ...) and even on the role of the replacement in the language (HTML body vs tag
+   field, string literal vs comment, ...).
+
+   `is_safe_cb` is also called if the format string placeholder is not `%s`.
+
+   Only the following format string placeholders (and the non-placeholder "%%") are supported:
+   "%s","%d", "%lld", "%ld", "%i", "%lli", "%li", "%u", "%llu", "%lu", "%x", "%llx", "%lx",
+   "%%", "%c", "%f", "%F", "%X".
+
+   Note that all other format string placeholders are not supported. So all other type characters,
+   all flags, all width, and all precision format specifications are not supported. For example,
+   "%20s", "%.2f", "%03d", "%1$d", "%2$.*3$d", "%4$.*3$d", etc. are not supported.
+   In case an unsupported format string placeholder is used, non 0 is returned and the string
+   is cleared.
+
+   @param string a pointer to the string structure
+   @param fmt string literal that can contain printf formatting
+   @param is_safe_cb validator of whether a string is safe to build a bigger expression with.
+     If NULL, then every string is assumed to be safe.
+
+   @return
+   0 when success, none 0 on failure including failed safety check.
+ */
+int amxc_string_setf_checked(amxc_string_t* target_string,
+                             amxc_string_is_safe_cb_t is_safe_cb,
+                             const char* fmt, ...) \
+    __attribute__ ((format(printf, 3, 4)));
+/**
+   @ingroup amxc_string
+   @brief
    Appends a formatted string to a string
 
    Using a string literal that can contain printf like formatting a string is
@@ -605,6 +688,76 @@ int amxc_string_vappendf(amxc_string_t* const string,
  */
 int amxc_string_appendf(amxc_string_t* const string, const char* fmt, ...) \
     __attribute__ ((format(printf, 2, 3)));
+
+/**
+   @ingroup amxc_string
+   @brief
+   va_list version of @ref amxc_string_appendf_checked
+
+   @see amxc_string_appendf_checked
+ */
+int amxc_string_vappendf_checked(amxc_string_t* target_string,
+                                 amxc_string_is_safe_cb_t is_safe_cb,
+                                 const char* fmt, va_list args);
+
+/**
+   @ingroup amxc_string
+   @brief
+   Appends a formatted string while performing safety checks on the replacements.
+
+   The specifications from @ref amxc_string_appendf apply here, but an additional safety check is
+   performed. If this check fail, non 0 is returned and the given string is cleared.
+
+   The safety check consists of calling the given `is_safe_cb` callback on each replacement.
+   The safety check is considered failed if `is_safe_cb` fails on at least one replacement.
+   For example:
+   @code
+   amxc_string_t str;
+   amxc_string_init(&str);
+   amxc_string_appendf_checked(&str, html_is_safe_replacement, "<html><body>Hello %s!", username);
+   @endcode
+   Here, if the replacement, i.e. username, is `Bob`, then the string becomes
+   @code
+   <html><body>Hello Bob!
+   @endcode
+
+   If the replacement is `Bob<script>transfer_money("Alice", "Bob", 1000000);</script>` then without
+   safety checks the string would become
+   @code
+   <html><body>Hello Bob<script>transfer_money("Alice", "Bob", 1000000);</script>!
+   @endcode
+   This is undesired, so `html_is_safe_replacement` is supposed to return false
+   on `Bob<script>transfer_money("Alice", "Bob", 1000000);</script>`, and then
+   @ref amxc_string_appendf_checked will return non 0 and make the string empty.
+
+   Note that there is no universal `is_safe_cb` since it depends on the language (HTML, SQL,
+   amx expression, ...) and even on the role of the replacement in the language (HTML body vs tag
+   field, string literal vs comment, ...).
+
+   `is_safe_cb` is also called if the format string placeholder is not `%s`.
+
+   Only the following format string placeholders (and the non-placeholder "%%") are supported:
+   "%s","%d", "%lld", "%ld", "%i", "%lli", "%li", "%u", "%llu", "%lu", "%x", "%llx", "%lx",
+   "%%", "%c", "%f", "%F", "%X".
+
+   Note that all other format string placeholders are not supported. So all other type characters,
+   all flags, all width, and all precision format specifications are not supported. For example,
+   "%20s", "%.2f", "%03d", "%1$d", "%2$.*3$d", "%4$.*3$d", etc. are not supported.
+   In case an unsupported format string placeholder is used, non 0 is returned and the string
+   is cleared.
+
+   @param string a pointer to the string structure
+   @param fmt string literal that can contain printf formatting
+   @param is_safe_cb validator of whether a string is safe to build a bigger expression with.
+     If NULL, then every string is assumed to be safe.
+
+   @return
+   0 when success, none 0 on failure including failed safety check.
+ */
+int amxc_string_appendf_checked(amxc_string_t* string,
+                                amxc_string_is_safe_cb_t is_safe_cb,
+                                const char* fmt, ...) \
+    __attribute__ ((format(printf, 3, 4)));
 
 /**
    @ingroup amxc_string

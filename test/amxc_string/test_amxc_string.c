@@ -1171,3 +1171,128 @@ void test_amxc_string_tolower(UNUSED void** state) {
 
     amxc_string_clean(&string);
 }
+
+static bool s_accept_all_strings(UNUSED const char* string) {
+    return true;
+}
+
+static bool s_reject_all_strings(UNUSED const char* string) {
+    return false;
+}
+
+static bool s_reject_longer_than_5(const char* string) {
+    return string != NULL && strlen(string) <= 5;
+}
+
+static void s_testhelper_vappendf_checked(const char* expected, amxc_string_is_safe_cb_t is_safe_cb, const char* fmt, ...) {
+    va_list args;
+    amxc_string_t str;
+    int retval = -1;
+    va_start(args, fmt);
+
+    amxc_string_init(&str, 64);
+    retval = amxc_string_vappendf_checked(&str, is_safe_cb, fmt, args);
+    if(expected == NULL) {
+        assert_int_not_equal(0, retval);
+        assert_true(amxc_string_is_empty(&str));
+    } else {
+        assert_int_equal(0, retval);
+        assert_string_equal(expected, amxc_string_get(&str, 0));
+    }
+
+    va_end(args);
+    amxc_string_clean(&str);
+}
+
+void test_amxc_string_vappendf_checked(UNUSED void** state) {
+    // Case: Normal case
+    s_testhelper_vappendf_checked("abc 1 2 hi def", s_accept_all_strings, "abc %i %d %s def", 1, 2, "hi");
+
+    // Case: special characters in format string
+    s_testhelper_vappendf_checked("Hello\t\n\r!", s_accept_all_strings, "Hello\t\n\r%s", "!");
+
+    // Case: "%%""
+    s_testhelper_vappendf_checked("abc%def", s_accept_all_strings, "abc%%def");
+
+    // Case: No leading text, no trailing text
+    s_testhelper_vappendf_checked("hi123", s_accept_all_strings, "hi%i", 123);
+    s_testhelper_vappendf_checked("123hi", s_accept_all_strings, "%ihi", 123);
+    s_testhelper_vappendf_checked("123", s_accept_all_strings, "%i", 123);
+
+    // Case: long format placeholders:
+    s_testhelper_vappendf_checked("hi123", s_accept_all_strings, "hi%ld", 123);
+    s_testhelper_vappendf_checked("hi123hello", s_accept_all_strings, "hi%ldhello", 123);
+
+    // Case: fixed integer width macro compatibility (without crosscompiling unfortunately)
+    s_testhelper_vappendf_checked(
+        "int8_t: -128, "
+        "int16_t: -32768, "
+        "int32_t: -2147483648, "
+        "int64_t: -9223372036854775808, "
+        "uint8_t: 255, "
+        "uint16_t: 65535, "
+        "uint32_t: 4294967295, "
+        "uint64_t: 18446744073709551615",
+        s_accept_all_strings,
+        "int8_t: %" PRId8
+        ", int16_t: %" PRId16
+        ", int32_t: %" PRId32
+        ", int64_t: %" PRId64
+        ", uint8_t: %" PRIu8
+        ", uint16_t: %" PRIu16
+        ", uint32_t: %" PRIu32
+        ", uint64_t: %" PRIu64,
+        INT8_MIN,
+        INT16_MIN,
+        INT32_MIN,
+        INT64_MIN,
+        UINT8_MAX,
+        UINT16_MAX,
+        UINT32_MAX,
+        UINT64_MAX);
+
+    // Case: one string not accepted:
+    s_testhelper_vappendf_checked(NULL, s_reject_longer_than_5, "short: %i long: %s", 1234, "looong");
+    s_testhelper_vappendf_checked(NULL, s_reject_longer_than_5, "long: %i short: %s", 123456, "short");
+
+    // Case: unsupported format string placeholders
+    s_testhelper_vappendf_checked(NULL, s_accept_all_strings, "%20s", "hi");
+    s_testhelper_vappendf_checked(NULL, s_accept_all_strings, "%.2f", 3.14159265);
+    s_testhelper_vappendf_checked(NULL, s_accept_all_strings, "%03d", 4);
+    s_testhelper_vappendf_checked(NULL, s_accept_all_strings, "%1$d", 5);
+    s_testhelper_vappendf_checked(NULL, s_accept_all_strings, "%1$.*2$d", 2, 3);
+}
+
+void test_amxc_string_appendf_checked__normalcase(UNUSED void** state) {
+    bool retval = -1;
+    // GIVEN a string
+    amxc_string_t str;
+    amxc_string_init(&str, 64);
+    amxc_string_set(&str, "the");
+
+    // WHEN appending using a formatstring and a checker (which accepts):
+    retval = amxc_string_appendf_checked(&str, s_accept_all_strings, "quick%ibrown%s", 123, "dog");
+
+    // THEN the string is formatted
+    assert_string_equal(amxc_string_get(&str, 0), "thequick123browndog");
+    assert_int_equal(0, retval);
+
+    amxc_string_clean(&str);
+}
+
+void test_amxc_string_appendf_checked__rejected(UNUSED void** state) {
+    int retval = -1;
+    // GIVEN a string
+    amxc_string_t str;
+    amxc_string_init(&str, 64);
+    amxc_string_set(&str, "the");
+
+    // WHEN appending using a formatstring and a checker (which rejects):
+    retval = amxc_string_appendf_checked(&str, s_reject_all_strings, "quick%ibrown%s", 123, "dog");
+
+    // THEN the formatting is rejected, and the string is cleared:
+    assert_string_equal(amxc_string_get(&str, 0), "");
+    assert_int_not_equal(0, retval);
+
+    amxc_string_clean(&str);
+}

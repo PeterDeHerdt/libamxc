@@ -171,7 +171,7 @@ exit:
 static int amxc_htable_cmp_keys(amxc_array_it_t* it1, amxc_array_it_t* it2) {
     const char* key1 = (const char*) amxc_array_it_get_data(it1);
     const char* key2 = (const char*) amxc_array_it_get_data(it2);
-    return strcmp(key1, key2);
+    return strcmp(key1 == NULL? "":key1, key2 == NULL? "":key2);
 }
 
 
@@ -298,7 +298,7 @@ amxc_htable_it_t* amxc_htable_get(const amxc_htable_t* const htable,
     // the following line is always returning a valid array iterator pointer
     ait = amxc_array_get_at(&htable->table, index);
 
-    it = (amxc_htable_it_t*) ait->data;
+    it = ait == NULL? NULL:(amxc_htable_it_t*) ait->data;
     while(it != NULL && strcmp(key, it->key) != 0) {
         it = it->next;
     }
