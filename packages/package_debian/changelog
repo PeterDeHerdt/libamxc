@@ -1,3 +1,10 @@
+libamxc (1.8.1) unstable; urgency=medium
+
+  * Issue: ambiorix/libraries/libamxc#69 Remove dead code and code cleanup
+  * Support appending formatted string with safety check on replacements
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Thu, 03 Nov 2022 08:51:39 +0000
+
 libamxc (1.8.0) unstable; urgency=medium
 
   * Add comparison implementation for htable variants

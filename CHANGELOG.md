@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.1 - 2022-11-03(08:51:39 +0000)
+
+### Other
+
+- Issue: ambiorix/libraries/libamxc#69 Remove dead code and code cleanup
+- Support appending formatted string with safety check on replacements
+
 ## Release v1.8.0 - 2022-10-05(11:38:09 +0000)
 
 ### New
