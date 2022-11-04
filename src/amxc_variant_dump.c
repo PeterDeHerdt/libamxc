@@ -120,7 +120,11 @@ static int variant_dump_type(const amxc_var_t* const var,
     write_indentation(indent, log);
     amxc_string_init(&txt, 64);
     amxc_string_append(&txt, "<", 1);
-    amxc_string_append(&txt, type_name, strlen(type_name));
+    if(type_name != NULL) {
+        amxc_string_append(&txt, type_name, strlen(type_name));
+    } else {
+        amxc_string_append(&txt, "UNKNOWN", 7);
+    }
     amxc_string_append(&txt, ">:", 2);
     if(amxc_var_type_of(var) > AMXC_VAR_ID_ANY) {
         snprintf(addr, 63, "%p:", var->data.data);
@@ -224,7 +228,7 @@ static int variant_dump_htable(const amxc_var_t* const var,
         amxc_var_t* hvar = NULL;
         const char* key
             = (const char*) amxc_array_it_get_data(amxc_array_get_at(keys, i));
-        if(prev_key && (strcmp(key, prev_key) == 0)) {
+        if((prev_key != NULL) && (key != NULL) && (strcmp(key, prev_key) == 0)) {
             it = amxc_htable_it_get_next_key(it);
         } else {
             it = amxc_htable_get(htable, key);
@@ -232,7 +236,11 @@ static int variant_dump_htable(const amxc_var_t* const var,
         prev_key = key;
         hvar = amxc_var_from_htable_it(it);
         write_indentation(indent, log);
-        when_true(amxc_var_write(log, key, strlen(key)) == -1, exit);
+        if(key != NULL) {
+            when_true(amxc_var_write(log, key, strlen(key)) == -1, exit);
+        } else {
+            when_true(amxc_var_write(log, "UNKNOWN", 7) == -1, exit);
+        }
         when_true(amxc_var_write(log, " = ", 3) == -1, exit);
         if((amxc_var_type_of(hvar) == AMXC_VAR_ID_HTABLE) ||
            ( amxc_var_type_of(hvar) == AMXC_VAR_ID_LIST)) {

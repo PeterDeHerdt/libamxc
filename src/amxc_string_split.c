@@ -387,7 +387,9 @@ amxc_build_csv_var_list(amxc_llist_t* all, amxc_var_t* csv_list) {
                         amxc_var_add(cstring_t, csv_list, amxc_string_get(&csv_part, 0));
                         amxc_string_reset(&csv_part);
                     }
-                    csv_list = amxc_container_of(csv_list->lit.llist, amxc_var_t, data);
+                    if(csv_list != NULL) {
+                        csv_list = amxc_container_of(csv_list->lit.llist, amxc_var_t, data);
+                    }
                     sqbrackets = !sqbrackets;
                     add_empty = false;
                 } else {

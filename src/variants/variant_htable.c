@@ -377,6 +377,9 @@ static int variant_htable_compare(const amxc_var_t* const lval,
         const char* key_l = (const char*) amxc_array_get_data_at(keys_l, i);
         const char* key_r = (const char*) amxc_array_get_data_at(keys_r, i);
 
+        if((key_l == NULL) || (key_r == NULL)) {
+            continue;
+        }
         *result = strcmp(key_l, key_r);
         when_false(*result == 0, exit);
 

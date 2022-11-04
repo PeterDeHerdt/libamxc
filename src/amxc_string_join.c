@@ -129,7 +129,7 @@ int amxc_string_join_var_until(amxc_string_t* string,
                   ( amxc_var_type_of(part) == AMXC_VAR_ID_CSV_STRING) ||
                   ( amxc_var_type_of(part) == AMXC_VAR_ID_SSV_STRING)) {
             const char* txt = amxc_var_constcast(cstring_t, part);
-            if((end != NULL) && (strcmp(txt, end) == 0)) {
+            if((txt != NULL) && (end != NULL) && (strcmp(txt, end) == 0)) {
                 if(remove) {
                     amxc_var_delete(&part);
                 }
@@ -138,7 +138,7 @@ int amxc_string_join_var_until(amxc_string_t* string,
             amxc_string_appendf(string, "%s", txt);
         } else {
             char* txt = amxc_var_dyncast(cstring_t, part);
-            if((end != NULL) && (strcmp(txt, end) == 0)) {
+            if((txt != NULL) && (end != NULL) && (strcmp(txt, end) == 0)) {
                 if(remove) {
                     amxc_var_delete(&part);
                 }

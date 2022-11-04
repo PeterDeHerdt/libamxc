@@ -560,8 +560,11 @@ int amxc_ts_to_local(amxc_ts_t* tsp) {
     int retval = -1;
     time_t rawtime = time(NULL);
     struct tm* ptm = gmtime(&rawtime);
-    time_t gmt = mktime(ptm);
+    time_t gmt = 0;
 
+    when_null(ptm, exit);
+
+    gmt = mktime(ptm);
     ptm = localtime(&rawtime);
 
     when_null(tsp, exit);
