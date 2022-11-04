@@ -563,11 +563,12 @@ int amxc_ts_to_local(amxc_ts_t* tsp) {
     time_t gmt = 0;
 
     when_null(ptm, exit);
+    when_null(tsp, exit);
 
     gmt = mktime(ptm);
     ptm = localtime(&rawtime);
 
-    when_null(tsp, exit);
+    when_null(ptm, exit);
 
     tsp->offset = (rawtime - gmt + (ptm->tm_isdst ? 3600 : 0)) / 60;
     retval = 0;

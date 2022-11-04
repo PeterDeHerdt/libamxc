@@ -464,7 +464,9 @@ amxc_build_ssv_var_list(amxc_llist_t* all, amxc_var_t* ssv_list) {
                     amxc_var_add(cstring_t, ssv_list, amxc_string_get(&csv_part, 0));
                     amxc_string_reset(&csv_part);
                 }
-                ssv_list = amxc_container_of(ssv_list->lit.llist, amxc_var_t, data);
+                if(ssv_list != NULL) {
+                    ssv_list = amxc_container_of(ssv_list->lit.llist, amxc_var_t, data);
+                }
                 sqbrackets = !sqbrackets;
                 break;
             case ' ':
