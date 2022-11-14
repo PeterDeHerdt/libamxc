@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.2 - 2022-11-14(07:03:53 +0000)
+
+### Fixes
+
+- Investigate and fix klocwork reports for ambiorix libs and tools
+
 ## Release v1.8.1 - 2022-11-03(08:51:39 +0000)
 
 ### Other
