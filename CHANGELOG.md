@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.3 - 2022-11-15(11:52:11 +0000)
+
+### Fixes
+
+- Update documentation of functions amxc_var_get_next, amxc_var_get_previous and amxc_var_get_parent
+
 ## Release v1.8.2 - 2022-11-14(07:03:53 +0000)
 
 ### Fixes
