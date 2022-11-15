@@ -812,6 +812,13 @@ extern "C"
    When the variant is not of a htable or list type, this macro will do nothing
 
    It is save to delete the current variant in the loop.
+
+   @warning
+   When a variant is contained in a list and in a htable, the next variant will
+   be the next in the htable. If you want to iterate over all variants in a variant
+   list and all or some of variants are also in a htable, it is better to cast
+   the container variant to a llist using @ref amxc_var_constcast and use
+   @ref amxc_llist_for_each to iterate over all variants in the list.
  */
 #define amxc_var_for_each(var, var_list) \
     for(amxc_var_t* var = amxc_var_get_first(var_list), \
@@ -829,6 +836,13 @@ extern "C"
    When the variant is not of a htable or list type, this macro will do nothing
 
    It is save to delete the current variant in the loop.
+
+   @warning
+   When a variant is contained in a list and in a htable, the previous variant will
+   be the previous in the htable. If you want to iterate over all variants in a variant
+   list and all or some of variants are also in a htable, it is better to cast
+   the container variant to a llist using @ref amxc_var_constcast and use
+   @ref amxc_llist_for_each_reverse to iterate over all variants in the list.
  */
 #define amxc_var_for_each_reverse(var, var_list) \
     for(amxc_var_t* var = amxc_var_get_last(var_list), \
@@ -1471,6 +1485,9 @@ amxc_var_t* amxc_var_get_last(const amxc_var_t* const var);
    If the provided variant is the last in the htable or list a NULL pointer
    is returned.
 
+   If the provided variant is in a list and in a htable, the next variant in the
+   htable will be returned.
+
    @param var pointer to a variant struct
 
    @return
@@ -1492,6 +1509,9 @@ amxc_var_t* amxc_var_get_next(const amxc_var_t* const var);
    If the provided variant is the first in the htable or list a NULL pointer
    is returned.
 
+   If the provided variant is in a list and in a htable, the previous variant in the
+   htable will be returned.
+
    @param var pointer to a variant struct
 
    @return
@@ -1509,6 +1529,9 @@ amxc_var_t* amxc_var_get_previous(const amxc_var_t* const var);
 
    If the provided variant pointer is not in a htable or list variant, this
    function will return NULL.
+
+   If the provided variant is contained in a htable and in a list variant, the
+   pointer to the containing htable variant is returned.
 
    @param var pointer to a variant struct
 
