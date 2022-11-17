@@ -61,9 +61,14 @@
 #ifndef __TEST_AMXC_VARIANT_DUMP_H__
 #define __TEST_AMXC_VARIANT_DUMP_H__
 
+int test_amxc_variant_dump_testsetup(void** state);
+int test_amxc_variant_dump_testteardown(void** state);
+
 void test_amxc_variant_dump(void** state);
 void test_amxc_variant_log(void** state);
 void test_amxc_variant_dump_null(void** state);
 void test_amxc_variant_log_null(void** state);
+void test_amxc_variant_dump_list_comma_position(void** state);
+void test_amxc_variant_dump_htable_comma_position(void** state);
 
 #endif // __TEST_AMXC_VARIANT_DUMP_H__

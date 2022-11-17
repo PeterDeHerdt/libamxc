@@ -68,6 +68,11 @@
 #include <setjmp.h>
 #include <cmocka.h>
 #include <syslog.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <malloc.h>
+
 
 #include <amxc/amxc_variant_type.h>
 
@@ -84,6 +89,35 @@ static amxc_var_type_t my_dummy_type =
     .compare = NULL,
     .name = "my_dummy_type_t"
 };
+
+typedef struct {
+    int fd;
+    char* buffer;
+} teststate_t;
+
+/** @implements CMFixtureFunction */
+int test_amxc_variant_dump_testsetup(void** state) {
+    teststate_t* teststate = calloc(1, sizeof(teststate_t));
+    assert_non_null(teststate);
+
+    teststate->fd = shm_open("/test_amxc_variant_dump", O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR);
+    assert_int_not_equal(teststate->fd, -1);
+    assert_int_not_equal(-1, ftruncate(teststate->fd, 1024));
+    teststate->buffer = mmap(NULL, 1024, PROT_READ | PROT_WRITE, MAP_SHARED, teststate->fd, 0);
+    assert_non_null(teststate->buffer);
+
+    *state = teststate;
+    return 0;
+}
+
+/** @implements CMFixtureFunction */
+int test_amxc_variant_dump_testteardown(void** state) {
+    assert_non_null(state);
+    shm_unlink("/test_amxc_variant_dump");
+    free(*state);
+    *state = NULL;
+    return 0;
+}
 
 void test_amxc_variant_dump(UNUSED void** state) {
     amxc_var_t myvar;
@@ -156,4 +190,60 @@ void test_amxc_variant_dump_null(UNUSED void** state) {
 
 void test_amxc_variant_log_null(UNUSED void** state) {
     amxc_var_log(NULL);
+}
+
+void test_amxc_variant_dump_list_comma_position(void** state) {
+    amxc_var_t myvar;
+    teststate_t* teststate = *state;
+    int status = -1;
+
+    // GIVEN a variant containing a list
+    amxc_var_init(&myvar);
+    amxc_var_set_type(&myvar, AMXC_VAR_ID_LIST);
+    amxc_var_add(cstring_t, &myvar, "text1");
+    amxc_var_add(cstring_t, &myvar, "text2");
+    amxc_var_add(int32_t, &myvar, 3);
+    amxc_var_add(bool, &myvar, true);
+
+    // WHEN serializing it
+    status = amxc_var_dump(&myvar, teststate->fd);
+
+    // THEN in the serialization output, commas are inbetween the elements
+    //      and not after the last element
+    assert_int_equal(0, status);
+    assert_string_equal(teststate->buffer,
+                        "[\n"
+                        "    \"text1\",\n"
+                        "    \"text2\",\n"
+                        "    3,\n"
+                        "    true\n"
+                        "]\n");
+}
+
+void test_amxc_variant_dump_htable_comma_position(void** state) {
+    amxc_var_t myvar;
+    teststate_t* teststate = *state;
+    int status = -1;
+
+    // GIVEN a variant containing a hashtable
+    amxc_var_init(&myvar);
+    amxc_var_set_type(&myvar, AMXC_VAR_ID_HTABLE);
+    amxc_var_add_key(cstring_t, &myvar, "key1", "text1");
+    amxc_var_add_key(cstring_t, &myvar, "key2", "text2");
+    amxc_var_add_key(int32_t, &myvar, "key3", 3);
+    amxc_var_add_key(bool, &myvar, "key4", true);
+
+    // WHEN serializing it
+    status = amxc_var_dump(&myvar, teststate->fd);
+
+    // THEN the element without trailing comma is the last in the in the serialization output
+    //      (not the last in hashtable internal order).
+    assert_int_equal(0, status);
+    assert_string_equal(teststate->buffer,
+                        "{\n"
+                        "    key1 = \"text1\",\n"
+                        "    key2 = \"text2\",\n"
+                        "    key3 = 3,\n"
+                        "    key4 = true\n"
+                        "}\n");
 }

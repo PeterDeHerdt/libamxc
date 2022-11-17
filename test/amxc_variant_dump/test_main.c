@@ -71,6 +71,8 @@ int main(void) {
         cmocka_unit_test(test_amxc_variant_log),
         cmocka_unit_test(test_amxc_variant_dump_null),
         cmocka_unit_test(test_amxc_variant_log_null),
+        cmocka_unit_test_setup_teardown(test_amxc_variant_dump_list_comma_position, test_amxc_variant_dump_testsetup, test_amxc_variant_dump_testteardown),
+        cmocka_unit_test_setup_teardown(test_amxc_variant_dump_htable_comma_position, test_amxc_variant_dump_testsetup, test_amxc_variant_dump_testteardown),
     };
     return cmocka_run_group_tests_name("amxc-variant-dump", tests, NULL, NULL);
 }

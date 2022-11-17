@@ -248,7 +248,7 @@ static int variant_dump_htable(const amxc_var_t* const var,
         } else {
             amxc_var_dump_internal(hvar, 0, log);
         }
-        if(amxc_htable_it_get_next(it) != NULL) {
+        if(i + 1 < amxc_array_capacity(keys)) {
             when_true(amxc_var_write(log, ",\n", 2) == -1, exit);
         } else {
             when_true(amxc_var_write(log, "\n", 1) == -1, exit);
