@@ -253,9 +253,12 @@ void test_variant_char_convert_to_list(UNUSED void** state) {
     assert_int_equal(var.type_id, AMXC_VAR_ID_CSTRING);
 
     var.data.s = NULL;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
-    var.data.s = strdup("");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(amxc_var_type_of(&copy_var), AMXC_VAR_ID_LIST);
+    var.data.s = strdup("");
+    amxc_var_clean(&copy_var);
+    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(amxc_var_type_of(&copy_var), AMXC_VAR_ID_LIST);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 0);
     free(var.data.s);
 
@@ -375,9 +378,12 @@ void test_variant_ssv_char_convert_to_list(UNUSED void** state) {
     assert_int_equal(var.type_id, AMXC_VAR_ID_SSV_STRING);
 
     var.data.s = NULL;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
-    var.data.s = strdup("");
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(amxc_var_type_of(&copy_var), AMXC_VAR_ID_LIST);
+    var.data.s = strdup("");
+    amxc_var_clean(&copy_var);
+    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_LIST), 0);
+    assert_int_equal(amxc_var_type_of(&copy_var), AMXC_VAR_ID_LIST);
     assert_int_equal(amxc_llist_size(&copy_var.data.vl), 0);
     free(var.data.s);
 
@@ -456,9 +462,11 @@ void test_variant_char_convert_to_htable(UNUSED void** state) {
     assert_int_equal(var.type_id, AMXC_VAR_ID_CSTRING);
 
     var.data.s = NULL;
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_type_of(&copy_var), AMXC_VAR_ID_HTABLE);
     var.data.s = "";
-    assert_int_not_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_type_of(&copy_var), AMXC_VAR_ID_HTABLE);
 
     var.data.s = "NULL";
     assert_int_equal(amxc_var_convert(&copy_var, &var, AMXC_VAR_ID_HTABLE), 0);

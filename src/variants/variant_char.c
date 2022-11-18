@@ -242,9 +242,10 @@ exit:
 static int variant_char_to_list(amxc_var_t* const dest,
                                 const amxc_var_t* const src) {
     amxc_string_t str;
-    int retval = -1;
+    int retval = 0;
 
     amxc_string_init(&str, 0);
+    amxc_var_set_type(dest, AMXC_VAR_ID_LIST);
     when_null(src->data.s, exit);
 
     if(*(src->data.s) != 0) {
@@ -267,10 +268,12 @@ exit:
 static int variant_char_to_htable(amxc_var_t* const dest,
                                   const amxc_var_t* const src) {
     char* temp = NULL;
-    int retval = -1;
+    int retval = 0;
     char* element = NULL;
     int length = 0;
-    when_true((src->data.s == NULL) || (*(src->data.s) == 0), exit);
+
+    amxc_var_set_type(dest, AMXC_VAR_ID_HTABLE);
+    when_true(src->data.s == NULL || src->data.s == 0, exit);
 
     length = strlen(src->data.s) + 1;
     temp = (char*) calloc(1, length);

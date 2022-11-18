@@ -110,7 +110,7 @@ void test_variant_htable_copy(UNUSED void** state) {
     assert_int_equal(amxc_var_set_type(&string, AMXC_VAR_ID_CSTRING), 0);
     string.data.s = "";
 
-    assert_int_not_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_HTABLE), 0);
+    assert_int_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_HTABLE), 0);
     assert_int_equal(string.type_id, AMXC_VAR_ID_CSTRING);
     string.data.s = "Key1:Hello,Key2:world,Key3:and,Key4:anyone,Key5:else,Key6:in,Key7:the,Key8:universe";
     assert_int_equal(amxc_var_convert(&var, &string, AMXC_VAR_ID_HTABLE), 0);
