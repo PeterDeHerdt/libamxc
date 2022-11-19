@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.4 - 2022-11-19(11:41:22 +0000)
+
+### Fixes
+
+- Converting an empty string variant to a list should result in an empty list
+
 ## Release v1.8.3 - 2022-11-15(11:52:11 +0000)
 
 ### Fixes

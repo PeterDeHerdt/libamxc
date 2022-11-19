@@ -1,3 +1,9 @@
+libamxc (1.8.4) unstable; urgency=medium
+
+  * Converting an empty string variant to a list should result in an empty list
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Sat, 19 Nov 2022 11:41:22 +0000
+
 libamxc (1.8.3) unstable; urgency=medium
 
   * Update documentation of functions amxc_var_get_next, amxc_var_get_previous and amxc_var_get_parent
