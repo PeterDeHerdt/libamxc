@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.5 - 2022-11-21(09:15:11 +0000)
+
+### Fixes
+
+- Fix wrong comma in amxc_var_dump output
+
 ## Release v1.8.4 - 2022-11-19(11:41:22 +0000)
 
 ### Fixes
