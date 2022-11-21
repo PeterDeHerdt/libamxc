@@ -218,6 +218,8 @@ void test_amxc_variant_dump_list_comma_position(void** state) {
                         "    3,\n"
                         "    true\n"
                         "]\n");
+
+    amxc_var_clean(&myvar);
 }
 
 void test_amxc_variant_dump_htable_comma_position(void** state) {
@@ -246,4 +248,6 @@ void test_amxc_variant_dump_htable_comma_position(void** state) {
                         "    key3 = 3,\n"
                         "    key4 = true\n"
                         "}\n");
+
+    amxc_var_clean(&myvar);
 }
