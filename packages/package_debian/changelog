@@ -1,3 +1,9 @@
+libamxc (1.8.6) unstable; urgency=medium
+
+  * amxp_expr_buildf with 2 arguments only works in container, not on board
+
+ -- SAH bot <sahbot@softathome.com>  Wed, 30 Nov 2022 20:42:07 +0000
+
 libamxc (1.8.5) unstable; urgency=medium
 
   * Fix wrong comma in amxc_var_dump output

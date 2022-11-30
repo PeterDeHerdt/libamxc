@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.6 - 2022-11-30(20:42:06 +0000)
+
+### Fixes
+
+- amxp_expr_buildf with 2 arguments only works in container, not on board
+
 ## Release v1.8.5 - 2022-11-21(09:15:11 +0000)
 
 ### Fixes
