@@ -662,8 +662,6 @@ int amxc_string_vappendf_checked(amxc_string_t* string, amxc_string_is_safe_cb_t
             || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%X", unsigned int)
             || s_replace_percentage(string, placeholder, &status);
 
-        _Static_assert(sizeof(s_supported_format_placeholders) / sizeof(s_supported_format_placeholders[0]) == 18,
-                       "If you add/remove to/from the list of supported placeholders, you must change the implementation too.");
         when_false(placeholder_handled, error);
 
         when_failed(status, error);
