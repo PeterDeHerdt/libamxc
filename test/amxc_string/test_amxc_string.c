@@ -1255,6 +1255,9 @@ void test_amxc_string_vappendf_checked(UNUSED void** state) {
     s_testhelper_vappendf_checked(NULL, s_reject_longer_than_5, "short: %i long: %s", 1234, "looong");
     s_testhelper_vappendf_checked(NULL, s_reject_longer_than_5, "long: %i short: %s", 123456, "short");
 
+    // Case: char (because C has auto integer promotion for varargs)
+    s_testhelper_vappendf_checked("hello", s_accept_all_strings, "%c%cllo", 104, 101);
+
     // Case: unsupported format string placeholders
     s_testhelper_vappendf_checked(NULL, s_accept_all_strings, "%20s", "hi");
     s_testhelper_vappendf_checked(NULL, s_accept_all_strings, "%.2f", 3.14159265);

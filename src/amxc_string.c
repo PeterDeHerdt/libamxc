@@ -587,6 +587,22 @@ exit:
     return retval;
 }
 
+/** @return whether the actual placeholder was "%%"" */
+static bool s_replace_percentage(amxc_string_t* string, const char* actual_placeholder, int* status) {
+    if(0 == strcmp(actual_placeholder, "%%")) {
+        *status = amxc_string_append(string, "%", 1);
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/** @return whether the actual placeholder was the searched placeholder */
+#define REPLACE_PLACEHOLDER(string, actual_placeholder, status, args, searched_placeholder, type) \
+    (0 == strcmp(actual_placeholder, searched_placeholder) \
+        ? status = amxc_string_appendf(string, actual_placeholder, va_arg(args, type)), true \
+        : false)
+
 int amxc_string_vappendf_checked(amxc_string_t* string, amxc_string_is_safe_cb_t is_safe_cb,
                                  const char* fmt, va_list args) {
 
@@ -599,6 +615,7 @@ int amxc_string_vappendf_checked(amxc_string_t* string, amxc_string_is_safe_cb_t
         size_t len_new_fixed = 0;
         const char* placeholder = NULL;
         const char* placeholder_in_pos = strchr(pos, '%');
+        bool placeholder_handled = false;
 
         // If no "%" left, add all the rest:
         if(placeholder_in_pos == NULL) {
@@ -614,13 +631,41 @@ int amxc_string_vappendf_checked(amxc_string_t* string, amxc_string_is_safe_cb_t
             when_failed(status, error);
         }
 
-        // Replace placeholder (e.g. "%i"):
+        // Identify placeholder (e.g. "%i"):
         placeholder = s_get_format_placeholder(placeholder_in_pos);
         if(placeholder == NULL) {
             goto error; // unsupported placeholder.
         }
         len_pos_old = amxc_string_text_length(string);
-        status = amxc_string_vappendf(string, placeholder, args);
+
+        // Add replacement
+        // Note: Unfortunately, we cannot make this more clean by splitting off functions
+        //   because "If [the va_list] is passed to a function that uses va_arg(ap,type), then
+        //   the value of ap is undefined after the return of that function." (man va_arg(3))
+        //   and because getting an item from a va_list requires hardcoding its type.
+        placeholder_handled = REPLACE_PLACEHOLDER(string, placeholder, status, args, "%s", const char*)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%d", int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%lld", long long int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%ld", long int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%i", int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%lli", long long int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%li", long int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%u", unsigned int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%llu", long long unsigned int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%lu", long unsigned int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%x", unsigned int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%llx", long long unsigned int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%lx", long unsigned int)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%c", int) // unsigned char promoted to int
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%f", double)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%F", double)
+            || REPLACE_PLACEHOLDER(string, placeholder, status, args, "%X", unsigned int)
+            || s_replace_percentage(string, placeholder, &status);
+
+        _Static_assert(sizeof(s_supported_format_placeholders) / sizeof(s_supported_format_placeholders[0]) == 18,
+                       "If you add/remove to/from the list of supported placeholders, you must change the implementation too.");
+        when_false(placeholder_handled, error);
+
         when_failed(status, error);
 
         // Check if added string safe:
