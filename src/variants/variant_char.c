@@ -596,6 +596,8 @@ cstring_t amxc_var_get_cstring_t(const amxc_var_t* const var) {
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_CSTRING), exit);
     retval = variant.data.s != NULL ? variant.data.s : strdup("");
+    variant.data.s = NULL;
+    amxc_var_clean(&variant);
 
 exit:
     return retval;

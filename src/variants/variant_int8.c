@@ -302,6 +302,7 @@ int8_t amxc_var_get_int8_t(const amxc_var_t* var) {
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_INT8), exit);
     retval = variant.data.i8;
+    amxc_var_clean(&variant);
 
 exit:
     return retval;

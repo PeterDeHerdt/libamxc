@@ -199,6 +199,8 @@ amxc_ts_t* amxc_var_get_amxc_ts_t(const amxc_var_t* var) {
     ts->nsec = variant.data.ts.nsec;
     ts->offset = variant.data.ts.offset;
 
+    amxc_var_clean(&variant);
+
 exit:
     return ts;
 }

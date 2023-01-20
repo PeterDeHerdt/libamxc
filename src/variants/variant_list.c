@@ -194,6 +194,7 @@ static int variant_list_to_htable(amxc_var_t* const dest,
     retval = 0;
 
 exit:
+    amxc_var_clean(&index);
     return retval;
 }
 

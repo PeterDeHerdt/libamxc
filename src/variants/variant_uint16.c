@@ -317,6 +317,7 @@ uint16_t amxc_var_get_uint16_t(const amxc_var_t* var) {
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_UINT16), exit);
     retval = variant.data.ui16;
+    amxc_var_clean(&variant);
 
 exit:
     return retval;

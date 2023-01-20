@@ -383,9 +383,9 @@ amxc_build_csv_var_list(amxc_llist_t* all, amxc_var_t* csv_list) {
             case ']':
                 if(sqbrackets) {
                     if(amxc_string_text_length(&csv_part) > 0) {
+                        amxc_var_t* item = amxc_var_add_new(csv_list);
                         amxc_string_trim(&csv_part, NULL);
-                        amxc_var_add(cstring_t, csv_list, amxc_string_get(&csv_part, 0));
-                        amxc_string_reset(&csv_part);
+                        amxc_var_push(cstring_t, item, amxc_string_take_buffer(&csv_part));
                     }
                     if(csv_list != NULL) {
                         csv_list = amxc_container_of(csv_list->lit.llist, amxc_var_t, data);
@@ -401,12 +401,13 @@ amxc_build_csv_var_list(amxc_llist_t* all, amxc_var_t* csv_list) {
                     amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
                 } else {
                     if(amxc_string_text_length(&csv_part) > 0) {
+                        amxc_var_t* item = amxc_var_add_new(csv_list);
                         amxc_string_trim(&csv_part, NULL);
-                        amxc_var_add(cstring_t, csv_list, amxc_string_get(&csv_part, 0));
+                        amxc_var_push(cstring_t, item, amxc_string_take_buffer(&csv_part));
                     } else if(add_empty) {
-                        amxc_var_add(cstring_t, csv_list, "");
+                        amxc_var_t* item = amxc_var_add_new(csv_list);
+                        amxc_var_set(cstring_t, item, "");
                     }
-                    amxc_string_reset(&csv_part);
                     add_empty = true;
                 }
                 last_is_comma = true;
@@ -423,8 +424,9 @@ amxc_build_csv_var_list(amxc_llist_t* all, amxc_var_t* csv_list) {
         }
     }
     if(amxc_string_text_length(&csv_part) > 0) {
+        amxc_var_t* item = amxc_var_add_new(csv_list);
         amxc_string_trim(&csv_part, NULL);
-        amxc_var_add(cstring_t, csv_list, amxc_string_get(&csv_part, 0));
+        amxc_var_push(cstring_t, item, amxc_string_take_buffer(&csv_part));
     } else if(last_is_comma && add_empty) {
         amxc_var_add(cstring_t, csv_list, "");
     }
@@ -461,8 +463,8 @@ amxc_build_ssv_var_list(amxc_llist_t* all, amxc_var_t* ssv_list) {
                 break;
             case ']':
                 if(amxc_string_text_length(&csv_part) > 0) {
-                    amxc_var_add(cstring_t, ssv_list, amxc_string_get(&csv_part, 0));
-                    amxc_string_reset(&csv_part);
+                    amxc_var_t* item = amxc_var_add_new(ssv_list);
+                    amxc_var_push(cstring_t, item, amxc_string_take_buffer(&csv_part));
                 }
                 if(ssv_list != NULL) {
                     ssv_list = amxc_container_of(ssv_list->lit.llist, amxc_var_t, data);
@@ -474,7 +476,8 @@ amxc_build_ssv_var_list(amxc_llist_t* all, amxc_var_t* ssv_list) {
                     amxc_string_append(&csv_part, txt_part, amxc_string_text_length(part));
                 } else {
                     if(amxc_string_text_length(&csv_part) > 0) {
-                        amxc_var_add(cstring_t, ssv_list, amxc_string_get(&csv_part, 0));
+                        amxc_var_t* item = amxc_var_add_new(ssv_list);
+                        amxc_var_push(cstring_t, item, amxc_string_take_buffer(&csv_part));
                     }
                     amxc_string_reset(&csv_part);
                 }
@@ -488,7 +491,8 @@ amxc_build_ssv_var_list(amxc_llist_t* all, amxc_var_t* ssv_list) {
         }
     }
     if(amxc_string_text_length(&csv_part) > 0) {
-        amxc_var_add(cstring_t, ssv_list, amxc_string_get(&csv_part, 0));
+        amxc_var_t* item = amxc_var_add_new(ssv_list);
+        amxc_var_push(cstring_t, item, amxc_string_take_buffer(&csv_part));
     }
     amxc_string_clean(&csv_part);
 

@@ -314,6 +314,7 @@ fd_t amxc_var_get_fd_t(const amxc_var_t* var) {
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_FD), exit);
     retval = variant.data.fd;
+    amxc_var_clean(&variant);
 
 exit:
     return retval;
