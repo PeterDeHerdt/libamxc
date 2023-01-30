@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.7 - 2023-01-30(16:26:24 +0000)
+
+### Fixes
+
+- Issue: semgrep reports
+
 ## Release v1.8.6 - 2022-11-30(20:42:06 +0000)
 
 ### Fixes
