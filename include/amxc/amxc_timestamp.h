@@ -141,7 +141,7 @@ int amxc_ts_now(amxc_ts_t* tsp);
    format into unix epoch time stored as a struct.
 
    @param tsp a pointer to a timestamp structure
-   @param str string containing time in RF3339 format
+   @param str string containing time in RFC3339 format
    @param len length of the string
 
    @return
@@ -154,7 +154,7 @@ int amxc_ts_parse(amxc_ts_t* tsp, const char* str, size_t len);
    @brief
    Transforms unix epoch time to a string.
 
-   Transforms unix epoch time to string in RFC3399 compatible format.
+   Transforms unix epoch time to string in RFC3339 compatible format.
 
    Use @ref amxc_ts_format_precision to specify the precision.
 
@@ -178,7 +178,7 @@ size_t amxc_ts_format(const amxc_ts_t* tsp, char* dst, size_t len);
    @brief
    Transforms unix epoch time to a string.
 
-   Transforms unix epoch time to string in RFC3399 compatible format.
+   Transforms unix epoch time to string in RFC3339 compatible format.
 
    @note
    The length of the provided string buffer must be at least 21 bytes.

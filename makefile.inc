@@ -29,6 +29,9 @@ CC_NAME = $(word $(words $(CC_PARTS)),$(CC_PARTS))
 
 # Target
 COMPONENT = libamxc
+ifeq ($(CONFIG_GATEWAY)$(CONFIG_ACCESSPOINT),)
+CONFIG_GATEWAY=y
+endif
 
 # install directories
 PREFIX ?= /usr/
