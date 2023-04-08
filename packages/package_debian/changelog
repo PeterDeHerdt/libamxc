@@ -1,3 +1,8 @@
+libamxc (1.8.8) unstable; urgency=medium
+
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Sat, 08 Apr 2023 16:55:32 +0000
+
 libamxc (1.8.7) unstable; urgency=medium
 
   * Issue: semgrep reports
