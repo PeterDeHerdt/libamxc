@@ -3299,7 +3299,7 @@ amxc_var_t* amxc_var_add_new_key_amxc_ts_t(amxc_var_t* const var, const char* ke
    Creates a new variant and adds it to a composite variant that supports
    key addressing.
 
-   If the provided htable pointer is NULL, an empty htable is added.
+   If the provided list pointer is NULL, an empty list is added.
 
    @note
    Do not call this function directly, use macro @ref amxc_var_add_key with the
