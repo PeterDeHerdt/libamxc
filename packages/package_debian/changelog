@@ -1,3 +1,9 @@
+libamxc (1.8.9) unstable; urgency=medium
+
+  * Fix a typo in the description of amxc_var_add_new_key_amxc_llist_t
+
+ -- SAH bot <sahbot@softathome.com>  Tue, 18 Apr 2023 18:18:51 +0000
+
 libamxc (1.8.8) unstable; urgency=medium
 
 

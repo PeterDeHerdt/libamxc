@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.9 - 2023-04-18(18:18:50 +0000)
+
+### Other
+
+- Fix a typo in the description of amxc_var_add_new_key_amxc_llist_t
+
 ## Release v1.8.8 - 2023-04-08(16:55:32 +0000)
 
 ## Release v1.8.7 - 2023-01-30(16:26:24 +0000)
