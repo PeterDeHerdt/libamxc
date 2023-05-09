@@ -233,7 +233,7 @@ int amxc_var_init(amxc_var_t* const var) {
     var->type_id = 0;
     var->data.data = NULL;
     when_failed(amxc_llist_it_init(&var->lit), exit);
-    when_failed(amxc_htable_it_init(&var->hit), exit)
+    when_failed(amxc_htable_it_init(&var->hit), exit);
     retval = 0;
 
 exit:
