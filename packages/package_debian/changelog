@@ -1,3 +1,9 @@
+libamxc (1.8.10) unstable; urgency=medium
+
+  * [amxc] Fix missing semicolon
+
+ -- SAH bot <sahbot@softathome.com>  Tue, 09 May 2023 14:18:05 +0000
+
 libamxc (1.8.9) unstable; urgency=medium
 
   * Fix a typo in the description of amxc_var_add_new_key_amxc_llist_t

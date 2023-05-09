@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.10 - 2023-05-09(14:18:05 +0000)
+
+### Fixes
+
+- [amxc] Fix missing semicolon
+
 ## Release v1.8.9 - 2023-04-18(18:18:50 +0000)
 
 ### Other
