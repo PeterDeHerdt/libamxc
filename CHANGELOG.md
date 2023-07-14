@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.11 - 2023-07-14(13:13:53 +0000)
+
+### Fixes
+
+- When using GCC 12.2 extra compilation wanings pop-up
+
 ## Release v1.8.10 - 2023-05-09(14:18:05 +0000)
 
 ### Fixes
