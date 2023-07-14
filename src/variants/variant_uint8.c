@@ -304,9 +304,9 @@ exit:
 
 uint8_t amxc_var_get_uint8_t(const amxc_var_t* var) {
     uint32_t retval = 0;
+    amxc_var_t variant;
     when_null(var, exit);
 
-    amxc_var_t variant;
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_UINT8), exit);
     retval = variant.data.ui8;

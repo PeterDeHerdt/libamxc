@@ -391,9 +391,9 @@ DESTRUCTOR static void amxc_var_list_cleanup(void) {
 amxc_llist_t* amxc_var_get_amxc_llist_t(const amxc_var_t* const var) {
     amxc_llist_t* llist = NULL;
     amxc_llist_it_t* it = NULL;
+    amxc_var_t variant;
     when_null(var, exit);
 
-    amxc_var_t variant;
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_LIST), exit);
 

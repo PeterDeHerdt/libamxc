@@ -268,9 +268,10 @@ ssize_t amxc_rbuffer_read(amxc_rbuffer_t* const rb,
     if(rb->read_pos > rb->write_pos) {
         size_t data_size = rb->buffer_end - rb->read_pos;
         if(count > data_size) {
+            size_t max_size = 0;
             memcpy(buf, rb->read_pos, data_size);
             count -= data_size;
-            size_t max_size = rb->write_pos - rb->buffer_start;
+            max_size = rb->write_pos - rb->buffer_start;
             memcpy(buf + data_size,
                    rb->buffer_start,
                    count > max_size ? max_size : count);

@@ -72,8 +72,8 @@
 #include <amxc_variant_priv.h>
 
 static const char* variant_char_validate_number(const amxc_var_t* const src, int* retval) {
-    *retval = -1;
     const char* buffer = NULL;
+    *retval = -1;
     when_true((src->data.s == NULL) || (*(src->data.s) == 0), exit);
 
     buffer = src->data.s;
@@ -590,9 +590,9 @@ exit:
 
 cstring_t amxc_var_get_cstring_t(const amxc_var_t* const var) {
     char* retval = NULL;
+    amxc_var_t variant;
     when_null(var, exit);
 
-    amxc_var_t variant;
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_CSTRING), exit);
     retval = variant.data.s != NULL ? variant.data.s : strdup("");

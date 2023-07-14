@@ -33,7 +33,11 @@ CFLAGS += -Werror -Wall -Wextra \
 ifeq ($(CC_NAME),g++)
 	CFLAGS += -std=c++2a
 else
-	CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wnested-externs -std=c11
+	CFLAGS += -Wstrict-prototypes \
+	          -Wold-style-definition \
+			  -Wnested-externs \
+     		  -Wdeclaration-after-statement \
+			  -std=c11
 endif
 
 LDFLAGS += $(STAGING_LIBDIR) -shared -fPIC

@@ -953,10 +953,12 @@ int amxc_string_hex_binary_2_bytes(const amxc_string_t* const string,
     }
 
     if(sep_count != 0) {
+        char* tmp = NULL;
         *len -= (((sep_len * sep_count) + 1) >> 1);
-        *bytes = (char*) realloc(buffer, *len);
-        if(*bytes == NULL) {
-            *bytes = buffer;
+        *bytes = buffer;
+        tmp = (char*) realloc(buffer, *len);
+        if(tmp != NULL) {
+            *bytes = tmp;
         }
     } else {
         *bytes = buffer;

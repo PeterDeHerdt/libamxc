@@ -239,9 +239,9 @@ exit:
 
 bool amxc_var_get_bool(const amxc_var_t* var) {
     bool boolean = false;
+    amxc_var_t variant;
     when_null(var, exit);
 
-    amxc_var_t variant;
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_BOOL), exit);
     boolean = variant.data.b;

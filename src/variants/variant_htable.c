@@ -423,9 +423,9 @@ DESTRUCTOR static void amxc_var_htable_cleanup(void) {
 amxc_htable_t* amxc_var_get_amxc_htable_t(const amxc_var_t* const var) {
     amxc_htable_t* htable = NULL;
     amxc_htable_it_t* it = NULL;
+    amxc_var_t variant;
     when_null(var, exit);
 
-    amxc_var_t variant;
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_HTABLE), exit);
 

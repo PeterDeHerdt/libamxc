@@ -187,9 +187,9 @@ exit:
 
 amxc_ts_t* amxc_var_get_amxc_ts_t(const amxc_var_t* var) {
     amxc_ts_t* ts = NULL;
+    amxc_var_t variant;
     when_null(var, exit);
 
-    amxc_var_t variant;
     amxc_var_init(&variant);
     when_failed(amxc_var_convert(&variant, var, AMXC_VAR_ID_TIMESTAMP), exit);
     ts = (amxc_ts_t*) calloc(1, sizeof(amxc_ts_t));
