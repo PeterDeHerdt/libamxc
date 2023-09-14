@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.8.12 - 2023-09-14(06:41:34 +0000)
+
+### Changes
+
+- allow amxc_var_dump with FILE*
+
 ## Release v1.8.11 - 2023-07-14(13:13:53 +0000)
 
 ### Fixes
