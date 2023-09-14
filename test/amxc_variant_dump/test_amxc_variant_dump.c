@@ -150,6 +150,55 @@ void test_amxc_variant_dump(UNUSED void** state) {
     amxc_var_clean(&myvar);
 }
 
+void test_amxc_variant_dump2(UNUSED void** state) {
+    amxc_var_t myvar;
+    amxc_var_t* subvar = NULL;
+    FILE* fp = NULL;
+    static char msgbuf[512];
+
+    memset(msgbuf, 0, sizeof(msgbuf));
+    fp = fmemopen(msgbuf, 512, "w");
+    assert_non_null(fp);
+
+    amxc_var_register_type(&my_dummy_type);
+    int dummy_type_id = amxc_var_get_type_id_from_name(my_dummy_type.name);
+
+    amxc_var_init(&myvar);
+    amxc_var_set_type(&myvar, AMXC_VAR_ID_HTABLE);
+
+    subvar = amxc_var_add_new_key(&myvar, "KEY1");
+    amxc_var_set_type(subvar, AMXC_VAR_ID_LIST);
+    amxc_var_add_new(subvar);
+    amxc_var_add_new(subvar);
+    subvar = amxc_var_add_new_key(&myvar, "KEY2");
+    amxc_var_set_type(subvar, AMXC_VAR_ID_HTABLE);
+    amxc_var_add_new_key(subvar, "Foo");
+    amxc_var_add_new_key(subvar, "Bar");
+    subvar = amxc_var_add_key(cstring_t, &myvar, "KEY3", "Hello world");
+    subvar = amxc_var_add_key(uint64_t, &myvar, "KEY4", 666);
+    subvar = amxc_var_add_key(fd_t, &myvar, "KEY5", STDOUT_FILENO);
+    subvar = amxc_var_add_new_key(&myvar, "KEY6");
+    amxc_var_set_type(subvar, dummy_type_id);
+
+    amxc_var_dump_stream(&myvar, fp);
+    fclose(fp);
+    assert_non_null(strstr(msgbuf, "KEY1"));
+    assert_non_null(strstr(msgbuf, "KEY2"));
+    assert_non_null(strstr(msgbuf, "Foo"));
+    assert_non_null(strstr(msgbuf, "Bar"));
+    assert_non_null(strstr(msgbuf, "KEY3"));
+    assert_non_null(strstr(msgbuf, "Hello world"));
+    assert_non_null(strstr(msgbuf, "KEY4"));
+    assert_non_null(strstr(msgbuf, "666"));
+    assert_non_null(strstr(msgbuf, "KEY5"));
+    assert_non_null(strstr(msgbuf, "KEY6"));
+    assert_non_null(strstr(msgbuf, "my_dummy_type_t"));
+
+    amxc_var_unregister_type(&my_dummy_type);
+
+    amxc_var_clean(&myvar);
+}
+
 void test_amxc_variant_log(UNUSED void** state) {
     amxc_var_t myvar;
     amxc_var_t* subvar = NULL;
@@ -186,6 +235,46 @@ void test_amxc_variant_log(UNUSED void** state) {
 
 void test_amxc_variant_dump_null(UNUSED void** state) {
     amxc_var_dump(NULL, STDOUT_FILENO);
+}
+
+void test_amxc_variant_dump2_null(UNUSED void** state) {
+    amxc_var_t myvar;
+    amxc_var_t* subvar = NULL;
+    FILE* fp = NULL;
+    static char msgbuf[512];
+
+    memset(msgbuf, 0, sizeof(msgbuf));
+    fp = fmemopen(msgbuf, 512, "w");
+    assert_non_null(fp);
+
+    amxc_var_register_type(&my_dummy_type);
+    int dummy_type_id = amxc_var_get_type_id_from_name(my_dummy_type.name);
+
+    amxc_var_init(&myvar);
+    amxc_var_set_type(&myvar, AMXC_VAR_ID_HTABLE);
+
+    subvar = amxc_var_add_new_key(&myvar, "KEY1");
+    amxc_var_set_type(subvar, AMXC_VAR_ID_LIST);
+    amxc_var_add_new(subvar);
+    amxc_var_add_new(subvar);
+    subvar = amxc_var_add_new_key(&myvar, "KEY2");
+    amxc_var_set_type(subvar, AMXC_VAR_ID_HTABLE);
+    amxc_var_add_new_key(subvar, "Foo");
+    amxc_var_add_new_key(subvar, "Bar");
+    subvar = amxc_var_add_key(cstring_t, &myvar, "KEY3", "Hello world");
+    subvar = amxc_var_add_key(uint64_t, &myvar, "KEY4", 666);
+    subvar = amxc_var_add_key(fd_t, &myvar, "KEY5", STDOUT_FILENO);
+    subvar = amxc_var_add_new_key(&myvar, "KEY6");
+    amxc_var_set_type(subvar, dummy_type_id);
+
+    amxc_var_dump_stream(NULL, NULL);
+    amxc_var_dump_stream(&myvar, NULL);
+    amxc_var_dump_stream(NULL, fp);
+    fclose(fp);
+
+    amxc_var_unregister_type(&my_dummy_type);
+
+    amxc_var_clean(&myvar);
 }
 
 void test_amxc_variant_log_null(UNUSED void** state) {

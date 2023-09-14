@@ -67,6 +67,8 @@ extern "C"
 #endif
 
 #include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <amxc/amxc_htable.h>
 #include <amxc/amxc_llist.h>
@@ -1655,6 +1657,24 @@ void variant_htable_it_free(const char* key, amxc_htable_it_t* it);
    0 when writing the content was successful.
  */
 int amxc_var_dump(const amxc_var_t* const var, int fd);
+
+/**
+   @ingroup amxc_variant_utils
+   @brief
+   Dumps the content of the variant in a human readable manner.
+
+   Writes the content of the variant in a human readable and structured manner
+   to the provided file pointer.
+
+   This function is useful for debugging purposes.
+
+   @param var pointer to a variant struct
+   @param stream the file pointer
+
+   @return
+   0 when writing the content was successful.
+ */
+int amxc_var_dump_stream(const amxc_var_t* const var, FILE* stream);
 
 /**
    @ingroup amxc_variant_utils

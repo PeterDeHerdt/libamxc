@@ -73,6 +73,7 @@
 
 typedef struct _amxc_log_var {
     int fd;
+    FILE* stream;
     amxc_string_t message;
 } amxc_log_var_t;
 
@@ -80,12 +81,20 @@ typedef int (* amxc_var_dump_fn_t) (const amxc_var_t* const var,
                                     int indent,
                                     amxc_log_var_t* log);
 
+static void amxc_var_log_init(amxc_log_var_t* log, int fd, FILE* stream, size_t msg_length) {
+    log->fd = fd;
+    log->stream = stream;
+    amxc_string_init(&log->message, msg_length);
+}
+
 static int amxc_var_write(amxc_log_var_t* log,
                           const char* line,
                           size_t length) {
     int retval = 0;
     if(log->fd != -1) {
         retval = write(log->fd, line, length);
+    } else if(log->stream != NULL) {
+        retval = fwrite(line, 1, length, log->stream); // size is 1 to return the number of bytes like write()
     } else {
         retval = amxc_string_append(&log->message, line, length);
         if(amxc_string_search(&log->message, "\n", 0) >= 0) {
@@ -315,12 +324,11 @@ static int amxc_var_dump_internal(const amxc_var_t* const var,
     return retval;
 }
 
-int amxc_var_dump(const amxc_var_t* const var, int fd) {
+static int amxc_var_dump_impl(const amxc_var_t* const var, int fd, FILE* stream) {
     int retval = 0;
     amxc_log_var_t log;
 
-    log.fd = fd;
-    amxc_string_init(&log.message, 0);
+    amxc_var_log_init(&log, fd, stream, 0);
 
     if(var == NULL) {
         amxc_var_write(&log, "NULL\n", 5);
@@ -335,12 +343,19 @@ exit:
     return retval;
 }
 
+int amxc_var_dump(const amxc_var_t* const var, int fd) {
+    return amxc_var_dump_impl(var, fd, NULL);
+}
+
+int amxc_var_dump_stream(const amxc_var_t* const var, FILE* stream) {
+    return amxc_var_dump_impl(var, -1, stream);
+}
+
 int amxc_var_log(const amxc_var_t* const var) {
     amxc_log_var_t log;
     int retval = 0;
 
-    log.fd = -1;
-    amxc_string_init(&log.message, 1024);
+    amxc_var_log_init(&log, -1, NULL, 1024);
 
     if(var == NULL) {
         syslog(LOG_DAEMON | LOG_DEBUG, "NULL");
