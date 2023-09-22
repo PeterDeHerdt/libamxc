@@ -1,3 +1,9 @@
+libamxc (1.8.13) unstable; urgency=medium
+
+  * Fix license headers in files
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Fri, 22 Sep 2023 09:53:45 +0000
+
 libamxc (1.8.12) unstable; urgency=medium
 
   * allow amxc_var_dump with FILE*
