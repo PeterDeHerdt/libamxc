@@ -116,7 +116,7 @@ typedef struct _amxc_rbuffer {
    @param size the size of the ring buffer in number of bytes
 
    @return
-   -1 if an error occured. 0 on success
+   -1 if an error occurred. 0 on success
  */
 int amxc_rbuffer_new(amxc_rbuffer_t** rb, const size_t size);
 
@@ -189,7 +189,7 @@ void amxc_rbuffer_clean(amxc_rbuffer_t* const rb);
 
    @return
    0 on success.
-   -1 if an error has occured.
+   -1 if an error has occurred.
  */
 int amxc_rbuffer_grow(amxc_rbuffer_t* const rb, const size_t size);
 
@@ -210,7 +210,7 @@ int amxc_rbuffer_grow(amxc_rbuffer_t* const rb, const size_t size);
 
    @return
    0 on success.
-   -1 if an error has occured.
+   -1 if an error has occurred.
  */
 int amxc_rbuffer_shrink(amxc_rbuffer_t* const rb, const size_t size);
 
@@ -219,7 +219,7 @@ int amxc_rbuffer_shrink(amxc_rbuffer_t* const rb, const size_t size);
    @brief
    Reads a number of bytes from the ring buffer.
 
-   Copies bytes from the ring buffer, starting from the current read posistion,
+   Copies bytes from the ring buffer, starting from the current read position,
    into the provided buffer to a maximum number of bytes specified.
    When less bytes then the specified count are copied in the provided buffer,
    no more data is available in the ring buffer.
@@ -242,7 +242,7 @@ ssize_t amxc_rbuffer_read(amxc_rbuffer_t* const rb,
    Writes a number of bytes to the ring buffer.
 
    Copies the specified number of bytes to the ring buffer,
-   starting from the current write posistion, from the provided buffer.
+   starting from the current write position, from the provided buffer.
    The ring buffer grows when there is not enough space left in the ring buffer.
 
    @param rb a pointer to the ring buffer structure

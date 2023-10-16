@@ -129,7 +129,7 @@ typedef enum _amxc_string_flags {
    Definition of the signature of the "is char" callback function
 
    Some of the string functions needs to know if certain character matches a
-   criterea. You can provide your own matching function or use any of the
+   criteria. You can provide your own matching function or use any of the
    standard c library functions for this, like is_space, ...
 
    The functions using such a callback function are:
@@ -278,7 +278,7 @@ int amxc_string_copy(amxc_string_t* const dest,
 
    @return
    0 on success.
-   -1 if an error has occured.
+   -1 if an error has occurred.
  */
 int amxc_string_grow(amxc_string_t* const string, const size_t length);
 
@@ -298,7 +298,7 @@ int amxc_string_grow(amxc_string_t* const string, const size_t length);
 
    @return
    0 on success.
-   -1 if an error has occured
+   -1 if an error has occurred
  */
 int amxc_string_shrink(amxc_string_t* const string,
                        const size_t length);
@@ -318,7 +318,7 @@ int amxc_string_shrink(amxc_string_t* const string,
    @note
    The provided text block must at least contain as much data as specified in the
    length argument. If the provide text block is smaller, the function will go out
-   of boundery.
+   of boundary.
 
    @param string a pointer to the string structure
    @param pos the position in the string buffer
@@ -328,7 +328,7 @@ int amxc_string_shrink(amxc_string_t* const string,
 
    @return
    0 on success.
-   -1 if an error has occured
+   -1 if an error has occurred
  */
 int amxc_string_set_at(amxc_string_t* const string,
                        const size_t pos,
@@ -355,7 +355,7 @@ int amxc_string_set_at(amxc_string_t* const string,
 
    @return
    0 on success.
-   -1 if an error has occured
+   -1 if an error has occurred
  */
 int amxc_string_remove_at(amxc_string_t* const string,
                           const size_t pos,
@@ -914,7 +914,7 @@ int amxc_string_to_lower(amxc_string_t* const string);
 
    @return
    0 on success.
-   -1 if an error has occured
+   -1 if an error has occurred
  */
 AMXC_INLINE
 int amxc_string_append(amxc_string_t* const string,
@@ -939,7 +939,7 @@ int amxc_string_append(amxc_string_t* const string,
    @note
    The provided text block must at least contain as much data as specified in the
    length argument. If the provide text block is smaller, the function will go out
-   of boundery.
+   of boundary.
 
    @param string a pointer to the string structure
    @param text the text block that needs to be inserted

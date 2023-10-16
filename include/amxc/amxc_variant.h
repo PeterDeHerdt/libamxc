@@ -1004,7 +1004,7 @@ int amxc_var_copy(amxc_var_t* const dest, const amxc_var_t* const src);
    After the move the destination variant is identical to the source variant and
    the source variant is reset to the null variant type.
 
-   The iterators (linked list and htable) of the soource variant are not moved.
+   The iterators (linked list and htable) of the source variant are not moved.
 
    @param dest pointer to variant struct, the destination
    @param src pointer to variant struct, the source
@@ -1318,14 +1318,14 @@ amxc_var_t* amxc_var_add_new(amxc_var_t* const var);
    The type of the given variant is a composite type and some of the parts are
    composite variants as well, this function makes it easy to retrieve a variant
    deep down in the composite variant structure.
-   The path consists of a sequence of keys and/or indexes seprated by a '.'.
+   The path consists of a sequence of keys and/or indexes separated by a '.'.
    If the path exists, the pointer to the variant at that position is returned.
 
    When a key contains a '.' the key should be put between quotes (single or double)
 
    @param var pointer to a variant struct, the variant type should be a composite type
    @param path path to a variant in the composite variant structure, a path is
-               a sequence of indexes and/or keys seperated by a '.'
+               a sequence of indexes and/or keys separated by a '.'
    @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY, AMXC_VAR_FLAG_NO_INDEX
 
    @return
@@ -1343,7 +1343,7 @@ amxc_var_t* amxc_var_get_path(const amxc_var_t* const var,
    The type of the given variant is a composite type and some of the parts are
    composite variants as well, this function makes it easy to retrieve a variant
    deep down in the composite variant structure.
-   The path consists of a sequence of keys and/or indexes seprated by a '.'.
+   The path consists of a sequence of keys and/or indexes separated by a '.'.
    If the path exists, the pointer to the variant at that position is returned.
 
    When a key contains a '.' the key should be put between quotes (single or double)
@@ -1383,7 +1383,7 @@ amxc_var_t* amxc_var_get_pathf(const amxc_var_t* const var,
 
    @param var pointer to a variant struct, the variant type should be a composite type
    @param path path to a variant in the composite variant structure, a path is
-               a sequence of indexes and/or keys seperated by a '.'
+               a sequence of indexes and/or keys separated by a '.'
    @param data the new value
    @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY, AMXC_VAR_FLAG_NO_INDEX, AMXC_VAR_FLAG_AUTO_ADD
 
@@ -1416,7 +1416,7 @@ int amxc_var_set_path(amxc_var_t* const var,
    @param data the new value
    @param flags bitmap, see AMXC_VAR_FLAG_DEFAULT, AMXC_VAR_FLAG_COPY, AMXC_VAR_FLAG_NO_INDEX, AMXC_VAR_FLAG_AUTO_ADD
    @param fmt path to a variant in the composite variant structure, a path is
-              a sequence of indexes and/or keys seperated by a '.'. Does support
+              a sequence of indexes and/or keys separated by a '.'. Does support
               printf format.
 
    @return
@@ -1642,7 +1642,7 @@ void variant_htable_it_free(const char* key, amxc_htable_it_t* it);
    Writes the content of the variant in a human readable and structured manner
    to the provided file descriptor.
 
-   This function is usefull for debugging purposes.
+   This function is useful for debugging purposes.
 
    @param var pointer to a variant struct
    @param fd the file descriptor
@@ -3452,7 +3452,7 @@ cstring_t amxc_var_take_ssv_string_t(amxc_var_t* const var) {
    type argument `cstring_t`
 
    @param var pointer to a variant struct
-   @param val the value that is psuhed into the variant
+   @param val the value that is pushed into the variant
 
    @return
    0 when succesful
@@ -3470,7 +3470,7 @@ int amxc_var_push_cstring_t(amxc_var_t* const var, char* val);
    type argument `csv_string_t`
 
    @param var pointer to a variant struct
-   @param val the value that is psuhed into the variant
+   @param val the value that is pushed into the variant
 
    @return
    0 when succesful
@@ -3488,7 +3488,7 @@ int amxc_var_push_csv_string_t(amxc_var_t* const var, char* val);
    type argument `ssv_string_t`
 
    @param var pointer to a variant struct
-   @param val the value that is psuhed into the variant
+   @param val the value that is pushed into the variant
 
    @return
    0 when succesful
@@ -3506,7 +3506,7 @@ int amxc_var_push_ssv_string_t(amxc_var_t* const var, char* val);
    type argument `amxc_string_t`
 
    @param var pointer to a variant struct
-   @param val the value that is psuhed into the variant
+   @param val the value that is pushed into the variant
 
    @return
    0 when succesful

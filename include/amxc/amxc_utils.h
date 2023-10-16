@@ -64,7 +64,7 @@ extern "C"
    @ingroup amxc_string
    @defgroup amxc_string_utils string utility functions
 
-   A list of utility functions and macro's that make common string manupilation easier.
+   A list of utility functions and macro's that make common string manipulation easier.
  */
 
 /**

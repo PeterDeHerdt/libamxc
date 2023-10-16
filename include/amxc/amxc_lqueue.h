@@ -200,7 +200,7 @@ void amxc_lqueue_clean(amxc_lqueue_t* const lqueue, amxc_lqueue_it_delete_t func
 
    @note
    Make sure that the iterator of the item is at least initialized when it is
-   first used. Initializing an iterator can be done useing @ref amxc_lqueue_it_init.
+   first used. Initializing an iterator can be done using @ref amxc_lqueue_it_init.
    An iterator that is already used in a linked queue is considered initialized.
 
    @param lqueue a pointer to the linked queue structure

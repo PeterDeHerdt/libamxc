@@ -156,7 +156,7 @@ extern "C"
    the array start from the end or from the beginning, this could have some
    significant impact on the performance of these functions.
 
-   Although the members of this structure are publically available it is not
+   Although the members of this structure are publicly available it is not
    recommended to access them directly, use the provided functions.
  */
 typedef struct _amxc_array {
@@ -278,7 +278,7 @@ void amxc_array_delete(amxc_array_t** array, const amxc_array_it_delete_t func);
    @note
    When calling this function on an already initialized array,
    that contains items, the array is reset and all items in the array are lost
-   (This could potentionally lead to memory leaks).
+   (This could potentially lead to memory leaks).
    Use @ref amxc_array_clean to remove all items from the list.
 
    @param array a pointer to the array structure.
@@ -427,7 +427,7 @@ bool amxc_array_is_empty(const amxc_array_t* const array);
    Use @ref amxc_array_is_empty to check if an array is empty, do not use this
    function to check if there are used items in the array.
    This function is looping over the complete array and counts the used items.
-   For large arrays this could have some noticable performance impact.
+   For large arrays this could have some noticeable performance impact.
 
    @param array a pointer to the array structure
 
@@ -488,7 +488,7 @@ amxc_array_it_t* amxc_array_prepend_data(amxc_array_t* const array, void* data);
 
    @return
    returns the array iterator for the given index
-   or NULL if the index is out of boundery.
+   or NULL if the index is out of boundary.
  */
 amxc_array_it_t* amxc_array_get_at(const amxc_array_t* const array,
                                    const unsigned int index);
@@ -505,11 +505,11 @@ amxc_array_it_t* amxc_array_get_at(const amxc_array_t* const array,
 
    @param array a pointer to the array structure
    @param index position in the array where the data has to be set
-   @param data poiner to the data that has to be set in the array
+   @param data pointer to the data that has to be set in the array
 
    @return
    returns the array iterator for the given index
-   or NULL if the index is out of boundery.
+   or NULL if the index is out of boundary.
  */
 amxc_array_it_t* amxc_array_set_data_at(amxc_array_t* const array,
                                         const unsigned int index,
@@ -680,7 +680,7 @@ unsigned int amxc_array_it_index(const amxc_array_it_t* const it);
 /**
    @ingroup amxc_array
    @brief
-   Gets the capcity of the array.
+   Gets the capacity of the array.
 
    The capacity of an array is the number of items that can be stored in the
    array.
@@ -782,7 +782,7 @@ int amxc_array_it_swap(amxc_array_it_t* const it1, amxc_array_it_t* const it2);
    @brief
    Sorts the content of the array.
 
-   The smallest items according to the compare functions are at the begining of
+   The smallest items according to the compare functions are at the beginning of
    the array, empty buckets are at the end.
 
    @param array the array that will be sorted

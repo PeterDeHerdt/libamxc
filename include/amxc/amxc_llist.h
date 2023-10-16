@@ -188,7 +188,7 @@ extern "C"
          snprintf(person->first_name, 64, "first_name %d", i);
          snprintf(person->last_name, 64, "last_name %d", i);
          person->age = i;
-         amxc_llist_append(&contacts, &persion->it);
+         amxc_llist_append(&contacts, &person->it);
        }
 
        amxc_llist_for_each(it, (&contacts)) {
@@ -429,7 +429,7 @@ void amxc_llist_clean(amxc_llist_t* const llist, amxc_llist_it_delete_t func);
    @note
    Moving items from one linked list to another linked list can not fail.
 
-   @param dest a pointer to the destiniation linked list
+   @param dest a pointer to the destination linked list
    @param src a pointer to the source linked list
 
    @return
@@ -498,7 +498,7 @@ int amxc_llist_append(amxc_llist_t* const llist, amxc_llist_it_t* const it);
 
    @note
    Make sure that the iterator of the item is at least initialized when it is
-   first used. Initializing an iterator can be done useing @ref amxc_llist_it_init.
+   first used. Initializing an iterator can be done using @ref amxc_llist_it_init.
    An iterator that is already used in a linked list is considered initialized.
 
    @param llist a pointer to the linked list structure

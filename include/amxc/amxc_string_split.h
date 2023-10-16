@@ -103,7 +103,7 @@ typedef enum _amxc_string_split_status {
    The filter/builder callback function can then combine parts or filter them
    out before adding them the variant which contains a linked list of variants.
 
-   @param all linked list containig all string parts
+   @param all linked list containing all string parts
    @param var var the result variant.
 
    @return

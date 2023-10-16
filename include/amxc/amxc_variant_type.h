@@ -171,7 +171,7 @@ typedef int (* amxc_var_set_index_fn_t) (amxc_var_t* const dest,
    @brief
    A variant type structure.
 
-   New or application specific variants can be defined and registerd.
+   New or application specific variants can be defined and registered.
    All function pointers are optional.
 
    The member type_id and hit will be filled during registration and must never
@@ -189,7 +189,7 @@ typedef int (* amxc_var_set_index_fn_t) (amxc_var_t* const dest,
    @see ref amxc_var_copy. The function must return 0 when the copy was successful,
    an error code otherwise.
 
-   The convert functions convert_from, convert_to are called when convertion
+   The convert functions convert_from, convert_to are called when conversion
    from one type to another type is needed. These functions take two arguments,
    the destination variant and the source variant.
    These functions are used by @ref amxc_var_convert. If the source variant type
@@ -231,7 +231,7 @@ typedef struct _amxc_var_type {
    Register a new variant type.
 
    After the type has been registered the fields type_id and hit will be filled.
-   These values should not be chaged.
+   These values should not be changed.
 
    The type can be used after registration.
 
@@ -241,7 +241,7 @@ typedef struct _amxc_var_type {
    Make sure that the pointer to the registered structure is valid until the
    type is unregistered.
 
-   @param type pointer to a struct defing this type
+   @param type pointer to a struct defining this type
 
    @return
    When registration is successful this function returns 0.

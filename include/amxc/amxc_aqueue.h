@@ -131,7 +131,7 @@ typedef amxc_array_it_delete_t amxc_aqueue_it_delete_t;
                  queue can be stored
 
    @return
-   -1 if an error occured. 0 on success
+   -1 if an error occurred. 0 on success
  */
 AMXC_INLINE
 int amxc_aqueue_new(amxc_aqueue_t** aqueue) {
@@ -175,7 +175,7 @@ void amxc_aqueue_delete(amxc_aqueue_t** aqueue, amxc_aqueue_it_delete_t func) {
    @note
    When calling this function on an already initialized array queue,
    that contains items, the array queue is reset and all items in the queue
-   are lost (Could potentionally lead to memory leaks).
+   are lost (Could potentially lead to memory leaks).
    Use @ref amxc_aqueue_clean to remove all items from the queue.
 
    @param aqueue a pointer to the array queue structure.

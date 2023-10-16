@@ -236,7 +236,7 @@ void amxc_htable_delete(amxc_htable_t** htable, amxc_htable_it_delete_t func);
    @note
    When calling this function on an already initialized hash table,
    that contains items, the hash table is reset and all items in the table are
-   lost (Could potentionally lead to memory leaks).
+   lost (Could potentially lead to memory leaks).
    Use @ref amxc_htable_clean to remove all items from the table.
 
    @param htable a pointer to the hash table structure.
@@ -381,7 +381,7 @@ int amxc_htable_insert(amxc_htable_t* const htable,
    Gets a hash table iterator from the hash table.
 
    The key provided is converted into an index using @ref amxc_htable_key2index.
-   If multiple items are available at the calculated positon with the same key,
+   If multiple items are available at the calculated position with the same key,
    the first one is returned.
    The next item can be retrieved with @ref amxc_htable_it_get_next or
    with @ref amxc_htable_it_get_next_key if it must have the same key.
@@ -407,7 +407,7 @@ amxc_htable_it_t* amxc_htable_get(const amxc_htable_t* const htable,
    Removes a hash table iterator from the hash table.
 
    The key provided is converted into an index using @ref amxc_htable_key2index.
-   If multiple items are available at the calculated positon with the same key,
+   If multiple items are available at the calculated position with the same key,
    (collision) the first one is removed and returned.
 
    @note
@@ -527,7 +527,7 @@ bool amxc_htable_contains(const amxc_htable_t* const htable, const char* const k
    if moving fails, the source is not changed and the destination will be an
    ampty hash table
 
-   @param dest a pointer to the destiniation hash table structure
+   @param dest a pointer to the destination hash table structure
    @param src a pointer to the source hash table structure
 
    @return
