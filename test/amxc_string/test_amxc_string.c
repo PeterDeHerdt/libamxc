@@ -800,6 +800,14 @@ void test_amxc_string_resolve(UNUSED void** state) {
     assert_string_equal(string.buffer, "MyValue /tmp/ MyValue a_name");
     amxc_string_reset(&string);
 
+    assert_int_equal(amxc_string_appendf(&string, "\\$\\{ref\\} \\\" \\$\\(TESTENV\\) \\' \\\\"), 0);
+    assert_int_equal(amxc_string_resolve(&string, &data), 9);
+    assert_string_equal(string.buffer, "${ref} \" $(TESTENV) ' \\");
+    amxc_string_reset(&string);
+
+    assert_int_equal(amxc_string_appendf(&string, "${ref} \" $(TESTENV) ' \\"), 0);
+    assert_int_equal(amxc_string_esc(&string), 9);
+    assert_string_equal(string.buffer, "\\$\\{ref\\} \\\" \\$\\(TESTENV\\) \\' \\\\");
     amxc_var_clean(&data);
     amxc_string_clean(&string);
 }

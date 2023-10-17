@@ -176,6 +176,36 @@ exit:
     return retval;
 }
 
+int amxc_string_resolve_esc(amxc_string_t* const string) {
+    int retval = 0;
+
+    retval += amxc_string_replace(string, "\\\\", "\\", UINT32_MAX);
+    retval += amxc_string_replace(string, "\\$", "$", UINT32_MAX);
+    retval += amxc_string_replace(string, "\\(", "(", UINT32_MAX);
+    retval += amxc_string_replace(string, "\\)", ")", UINT32_MAX);
+    retval += amxc_string_replace(string, "\\{", "{", UINT32_MAX);
+    retval += amxc_string_replace(string, "\\}", "}", UINT32_MAX);
+    retval += amxc_string_replace(string, "\\\"", "\"", UINT32_MAX);
+    retval += amxc_string_replace(string, "\\'", "'", UINT32_MAX);
+
+    return retval;
+}
+
+int amxc_string_esc(amxc_string_t* const string) {
+    int retval = 0;
+
+    retval += amxc_string_replace(string, "\\", "\\\\", UINT32_MAX);
+    retval += amxc_string_replace(string, "$", "\\$", UINT32_MAX);
+    retval += amxc_string_replace(string, "(", "\\(", UINT32_MAX);
+    retval += amxc_string_replace(string, ")", "\\)", UINT32_MAX);
+    retval += amxc_string_replace(string, "{", "\\{", UINT32_MAX);
+    retval += amxc_string_replace(string, "}", "\\}", UINT32_MAX);
+    retval += amxc_string_replace(string, "\"", "\\\"", UINT32_MAX);
+    retval += amxc_string_replace(string, "'", "\\'", UINT32_MAX);
+
+    return retval;
+}
+
 int amxc_string_resolve(amxc_string_t* const string,
                         const amxc_var_t* const data) {
     int changes = 0;
@@ -186,6 +216,8 @@ int amxc_string_resolve(amxc_string_t* const string,
         changes += amxc_string_resolve_env(string);
         changes += amxc_string_resolve_var(string, data);
     } while(changes > 0);
+
+    total += amxc_string_resolve_esc(string);
 
     return total;
 }

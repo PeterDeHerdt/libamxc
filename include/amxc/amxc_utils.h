@@ -70,6 +70,48 @@ extern "C"
 /**
    @ingroup amxc_string_utils
    @brief
+   Resolves escaped characters in a string.
+
+   Some characters or combinations of characters in a string can have a special
+   purpose i.e. "$(my_env_var)". To avoid that these are replaced by functions like
+   @ref amxc_string_resolve_env or @ref amxc_string_resolve_var, the characters can
+   be escaped with a \ i.e. "\$\(my_env_var\)". This function can be used to
+   remove the escape character from the string.
+
+   Only these characters are taken into consideration when removing the escape character:
+   $, (, ), {, }, ", ', \.
+
+   @param string an amxc_string_t pointer.
+
+   @return
+   the number of replacements that have been done.
+ */
+int amxc_string_resolve_esc(amxc_string_t* const string);
+
+/**
+   @ingroup amxc_string_utils
+   @brief
+   Add escape characters to a string.
+
+   Some characters or combinations of characters in a string can have a special
+   purpose i.e. "$(my_env_var)". To avoid that these are replaced by functions like
+   @ref amxc_string_resolve_env or @ref amxc_string_resolve_var, the characters can
+   be escaped with a \ i.e. "\$\(my_env_var\)". This function can be used to
+   add the escape character.
+
+   Only these characters are taken into consideration when removing the escape character:
+   $, (, ), {, }, ", ', \.
+
+   @param string an amxc_string_t pointer.
+
+   @return
+   the number of replacements that have been done.
+ */
+int amxc_string_esc(amxc_string_t* const string);
+
+/**
+   @ingroup amxc_string_utils
+   @brief
    Resolves environment variables
 
    Replaces the environment variable with its value. The name of the environment
@@ -117,6 +159,9 @@ int amxc_string_resolve_var(amxc_string_t* const string,
    This functions calls @ref amxc_string_resolve_var and @ref amxc_string_resolve_env
    to resolve all environment variables and variant paths mentioned in the string.
 
+   The escape character '\' will be removed using @ref amxc_string_resolve_esc
+   when in front of $, (, ), {, }, ", ', \.
+
    @param string an amxc_string_t pointer.
    @param data a variant containing data, preferable a htable or list.
 
@@ -136,7 +181,8 @@ int amxc_string_resolve(amxc_string_t* const string,
    structure (resets it to an empty string).
 
    If the provided text contains environment variable references or variant
-   path references, the resolved text is put in the string.
+   path references, the resolved text is put in the string, it will also remove
+   the escape character '\' when in front of $, (, ), {, }, ", ', \.
 
    @param string an amxc_string_t pointer.
    @param text the text
@@ -157,7 +203,8 @@ int amxc_string_set_resolved(amxc_string_t* string,
    This function will allocate a new amxc_string_t structure on the heap.
 
    If the provided text contains environment variable references or variant
-   path references, the resolved text is put in the string.
+   path references, the resolved text is put in the string. it will also remove
+   the escape character '\' when in front of $, (, ), {, }, ", ', \.
 
    @param string an amxc_string_t pointer.
    @param text the text
