@@ -1,3 +1,11 @@
+libamxc (1.9.0) unstable; urgency=medium
+
+  * [libamxc] Some characters in amxc string can have special purpose and it must be possible to escape them
+  * Issue ST-1184 [amxb][amxc][amxo][amxrt] Fix typos in documentation
+  * [amxb][amxc][amxo][amxrt] Fix typos in documentation
+
+ -- SAH bot <sahbot@softathome.com>  Tue, 17 Oct 2023 10:46:25 +0000
+
 libamxc (1.8.13) unstable; urgency=medium
 
   * Fix license headers in files

@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.9.0 - 2023-10-17(10:46:25 +0000)
+
+### New
+
+- [libamxc] Some characters in amxc string can have special purpose and it must be possible to escape them
+
+### Other
+
+- Issue ST-1184 [amxb][amxc][amxo][amxrt] Fix typos in documentation
+- [amxb][amxc][amxo][amxrt] Fix typos in documentation
+
 ## Release v1.8.13 - 2023-09-22(09:53:45 +0000)
 
 ### Fixes
