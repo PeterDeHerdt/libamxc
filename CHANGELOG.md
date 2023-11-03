@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## Release v1.10.0 - 2023-11-03(16:10:18 +0000)
+
+### New
+
+- - [prpl][libamxc] amxc_set_to_string only use space as separator
+
 ## Release v1.9.0 - 2023-10-17(10:46:25 +0000)
 
 ### New

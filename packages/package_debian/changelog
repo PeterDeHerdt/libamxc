@@ -1,3 +1,9 @@
+libamxc (1.10.0) unstable; urgency=medium
+
+  * - [prpl][libamxc] amxc_set_to_string only use space as separator
+
+ -- Peter DEHERDT <peter.deherdt@softathome.com>  Fri, 03 Nov 2023 16:10:18 +0000
+
 libamxc (1.9.0) unstable; urgency=medium
 
   * [libamxc] Some characters in amxc string can have special purpose and it must be possible to escape them
