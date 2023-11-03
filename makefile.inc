@@ -42,3 +42,4 @@ INITDIR ?= /etc/init.d
 ACLDIR ?= /etc/acl
 DOCDIR ?= $(PREFIX)share/doc/libamxc
 PROCMONDIR ?= $(PREFIX)lib/processmonitor/scripts
+

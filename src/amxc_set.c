@@ -261,7 +261,7 @@ exit:
     return retval;
 }
 
-char* amxc_set_to_string(const amxc_set_t* const set) {
+char* amxc_set_to_string_sep(const amxc_set_t* const set, const char* sep) {
     int n = 0;
     char* buf = NULL;
     char* bufptr = NULL;
@@ -269,6 +269,7 @@ char* amxc_set_to_string(const amxc_set_t* const set) {
     int started = 0;
 
     when_null(set, exit);
+    when_null(sep, exit);
 
     amxc_llist_iterate(it, &set->list) {
         amxc_flag_t* f = amxc_container_of(it, amxc_flag_t, it);
@@ -286,15 +287,19 @@ char* amxc_set_to_string(const amxc_set_t* const set) {
     amxc_llist_iterate(it, &set->list) {
         amxc_flag_t* f = amxc_container_of(it, amxc_flag_t, it);
         if((f->count != 1) && set->counted) {
-            bufptr += sprintf(bufptr, "%s%s:%d", started ? " " : "", f->flag, f->count);
+            bufptr += sprintf(bufptr, "%s%s:%d", started ? sep : "", f->flag, f->count);
         } else {
-            bufptr += sprintf(bufptr, "%s%s", started ? " " : "", f->flag);
+            bufptr += sprintf(bufptr, "%s%s", started ? sep : "", f->flag);
         }
         started = 1;
     }
 
 exit:
     return buf;
+}
+
+char* amxc_set_to_string(const amxc_set_t* const set) {
+    return amxc_set_to_string_sep(set, " ");
 }
 
 void amxc_set_add_flag(amxc_set_t* set, const char* flag) {

@@ -274,6 +274,21 @@ char* amxc_set_to_string(const amxc_set_t* const set);
 /**
    @ingroup amxc_set
    @brief
+   Converts a set to a separated string of flags.
+
+   @param set The flag set to convert.
+   @param sep The separation string.
+
+   @return
+   A string holding the separated string of flags.
+   It's allocated on the heap and needs to be freed by the caller with free().
+   A NULL pointer is returned if the set is NULL, empty or if memory allocation failed.
+ */
+char* amxc_set_to_string_sep(const amxc_set_t* const set, const char* sep);
+
+/**
+   @ingroup amxc_set
+   @brief
    Adds a flag to a set, or increases the flag counter.
 
    Adds a flag to a set if it does not contain it already.

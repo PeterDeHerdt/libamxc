@@ -406,6 +406,22 @@ void test_amxc_set_to_string(UNUSED void** state) {
     amxc_set_clean(&set);
 }
 
+void test_amxc_set_to_string_sep(UNUSED void** state) {
+    amxc_set_t set;
+    char* set_str = NULL;
+
+    assert_int_equal(amxc_set_init(&set, false), 0);
+    assert_true(amxc_llist_is_empty(&set.list));
+
+    assert_int_equal(amxc_set_parse(&set, "flag1 flag2:10 flag3:5"), 0);
+    set_str = amxc_set_to_string_sep(&set, ",");
+
+    assert_string_equal(set_str, "flag1,flag2,flag3");
+
+    free(set_str);
+    amxc_set_clean(&set);
+}
+
 void test_amxc_set_copy(UNUSED void** state) {
     amxc_set_t* set = NULL;
     amxc_set_t* copy = NULL;

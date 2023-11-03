@@ -68,6 +68,7 @@ void test_amxc_set_parse_with_count(void** state);
 void test_amxc_set_parse_invalid_input(void** state);
 void test_amxc_set_to_string_counted(void** state);
 void test_amxc_set_to_string(void** state);
+void test_amxc_set_to_string_sep(void** state);
 void test_amxc_set_copy(void** state);
 void test_amxc_set_symmetric_difference(void** state);
 

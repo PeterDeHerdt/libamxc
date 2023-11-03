@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`Libamxc` is a library providing generic reusable data containers.
+`Lib_amxc` is a library providing generic reusable data containers.
 
 The library provides:
 
@@ -45,7 +45,7 @@ There are existing implementations, all different, all with different focus and 
 - [ccl](https://code.google.com/archive/p/ccl/source)
 - and maybe more ...
 
-None of C libraries found fulfill all requirements and do not always comply with the coding guidelines of the project (see [Coding Guidelines](https://gitlab.com/soft.at.home/ambiorix/ambiorix/-/blob/main/doc/CODING_GUIDELINES.md))
+None of C libraries found fulfill all requirements and do not always comply with the coding guidelines of the project (see [Coding Guidelines](https://gitlab.com/prpl-foundation/components/ambiorix/ambiorix/blob/main/doc/CODING_GUIDELINES.md))
 
 So either:
 
@@ -86,7 +86,7 @@ You could install all tools needed for testing and developing on your local mach
     Pull the image:
 
     ```bash
-    docker pull softathome/oss-dbg:latest
+    docker pull registry.gitlab.com/soft.at.home/docker/oss-dbg:latest
     ```
 
     Before launching the container, you should create a directory which will be shared between your local machine and the container.
@@ -98,8 +98,10 @@ You could install all tools needed for testing and developing on your local mach
     Launch the container:
 
     ```bash
-    docker run -ti -d --name oss-dbg --restart always --cap-add=SYS_PTRACE --sysctl net.ipv6.conf.all.disable_ipv6=1 -e "USER=$USER" -e "UID=$(id -u)" -e "GID=$(id -g)" -v ~/amx_project/:/home/$USER/amx_project/ softathome/oss-dbg:latest
+    docker run -ti -d --name oss-dbg --restart always --cap-add=SYS_PTRACE --sysctl net.ipv6.conf.all.disable_ipv6=1 -e "USER=$USER" -e "UID=$(id -u)" -e "GID=$(id -g)" -v ~/amx_project/:/home/$USER/amx_project/ registry.gitlab.com/soft.at.home/docker/oss-dbg:latest
     ```
+
+    If you are using vpn, you need to add `--dns 192.168.16.10 --dns 192.168.16.11` to the docker run command.
 
     The `-v` option bind mounts the local directory for the ambiorix project in the container, at the exact same place.
     The `-e` options create environment variables in the container. These variables are used to create a user name with exactly the same user id and group id in the container as on your local host (user mapping).
@@ -114,25 +116,39 @@ You could install all tools needed for testing and developing on your local mach
 
 #### Prerequisites
 
-`Libamxc` does not need any other library to work.
+`Lib_amxc` does not need any other library to work.
 
 #### Build libamxc
 
 1. Clone the git repository
 
-    To be able to build it, you need the source code. So open the directory just created for the ambiorix project and clone this library in it.
+    To be able to build it, you need the source code. So open the directory just created for the ambiorix project and clone this library in it (on your local machine).
 
     ```bash
     cd ~/amx_project/libraries/
-    git clone https://gitlab.com/soft.at.home/ambiorix/libraries/libamxc.git
+    git clone git@gitlab.com:prpl-foundation/components/ambiorix/libraries/libamxc.git
     ``` 
 
 1. Build it
+
 
     ```bash
     cd ~/amx_project/libraries/libamxc
     make
     ```
+
+1. Build API documentation
+
+   All public API functions are documented with doxygen tags. To generate the documentation (in html format) doxygen must be installed.
+
+   ```bash
+    cd ~/amx_project/libraries/libamxc
+    make doc
+   ```
+
+   The documentation will be available in `./output/doc/doxy-html/`. Open the file `./output/doc/doxy-html/index.html` in your favorite browser.
+
+   Another option is to open the public header files, the documentation is available there as well.
 
 ### Installing
 
@@ -142,7 +158,7 @@ You can install your own compiled version easily in the container by running the
 
 ```bash
 cd ~/amx_project/libraries/libamxc
-sudo make install
+sudo -E make install
 ```
 
 #### Using package
